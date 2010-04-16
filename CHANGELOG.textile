@@ -1,0 +1,20 @@
+Pipes: A Data Flow Framework using Process Graphs 
+"http://pipes.tinkerpop.com":http://pipes.tinkerpop.com
+
+bc. <repository>
+  <id>tinkerpop-repository</id>
+  <name>TinkerPop Maven2 Repository</name>
+  <url>http://tinkerpop.com/maven2</url>
+</repository>
+
+==<hr/>==
+
+h3. Version 0.1 (Faucet -- NOT OFFICIALLY RELEASED YET)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>0.1-SNAPSHOT</version>
+</dependency>
+
+* Initial release

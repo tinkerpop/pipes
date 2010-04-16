@@ -1,2 +1,5 @@
-Pipes
- A Data Flow Framework using Process Graphs
+!http://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-logo.png!
+
+Pipes is a data flow framework for data processing.
+
+The documentation for Pipes can be found at this "location":http://pipes.tinkerpop.com. Finally, please visit "TinkerPop":http://tinkerpop.com for other software products.
