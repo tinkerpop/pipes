@@ -20,7 +20,7 @@
     </developers>
     <inceptionYear>2010</inceptionYear>
     <dependencies>
-        <!-- JUNG SUPPORT -->
+        <!-- BLUEPRINTS SUPPORT -->
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>blueprints</artifactId>
@@ -38,11 +38,6 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.5.5</version>
         </dependency>
     </dependencies>
     <repositories>
@@ -107,7 +102,7 @@
                         <descriptor>src/assembly/standalone.xml</descriptor>
                         <descriptor>src/assembly/distribution.xml</descriptor>
                     </descriptors>
-                    <finalName>blueprints-${project.version}</finalName>
+                    <finalName>pipes-${project.version}</finalName>
                     <outputDirectory>target</outputDirectory>
                     <workDirectory>target/assembly/work</workDirectory>
                     <tarLongFileMode>warn</tarLongFileMode>
