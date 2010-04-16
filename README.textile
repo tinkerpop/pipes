@@ -1,4 +1,4 @@
-!http://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-logo.png!
+!http://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-logo.jpg!
 
 Pipes is a data flow framework for data processing.
 
