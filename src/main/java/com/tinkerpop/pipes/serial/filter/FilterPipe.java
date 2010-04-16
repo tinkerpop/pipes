@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
  */
-public interface FilterPipe<S, T> extends Pipe<S, S> {
+public interface FilterPipe<S,T> extends Pipe<S, S> {
 
     public boolean areEqual(T object1, T object2);
 
