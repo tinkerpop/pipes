@@ -9,7 +9,9 @@
     <packaging>jar</packaging>
     <url>http://pipes.tinkerpop.com</url>
     <name>Pipes: A Data Flow Framework using Process Graphs</name>
-    <description>...
+    <description>A process graph is composed of a set of process vertices connected to one another by a set of
+        communication edges. Each process can run independent of the others and as such, concurrency is a natural
+        consequence as data is transformed in a pipelined fashion from input to output.
     </description>
     <developers>
         <developer>
@@ -20,7 +22,7 @@
     </developers>
     <inceptionYear>2010</inceptionYear>
     <dependencies>
-        <!-- BLUEPRINTS SUPPORT -->
+        <!-- PROPERTY GRAPH MODEL SUPPORT -->
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>blueprints</artifactId>
