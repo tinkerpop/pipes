@@ -41,4 +41,8 @@ public class Pipeline<S, E> implements Pipe<S, E> {
     public E next() {
         return endPipe.next();
     }
+
+    public Iterator<E> iterator() {
+        return this;
+    }
 }

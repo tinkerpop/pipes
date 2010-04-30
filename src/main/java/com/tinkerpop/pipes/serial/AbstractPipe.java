@@ -48,6 +48,10 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         }
     }
 
+    public Iterator<E> iterator() {
+        return this;
+    }
+
     protected E processNextStart() throws NoSuchElementException {
         throw new RuntimeException("Override this method in the child class");
     }
