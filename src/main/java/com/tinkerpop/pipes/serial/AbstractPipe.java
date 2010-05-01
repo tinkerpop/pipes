@@ -16,6 +16,10 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         this.starts = starts;
     }
 
+    public void setStarts(final Iterable<S> starts) {
+        this.setStarts(starts.iterator());
+    }
+
     public void remove() {
         throw new UnsupportedOperationException();
     }

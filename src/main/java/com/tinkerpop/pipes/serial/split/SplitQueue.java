@@ -7,7 +7,7 @@ import java.util.Queue;
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SplitQueue<S> implements Iterator<S> {
+public class SplitQueue<S> implements Iterator<S>, Iterable<S> {
 
     private final Queue<S> queue = new LinkedList<S>();
     private final SplitPipe<S> splitPipe;
@@ -42,6 +42,11 @@ public class SplitQueue<S> implements Iterator<S> {
         S temp = queue.remove();
         this.splitPipe.fillNext(this.splitNumber);
         return temp;
+    }
+
+    // todo: do we need this?
+    public Iterator<S> iterator() {
+        return this;
     }
 
 }

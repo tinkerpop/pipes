@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ExhaustiveMergePipe<S> extends AbstractPipe<Iterator<S>, S> {
+public class ExhaustiveMergePipe<S> extends AbstractMergePipe<S> {
 
     protected Iterator<S> currentEnds;
 

@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ReadyMergePipe<S> extends AbstractPipe<Iterator<S>, S> {
+public class ReadyMergePipe<S> extends AbstractMergePipe<S> {
 
     private final ConcurrentLinkedQueue<S> queue = new ConcurrentLinkedQueue<S>();
     private final List<ThreadedPull<S>> threads = new ArrayList<ThreadedPull<S>>();

@@ -14,4 +14,6 @@ public interface SplitPipe<S> extends Pipe<S, S> {
 
     public void fillNext(int splitNumber);
 
+    public void addSplit();
+
 }

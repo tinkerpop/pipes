@@ -22,12 +22,16 @@ public class Pipeline<S, E> implements Pipe<S, E> {
         this.startPipe = pipes.get(0);
         this.endPipe = pipes.get(pipes.size() - 1);
         for (int i = 1; i < pipes.size(); i++) {
-            pipes.get(i).setStarts(pipes.get(i - 1));
+            pipes.get(i).setStarts((Iterator)pipes.get(i - 1));
         }
     }
 
     public void setStarts(final Iterator<S> starts) {
         startPipe.setStarts(starts);
+    }
+
+    public void setStarts(final Iterable<S> starts) {
+        this.setStarts(starts.iterator());
     }
 
     public void remove() {

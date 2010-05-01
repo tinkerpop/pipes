@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class RobinMergePipe<S> extends AbstractPipe<Iterator<S>, S> {
+public class RobinMergePipe<S> extends AbstractMergePipe<S> {
 
     private List<Iterator<S>> allStarts = new ArrayList<Iterator<S>>();
     private int currentStarts = 0;
@@ -21,6 +21,10 @@ public class RobinMergePipe<S> extends AbstractPipe<Iterator<S>, S> {
             allStarts.add(this.starts.next());
         }
 
+    }
+
+    public void addStart(Iterator<S> start) {
+        this.allStarts.add(start);
     }
 
     protected S processNextStart() {

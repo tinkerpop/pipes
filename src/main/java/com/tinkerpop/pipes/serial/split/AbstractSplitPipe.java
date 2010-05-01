@@ -15,11 +15,17 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
     protected int numberOfSplits;
 
     public AbstractSplitPipe(int numberOfSplits) {
+
+        // todo: use add splot?
         this.numberOfSplits = numberOfSplits;
         this.splits = new ArrayList<SplitQueue<S>>(this.numberOfSplits);
         for (int i = 0; i < numberOfSplits; i++) {
             splits.add(new SplitQueue<S>(this, i));
         }
+    }
+
+    public void addSplit() {
+        this.splits.add(new SplitQueue<S>(this, ++this.numberOfSplits));
     }
 
     public Iterator<S> getSplit(final int number) {

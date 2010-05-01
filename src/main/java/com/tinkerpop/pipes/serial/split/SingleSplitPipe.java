@@ -14,8 +14,4 @@ public class SingleSplitPipe<S> extends AbstractSplitPipe<S> {
             this.splits.get(splitNumber).add(this.next());
         }
     }
-
-    public void addSplit() {
-        this.splits.add(new SplitQueue<S>(this, ++this.numberOfSplits));
-    }
 }
