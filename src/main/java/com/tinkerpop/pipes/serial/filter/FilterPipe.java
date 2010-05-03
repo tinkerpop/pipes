@@ -6,7 +6,9 @@ import com.tinkerpop.pipes.serial.Pipe;
 import java.util.Collection;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * A FilterPipe will filter objects that pass through it depending on some implemented criteria.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public interface FilterPipe<S,T> extends Pipe<S, S> {
 

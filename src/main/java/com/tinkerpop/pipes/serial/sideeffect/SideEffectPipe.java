@@ -4,7 +4,9 @@ import com.tinkerpop.pipes.serial.Pipe;
 
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * A SideEffectPipe will produce a side effect which can be retrieved by the getSideEffect() method.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public interface SideEffectPipe<S, E, T> extends Pipe<S, E> {
 

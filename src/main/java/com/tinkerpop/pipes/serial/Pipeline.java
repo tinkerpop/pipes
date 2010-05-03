@@ -4,7 +4,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * A Pipeline is a linear composite of Pipes.
+ * Pipeline takes a List of Pipes and joins them according to their order as specified by their location in the List.
+ * It is important to ensure that the provided ordered Pipes can connect together.
+ * That is, that the output of the n-1 Pipe is the same as the input to n Pipe.
+ * Once all provided Pipes are composed, a Pipeline can be treated like any other Pipe.
+ * 
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class Pipeline<S, E> implements Pipe<S, E> {
 

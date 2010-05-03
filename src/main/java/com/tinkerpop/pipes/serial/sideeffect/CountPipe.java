@@ -4,7 +4,9 @@ import com.tinkerpop.pipes.serial.AbstractPipe;
 
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The CountPipe produces a side effect that is the total number of objects that have passed through it.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class CountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Long> {
 

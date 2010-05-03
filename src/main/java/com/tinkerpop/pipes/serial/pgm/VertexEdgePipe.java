@@ -7,7 +7,9 @@ import com.tinkerpop.pipes.serial.AbstractPipe;
 import java.util.Iterator;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The VertexEdgePipe returns either the incoming or outgoing Edges of the Vertex start.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class VertexEdgePipe extends AbstractPipe<Vertex, Edge> {
 

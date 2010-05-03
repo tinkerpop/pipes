@@ -7,7 +7,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The AggregatorPipe produces a side effect that is the provided Collection filled with the contents of all the objects that have passed through it.
+ * Note that different Collections have different behaviors and write/read times.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Collection<S>> {
 

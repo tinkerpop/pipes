@@ -6,6 +6,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
+ * The DuplicateFilterPipe will not allow a duplicate object to pass through it.
+ * This is accomplished by the Pipe maintaining an internal HashSet that is used to store a history of previously seen objects.
+ * Thus, the more unique objects that pass through this Pipe, the slower it becomes.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class DuplicateFilterPipe<S> extends AbstractFilterPipe<S,S> {

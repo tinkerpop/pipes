@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The LabelFilterPipe either allows or disallows all Edges that have labels that are in the provided Collection.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class LabelFilterPipe extends AbstractFilterPipe<Edge, String> {
 

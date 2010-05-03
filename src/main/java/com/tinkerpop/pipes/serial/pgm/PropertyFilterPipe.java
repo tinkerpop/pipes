@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The PropertyFilterPipe either allows or disallows all Elements that have a value for a particular key that is in the provided Collection.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class PropertyFilterPipe<S extends Element, T> extends AbstractFilterPipe<S, T> {
 

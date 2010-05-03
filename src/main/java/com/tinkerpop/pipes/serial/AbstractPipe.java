@@ -4,7 +4,17 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * An AbstractPipe provides most of the functionality that is repeated in every instance of a Pipe.
+ * Any subclass of AbstractPipe should simply implement processNextStart(). The standard model is
+ * <pre>
+ * protected E processNextStart() {
+        S s = this.starts.next();
+        E e = // do something with the S to yield an E
+        return e;
+   }
+ * </pre>
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 

@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.serial.split;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class CopySplitPipe<S> extends AbstractSplitPipe<S> {
 

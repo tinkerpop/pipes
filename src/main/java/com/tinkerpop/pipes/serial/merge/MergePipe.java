@@ -5,7 +5,7 @@ import com.tinkerpop.pipes.serial.Pipe;
 import java.util.Iterator;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public interface MergePipe<S> extends Pipe<Iterator<S>,S> {
 

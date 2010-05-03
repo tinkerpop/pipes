@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
+ * The SideEffectCapPipe will yield an E that is the side effect of the provided SideEffectPipe.
+ * This is useful for when the side effect of a Pipe is desired in a computational stream.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> {

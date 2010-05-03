@@ -14,7 +14,7 @@ public class ProductPipe<S, T> extends AbstractPipe<S, ProductPipe.Pair> {
         RIGHT, LEFT
     }
 
-    public ProductPipe(T toProduct, Join join) {
+    public ProductPipe(final T toProduct, final Join join) {
         this.toProduct = toProduct;
         this.join = join;
     }
@@ -32,7 +32,7 @@ public class ProductPipe<S, T> extends AbstractPipe<S, ProductPipe.Pair> {
         private final A a;
         private final B b;
 
-        public Pair(A a, B b) {
+        public Pair(final A a, final B b) {
             this.a = a;
             this.b = b;
         }

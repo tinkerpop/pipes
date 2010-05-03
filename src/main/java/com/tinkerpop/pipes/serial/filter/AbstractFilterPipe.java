@@ -6,7 +6,9 @@ import com.tinkerpop.pipes.serial.AbstractPipe;
 import java.util.Collection;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The AbstractFilterPipe provides the necessary functionality that is required of most FilterPipe implementations.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public abstract class AbstractFilterPipe<S,T> extends AbstractPipe<S, S> implements FilterPipe<S,T> {
 

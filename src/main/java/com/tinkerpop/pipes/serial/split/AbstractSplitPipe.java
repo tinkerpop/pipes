@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements SplitPipe<S> {
 

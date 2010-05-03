@@ -5,7 +5,9 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.serial.AbstractPipe;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The EdgeVertexPipe returns either the incoming or outgoing Vertex of an Edge start.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class EdgeVertexPipe extends AbstractPipe<Edge, Vertex> {
 

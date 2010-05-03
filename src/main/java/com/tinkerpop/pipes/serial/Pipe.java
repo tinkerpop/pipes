@@ -3,7 +3,11 @@ package com.tinkerpop.pipes.serial;
 import java.util.Iterator;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The generic interface for any Pipe implementation.
+ * A Pipe takes objects of type S and returns objects of type E.
+ * S refers to <i>starts</i> and the E refers to <i>ends</i>.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
 

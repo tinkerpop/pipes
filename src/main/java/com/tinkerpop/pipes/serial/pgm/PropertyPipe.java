@@ -4,7 +4,9 @@ import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.pipes.serial.AbstractPipe;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The PropertyPipe returns the property value of the Element identified by the provided key.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> {
 

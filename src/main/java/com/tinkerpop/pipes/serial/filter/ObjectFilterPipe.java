@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * The ObjectFilterPipe will either allow or disallow all objects that pass through it that are contained in the provided Collection.
+ *
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class ObjectFilterPipe<S> extends AbstractFilterPipe<S,S> {
 
