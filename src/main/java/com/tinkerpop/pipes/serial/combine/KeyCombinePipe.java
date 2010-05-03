@@ -4,7 +4,10 @@ import com.tinkerpop.pipes.serial.AbstractPipe;
 import com.tinkerpop.pipes.serial.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.serial.util.ProductPipe;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -15,7 +18,7 @@ public class KeyCombinePipe<A, B> extends AbstractPipe<ProductPipe.Pair, Product
 
     protected ProductPipe.Pair processNextStart() {
         ProductPipe.Pair pair = this.starts.next();
-        this.updateMap((A)pair.getA(), (B)pair.getB());
+        this.updateMap((A) pair.getA(), (B) pair.getB());
         return pair;
     }
 

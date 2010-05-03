@@ -1,8 +1,6 @@
 package com.tinkerpop.pipes.serial.merge;
 
 
-import com.tinkerpop.pipes.serial.AbstractPipe;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 

@@ -14,7 +14,7 @@ public class SideEffectCapPipeTest extends TestCase {
 
     public void testSideEffectCapPipeNormalCount() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        Pipe<String,Long> pipe = new SideEffectCapPipe<String,Long>(new CountPipe<String>());
+        Pipe<String, Long> pipe = new SideEffectCapPipe<String, Long>(new CountPipe<String>());
         pipe.setStarts(list.iterator());
         assertTrue(pipe.hasNext());
         assertTrue(pipe.hasNext());
@@ -30,7 +30,7 @@ public class SideEffectCapPipeTest extends TestCase {
 
     public void testSideEffectCapPipeZeroCount() {
         List<String> list = Arrays.asList();
-        Pipe<String,Long> pipe = new SideEffectCapPipe<String,Long>(new CountPipe<String>());
+        Pipe<String, Long> pipe = new SideEffectCapPipe<String, Long>(new CountPipe<String>());
         pipe.setStarts(list.iterator());
         assertTrue(pipe.hasNext());
         assertTrue(pipe.hasNext());

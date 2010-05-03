@@ -9,7 +9,7 @@ import java.util.List;
  * It is important to ensure that the provided ordered Pipes can connect together.
  * That is, that the output of the n-1 Pipe is the same as the input to n Pipe.
  * Once all provided Pipes are composed, a Pipeline can be treated like any other Pipe.
- * 
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class Pipeline<S, E> implements Pipe<S, E> {
@@ -28,7 +28,7 @@ public class Pipeline<S, E> implements Pipe<S, E> {
         this.startPipe = pipes.get(0);
         this.endPipe = pipes.get(pipes.size() - 1);
         for (int i = 1; i < pipes.size(); i++) {
-            pipes.get(i).setStarts((Iterator)pipes.get(i - 1));
+            pipes.get(i).setStarts((Iterator) pipes.get(i - 1));
         }
     }
 

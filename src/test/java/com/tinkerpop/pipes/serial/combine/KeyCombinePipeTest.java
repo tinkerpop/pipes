@@ -16,7 +16,7 @@ import java.util.Map;
 public class KeyCombinePipeTest extends TestCase {
 
     public void testKeyCombinePipeNormal() {
-        List<String> names = Arrays.asList("marko", "peter", "josh","marko");
+        List<String> names = Arrays.asList("marko", "peter", "josh", "marko");
         Pipe pipe1 = new ProductPipe<String, Integer>(1, ProductPipe.Join.RIGHT);
         SideEffectPipe<ProductPipe.Pair, ProductPipe.Pair, Map<String, List<Integer>>> pipe2 = new KeyCombinePipe<String, Integer>();
         Pipeline<String, ProductPipe.Pair> pipeline = new Pipeline(Arrays.asList(pipe1, pipe2));

@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ObjectFilterPipe<S> extends AbstractFilterPipe<S,S> {
+public class ObjectFilterPipe<S> extends AbstractFilterPipe<S, S> {
 
     private final Collection<S> objects;
     private final boolean filter;

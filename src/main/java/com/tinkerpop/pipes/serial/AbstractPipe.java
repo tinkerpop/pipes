@@ -8,10 +8,10 @@ import java.util.NoSuchElementException;
  * Any subclass of AbstractPipe should simply implement processNextStart(). The standard model is
  * <pre>
  * protected E processNextStart() {
-        S s = this.starts.next();
-        E e = // do something with the S to yield an E
-        return e;
-   }
+ * S s = this.starts.next();
+ * E e = // do something with the S to yield an E
+ * return e;
+ * }
  * </pre>
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)

@@ -12,10 +12,10 @@ public class AbstractPipeTest extends TestCase {
 
     public void testIterable() {
         Collection<String> names = Arrays.asList("marko", "josh", "peter");
-        Pipe<String,String> pipe = new IdentityPipe<String>();
+        Pipe<String, String> pipe = new IdentityPipe<String>();
         pipe.setStarts(names);
         int counter = 0;
-        while(pipe.hasNext()) {
+        while (pipe.hasNext()) {
             counter++;
             String name = pipe.next();
             assertTrue(name.equals("marko") || name.equals("josh") || name.equals("peter"));
@@ -23,7 +23,7 @@ public class AbstractPipeTest extends TestCase {
         assertEquals(counter, 3);
         pipe.setStarts(names);
         counter = 0;
-        for(String name : pipe) {
+        for (String name : pipe) {
             assertTrue(name.equals("marko") || name.equals("josh") || name.equals("peter"));
             counter++;
         }

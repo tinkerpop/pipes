@@ -45,6 +45,7 @@ public class SplitQueue<S> implements Iterator<S>, Iterable<S> {
     }
 
     // todo: do we need this?
+
     public Iterator<S> iterator() {
         return this;
     }
