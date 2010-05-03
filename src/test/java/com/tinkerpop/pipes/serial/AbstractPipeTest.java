@@ -12,7 +12,7 @@ public class AbstractPipeTest extends TestCase {
 
     public void testIterable() {
         Collection<String> names = Arrays.asList("marko", "josh", "peter");
-        Pipe<String,String> pipe = new IdempotentPipe<String>();
+        Pipe<String,String> pipe = new IdentityPipe<String>();
         pipe.setStarts(names);
         int counter = 0;
         while(pipe.hasNext()) {
@@ -28,11 +28,5 @@ public class AbstractPipeTest extends TestCase {
             counter++;
         }
         assertEquals(counter, 3);
-    }
-
-    private class IdempotentPipe<S> extends AbstractPipe<S, S> {
-        protected S processNextStart() {
-            return this.starts.next();
-        }
     }
 }
