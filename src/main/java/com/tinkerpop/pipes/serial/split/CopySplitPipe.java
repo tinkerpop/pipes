@@ -12,8 +12,8 @@ public class CopySplitPipe<S> extends AbstractSplitPipe<S> {
     public void fillNext(int splitNumber) {
         if (this.hasNext()) {
             S item = this.next();
-            for (int i = 0; i < this.numberOfSplits; i++) {
-                this.splits.get(i).add(item);
+            for (SplitQueue<S> split : this.splits) {
+                split.add(item);
             }
         }
     }

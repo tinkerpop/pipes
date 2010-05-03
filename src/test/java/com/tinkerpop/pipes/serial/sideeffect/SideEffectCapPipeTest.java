@@ -28,8 +28,7 @@ public class SideEffectCapPipeTest extends TestCase {
         }
     }
 
-    // todo make work
-    /*public void testSideEffectCapPipeZeroCount() {
+    public void testSideEffectCapPipeZeroCount() {
         List<String> list = Arrays.asList();
         Pipe<String,Long> pipe = new SideEffectCapPipe<String,Long>(new CountPipe<String>());
         pipe.setStarts(list.iterator());
@@ -43,5 +42,5 @@ public class SideEffectCapPipeTest extends TestCase {
         } catch (NoSuchElementException e) {
             assertFalse(false);
         }
-    }*/
+    }
 }

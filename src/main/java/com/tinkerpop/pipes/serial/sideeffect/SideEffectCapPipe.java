@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> {
 
     private final SideEffectPipe<S, ?, T> pipeToCap;
+    private boolean done = false;
 
     public SideEffectCapPipe(SideEffectPipe<S, ?, T> pipeToCap) {
         this.pipeToCap = pipeToCap;
@@ -22,14 +23,16 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> {
 
 
     protected T processNextStart() {
-        if (this.pipeToCap.hasNext()) {
+        if (!this.done) {
             while (this.pipeToCap.hasNext()) {
                 this.pipeToCap.next();
             }
+            this.done = true;
             return this.pipeToCap.getSideEffect();
         } else {
             throw new NoSuchElementException();
         }
+
     }
 
 }

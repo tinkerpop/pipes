@@ -11,21 +11,16 @@ import java.util.List;
  */
 public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements SplitPipe<S> {
 
-    protected final List<SplitQueue<S>> splits;
-    protected int numberOfSplits;
+    protected final List<SplitQueue<S>> splits = new ArrayList<SplitQueue<S>>();
 
     public AbstractSplitPipe(int numberOfSplits) {
-
-        // todo: use add splot?
-        this.numberOfSplits = numberOfSplits;
-        this.splits = new ArrayList<SplitQueue<S>>(this.numberOfSplits);
         for (int i = 0; i < numberOfSplits; i++) {
-            splits.add(new SplitQueue<S>(this, i));
+            this.addSplit();
         }
     }
 
     public void addSplit() {
-        this.splits.add(new SplitQueue<S>(this, ++this.numberOfSplits));
+        this.splits.add(new SplitQueue<S>(this, this.splits.size()));
     }
 
     public Iterator<S> getSplit(final int number) {
