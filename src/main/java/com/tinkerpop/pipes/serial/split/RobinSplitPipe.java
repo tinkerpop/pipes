@@ -11,7 +11,7 @@ public class RobinSplitPipe<S> extends AbstractSplitPipe<S> {
         super(numberOfSplits);
     }
 
-    public void fillNext(int splitNumber) {
+    public void fillNext(final int splitNumber) {
         final int splitSize = this.splits.size();
         for (int i = 0; i < splitSize; i++) {
             if (this.hasNext()) {

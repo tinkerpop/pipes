@@ -9,7 +9,7 @@ public class ReadySplitPipe<S> extends AbstractSplitPipe<S> {
         super(numberOfSplits);
     }
 
-    public void fillNext(int splitNumber) {
+    public void fillNext(final int splitNumber) {
         if (this.hasNext()) {
             this.splits.get(splitNumber).add(this.next());
         }

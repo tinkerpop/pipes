@@ -23,8 +23,8 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         this.splits.add(new SplitQueue<S>(this, this.splits.size()));
     }
 
-    public Iterator<S> getSplit(final int number) {
-        return this.splits.get(number);
+    public Iterator<S> getSplit(final int splitNumber) {
+        return this.splits.get(splitNumber);
     }
 
     public void setStarts(final Iterator<S> starts) {

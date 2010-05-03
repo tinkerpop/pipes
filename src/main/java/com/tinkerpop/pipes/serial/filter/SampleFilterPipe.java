@@ -17,9 +17,9 @@ public class SampleFilterPipe<S> extends AbstractPipe<S, S> {
     }
 
     protected S processNextStart() {
-        S tempEnd = this.starts.next();
+        S s = this.starts.next();
         if (bias >= RANDOM.nextDouble()) {
-            return tempEnd;
+            return s;
         } else {
             return this.processNextStart();
         }

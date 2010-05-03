@@ -18,14 +18,14 @@ public class ObjectFilterPipe<S> extends AbstractFilterPipe<S,S> {
 
     protected S processNextStart() {
         while (this.starts.hasNext()) {
-            S tempEnd = this.starts.next();
+            S s = this.starts.next();
             if (this.filter) {
-                if (!this.doesContain(this.objects, tempEnd)) {
-                    return tempEnd;
+                if (!this.doesContain(this.objects, s)) {
+                    return s;
                 }
             } else {
-                if (this.doesContain(this.objects, tempEnd)) {
-                    return tempEnd;
+                if (this.doesContain(this.objects, s)) {
+                    return s;
                 }
             }
         }

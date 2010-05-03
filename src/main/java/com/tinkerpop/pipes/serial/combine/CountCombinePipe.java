@@ -15,7 +15,7 @@ public class CountCombinePipe<S> extends AbstractPipe<S, S> implements SideEffec
 
     protected S processNextStart() {
         S s = this.starts.next();
-        this.incrMap(s);
+        this.updateMap(s);
         return s;
     }
 
@@ -23,7 +23,7 @@ public class CountCombinePipe<S> extends AbstractPipe<S, S> implements SideEffec
         return this.countMap;
     }
 
-    private void incrMap(final S s) {
+    private void updateMap(final S s) {
         final Long temp = this.countMap.get(s);
         if (null == temp) {
             this.countMap.put(s, 1l);

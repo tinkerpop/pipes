@@ -14,10 +14,10 @@ public class DuplicateFilterPipe<S> extends AbstractFilterPipe<S,S> {
 
     protected S processNextStart() {
         while (this.starts.hasNext()) {
-            S tempEnd = this.starts.next();
-            if (!this.doesContain(this.objects, tempEnd)) {
-                this.objects.add(tempEnd);
-                return tempEnd;
+            S s = this.starts.next();
+            if (!this.doesContain(this.objects, s)) {
+                this.objects.add(s);
+                return s;
             }
         }
         throw new NoSuchElementException();
