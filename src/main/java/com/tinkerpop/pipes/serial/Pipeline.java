@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.serial;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class Pipeline<S, E> implements Pipe<S, E> {
 
     public Pipeline(final List<Pipe> pipes) {
         this.setPipes(pipes);
+    }
+
+    public Pipeline(final Pipe... pipes) {
+        this(Arrays.asList(pipes));
     }
 
     public Pipeline() {
