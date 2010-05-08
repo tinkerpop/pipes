@@ -54,7 +54,7 @@ public class PipelineTest extends TestCase {
         vep = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
         lfp = new LabelFilterPipe(Arrays.asList("created"), true);
         evp = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-        pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(vep, lfp, evp));
+        pipeline = new Pipeline<Vertex, Vertex>(vep, lfp, evp);
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         counter = 0;
