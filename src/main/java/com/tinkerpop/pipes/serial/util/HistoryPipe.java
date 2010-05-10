@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.serial.util;
 
 import com.tinkerpop.pipes.serial.AbstractPipe;
-import com.tinkerpop.pipes.serial.filter.FilterPipe;
+import com.tinkerpop.pipes.serial.filter.ComparisonFilterPipe;
 import com.tinkerpop.pipes.serial.sideeffect.BufferPipe;
 
 import java.util.Arrays;
@@ -13,9 +13,9 @@ import java.util.NoSuchElementException;
 public class HistoryPipe<S, E> extends AbstractPipe<S, E> {
 
     private final BufferPipe<E> bufferPipe;
-    private final FilterPipe<S, ?> filterPipe;
+    private final ComparisonFilterPipe<S, ?> filterPipe;
 
-    public HistoryPipe(BufferPipe<E> bufferPipe, FilterPipe<S, ?> filterPipe) {
+    public HistoryPipe(BufferPipe<E> bufferPipe, ComparisonFilterPipe<S, ?> filterPipe) {
         this.bufferPipe = bufferPipe;
         this.filterPipe = filterPipe;
     }

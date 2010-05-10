@@ -12,7 +12,7 @@ import java.util.Set;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class DuplicateFilterPipe<S> extends AbstractFilterPipe<S, S> {
+public class DuplicateFilterPipe<S> extends AbstractComparisonFilterPipe<S, S> {
 
     private final Set<S> objects = new HashSet<S>();
 

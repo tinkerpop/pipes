@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.serial.pgm;
 
 import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.pipes.serial.filter.AbstractFilterPipe;
+import com.tinkerpop.pipes.serial.filter.AbstractComparisonFilterPipe;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PropertyFilterPipe<S extends Element, T> extends AbstractFilterPipe<S, T> {
+public class PropertyFilterPipe<S extends Element, T> extends AbstractComparisonFilterPipe<S, T> {
 
     private final String key;
     private final Collection<T> values;

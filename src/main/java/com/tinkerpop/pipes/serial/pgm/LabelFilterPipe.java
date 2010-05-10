@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.serial.pgm;
 
 import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.pipes.serial.filter.AbstractFilterPipe;
+import com.tinkerpop.pipes.serial.filter.AbstractComparisonFilterPipe;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class LabelFilterPipe extends AbstractFilterPipe<Edge, String> {
+public class LabelFilterPipe extends AbstractComparisonFilterPipe<Edge, String> {
 
     private final Collection<String> labels;
     private final boolean filter;

@@ -32,7 +32,7 @@ public class SplitQueue<S> implements Iterator<S>, Iterable<S> {
         } else {
             if (this.splitPipe.hasNext()) {
                 this.splitPipe.fillNext(this.splitNumber);
-                return true;
+                return this.hasNext();
             } else
                 return false;
         }
