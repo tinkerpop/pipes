@@ -8,10 +8,10 @@ import com.tinkerpop.pipes.serial.Pipe;
  */
 public interface SplitPipe<S> extends Pipe<S, S> {
 
-    public SplitQueue<S> getSplit(int splitNumber);
-
-    public void fillNext(int requestingSplit);
-
     public void addSplit();
+
+    public Pipe<S, S> getSplit(int splitNumber);
+
+    public void routeNext();
 
 }

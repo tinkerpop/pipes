@@ -3,7 +3,6 @@ package com.tinkerpop.pipes.serial.split;
 import com.tinkerpop.pipes.serial.AbstractPipe;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -12,7 +11,7 @@ import java.util.NoSuchElementException;
  */
 public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements SplitPipe<S> {
 
-    protected final List<SplitQueue<S>> splits = new ArrayList<SplitQueue<S>>();
+    protected final List<SplitQueuePipe<S>> splits = new ArrayList<SplitQueuePipe<S>>();
 
     public AbstractSplitPipe(int numberOfSplits) {
         for (int i = 0; i < numberOfSplits; i++) {
@@ -21,15 +20,11 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
     }
 
     public void addSplit() {
-        this.splits.add(new SplitQueue<S>(this, this.splits.size()));
+        this.splits.add(new SplitQueuePipe<S>(this));
     }
 
-    public SplitQueue<S> getSplit(final int splitNumber) {
+    public SplitQueuePipe<S> getSplit(final int splitNumber) {
         return this.splits.get(splitNumber);
-    }
-
-    public void setStarts(final Iterator<S> starts) {
-        super.setStarts(starts);
     }
 
     protected S processNextStart() throws NoSuchElementException {

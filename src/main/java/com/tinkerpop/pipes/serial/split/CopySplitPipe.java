@@ -9,10 +9,10 @@ public class CopySplitPipe<S> extends AbstractSplitPipe<S> {
         super(numberOfSplits);
     }
 
-    public void fillNext(final int requestingSplit) {
+    public void routeNext() {
         if (this.hasNext()) {
             S item = this.next();
-            for (SplitQueue<S> split : this.splits) {
+            for (SplitQueuePipe<S> split : this.splits) {
                 split.add(item);
             }
         }
