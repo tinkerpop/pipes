@@ -37,8 +37,13 @@ public class Pipeline<S, E> implements Pipe<S, E> {
         }
     }
 
+    public void setPipes(final Pipe<S, ?> startPipe, final Pipe<?, E> endPipe) {
+        this.startPipe = startPipe;
+        this.endPipe = endPipe;
+    }
+
     public void setStarts(final Iterator<S> starts) {
-        startPipe.setStarts(starts);
+        this.startPipe.setStarts(starts);
     }
 
     public void setStarts(final Iterable<S> starts) {
