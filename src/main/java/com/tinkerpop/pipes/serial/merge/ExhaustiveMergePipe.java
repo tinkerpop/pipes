@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
+ * An ExhaustiveMergePipe will exhaust all the objects in one of its incoming pipes before moving to the next incoming pipe.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class ExhaustiveMergePipe<S> extends AbstractMergePipe<S> {

@@ -37,6 +37,7 @@ public class Pipeline<S, E> implements Pipe<S, E> {
         }
     }
 
+    // TODO: Allow? Or create another class called Pipegraph?
     public void setPipes(final Pipe<S, ?> startPipe, final Pipe<?, E> endPipe) {
         this.startPipe = startPipe;
         this.endPipe = endPipe;

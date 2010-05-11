@@ -1,8 +1,13 @@
 package com.tinkerpop.pipes.serial;
 
 /**
- * The IdentityPipe is the most basic Pipe.
+ * The IdentityPipe is the most basic pipe.
  * It simply maps the input to the output without any processing.
+ * <pre>
+ * protected S processNextStart() {
+ * return this.starts.next();
+ * }
+ * </pre>
  * This Pipe is useful in various test case situations.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)

@@ -7,12 +7,13 @@ import java.util.NoSuchElementException;
  * An AbstractPipe provides most of the functionality that is repeated in every instance of a Pipe.
  * Any subclass of AbstractPipe should simply implement processNextStart(). The standard model is
  * <pre>
- * protected E processNextStart() {
+ * protected E processNextStart() throws NoSuchElementException {
  * S s = this.starts.next();
  * E e = // do something with the S to yield an E
  * return e;
  * }
  * </pre>
+ * If the current incoming S is not to be emitted and there are no other S objects to process and emit, then throw a NoSuchElementException.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

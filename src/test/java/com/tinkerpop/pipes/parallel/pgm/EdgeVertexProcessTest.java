@@ -28,7 +28,7 @@ public class EdgeVertexProcessTest extends TestCase {
         int counter = 0;
         Vertex v = evp.getOutChannel().read();
         while (null != v) {
-            System.out.println(v);
+            //System.out.println(v);
             assertTrue(v.getId().equals("2") || v.getId().equals("3") || v.getId().equals("4"));
             counter++;
             v = evp.getOutChannel().read();
@@ -37,7 +37,7 @@ public class EdgeVertexProcessTest extends TestCase {
 
         assertEquals(counter, 3);
         executor.shutdown();
-        System.out.println("---");
+        //System.out.println("---");
         Vertex josh = graph.getVertex("4");
         evp = new EdgeVertexProcess(EdgeVertexProcess.Step.IN_VERTEX, new BlockingChannel<Edge>(50), new BlockingChannel<Vertex>(50));
         executor = Executors.newFixedThreadPool(2);
@@ -51,7 +51,7 @@ public class EdgeVertexProcessTest extends TestCase {
         counter = 0;
         v = evp.getOutChannel().read();
         while (null != v) {
-            System.out.println(v);
+            //System.out.println(v);
             assertTrue(v.getId().equals("5") || v.getId().equals("3"));
             counter++;
             v = evp.getOutChannel().read();

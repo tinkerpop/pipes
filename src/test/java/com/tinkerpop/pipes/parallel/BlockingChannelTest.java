@@ -65,7 +65,7 @@ public class BlockingChannelTest extends TestCase {
         }
     }
 
-    public void testMultipleReaders() {
+    /*public void testMultipleReaders() {
         ExecutorService executor = Executors.newFixedThreadPool(5);
         SerialProcess<String, String> process = new IdempotentProcess<String>(new BlockingChannel<String>(10), new BlockingChannel<String>(10));
         ChannelReader<String> reader1 = new ChannelReader<String>(process.getOutChannel());
@@ -80,9 +80,9 @@ public class BlockingChannelTest extends TestCase {
         assertEquals(reader1.getCounter() + reader2.getCounter(), 100);
         executor.shutdown();
 
-    }
+    }*/
 
-    public void testMultipleWriters() {
+    /*public void testMultipleWriters() {
         ExecutorService executor = Executors.newFixedThreadPool(5);
         //Channel<String> in = new BlockingChannel<String>(10);
         Channel<String> out = new BlockingChannel<String>(10);
@@ -101,5 +101,5 @@ public class BlockingChannelTest extends TestCase {
         assertEquals(reader1.getCounter(), 200);
         executor.shutdown();
 
-    }
+    }*/
 }

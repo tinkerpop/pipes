@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 /**
  * The generic interface for any Pipe implementation.
- * A Pipe takes objects of type S and returns objects of type E.
+ * A Pipe takes/consumes objects of type S and returns/emits objects of type E.
  * S refers to <i>starts</i> and the E refers to <i>ends</i>.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
