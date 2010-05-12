@@ -1,6 +1,10 @@
 package com.tinkerpop.pipes.serial.split;
 
 /**
+ * The CopySplitPipe adds each incoming object to each of the outgoing splits.
+ * Thus, each split has the same number of objects outgoing from it.
+ * This is also the same number of objects that are incoming to the CopySplitPipe.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class CopySplitPipe<S> extends AbstractSplitPipe<S> {

@@ -1,6 +1,8 @@
 package com.tinkerpop.pipes.serial.split;
 
 /**
+ * The RobinSplitPipe puts each incoming object onto a split in a round robin fashion.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class RobinSplitPipe<S> extends AbstractSplitPipe<S> {

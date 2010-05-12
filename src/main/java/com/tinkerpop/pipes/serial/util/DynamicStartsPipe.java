@@ -1,6 +1,6 @@
-package com.tinkerpop.pipes.serial.split;
+package com.tinkerpop.pipes.serial.util;
 
-import com.tinkerpop.pipes.serial.Pipe;
+import com.tinkerpop.pipes.serial.AbstractPipe;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,18 +10,14 @@ import java.util.Queue;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SplitQueuePipe<S> implements Pipe<S, S> {
+public class DynamicStartsPipe<S> extends AbstractPipe<S, S> {
 
     private final Queue<S> queue = new LinkedList<S>();
-    private final SplitPipe<S> splitPipe;
 
-    public SplitQueuePipe(final SplitPipe<S> splitPipe) {
-        this.splitPipe = splitPipe;
+    public void addStart(final S start) {
+        this.queue.add(start);
     }
-
-    public void add(final S element) {
-        this.queue.add(element);
-    }
+    
 
     public void remove() {
         throw new UnsupportedOperationException();
@@ -50,25 +46,9 @@ public class SplitQueuePipe<S> implements Pipe<S, S> {
     }
 
     private void prepareNext() {
-        if (this.queue.isEmpty()) {
-            while (this.splitPipe.hasNext()) {
-                this.splitPipe.routeNext();
-                if (!this.queue.isEmpty())
-                    return;
-            }
+        try {
+            this.queue.add(this.starts.next());
+        } catch (NoSuchElementException e) {
         }
     }
-
-    public void setStarts(Iterator<S> starts) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setStarts(Iterable<S> starts) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Iterator<S> iterator() {
-        return this;
-    }
-
 }

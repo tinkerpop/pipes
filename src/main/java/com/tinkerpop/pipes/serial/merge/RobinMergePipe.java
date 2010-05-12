@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
  */
 public class RobinMergePipe<S> extends AbstractMergePipe<S> {
 
-    private List<Iterator<S>> allStarts = new ArrayList<Iterator<S>>();
+    private final List<Iterator<S>> allStarts = new ArrayList<Iterator<S>>();
     private int currentStarts = 0;
 
     public void setStarts(final Iterator<Iterator<S>> starts) {
