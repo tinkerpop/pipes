@@ -22,11 +22,11 @@ public class AdhocMergePipeTest extends TestCase {
         Pipe<Integer, ProductPipe.Pair> pipe0 = new ProductPipe<Integer, Integer>(0, ProductPipe.Join.LEFT);
         Pipe<Integer, ProductPipe.Pair> pipe1 = new ProductPipe<Integer, Integer>(1, ProductPipe.Join.LEFT);
         Pipe<Integer, ProductPipe.Pair> pipe2 = new ProductPipe<Integer, Integer>(2, ProductPipe.Join.LEFT);
-        pipe0.setStarts((Iterator<Integer>)splitPipe.getSplit(0));
-        pipe1.setStarts((Iterator<Integer>)splitPipe.getSplit(1));
-        pipe2.setStarts((Iterator<Integer>)splitPipe.getSplit(2));
+        pipe0.setStarts((Iterator<Integer>) splitPipe.getSplit(0));
+        pipe1.setStarts((Iterator<Integer>) splitPipe.getSplit(1));
+        pipe2.setStarts((Iterator<Integer>) splitPipe.getSplit(2));
         Pipe<Iterator<ProductPipe.Pair>, ProductPipe.Pair> mergePipe = new ExhaustiveMergePipe<ProductPipe.Pair>();
-        mergePipe.setStarts((Iterator)Arrays.asList(pipe0,pipe1,pipe2).iterator());
+        mergePipe.setStarts((Iterator) Arrays.asList(pipe0, pipe1, pipe2).iterator());
         splitPipe.setStarts(numbers);
         assertTrue(pipe0.hasNext());
         assertTrue(pipe1.hasNext());
@@ -36,12 +36,12 @@ public class AdhocMergePipeTest extends TestCase {
         assertTrue(splitPipe.getSplit(2).hasNext());
         int counter = 0;
         int current = 0;
-        while(mergePipe.hasNext()) {
+        while (mergePipe.hasNext()) {
             ProductPipe.Pair pair = mergePipe.next();
             //System.out.println(pair);
             counter++;
         }
-        assertEquals(counter,numbers.size());
+        assertEquals(counter, numbers.size());
     }
 
     public void testNumericSortSplitMergePipePipelineTest() {
@@ -50,13 +50,14 @@ public class AdhocMergePipeTest extends TestCase {
         Pipe<Integer, ProductPipe.Pair> pipe0 = new ProductPipe<Integer, Integer>(0, ProductPipe.Join.LEFT);
         Pipe<Integer, ProductPipe.Pair> pipe1 = new ProductPipe<Integer, Integer>(1, ProductPipe.Join.LEFT);
         Pipe<Integer, ProductPipe.Pair> pipe2 = new ProductPipe<Integer, Integer>(2, ProductPipe.Join.LEFT);
-        pipe0.setStarts((Iterator<Integer>)splitPipe.getSplit(0));
-        pipe1.setStarts((Iterator<Integer>)splitPipe.getSplit(1));
-        pipe2.setStarts((Iterator<Integer>)splitPipe.getSplit(2));
+        pipe0.setStarts((Iterator<Integer>) splitPipe.getSplit(0));
+        pipe1.setStarts((Iterator<Integer>) splitPipe.getSplit(1));
+        pipe2.setStarts((Iterator<Integer>) splitPipe.getSplit(2));
         Pipe<Iterator<ProductPipe.Pair>, ProductPipe.Pair> mergePipe = new ExhaustiveMergePipe<ProductPipe.Pair>();
-        mergePipe.setStarts((Iterator)Arrays.asList(pipe0,pipe1,pipe2).iterator());
+        mergePipe.setStarts((Iterator) Arrays.asList(pipe0, pipe1, pipe2).iterator());
         Pipeline<Integer, ProductPipe.Pair> pipeline = new Pipeline<Integer, ProductPipe.Pair>();
-        pipeline.setPipes(splitPipe, mergePipe);
+        pipeline.setStartPipe(splitPipe);
+        pipeline.setEndPipe(mergePipe);
         pipeline.setStarts(numbers);
 
         assertTrue(pipe0.hasNext());
@@ -67,11 +68,11 @@ public class AdhocMergePipeTest extends TestCase {
         assertTrue(splitPipe.getSplit(2).hasNext());
         int counter = 0;
         int current = 0;
-        while(pipeline.hasNext()) {
+        while (pipeline.hasNext()) {
             ProductPipe.Pair pair = pipeline.next();
             //System.out.println(pair);
             counter++;
         }
-        assertEquals(counter,numbers.size());
+        assertEquals(counter, numbers.size());
     }
 }

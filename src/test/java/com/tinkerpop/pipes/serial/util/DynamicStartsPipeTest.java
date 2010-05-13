@@ -44,7 +44,7 @@ public class DynamicStartsPipeTest extends TestCase {
         DynamicStartsPipe<String> pipe = new DynamicStartsPipe<String>();
         pipe.setStarts(names);
         int counter = 0;
-        for(String name : pipe) {
+        for (String name : pipe) {
             System.out.println(name);
             counter++;
             if (counter == 1) {

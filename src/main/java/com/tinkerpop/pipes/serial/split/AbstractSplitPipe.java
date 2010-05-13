@@ -11,7 +11,7 @@ import java.util.*;
  * The reason for using a queue internal to each split is that when a particular split requires a next() object, it must next()'d from the SplitPipe.
  * If the next() object is not routed to the requesting SplitQueuePipe, then its placed in the queue of the respective split.
  * Thus, if a split has no legal objects coming to it and is next()'d, then all the other splits will have objects in their queue.
- * This model raises the potential for an out of memory exception. To avoid such problems, make use of non-exhaustive merges. 
+ * This model raises the potential for an out of memory exception. To avoid such problems, make use of non-exhaustive merges.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

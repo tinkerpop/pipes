@@ -1,11 +1,9 @@
 package com.tinkerpop.pipes.serial.split;
 
-import com.tinkerpop.pipes.serial.merge.RobinMergePipe;
 import com.tinkerpop.pipes.serial.split.demo.ThreeBinSortSplitPipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 /**

@@ -2,7 +2,6 @@ package com.tinkerpop.pipes.serial.util;
 
 import com.tinkerpop.pipes.serial.AbstractPipe;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -17,7 +16,7 @@ public class DynamicStartsPipe<S> extends AbstractPipe<S, S> {
     public void addStart(final S start) {
         this.queue.add(start);
     }
-    
+
 
     public void remove() {
         throw new UnsupportedOperationException();

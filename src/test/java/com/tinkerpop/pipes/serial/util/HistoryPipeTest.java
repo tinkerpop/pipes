@@ -16,7 +16,7 @@ import java.util.List;
 public class HistoryPipeTest extends TestCase {
 
     public void testHistory() {
-        List<String> names = Arrays.asList("marko", "peter", "josh", "marko", "jake","marko","marko");
+        List<String> names = Arrays.asList("marko", "peter", "josh", "marko", "jake", "marko", "marko");
         BufferPipe<String> pipe1 = new BufferPipe<String>(1);
         Pipe<String, Integer> pipe2 = new CharacterCountPipe();
         Pipe<Integer, String> pipe3 = new HistoryPipe<Integer, String>(pipe1, new ObjectFilterPipe<Integer>(Arrays.asList(4), true));

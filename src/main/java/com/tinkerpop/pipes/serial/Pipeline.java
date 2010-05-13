@@ -18,6 +18,10 @@ public class Pipeline<S, E> implements Pipe<S, E> {
     private Pipe<S, ?> startPipe;
     private Pipe<?, E> endPipe;
 
+
+    public Pipeline() {
+    }
+
     public Pipeline(final List<Pipe> pipes) {
         this.setPipes(pipes);
     }
@@ -26,21 +30,24 @@ public class Pipeline<S, E> implements Pipe<S, E> {
         this(Arrays.asList(pipes));
     }
 
-    public Pipeline() {
-    }
-
     public void setPipes(final List<Pipe> pipes) {
-        this.startPipe = pipes.get(0);
-        this.endPipe = pipes.get(pipes.size() - 1);
+        this.startPipe = (Pipe<S, ?>) pipes.get(0);
+        this.endPipe = (Pipe<?, E>) pipes.get(pipes.size() - 1);
         for (int i = 1; i < pipes.size(); i++) {
             pipes.get(i).setStarts((Iterator) pipes.get(i - 1));
         }
     }
 
-    // TODO: Allow? Or create another class called Pipegraph?
-    public void setPipes(final Pipe<S, ?> startPipe, final Pipe<?, E> endPipe) {
+    public void setStartPipe(final Pipe<S, ?> startPipe) {
         this.startPipe = startPipe;
+    }
+
+    public void setEndPipe(final Pipe<?, E> endPipe) {
         this.endPipe = endPipe;
+    }
+
+    public void setPipes(final Pipe... pipes) {
+        this.setPipes(Arrays.asList(pipes));
     }
 
     public void setStarts(final Iterator<S> starts) {

@@ -12,11 +12,11 @@ import java.util.List;
 public class PrintStreamPipeTest extends TestCase {
 
     public void testPrintStreamPipeNormal() {
-        List<String> names = Arrays.asList("marko","peter","josh","povel");
-        Pipe<String,String> pipe = new PrintStreamPipe<String>(System.out);
+        List<String> names = Arrays.asList("marko", "peter", "josh", "povel");
+        Pipe<String, String> pipe = new PrintStreamPipe<String>(System.out);
         pipe.setStarts(names);
         int counter = 0;
-        while(pipe.hasNext()) {
+        while (pipe.hasNext()) {
             pipe.next();
             counter++;
         }
