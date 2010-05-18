@@ -8,7 +8,10 @@ import java.util.Iterator;
 
 /**
  * The AggregatorPipe produces a side effect that is the provided Collection filled with the contents of all the objects that have passed through it.
- * Note that different Collections have different behaviors and write/read times.
+ * Before the first object is emitted from the AggregatorPipe, all of its incoming objects have been aggregated into the collection.
+ * The collection iterator is used as the emitting iterator. Thus, what goes into AggregatorPipe may not be the same as what comes out of AggregatorPipe.
+ * For example, duplicates removed, different order to the stream, etc.
+ * Finally, note that different Collections have different behaviors and write/read times.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

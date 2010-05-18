@@ -13,7 +13,7 @@ public class BufferPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<
     final private List<S> buffer = new ArrayList<S>();
     final private int maxBufferSize;
 
-    public BufferPipe(int maxBufferSize) {
+    public BufferPipe(final int maxBufferSize) {
         this.maxBufferSize = maxBufferSize;
     }
 
@@ -23,7 +23,7 @@ public class BufferPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<
         return s;
     }
 
-    private void addObjectToBuffer(S s) {
+    private void addObjectToBuffer(final S s) {
         if (this.maxBufferSize != -1 && this.buffer.size() >= this.maxBufferSize) {
             this.buffer.remove(0);
         }
