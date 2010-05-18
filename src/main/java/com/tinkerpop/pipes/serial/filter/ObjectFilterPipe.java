@@ -28,5 +28,4 @@ public class ObjectFilterPipe<S> extends AbstractComparisonFilterPipe<S, S> {
         }
         throw new NoSuchElementException();
     }
-
 }

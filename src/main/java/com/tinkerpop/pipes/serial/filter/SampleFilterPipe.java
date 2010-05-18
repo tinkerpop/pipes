@@ -2,6 +2,7 @@ package com.tinkerpop.pipes.serial.filter;
 
 import com.tinkerpop.pipes.serial.AbstractPipe;
 
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 /**
@@ -22,11 +23,12 @@ public class SampleFilterPipe<S> extends AbstractPipe<S, S> {
     }
 
     protected S processNextStart() {
-        S s = this.starts.next();
-        if (bias >= RANDOM.nextDouble()) {
-            return s;
-        } else {
-            return this.processNextStart();
+        while (this.starts.hasNext()) {
+            S s = this.starts.next();
+            if (bias >= RANDOM.nextDouble()) {
+                return s;
+            }
         }
+        throw new NoSuchElementException();
     }
 }
