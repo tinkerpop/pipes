@@ -3,17 +3,17 @@ package com.tinkerpop.pipes.serial.filter;
 
 import com.tinkerpop.pipes.serial.Pipe;
 
-import java.util.Collection;
-
 /**
- * A ComparisonFilterPipe will filter objects that pass through it depending on some implemented criteria.
+ * A ComparisonFilterPipe will allow or disallow objects that pass through it depending on some implemented test criteria.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public interface ComparisonFilterPipe<S, T> extends Pipe<S, S> {
+public interface ComparisonFilterPipe<S,T> extends Pipe<S, S> {
 
-    public boolean areEqual(T object1, T object2);
+    public enum Filter {
+        ALLOW, DISALLOW
+    }
 
-    public boolean doesContain(Collection<T> collection, T object);
+    public boolean testObject(T object);
 
 }

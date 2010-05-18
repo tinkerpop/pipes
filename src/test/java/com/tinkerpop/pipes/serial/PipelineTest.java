@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.pipes.serial.filter.ComparisonFilterPipe;
 import com.tinkerpop.pipes.serial.pgm.EdgeVertexPipe;
 import com.tinkerpop.pipes.serial.pgm.LabelFilterPipe;
 import com.tinkerpop.pipes.serial.pgm.VertexEdgePipe;
@@ -41,7 +42,7 @@ public class PipelineTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe vep = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe lfp = new LabelFilterPipe(Arrays.asList("created"), false);
+        Pipe lfp = new LabelFilterPipe(Arrays.asList("created"), ComparisonFilterPipe.Filter.ALLOW);
         Pipe evp = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
         Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(vep, lfp, evp));
         pipeline.setStarts(Arrays.asList(marko).iterator());
@@ -54,7 +55,7 @@ public class PipelineTest extends TestCase {
         assertEquals(1, counter);
 
         vep = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        lfp = new LabelFilterPipe(Arrays.asList("created"), true);
+        lfp = new LabelFilterPipe(Arrays.asList("created"), ComparisonFilterPipe.Filter.DISALLOW);
         evp = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
         pipeline = new Pipeline<Vertex, Vertex>(vep, lfp, evp);
         pipeline.setStarts(Arrays.asList(marko).iterator());

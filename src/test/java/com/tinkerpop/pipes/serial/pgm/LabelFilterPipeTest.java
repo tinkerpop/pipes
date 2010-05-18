@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.pipes.serial.filter.ComparisonFilterPipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -17,7 +18,7 @@ public class LabelFilterPipeTest extends TestCase {
     public void testFilterLabels() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        LabelFilterPipe lfp = new LabelFilterPipe(Arrays.asList("knows"), false);
+        LabelFilterPipe lfp = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.ALLOW);
         lfp.setStarts(marko.getOutEdges().iterator());
         assertTrue(lfp.hasNext());
         int counter = 0;
@@ -29,7 +30,7 @@ public class LabelFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-        lfp = new LabelFilterPipe(Arrays.asList("knows"), true);
+        lfp = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.DISALLOW);
         lfp.setStarts(marko.getOutEdges().iterator());
         assertTrue(lfp.hasNext());
         counter = 0;
@@ -41,11 +42,11 @@ public class LabelFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 1);
 
-        lfp = new LabelFilterPipe(Arrays.asList("knows", "created"), true);
+        lfp = new LabelFilterPipe(Arrays.asList("knows", "created"), ComparisonFilterPipe.Filter.DISALLOW);
         lfp.setStarts(marko.getOutEdges().iterator());
         assertFalse(lfp.hasNext());
 
-        lfp = new LabelFilterPipe(Arrays.asList("knows", "created"), false);
+        lfp = new LabelFilterPipe(Arrays.asList("knows", "created"), ComparisonFilterPipe.Filter.ALLOW);
         lfp.setStarts(marko.getOutEdges().iterator());
         assertTrue(lfp.hasNext());
         counter = 0;

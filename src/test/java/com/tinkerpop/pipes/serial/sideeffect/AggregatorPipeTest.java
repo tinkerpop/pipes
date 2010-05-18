@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.serial.sideeffect;
 
 import com.tinkerpop.pipes.serial.Pipe;
 import com.tinkerpop.pipes.serial.Pipeline;
+import com.tinkerpop.pipes.serial.filter.ComparisonFilterPipe;
 import com.tinkerpop.pipes.serial.filter.ObjectFilterPipe;
 import junit.framework.TestCase;
 
@@ -34,7 +35,7 @@ public class AggregatorPipeTest extends TestCase {
     public void testSelfFilter() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         AggregatorPipe<String> pipe1 = new AggregatorPipe<String>(new ArrayList<String>());
-        Pipe pipe2 = new ObjectFilterPipe<String>(pipe1.getSideEffect(), false);
+        Pipe pipe2 = new ObjectFilterPipe<String>(pipe1.getSideEffect(), ComparisonFilterPipe.Filter.ALLOW);
         Pipeline<String, String> pipeline = new Pipeline<String, String>(Arrays.asList(pipe1, pipe2));
         pipeline.setStarts(list.iterator());
         int counter = 0;
@@ -46,7 +47,7 @@ public class AggregatorPipeTest extends TestCase {
         assertEquals(counter, 6);
 
         pipe1 = new AggregatorPipe<String>(new ArrayList<String>());
-        pipe2 = new ObjectFilterPipe<String>(pipe1.getSideEffect(), true);
+        pipe2 = new ObjectFilterPipe<String>(pipe1.getSideEffect(), ComparisonFilterPipe.Filter.DISALLOW);
         pipeline = new Pipeline<String, String>(Arrays.asList(pipe1, pipe2));
         pipeline.setStarts(list.iterator());
         counter = 0;

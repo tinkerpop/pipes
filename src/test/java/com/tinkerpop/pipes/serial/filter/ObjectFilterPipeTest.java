@@ -14,8 +14,7 @@ public class ObjectFilterPipeTest extends TestCase {
 
     public void testObjectFilter() {
         List<String> starts = Arrays.asList("marko", "josh", "peter");
-        List<String> filters = Arrays.asList("marko");
-        Pipe<String, String> ofp = new ObjectFilterPipe<String>(filters, true);
+        Pipe<String, String> ofp = new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.DISALLOW);
         ofp.setStarts(starts.iterator());
         assertTrue(ofp.hasNext());
         int counter = 0;
@@ -26,7 +25,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-        ofp = new ObjectFilterPipe<String>(filters, false);
+        ofp = new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.ALLOW);
         ofp.setStarts(starts.iterator());
         assertTrue(ofp.hasNext());
         counter = 0;

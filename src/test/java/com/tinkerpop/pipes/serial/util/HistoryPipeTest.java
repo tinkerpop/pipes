@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.serial.util;
 import com.tinkerpop.pipes.serial.AbstractPipe;
 import com.tinkerpop.pipes.serial.Pipe;
 import com.tinkerpop.pipes.serial.Pipeline;
+import com.tinkerpop.pipes.serial.filter.ComparisonFilterPipe;
 import com.tinkerpop.pipes.serial.filter.ObjectFilterPipe;
 import com.tinkerpop.pipes.serial.sideeffect.BufferPipe;
 import junit.framework.TestCase;
@@ -19,7 +20,7 @@ public class HistoryPipeTest extends TestCase {
         List<String> names = Arrays.asList("marko", "peter", "josh", "marko", "jake", "marko", "marko");
         BufferPipe<String> pipe1 = new BufferPipe<String>(1);
         Pipe<String, Integer> pipe2 = new CharacterCountPipe();
-        Pipe<Integer, String> pipe3 = new HistoryPipe<Integer, String>(pipe1, new ObjectFilterPipe<Integer>(Arrays.asList(4), true));
+        Pipe<Integer, String> pipe3 = new HistoryPipe<Integer, String>(pipe1, new ObjectFilterPipe<Integer>(Arrays.asList(4), ComparisonFilterPipe.Filter.DISALLOW));
         Pipeline<String, String> pipeline = new Pipeline<String, String>(pipe1, pipe2, pipe3);
         pipeline.setStarts(names);
         int counter = 0;

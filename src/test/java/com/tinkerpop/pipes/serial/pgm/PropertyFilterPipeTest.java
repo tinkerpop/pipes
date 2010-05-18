@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.serial.Pipe;
 import com.tinkerpop.pipes.serial.Pipeline;
+import com.tinkerpop.pipes.serial.filter.ComparisonFilterPipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class PropertyFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
         Pipe<Edge, Vertex> pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", Arrays.asList("java"), false);
+        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", Arrays.asList("java"), ComparisonFilterPipe.Filter.ALLOW);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
@@ -48,7 +49,7 @@ public class PropertyFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
         Pipe<Edge, Vertex> pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", Arrays.asList("java"), true);
+        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", "java", ComparisonFilterPipe.Filter.DISALLOW);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
