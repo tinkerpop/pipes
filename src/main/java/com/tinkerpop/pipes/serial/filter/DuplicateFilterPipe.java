@@ -20,8 +20,8 @@ public class DuplicateFilterPipe<S> extends AbstractComparisonFilterPipe<S,S> {
     protected S processNextStart() {
         while (this.starts.hasNext()) {
             S s = this.starts.next();
-            if (this.testObject(s)) {
-                this.storedCollection.add(s);
+            if (this.testObjectProperty(s)) {
+                this.storedPropertyCollection.add(s);
                 return s;
             }
         }

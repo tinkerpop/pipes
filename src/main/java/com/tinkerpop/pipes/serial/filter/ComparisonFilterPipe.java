@@ -14,6 +14,6 @@ public interface ComparisonFilterPipe<S,T> extends Pipe<S, S> {
         ALLOW, DISALLOW
     }
 
-    public boolean testObject(T object);
+    public boolean testObjectProperty(T objectProperty);
 
 }

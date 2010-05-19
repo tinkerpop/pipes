@@ -18,7 +18,7 @@ public class SampleFilterPipe<S> extends AbstractPipe<S, S> {
     private static final Random RANDOM = new Random();
     private final double bias;
 
-    public SampleFilterPipe(double bias) {
+    public SampleFilterPipe(final double bias) {
         this.bias = bias;
     }
 

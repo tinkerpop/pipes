@@ -29,7 +29,7 @@ public class PropertyFilterPipe<S extends Element, T> extends AbstractComparison
     protected S processNextStart() {
         while (this.starts.hasNext()) {
             S element = this.starts.next();
-            if (this.testObject((T) element.getProperty(this.key))) {
+            if (this.testObjectProperty((T) element.getProperty(this.key))) {
                 return element;
             }
         }
