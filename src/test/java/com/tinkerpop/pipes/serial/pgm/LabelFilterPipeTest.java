@@ -7,9 +7,6 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.serial.filter.ComparisonFilterPipe;
 import junit.framework.TestCase;
 
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
  */

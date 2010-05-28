@@ -35,7 +35,6 @@ public class AdhocMergePipeTest extends TestCase {
         assertTrue(splitPipe.getSplit(1).hasNext());
         assertTrue(splitPipe.getSplit(2).hasNext());
         int counter = 0;
-        int current = 0;
         while (mergePipe.hasNext()) {
             ProductPipe.Pair pair = mergePipe.next();
             //System.out.println(pair);
@@ -67,7 +66,6 @@ public class AdhocMergePipeTest extends TestCase {
         assertTrue(splitPipe.getSplit(1).hasNext());
         assertTrue(splitPipe.getSplit(2).hasNext());
         int counter = 0;
-        int current = 0;
         while (pipeline.hasNext()) {
             ProductPipe.Pair pair = pipeline.next();
             //System.out.println(pair);

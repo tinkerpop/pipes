@@ -27,4 +27,8 @@ public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> {
         }
         throw new NoSuchElementException();
     }
+
+    public void clearHistory() {
+        this.historySet.clear();
+    }
 }

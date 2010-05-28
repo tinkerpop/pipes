@@ -7,6 +7,7 @@ import com.tinkerpop.pipes.serial.AbstractPipe;
  * The AbstractComparisonFilterPipe provides the necessary functionality that is required of most ComparisonFilterPipe implementations.
  * The compareObjectProperty() implementation compares the provided object with the internal object provided.
  * Depending on the type of ComparisonFilterPipe.Filter used, different types of comparisons are evaluated.
+ * <p/>
  * <pre>
  * public boolean compareObjectProperty(T objectProperty) {
  *    switch (this.filter) {

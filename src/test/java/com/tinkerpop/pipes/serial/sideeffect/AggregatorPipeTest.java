@@ -1,10 +1,6 @@
 package com.tinkerpop.pipes.serial.sideeffect;
 
 
-import com.tinkerpop.pipes.serial.Pipe;
-import com.tinkerpop.pipes.serial.Pipeline;
-import com.tinkerpop.pipes.serial.filter.ComparisonFilterPipe;
-import com.tinkerpop.pipes.serial.filter.ObjectFilterPipe;
 import junit.framework.TestCase;
 
 import java.util.*;
