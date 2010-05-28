@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> {
+public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private final HashSet<S> historySet = new HashSet<S>();
 

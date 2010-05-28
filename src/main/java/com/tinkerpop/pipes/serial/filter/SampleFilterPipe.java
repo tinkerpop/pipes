@@ -13,7 +13,7 @@ import java.util.Random;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SampleFilterPipe<S> extends AbstractPipe<S, S> {
+public class SampleFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private static final Random RANDOM = new Random();
     private final double bias;

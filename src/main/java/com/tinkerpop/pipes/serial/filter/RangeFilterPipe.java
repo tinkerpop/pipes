@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class RangeFilterPipe<S> extends AbstractPipe<S, S> {
+public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private final int low;
     private final int high;
