@@ -1,6 +1,8 @@
 package com.tinkerpop.pipes.serial.filter;
 
 
+import com.tinkerpop.pipes.serial.AbstractPipe;
+
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 
@@ -11,17 +13,15 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class DuplicateFilterPipe<S> extends AbstractComparisonFilterPipe<S,S> {
+public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> {
 
-    public DuplicateFilterPipe() {
-        super(new HashSet<S>(), Filter.DISALLOW);
-    }
+    private final HashSet<S> historySet = new HashSet<S>();
 
     protected S processNextStart() {
         while (this.starts.hasNext()) {
             S s = this.starts.next();
-            if (this.testObjectProperty(s)) {
-                this.storedPropertyCollection.add(s);
+            if (!this.historySet.contains(s)) {
+                this.historySet.add(s);
                 return s;
             }
         }

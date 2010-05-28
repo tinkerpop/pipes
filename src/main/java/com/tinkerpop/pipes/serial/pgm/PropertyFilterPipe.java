@@ -3,11 +3,10 @@ package com.tinkerpop.pipes.serial.pgm;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.pipes.serial.filter.AbstractComparisonFilterPipe;
 
-import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
- * The PropertyFilterPipe either allows or disallows all Elements that have the provided value(s) for a particular key.
+ * The PropertyFilterPipe either allows or disallows all Elements that have the provided value for a particular key.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -21,15 +20,10 @@ public class PropertyFilterPipe<S extends Element, T> extends AbstractComparison
         this.key = key;
     }
 
-    public PropertyFilterPipe(String key, final Collection<T> storedCollection, final Filter filter) {
-        super(storedCollection, filter);
-        this.key = key;
-    }
-
     protected S processNextStart() {
         while (this.starts.hasNext()) {
             S element = this.starts.next();
-            if (this.testObjectProperty((T) element.getProperty(this.key))) {
+            if (this.compareObjectProperty((T) element.getProperty(this.key))) {
                 return element;
             }
         }
