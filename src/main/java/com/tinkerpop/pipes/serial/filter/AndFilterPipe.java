@@ -1,7 +1,6 @@
 package com.tinkerpop.pipes.serial.filter;
 
 import com.tinkerpop.pipes.serial.AbstractPipe;
-import com.tinkerpop.pipes.serial.Pipe;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,19 +23,18 @@ public class AndFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S
     public S processNextStart() {
         while (this.starts.hasNext()) {
             S s = this.starts.next();
-            S e = null;
             boolean and = true;
-            for (Pipe<S, S> pipe : this.pipes) {
+            for (FilterPipe<S> pipe : this.pipes) {
                 pipe.setStarts(Arrays.asList(s));
-                if (pipe.hasNext()) {
-                    e = pipe.next();
-                } else {
+                if (!pipe.hasNext()) {
                     and = false;
                     break;
+                } else {
+                    pipe.next();
                 }
             }
-            if (and && null != e)
-                return e;
+            if (and)
+                return s;
         }
         throw new NoSuchElementException();
     }

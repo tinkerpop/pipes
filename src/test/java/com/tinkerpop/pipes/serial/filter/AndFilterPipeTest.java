@@ -34,6 +34,8 @@ public class AndFilterPipeTest extends TestCase {
     }
 
     public void testAndPipeGraph() {
+        // ./outE[@label='knows' and @weight > 0.5]
+
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Vertex peter = graph.getVertex("6");

@@ -1,7 +1,6 @@
 package com.tinkerpop.pipes.serial.filter;
 
 import com.tinkerpop.pipes.serial.AbstractPipe;
-import com.tinkerpop.pipes.serial.Pipe;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +24,7 @@ public class OrFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>
     public S processNextStart() {
         while (this.starts.hasNext()) {
             S s = this.starts.next();
-            for (Pipe<S, S> pipe : this.pipes) {
+            for (FilterPipe<S> pipe : this.pipes) {
                 pipe.setStarts(Arrays.asList(s));
                 if (pipe.hasNext()) {
                     return pipe.next();
