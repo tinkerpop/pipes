@@ -98,5 +98,9 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
             return this;
         }
 
+        public void clear() {
+
+        }
+
     }
 }

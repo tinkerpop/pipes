@@ -34,7 +34,7 @@ public class AndFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S
                     and = false;
                     break;
                 } else {
-                    pipe.next();
+                    pipe.clear();
                 }
             }
             if (and)

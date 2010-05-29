@@ -14,4 +14,6 @@ public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
     public void setStarts(Iterator<S> starts);
 
     public void setStarts(Iterable<S> starts);
+
+    public void clear();
 }

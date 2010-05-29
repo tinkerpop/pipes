@@ -63,6 +63,12 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         }
     }
 
+    public void clear() {
+        //this.starts = null;
+        this.nextEnd = null;
+        this.available = false;
+    }
+
     public Iterator<E> iterator() {
         return this;
     }

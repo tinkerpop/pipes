@@ -31,7 +31,8 @@ public class OrFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>
             for (FilterPipe<S> pipe : this.pipes) {
                 pipe.setStarts(Arrays.asList(s));
                 if (pipe.hasNext()) {
-                    return pipe.next();
+                    pipe.clear();
+                    return s;
                 }
             }
         }

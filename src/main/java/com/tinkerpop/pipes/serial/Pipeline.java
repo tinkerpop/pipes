@@ -17,6 +17,7 @@ public class Pipeline<S, E> implements Pipe<S, E> {
 
     private Pipe<S, ?> startPipe;
     private Pipe<?, E> endPipe;
+    private List<Pipe> pipes;
 
 
     public Pipeline() {
@@ -36,6 +37,7 @@ public class Pipeline<S, E> implements Pipe<S, E> {
         for (int i = 1; i < pipes.size(); i++) {
             pipes.get(i).setStarts((Iterator) pipes.get(i - 1));
         }
+        this.pipes = pipes;
     }
 
     public void setStartPipe(final Pipe<S, ?> startPipe) {
@@ -72,5 +74,11 @@ public class Pipeline<S, E> implements Pipe<S, E> {
 
     public Iterator<E> iterator() {
         return this;
+    }
+
+    public void clear() {
+        for (Pipe pipe : this.pipes) {
+            pipe.clear();
+        }
     }
 }
