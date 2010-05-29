@@ -20,6 +20,10 @@ public class AndFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S
         this.pipes = Arrays.asList(pipes);
     }
 
+    public AndFilterPipe(final List<FilterPipe<S>> pipes) {
+        this.pipes = pipes;
+    }
+
     public S processNextStart() {
         while (this.starts.hasNext()) {
             S s = this.starts.next();

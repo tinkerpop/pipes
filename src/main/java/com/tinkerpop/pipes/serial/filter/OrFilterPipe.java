@@ -21,6 +21,10 @@ public class OrFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>
         this.pipes = Arrays.asList(pipes);
     }
 
+    public OrFilterPipe(final List<FilterPipe<S>> pipes) {
+        this.pipes = pipes;
+    }
+
     public S processNextStart() {
         while (this.starts.hasNext()) {
             S s = this.starts.next();

@@ -4,7 +4,7 @@ import com.tinkerpop.pipes.serial.Pipe;
 
 /**
  * A FilterPipe has no specified behavior save that it takes the same objects it emits.
- * This interface is used to allow one to specify that their Pipe will either emit the input or not.
+ * This interface is used to specify that a Pipe will either emit its input or not.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

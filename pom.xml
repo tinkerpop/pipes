@@ -9,9 +9,8 @@
     <packaging>jar</packaging>
     <url>http://pipes.tinkerpop.com</url>
     <name>Pipes: A Data Flow Framework using Process Graphs</name>
-    <description>A process graph is composed of a set of process vertices connected to one another by a set of
-        communication edges. Each process can run independent of the others and as such, concurrency is a natural
-        consequence as data is transformed in a pipelined fashion from input to output.
+    <description>A process graph is composed of a set of process vertices connected to one another by a set of communication edges.
+        Pipes supports the splitting, merging, and transformation of data from input to output.
     </description>
     <developers>
         <developer>
@@ -120,7 +119,7 @@
     </build>
     <distributionManagement>
         <repository>
-            <id>tinkerpop.repo</id>
+            <id>tinkerpop-repository</id>
             <name>TinkerPop Maven2 Repository</name>
             <url>ftp://ftp.tinkerpop.com:21/public/maven2/</url>
         </repository>
