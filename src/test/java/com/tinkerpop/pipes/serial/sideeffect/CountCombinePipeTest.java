@@ -1,5 +1,6 @@
-package com.tinkerpop.pipes.serial.combine;
+package com.tinkerpop.pipes.serial.sideeffect;
 
+import com.tinkerpop.pipes.serial.sideeffect.CountCombinePipe;
 import com.tinkerpop.pipes.serial.sideeffect.SideEffectPipe;
 import junit.framework.TestCase;
 

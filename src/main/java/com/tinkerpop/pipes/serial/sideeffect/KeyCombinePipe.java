@@ -1,4 +1,4 @@
-package com.tinkerpop.pipes.serial.combine;
+package com.tinkerpop.pipes.serial.sideeffect;
 
 import com.tinkerpop.pipes.serial.AbstractPipe;
 import com.tinkerpop.pipes.serial.sideeffect.SideEffectPipe;

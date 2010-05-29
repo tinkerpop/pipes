@@ -2,8 +2,8 @@ package com.tinkerpop.pipes.serial.filter;
 
 import com.tinkerpop.pipes.serial.AbstractPipe;
 import com.tinkerpop.pipes.serial.Pipe;
+import com.tinkerpop.pipes.serial.SingleIterator;
 
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 /**
@@ -20,7 +20,7 @@ public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
     protected S processNextStart() {
         while (this.starts.hasNext()) {
             S s = this.starts.next();
-            this.pipe.setStarts(Arrays.asList(s));
+            this.pipe.setStarts(new SingleIterator<S>(s));
             if (this.pipe.hasNext()) {
                 this.pipe.clear();
                 return s;

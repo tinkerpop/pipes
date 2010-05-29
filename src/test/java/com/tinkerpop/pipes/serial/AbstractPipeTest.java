@@ -29,4 +29,20 @@ public class AbstractPipeTest extends TestCase {
         }
         assertEquals(counter, 3);
     }
+
+    public void testClear() {
+        Collection<String> names = Arrays.asList("marko", "povel", "peter", "josh");
+        Pipe<String, String> pipe = new IdentityPipe<String>();
+        pipe.setStarts(names);
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            String name = pipe.next();
+            assertTrue(name.equals("marko") || name.equals("povel") || name.equals("peter") || name.equals("josh"));
+            // todo: pipe.hasNext();
+            pipe.clear(); // identity pipe has no state
+
+        }
+        assertEquals(counter, 4);
+    }
 }

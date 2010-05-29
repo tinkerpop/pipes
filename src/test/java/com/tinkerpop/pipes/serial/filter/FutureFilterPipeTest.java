@@ -36,7 +36,7 @@ public class FutureFilterPipeTest extends TestCase {
     }
 
     public void testFutureFilterGraph() {
-        // ./outE[@label='knows']/inV[@name='vadas']/../../@name
+        // ./outE[@label='created']/inV[@name='lop']/../../@name
 
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
@@ -49,10 +49,13 @@ public class FutureFilterPipeTest extends TestCase {
         Pipe<Vertex, String> pipe2 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2);
         pipeline.setStarts(Arrays.asList(marko));
+        int counter = 0;
         while (pipeline.hasNext()) {
             String name = pipeline.next();
-            System.out.println(name);
+            assertEquals(name,"marko");
+            counter++;
         }
+        assertEquals(counter, 1);
     }
 
     public void testComplexFutureFilterGraph() {
@@ -70,10 +73,13 @@ public class FutureFilterPipeTest extends TestCase {
         Pipe<Vertex, String> pipe4 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4);
         pipeline.setStarts(Arrays.asList(marko));
+        int counter = 0;
         while (pipeline.hasNext()) {
             String name = pipeline.next();
-            System.out.println(name);
+            assertTrue(name.equals("vadas") || name.equals("lop") || name.equals("josh"));
+            counter++;
         }
+        assertEquals(counter, 3);
 
     }
 
@@ -93,10 +99,13 @@ public class FutureFilterPipeTest extends TestCase {
         Pipe<Vertex, String> pipe5 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4, pipe5);
         pipeline.setStarts(Arrays.asList(marko));
+        int counter = 0;
         while (pipeline.hasNext()) {
             String name = pipeline.next();
-            System.out.println(name);
+            assertTrue(name.equals("vadas") || name.equals("lop") || name.equals("josh"));
+            counter++;
         }
+        assertEquals(counter, 3);
 
     }
 

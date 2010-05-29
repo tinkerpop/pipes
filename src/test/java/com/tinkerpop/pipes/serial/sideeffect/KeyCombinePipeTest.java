@@ -1,7 +1,8 @@
-package com.tinkerpop.pipes.serial.combine;
+package com.tinkerpop.pipes.serial.sideeffect;
 
 import com.tinkerpop.pipes.serial.Pipe;
 import com.tinkerpop.pipes.serial.Pipeline;
+import com.tinkerpop.pipes.serial.sideeffect.KeyCombinePipe;
 import com.tinkerpop.pipes.serial.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.serial.util.ProductPipe;
 import junit.framework.TestCase;

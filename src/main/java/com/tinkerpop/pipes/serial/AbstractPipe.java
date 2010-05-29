@@ -40,10 +40,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
             this.available = false;
             return this.nextEnd;
         } else {
-            this.nextEnd = processNextStart();
-            /*this.available = true;
-            return this.next();*/
-            return this.nextEnd;
+            return this.processNextStart();
         }
     }
 
@@ -52,9 +49,8 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
             return true;
         else {
             try {
-                this.nextEnd = processNextStart();
+                this.nextEnd = this.processNextStart();
                 this.available = true;
-                /*return this.hasNext();*/
                 return true;
             } catch (NoSuchElementException e) {
                 this.available = false;
@@ -64,7 +60,6 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public void clear() {
-        //this.starts = null;
         this.nextEnd = null;
         this.available = false;
     }

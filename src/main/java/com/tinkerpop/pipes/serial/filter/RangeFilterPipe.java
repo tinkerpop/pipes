@@ -5,7 +5,7 @@ import com.tinkerpop.pipes.serial.AbstractPipe;
 import java.util.NoSuchElementException;
 
 /**
- * The RangeFilterPipe will only allow an sequential subset of its incoming objects to be emitted to its output.
+ * The RangeFilterPipe will only allow a sequential subset of its incoming objects to be emitted to its output.
  * This pipe can be provided -1 for both its high and low range to denote a wildcard for high and/or low.
  * Note that -1 for both high and low is equivalent to the IdentityPipe.
  *
