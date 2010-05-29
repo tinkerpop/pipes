@@ -16,9 +16,9 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class HistoryPipeTest extends TestCase {
+public class FutureFilterPipeTest extends TestCase {
 
-    public void testHistory() {
+    public void testFutureFilter() {
         List<String> names = Arrays.asList("marko", "peter", "josh", "marko", "jake", "marko", "marko");
         Pipe<String, Integer> pipeA = new CharacterCountPipe();
         Pipe<Integer, Integer> pipeB = new ObjectFilterPipe<Integer>(4, ComparisonFilterPipe.Filter.NOT_EQUALS);
@@ -35,7 +35,7 @@ public class HistoryPipeTest extends TestCase {
         assertEquals(counter, 5);
     }
 
-    public void testHistoryGraph() {
+    public void testFutureFilterGraph() {
         // ./outE[@label='knows']/inV[@name='vadas']/../../@name
 
         Graph graph = TinkerGraphFactory.createTinkerGraph();
@@ -55,13 +55,11 @@ public class HistoryPipeTest extends TestCase {
         }
     }
 
-    public void testHistoryComplexGraph() {
+    public void testComplexFutureFilterGraph() {
         // ./outE[@weight > 0.5]/inV/../../outE/inV/@name
 
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Vertex peter = graph.getVertex("6");
-        Vertex vadas = graph.getVertex("2");
 
         Pipe<Vertex, Edge> pipeA = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
         Pipe<Edge, Edge> pipeB = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.GREATER_THAN);
@@ -71,6 +69,29 @@ public class HistoryPipeTest extends TestCase {
         Pipe<Edge, Vertex> pipe3 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
         Pipe<Vertex, String> pipe4 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4);
+        pipeline.setStarts(Arrays.asList(marko));
+        while (pipeline.hasNext()) {
+            String name = pipeline.next();
+            System.out.println(name);
+        }
+
+    }
+
+    public void testComplexTwoFutureFilterGraph() {
+        // ./outE/inV/../../outE/../outE/inV/@name
+
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+
+        Pipe<Vertex, Edge> pipeA = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe<Edge, Vertex> pipeB = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Vertex> pipe1 = new FutureFilterPipe<Vertex>(new Pipeline<Vertex, Vertex>(pipeA, pipeB));
+        Pipe<Vertex, Edge> pipeC = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe<Vertex, Vertex> pipe2 = new FutureFilterPipe<Vertex>(pipeC);
+        Pipe<Vertex, Edge> pipe3 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe<Edge, Vertex> pipe4 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, String> pipe5 = new PropertyPipe<Vertex, String>("name");
+        Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4, pipe5);
         pipeline.setStarts(Arrays.asList(marko));
         while (pipeline.hasNext()) {
             String name = pipeline.next();
