@@ -25,13 +25,13 @@ public class VertexEdgePipe extends AbstractPipe<Vertex, Edge> {
     }
 
     protected Edge processNextStart() {
-        if (null != nextEnds && nextEnds.hasNext()) {
-            return nextEnds.next();
+        if (null != this.nextEnds && this.nextEnds.hasNext()) {
+            return this.nextEnds.next();
         } else {
             if (this.step.equals(Step.OUT_EDGES))
-                nextEnds = this.starts.next().getOutEdges().iterator();
+                this.nextEnds = this.starts.next().getOutEdges().iterator();
             else
-                nextEnds = this.starts.next().getInEdges().iterator();
+                this.nextEnds = this.starts.next().getInEdges().iterator();
             return this.processNextStart();
         }
     }
