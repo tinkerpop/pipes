@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * The OrFilterPipe takes a collection of FilterPipes. Each FilterPipe is fed the same incoming object.
- * If one of the FilterPipes emit the object, then the OrFilterPipe emits the object. If not, then the incoming object is not emitted.
+ * The OrFilterPipe takes a collection of pipes that emit boolean objects. Each pipe in the collection is fed the same incoming S object.
+ * If one of the internal pipes emits true, then the OrFilterPipe emits the S object. If not, then the incoming object is not emitted.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

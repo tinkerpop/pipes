@@ -17,7 +17,6 @@ public class Pipeline<S, E> implements Pipe<S, E> {
 
     private Pipe<S, ?> startPipe;
     private Pipe<?, E> endPipe;
-    private List<Pipe> pipes;
 
     public Pipeline() {
     }
@@ -49,7 +48,6 @@ public class Pipeline<S, E> implements Pipe<S, E> {
      * @param pipes the ordered list of pipes to chain together into a pipeline
      */
     protected void setPipes(final List<Pipe> pipes) {
-        this.pipes = pipes;
         this.startPipe = (Pipe<S, ?>) pipes.get(0);
         this.endPipe = (Pipe<?, E>) pipes.get(pipes.size() - 1);
         for (int i = 1; i < pipes.size(); i++) {

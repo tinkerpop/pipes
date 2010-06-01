@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 /**
  * SingleIterator is an iterator that only contains one object of type T.
  * This is more efficient than using Arrays.asList(object).iterator() (approx. 2x faster).
- * This has applications in "wrapped pipes" where single objects are manipulated at a time.
+ * This has applications in various metapipes, where single objects are manipulated at a time.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

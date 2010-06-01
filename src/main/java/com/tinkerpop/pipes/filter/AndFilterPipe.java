@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * The AndFilterPipe takes a collection of Pipes, where E is Boolean. Each provided Pipe is fed the same incoming S object.
- * If all the Pipes emit true, then the AndFilterPipe emits the incoming S object. If not, then the incoming S object is not emitted.
+ * The AndFilterPipe takes a collection of pipes, where E is boolean. Each provided pipe is fed the same incoming S object.
+ * If all the pipes emit true, then the AndFilterPipe emits the incoming S object. If not, then the incoming S object is not emitted.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

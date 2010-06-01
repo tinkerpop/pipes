@@ -9,5 +9,4 @@ import java.util.Iterator;
  */
 public interface MergePipe<S> extends Pipe<Iterator<S>, S> {
 
-    //public void addStart(Iterator<S> start);
 }

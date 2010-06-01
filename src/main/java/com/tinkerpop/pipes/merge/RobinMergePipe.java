@@ -23,10 +23,6 @@ public class RobinMergePipe<S> extends AbstractMergePipe<S> {
 
     }
 
-    /*public void addStart(Iterator<S> start) {
-        this.allStarts.add(start);
-    }*/
-
     protected S processNextStart() {
         if (this.allStarts.size() > 0) {
             Iterator<S> starts = this.allStarts.get(this.currentStarts);
