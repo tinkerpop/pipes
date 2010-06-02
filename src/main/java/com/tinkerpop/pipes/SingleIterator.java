@@ -15,7 +15,7 @@ public class SingleIterator<T> implements Iterator<T> {
     private final T t;
     private boolean alive = true;
 
-    public SingleIterator(T t) {
+    public SingleIterator(final T t) {
         this.t = t;
     }
 

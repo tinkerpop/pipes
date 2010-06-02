@@ -19,7 +19,7 @@ public class GraphElementPipe<E extends Element> extends AbstractPipe<Graph, E> 
         VERTEX, EDGE
     }
 
-    public GraphElementPipe(ElementType elementType) {
+    public GraphElementPipe(final ElementType elementType) {
         this.elementType = elementType;
     }
 
@@ -28,10 +28,16 @@ public class GraphElementPipe<E extends Element> extends AbstractPipe<Graph, E> 
         if (null != this.nextEnds && this.nextEnds.hasNext()) {
             return this.nextEnds.next();
         } else {
-            if (this.elementType == ElementType.VERTEX)
-                this.nextEnds = (Iterator<E>) this.starts.next().getVertices().iterator();
-            else
-                this.nextEnds = (Iterator<E>) this.starts.next().getEdges().iterator();
+            switch (this.elementType) {
+                case VERTEX: {
+                    this.nextEnds = (Iterator<E>) this.starts.next().getVertices().iterator();
+                    break;
+                }
+                case EDGE: {
+                    this.nextEnds = (Iterator<E>) this.starts.next().getEdges().iterator();
+                    break;
+                }
+            }
             return this.processNextStart();
         }
     }

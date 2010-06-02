@@ -12,33 +12,37 @@ import com.tinkerpop.pipes.AbstractPipe;
 public class EdgeVertexPipe extends AbstractPipe<Edge, Vertex> {
 
     private final Step step;
-    private Vertex next;
+    private Vertex next = null;
 
     public enum Step {
         IN_VERTEX, OUT_VERTEX, BOTH_VERTICES
     }
 
     public EdgeVertexPipe(final Step step) {
+        if (null == step)
+            throw new IllegalArgumentException("Step can not be null");
         this.step = step;
     }
 
     protected Vertex processNextStart() {
-        if (this.step.equals(Step.OUT_VERTEX))
-            return this.starts.next().getOutVertex();
-        else if (this.step.equals(Step.IN_VERTEX))
-            return this.starts.next().getInVertex();
-        else {
-            if (null == this.next) {
-                Edge edge = this.starts.next();
-                this.next = edge.getOutVertex();
-                return edge.getInVertex();
-            } else {
-                Vertex temp = this.next;
-                this.next = null;
-                return temp;
+        switch (this.step) {
+            case OUT_VERTEX:
+                return this.starts.next().getOutVertex();
+            case IN_VERTEX:
+                return this.starts.next().getInVertex();
+            case BOTH_VERTICES: {
+                if (null == this.next) {
+                    Edge edge = this.starts.next();
+                    this.next = edge.getOutVertex();
+                    return edge.getInVertex();
+                } else {
+                    Vertex temp = this.next;
+                    this.next = null;
+                    return temp;
+                }
             }
         }
-
+        throw new RuntimeException("This is an illegal state as there is no step set");
     }
 
 }
