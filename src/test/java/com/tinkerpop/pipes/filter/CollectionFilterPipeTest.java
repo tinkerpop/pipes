@@ -27,7 +27,7 @@ public class CollectionFilterPipeTest extends TestCase {
         assertEquals(counter, 4);
     }
 
-     public void testBasicCollectionFilterNotEquals() {
+    public void testBasicCollectionFilterNotEquals() {
         List<String> names = Arrays.asList("marko", "marko", "peter", "josh", "pavel", "marko");
         Set<String> collection = new HashSet<String>(Arrays.asList("marko", "pavel"));
         Pipe<String, String> pipe1 = new CollectionFilterPipe<String>(collection, ComparisonFilterPipe.Filter.NOT_EQUALS);

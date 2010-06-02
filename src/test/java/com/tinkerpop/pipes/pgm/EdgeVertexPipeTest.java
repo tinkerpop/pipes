@@ -1,8 +1,10 @@
 package com.tinkerpop.pipes.pgm;
 
+import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.pipes.SingleIterator;
 import junit.framework.TestCase;
 
 import java.util.NoSuchElementException;
@@ -16,7 +18,7 @@ public class EdgeVertexPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         EdgeVertexPipe evp = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-        evp.setStarts(marko.getOutEdges().iterator());
+        evp.setStarts(marko.getOutEdges());
         assertTrue(evp.hasNext());
         int counter = 0;
         while (evp.hasNext()) {
@@ -43,5 +45,25 @@ public class EdgeVertexPipeTest extends TestCase {
         } catch (NoSuchElementException e) {
             assertFalse(false);
         }
+    }
+
+    public void testBothVertices() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex josh = graph.getVertex("4");
+        Edge tempEdge = null;
+        for (Edge edge : josh.getOutEdges()) {
+            if (edge.getId().equals("11"))
+                tempEdge = edge;
+        }
+        EdgeVertexPipe pipe = new EdgeVertexPipe(EdgeVertexPipe.Step.BOTH_VERTICES);
+        pipe.setStarts(new SingleIterator<Edge>(tempEdge));
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            Vertex vertex = pipe.next();
+            assertTrue(vertex.getId().equals("4") || vertex.getId().equals("3"));
+        }
+        assertEquals(counter, 2);
+
     }
 }
