@@ -14,7 +14,7 @@ public class ObjectFilterPipeTest extends TestCase {
 
     public void testObjectFilter() {
         List<String> starts = Arrays.asList("marko", "josh", "peter");
-        Pipe<String, String> ofp = new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.NOT_EQUALS);
+        Pipe<String, String> ofp = new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.EQUAL);
         ofp.setStarts(starts.iterator());
         assertTrue(ofp.hasNext());
         int counter = 0;
@@ -25,7 +25,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-        ofp = new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.EQUALS);
+        ofp = new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.NOT_EQUAL);
         ofp.setStarts(starts.iterator());
         assertTrue(ofp.hasNext());
         counter = 0;
@@ -45,7 +45,7 @@ public class ObjectFilterPipeTest extends TestCase {
 
     public void testNumericComparisons() {
         List<Integer> starts = Arrays.asList(32, 1, 7);
-        Pipe<Integer, Integer> ofp = new ObjectFilterPipe<Integer>(7, ComparisonFilterPipe.Filter.LESS_THAN);
+        Pipe<Integer, Integer> ofp = new ObjectFilterPipe<Integer>(7, ComparisonFilterPipe.Filter.GREATER_THAN);
         ofp.setStarts(starts.iterator());
         assertTrue(ofp.hasNext());
         int counter = 0;
@@ -56,7 +56,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 1);
         //////
-        ofp = new ObjectFilterPipe<Integer>(7, ComparisonFilterPipe.Filter.LESS_THAN_EQUAL);
+        ofp = new ObjectFilterPipe<Integer>(7, ComparisonFilterPipe.Filter.GREATER_THAN_EQUAL);
         ofp.setStarts(starts.iterator());
         assertTrue(ofp.hasNext());
         counter = 0;
@@ -67,7 +67,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
         //////
-        ofp = new ObjectFilterPipe<Integer>(7, ComparisonFilterPipe.Filter.GREATER_THAN);
+        ofp = new ObjectFilterPipe<Integer>(7, ComparisonFilterPipe.Filter.LESS_THAN);
         ofp.setStarts(starts.iterator());
         assertTrue(ofp.hasNext());
         counter = 0;
@@ -78,7 +78,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 1);
         //////
-        ofp = new ObjectFilterPipe<Integer>(7, ComparisonFilterPipe.Filter.GREATER_THAN_EQUAL);
+        ofp = new ObjectFilterPipe<Integer>(7, ComparisonFilterPipe.Filter.LESS_THAN_EQUAL);
         ofp.setStarts(starts.iterator());
         assertTrue(ofp.hasNext());
         counter = 0;

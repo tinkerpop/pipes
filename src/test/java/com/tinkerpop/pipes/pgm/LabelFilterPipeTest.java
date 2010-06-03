@@ -15,7 +15,7 @@ public class LabelFilterPipeTest extends TestCase {
     public void testFilterLabels() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        LabelFilterPipe lfp = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.EQUALS);
+        LabelFilterPipe lfp = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.NOT_EQUAL);
         lfp.setStarts(marko.getOutEdges().iterator());
         assertTrue(lfp.hasNext());
         int counter = 0;
@@ -27,7 +27,7 @@ public class LabelFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-        lfp = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.NOT_EQUALS);
+        lfp = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.EQUAL);
         lfp.setStarts(marko.getOutEdges().iterator());
         assertTrue(lfp.hasNext());
         counter = 0;

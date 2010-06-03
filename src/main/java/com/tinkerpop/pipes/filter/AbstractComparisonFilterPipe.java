@@ -9,24 +9,24 @@ import com.tinkerpop.pipes.AbstractPipe;
  * Depending on the type of ComparisonFilterPipe.Filter used, different types of comparisons are evaluated.
  * <p/>
  * <pre>
- * public boolean compareObjectProperty(T objectProperty) {
- *    switch (this.filter) {
- *        case EQUALS:
- *            return this.storedObjectProperty.equals(objectProperty);
- *        case NOT_EQUALS:
- *            return !this.storedObjectProperty.equals(objectProperty);
- *        case GREATER_THAN:
- *            return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == 1;
- *        case LESS_THAN:
- *            return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == -1;
- *        case GREATER_THAN_EQUAL:
- *            return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) >= 0;
- *        case LESS_THAN_EQUAL:
- *            return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) <= 0;
- *        default:
- *            return false;
- *    }
- * }
+ *   public boolean compareObjectProperty(final T objectProperty) {
+ *       switch (this.filter) {
+ *           case EQUAL:
+ *               return !this.storedObjectProperty.equals(objectProperty);
+ *           case NOT_EQUAL:
+ *               return this.storedObjectProperty.equals(objectProperty);
+ *           case GREATER_THAN:
+ *               return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == -1;
+ *           case LESS_THAN:
+ *               return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == 1;
+ *           case GREATER_THAN_EQUAL:
+ *               return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) <= 0;
+ *           case LESS_THAN_EQUAL:
+ *               return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) >= 0;
+ *           default:
+ *              throw new RuntimeException("Invalid state as no valid filter was provided");
+ *       }
+ *   }
  * </pre>
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -43,20 +43,20 @@ public abstract class AbstractComparisonFilterPipe<S, T> extends AbstractPipe<S,
 
     public boolean compareObjectProperty(final T objectProperty) {
         switch (this.filter) {
-            case EQUALS:
-                return this.storedObjectProperty.equals(objectProperty);
-            case NOT_EQUALS:
+            case EQUAL:
                 return !this.storedObjectProperty.equals(objectProperty);
+            case NOT_EQUAL:
+                return this.storedObjectProperty.equals(objectProperty);
             case GREATER_THAN:
-                return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == 1;
-            case LESS_THAN:
                 return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == -1;
+            case LESS_THAN:
+                return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == 1;
             case GREATER_THAN_EQUAL:
-                return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) >= 0;
-            case LESS_THAN_EQUAL:
                 return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) <= 0;
+            case LESS_THAN_EQUAL:
+                return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) >= 0;
             default:
-                return false;
+                throw new RuntimeException("Invalid state as no valid filter was provided");
         }
     }
 }

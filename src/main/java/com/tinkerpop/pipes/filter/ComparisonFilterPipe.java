@@ -9,7 +9,7 @@ package com.tinkerpop.pipes.filter;
 public interface ComparisonFilterPipe<S, T> extends FilterPipe<S> {
 
     public enum Filter {
-        EQUALS, NOT_EQUALS, GREATER_THAN, LESS_THAN, GREATER_THAN_EQUAL, LESS_THAN_EQUAL
+        EQUAL, NOT_EQUAL, GREATER_THAN, LESS_THAN, GREATER_THAN_EQUAL, LESS_THAN_EQUAL
     }
 
     public boolean compareObjectProperty(T objectProperty);
