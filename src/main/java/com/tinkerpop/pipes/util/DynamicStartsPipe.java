@@ -50,4 +50,8 @@ public class DynamicStartsPipe<S> extends AbstractPipe<S, S> {
         } catch (NoSuchElementException e) {
         }
     }
+
+    protected S processNextStart() { 
+        throw new UnsupportedOperationException();
+    }
 }
