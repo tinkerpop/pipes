@@ -22,17 +22,17 @@ public class RangeFilterPipeTest extends TestCase {
 
     public void testRangeFilterNormal() {
         List<String> names = Arrays.asList("abe", "bob", "carl", "derick", "evan", "fran");
-        Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 4);
+        Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 3);
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
             String name = pipe.next();
+            //System.out.println(name + counter);
             counter++;
-            //System.out.println(name);
-            assertTrue(name.equals("abe") || name.equals("bob") || name.equals("carl") || name.equals("derick"));
-            assertFalse(name.equals("evan") || name.equals("fran"));
+            assertTrue(name.equals("abe") || name.equals("bob") || name.equals("carl"));
+            assertFalse(name.equals("derick") || name.equals("evan") || name.equals("fran"));
         }
-        assertEquals(counter, 4);
+        assertEquals(counter, 3);
     }
 
     public void testRangeFilterHighInfinity() {
@@ -52,17 +52,17 @@ public class RangeFilterPipeTest extends TestCase {
 
     public void testRangeFilterLowInfinity() {
         List<String> names = Arrays.asList("abe", "bob", "carl", "derick", "evan", "fran");
-        Pipe<String, String> pipe = new RangeFilterPipe<String>(-1, 4);
+        Pipe<String, String> pipe = new RangeFilterPipe<String>(-1, 3);
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
             String name = pipe.next();
             counter++;
             //System.out.println(name);
-            assertTrue(name.equals("abe") || name.equals("bob") || name.equals("carl") || name.equals("derick"));
-            assertFalse(name.equals("evan") || name.equals("fran"));
+            assertTrue(name.equals("abe") || name.equals("bob") || name.equals("carl"));
+            assertFalse(name.equals("derick") || name.equals("evan") || name.equals("fran"));
         }
-        assertEquals(counter, 4);
+        assertEquals(counter, 3);
     }
 
     public void testRangeFilterLowHighInfinity() {

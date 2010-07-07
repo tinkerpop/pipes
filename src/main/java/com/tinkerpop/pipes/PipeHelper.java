@@ -16,8 +16,8 @@ public class PipeHelper {
         }
     }
 
-    public static <T> int counter(final Iterator<T> iterator) {
-        int counter = 0;
+    public static <T> long counter(final Iterator<T> iterator) {
+        long counter = 0;
         while (iterator.hasNext()) {
             iterator.next();
             counter++;
