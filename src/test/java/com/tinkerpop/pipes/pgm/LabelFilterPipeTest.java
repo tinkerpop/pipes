@@ -38,28 +38,5 @@ public class LabelFilterPipeTest extends TestCase {
             counter++;
         }
         assertEquals(counter, 1);
-
-        // todo: get AND and OR working!
-        /*lfp = new LabelFilterPipe(Arrays.asList("knows", "created"), ComparisonFilterPipe.Filter.DISALLOW);
-        lfp.setStarts(marko.getOutEdges().iterator());
-        assertFalse(lfp.hasNext());
-
-        lfp = new LabelFilterPipe(Arrays.asList("knows", "created"), ComparisonFilterPipe.Filter.ALLOW);
-        lfp.setStarts(marko.getOutEdges().iterator());
-        assertTrue(lfp.hasNext());
-        counter = 0;
-        while (lfp.hasNext()) {
-            Edge e = lfp.next();
-            assertEquals(e.getOutVertex(), marko);
-            counter++;
-        }
-        assertEquals(counter, 3);
-        try {
-            lfp.next();
-            assertTrue(false);
-        } catch (NoSuchElementException e) {
-            assertFalse(false);
-        }*/
-
     }
 }
