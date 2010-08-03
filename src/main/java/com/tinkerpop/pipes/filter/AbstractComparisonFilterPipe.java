@@ -44,16 +44,28 @@ public abstract class AbstractComparisonFilterPipe<S, T> extends AbstractPipe<S,
     public boolean compareObjectProperty(final T objectProperty) {
         switch (this.filter) {
             case EQUAL:
+                if (null == storedObjectProperty)
+                    return objectProperty == null;
                 return !this.storedObjectProperty.equals(objectProperty);
             case NOT_EQUAL:
+                 if (null == storedObjectProperty)
+                    return objectProperty != null;
                 return this.storedObjectProperty.equals(objectProperty);
             case GREATER_THAN:
+                if (null == storedObjectProperty || objectProperty == null)
+                    return false;
                 return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == -1;
             case LESS_THAN:
+                if (null == storedObjectProperty || objectProperty == null)
+                    return false;
                 return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == 1;
             case GREATER_THAN_EQUAL:
+                if (null == storedObjectProperty || objectProperty == null)
+                    return false;
                 return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) <= 0;
             case LESS_THAN_EQUAL:
+                if (null == storedObjectProperty || objectProperty == null)
+                    return false;
                 return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) >= 0;
             default:
                 throw new RuntimeException("Invalid state as no valid filter was provided");

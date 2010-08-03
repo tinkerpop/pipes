@@ -59,4 +59,27 @@ public class PropertyPipeTest extends TestCase {
             assertFalse(false);
         }
     }
+
+    public void testListProperty() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        Vertex vadas = graph.getVertex("2");
+        Pipe<Vertex, String> pipe = new PropertyPipe<Vertex, String>("name");
+        Pipe<Vertex,String> pipeline = new Pipeline<Vertex,String>(pipe);
+        pipeline.setStarts(Arrays.asList(marko,vadas).iterator());
+        assertTrue(pipeline.hasNext());
+        int counter = 0;
+        while (pipeline.hasNext()) {
+            String name = pipeline.next();
+            assertTrue(name.equals("vadas") || name.equals("marko"));
+            counter++;
+        }
+        assertEquals(counter, 2);
+        try {
+            pipeline.next();
+            assertTrue(false);
+        } catch (NoSuchElementException e) {
+            assertFalse(false);
+        }
+    }
 }
