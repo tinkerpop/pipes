@@ -14,7 +14,7 @@ public class ObjectFilterPipeTest extends TestCase {
 
     public void testNullObjects() {
         List<String> starts = Arrays.asList("marko", "pavel", null);
-        Pipe<String, String> pipe = new ObjectFilterPipe<String>(null, ComparisonFilterPipe.Filter.EQUAL);
+        Pipe<String, String> pipe = new ObjectFilterPipe<String>(null, ComparisonFilterPipe.Filter.NOT_EQUAL);
         pipe.setStarts(starts);
         int counter = 0;
         while (pipe.hasNext()) {
@@ -24,7 +24,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 1);
 
-        pipe = new ObjectFilterPipe<String>(null, ComparisonFilterPipe.Filter.NOT_EQUAL);
+        pipe = new ObjectFilterPipe<String>(null, ComparisonFilterPipe.Filter.EQUAL);
         pipe.setStarts(starts);
         counter = 0;
         while (pipe.hasNext()) {

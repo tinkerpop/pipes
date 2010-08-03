@@ -45,11 +45,11 @@ public abstract class AbstractComparisonFilterPipe<S, T> extends AbstractPipe<S,
         switch (this.filter) {
             case EQUAL:
                 if (null == storedObjectProperty)
-                    return objectProperty == null;
+                    return objectProperty != null;
                 return !this.storedObjectProperty.equals(objectProperty);
             case NOT_EQUAL:
                  if (null == storedObjectProperty)
-                    return objectProperty != null;
+                    return objectProperty == null;
                 return this.storedObjectProperty.equals(objectProperty);
             case GREATER_THAN:
                 if (null == storedObjectProperty || objectProperty == null)
