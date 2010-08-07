@@ -10,14 +10,18 @@ import java.util.NoSuchElementException;
  */
 public class MultiIterator<T> implements Iterator<T> {
 
-    private final List<Iterator<T>> iterators;
+    private final Iterator<Iterator<T>> iterators;
+    private Iterator<T> currentIterator = null;
 
     public MultiIterator(final Iterator<T>... iterators) {
-        this.iterators = Arrays.asList(iterators);
+        this(Arrays.asList(iterators));
+
     }
 
     public MultiIterator(final List<Iterator<T>> iterators) {
-        this.iterators = iterators;
+        this.iterators = iterators.iterator();
+        if (this.iterators.hasNext())
+            this.currentIterator = this.iterators.next();
     }
 
     public void remove() {
@@ -25,19 +29,29 @@ public class MultiIterator<T> implements Iterator<T> {
     }
 
     public T next() {
-        for (Iterator<T> itty : this.iterators) {
-            if (itty.hasNext())
-                return itty.next();
+        while (true) {
+            if (this.currentIterator.hasNext()) {
+                return this.currentIterator.next();
+            } else {
+                if (this.iterators.hasNext()) {
+                    this.currentIterator = this.iterators.next();
+                } else {
+                    throw new NoSuchElementException();
+                }
+            }
         }
-        throw new NoSuchElementException();
     }
 
     public boolean hasNext() {
-        for (Iterator<T> itty : this.iterators) {
-            if (itty.hasNext())
+        while (true) {
+            if (null != this.currentIterator && this.currentIterator.hasNext()) {
                 return true;
+            } else if (this.iterators.hasNext()) {
+                this.currentIterator = iterators.next();
+            } else {
+                return false;
+            }
         }
-        return false;
     }
 
 
