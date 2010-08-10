@@ -6,25 +6,38 @@ import com.tinkerpop.pipes.AbstractPipe;
 /**
  * The AbstractComparisonFilterPipe provides the necessary functionality that is required of most ComparisonFilterPipe implementations.
  * The compareObjectProperty() implementation compares the provided object with the internal object provided.
+ * The compareObjects() implementation is useful for comparing two objects that are not necessarily stored in the pipe.
  * Depending on the type of ComparisonFilterPipe.Filter used, different types of comparisons are evaluated.
  * <p/>
  * <pre>
- *   public boolean compareObjectProperty(final T objectProperty) {
+ *   public boolean compareObjects(final T leftObject, final T rightObject) {
  *       switch (this.filter) {
  *           case EQUAL:
- *               return !this.storedObjectProperty.equals(objectProperty);
+ *               if (null == leftObject)
+ *                   return rightObject != null;
+ *               return !leftObject.equals(rightObject);
  *           case NOT_EQUAL:
- *               return this.storedObjectProperty.equals(objectProperty);
+ *               if (null == leftObject)
+ *                   return rightObject == null;
+ *               return leftObject.equals(rightObject);
  *           case GREATER_THAN:
- *               return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == -1;
+ *               if (null == leftObject || rightObject == null)
+ *                   return false;
+ *               return ((Comparable) leftObject).compareTo(rightObject) > 0;
  *           case LESS_THAN:
- *               return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == 1;
+ *               if (null == leftObject || rightObject == null)
+ *                   return false;
+ *               return ((Comparable) leftObject).compareTo(rightObject) < 0;
  *           case GREATER_THAN_EQUAL:
- *               return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) <= 0;
+ *               if (null == leftObject || rightObject == null)
+ *                   return false;
+ *               return ((Comparable) leftObject).compareTo(rightObject) >= 0;
  *           case LESS_THAN_EQUAL:
- *               return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) >= 0;
+ *               if (null == leftObject || rightObject == null)
+ *                   return false;
+ *               return ((Comparable) leftObject).compareTo(rightObject) <= 0;
  *           default:
- *              throw new RuntimeException("Invalid state as no valid filter was provided");
+ *               throw new RuntimeException("Invalid state as no valid filter was provided");
  *       }
  *   }
  * </pre>
@@ -41,32 +54,40 @@ public abstract class AbstractComparisonFilterPipe<S, T> extends AbstractPipe<S,
         this.filter = filter;
     }
 
+    public AbstractComparisonFilterPipe(final Filter filter) {
+        this(null, filter);
+    }
+
     public boolean compareObjectProperty(final T objectProperty) {
+        return this.compareObjects(this.storedObjectProperty, objectProperty);
+    }
+
+    public boolean compareObjects(final T leftObject, final T rightObject) {
         switch (this.filter) {
             case EQUAL:
-                if (null == storedObjectProperty)
-                    return objectProperty != null;
-                return !this.storedObjectProperty.equals(objectProperty);
+                if (null == leftObject)
+                    return rightObject != null;
+                return !leftObject.equals(rightObject);
             case NOT_EQUAL:
-                 if (null == storedObjectProperty)
-                    return objectProperty == null;
-                return this.storedObjectProperty.equals(objectProperty);
+                if (null == leftObject)
+                    return rightObject == null;
+                return leftObject.equals(rightObject);
             case GREATER_THAN:
-                if (null == storedObjectProperty || objectProperty == null)
+                if (null == leftObject || rightObject == null)
                     return false;
-                return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == -1;
+                return ((Comparable) leftObject).compareTo(rightObject) > 0;
             case LESS_THAN:
-                if (null == storedObjectProperty || objectProperty == null)
+                if (null == leftObject || rightObject == null)
                     return false;
-                return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) == 1;
+                return ((Comparable) leftObject).compareTo(rightObject) < 0;
             case GREATER_THAN_EQUAL:
-                if (null == storedObjectProperty || objectProperty == null)
+                if (null == leftObject || rightObject == null)
                     return false;
-                return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) <= 0;
+                return ((Comparable) leftObject).compareTo(rightObject) >= 0;
             case LESS_THAN_EQUAL:
-                if (null == storedObjectProperty || objectProperty == null)
+                if (null == leftObject || rightObject == null)
                     return false;
-                return ((Comparable) objectProperty).compareTo(this.storedObjectProperty) >= 0;
+                return ((Comparable) leftObject).compareTo(rightObject) <= 0;
             default:
                 throw new RuntimeException("Invalid state as no valid filter was provided");
         }

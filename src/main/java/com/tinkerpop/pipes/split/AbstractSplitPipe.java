@@ -19,7 +19,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
 
     protected final List<SplitQueuePipe<S>> splits = new ArrayList<SplitQueuePipe<S>>();
 
-    public AbstractSplitPipe(int numberOfSplits) {
+    public AbstractSplitPipe(final int numberOfSplits) {
         for (int i = 0; i < numberOfSplits; i++) {
             this.addSplit();
         }
@@ -70,7 +70,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
             if (this.queue.isEmpty())
                 throw new NoSuchElementException();
             else {
-                S temp = queue.remove();
+                S temp = this.queue.remove();
                 this.prepareNext();
                 return temp;
             }
@@ -86,11 +86,11 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
             }
         }
 
-        public void setStarts(Iterator<S> starts) {
+        public void setStarts(final Iterator<S> starts) {
             throw new UnsupportedOperationException();
         }
 
-        public void setStarts(Iterable<S> starts) {
+        public void setStarts(final Iterable<S> starts) {
             throw new UnsupportedOperationException();
         }
 

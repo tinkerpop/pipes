@@ -36,6 +36,10 @@ public class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements Filte
         return false;
     }
 
+    public boolean compareObjects(S leftObject, S rightObject) {
+        throw new UnsupportedOperationException();
+    }
+
 
     protected S processNextStart() {
         while (this.starts.hasNext()) {

@@ -42,7 +42,7 @@ public class EdgeVertexPipe extends AbstractPipe<Edge, Vertex> {
                 }
             }
         }
-        throw new RuntimeException("This is an illegal state as there is no step set");
+        throw new IllegalStateException("This is an illegal state as there is no step set");
     }
 
 }
