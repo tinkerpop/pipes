@@ -25,29 +25,25 @@ public class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements Filte
         }
     }
 
-    public boolean compareObjectProperty(S objectProperty) {
+
+    public boolean compareObjects(S leftObject, S rightObject) {
         if (this.filter == ComparisonFilterPipe.Filter.NOT_EQUAL) {
-            if (this.storedCollection.contains(objectProperty))
+            if (this.storedCollection.contains(rightObject))
                 return true;
         } else {
-            if (!this.storedCollection.contains(objectProperty))
+            if (!this.storedCollection.contains(rightObject))
                 return true;
         }
         return false;
     }
 
-    public boolean compareObjects(S leftObject, S rightObject) {
-        throw new UnsupportedOperationException();
-    }
-
 
     protected S processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             S s = this.starts.next();
-            if (this.compareObjectProperty(s)) {
+            if (this.compareObjects(null, s)) {
                 return s;
             }
         }
-        throw new NoSuchElementException();
     }
 }

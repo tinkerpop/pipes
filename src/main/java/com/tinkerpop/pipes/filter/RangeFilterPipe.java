@@ -26,13 +26,12 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
     }
 
     protected S processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             S s = this.starts.next();
             this.counter++;
             if ((this.low == -1 || this.counter >= this.low) && (this.high == -1 || this.counter < this.high)) {
                 return s;
             }
         }
-        throw new NoSuchElementException();
     }
 }

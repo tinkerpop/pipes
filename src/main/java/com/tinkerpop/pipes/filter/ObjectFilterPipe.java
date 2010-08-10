@@ -9,18 +9,19 @@ import java.util.NoSuchElementException;
  */
 public class ObjectFilterPipe<S> extends AbstractComparisonFilterPipe<S, S> {
 
+    private final S object;
 
-    public ObjectFilterPipe(final S storedObject, final Filter filter) {
-        super(storedObject, filter);
+    public ObjectFilterPipe(final S object, final Filter filter) {
+        super(filter);
+        this.object = object;
     }
 
     protected S processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             S s = this.starts.next();
-            if (this.compareObjectProperty(s)) {
+            if (this.compareObjects(this.object, s)) {
                 return s;
             }
         }
-        throw new NoSuchElementException();
     }
 }

@@ -28,7 +28,7 @@ public class OrFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>
     }
 
     public S processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             S s = this.starts.next();
             for (Pipe<S, Boolean> pipe : this.pipes) {
                 pipe.setStarts(new SingleIterator<S>(s));
@@ -37,7 +37,6 @@ public class OrFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>
                 }
             }
         }
-        throw new NoSuchElementException();
     }
 
 }

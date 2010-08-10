@@ -13,17 +13,19 @@ import java.util.NoSuchElementException;
  */
 public class LabelFilterPipe extends AbstractComparisonFilterPipe<Edge, String> {
 
-    public LabelFilterPipe(final String storedObject, final ComparisonFilterPipe.Filter filter) {
-        super(storedObject, filter);
+    private final String label;
+
+    public LabelFilterPipe(final String label, final ComparisonFilterPipe.Filter filter) {
+       super(filter);
+        this.label = label;
     }
 
     protected Edge processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             Edge edge = this.starts.next();
-            if (this.compareObjectProperty(edge.getLabel())) {
+            if (this.compareObjects(this.label, edge.getLabel())) {
                 return edge;
             }
         }
-        throw new NoSuchElementException();
     }
 }

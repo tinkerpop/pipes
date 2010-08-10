@@ -18,13 +18,12 @@ public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
     }
 
     public S processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             S s = this.starts.next();
             pipe.setStarts(new SingleIterator<S>(s));
             if (pipe.hasNext()) {
                 return s;
             }
         }
-        throw new NoSuchElementException();
     }
 }

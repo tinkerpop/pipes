@@ -11,17 +11,19 @@ import java.util.NoSuchElementException;
  */
 public class IdFilterPipe extends AbstractComparisonFilterPipe<Element, Object> {
 
-    public IdFilterPipe(final Object storedObject, final ComparisonFilterPipe.Filter filter) {
-        super(storedObject, filter);
+    private final Object id;
+
+    public IdFilterPipe(final Object id, final ComparisonFilterPipe.Filter filter) {
+        super(filter);
+        this.id = id;
     }
 
     protected Element processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             Element element = this.starts.next();
-            if (this.compareObjectProperty(element.getId())) {
+            if (this.compareObjects(this.id, element.getId())) {
                 return element;
             }
         }
-        throw new NoSuchElementException();
     }
 }

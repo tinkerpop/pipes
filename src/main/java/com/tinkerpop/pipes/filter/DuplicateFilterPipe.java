@@ -18,13 +18,12 @@ public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> implements Filter
     private final HashSet<S> historySet = new HashSet<S>();
 
     protected S processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             S s = this.starts.next();
             if (!this.historySet.contains(s)) {
                 this.historySet.add(s);
                 return s;
             }
         }
-        throw new NoSuchElementException();
     }
 }

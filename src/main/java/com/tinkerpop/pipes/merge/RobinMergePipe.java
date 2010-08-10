@@ -1,5 +1,7 @@
 package com.tinkerpop.pipes.merge;
 
+import com.tinkerpop.pipes.PipeHelper;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,10 +19,7 @@ public class RobinMergePipe<S> extends AbstractMergePipe<S> {
 
     public void setStarts(final Iterator<Iterator<S>> starts) {
         this.starts = starts;
-        while (this.starts.hasNext()) {
-            allStarts.add(this.starts.next());
-        }
-
+        PipeHelper.fillCollection(this.starts, this.allStarts);
     }
 
     protected S processNextStart() {

@@ -27,7 +27,7 @@ public class AndFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S
     }
 
     public S processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             S s = this.starts.next();
             boolean and = true;
             for (Pipe<S, Boolean> pipe : this.pipes) {
@@ -40,7 +40,6 @@ public class AndFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S
             if (and)
                 return s;
         }
-        throw new NoSuchElementException();
     }
 
 }
