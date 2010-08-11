@@ -42,7 +42,7 @@ public class OrFilterPipeTest extends TestCase {
         Vertex peter = graph.getVertex("6");
         VertexEdgePipe pipe0 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
         LabelFilterPipe pipe1 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        PropertyFilterPipe<Edge, Float> pipe2 = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN);
+        PropertyFilterPipe<Edge, Float> pipe2 = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN_EQUAL);
         OrFilterPipe<Edge> orFilterPipe = new OrFilterPipe<Edge>(new HasNextPipe<Edge>(pipe1), new HasNextPipe<Edge>(pipe2));
         Pipeline<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(pipe0, orFilterPipe);
         pipeline.setStarts(Arrays.asList(marko, peter, marko));
@@ -65,7 +65,7 @@ public class OrFilterPipeTest extends TestCase {
         Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
         FilterPipe<Edge> pipeA = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
         FilterPipe<Edge> pipeB = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        FilterPipe<Edge> pipeC = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN);
+        FilterPipe<Edge> pipeC = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN_EQUAL);
         FilterPipe<Edge> pipeD = new AndFilterPipe<Edge>(new HasNextPipe<Edge>(pipeB), new HasNextPipe<Edge>(pipeC));
         FilterPipe<Edge> pipe2 = new OrFilterPipe<Edge>(new HasNextPipe<Edge>(pipeA), new HasNextPipe<Edge>(pipeD));
         Pipeline<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(pipe1, pipe2);

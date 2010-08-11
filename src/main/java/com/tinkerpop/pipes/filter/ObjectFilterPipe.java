@@ -19,7 +19,7 @@ public class ObjectFilterPipe<S> extends AbstractComparisonFilterPipe<S, S> {
     protected S processNextStart() {
         while (true) {
             S s = this.starts.next();
-            if (this.compareObjects(this.object, s)) {
+            if (!this.compareObjects(s,this.object)) {
                 return s;
             }
         }

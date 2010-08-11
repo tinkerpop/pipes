@@ -25,7 +25,7 @@ public class PropertyFilterPipe<S extends Element, T> extends AbstractComparison
     protected S processNextStart() {
         while (true) {
             S element = this.starts.next();
-            if (this.compareObjects(this.value, (T) element.getProperty(this.key))) {
+            if (!this.compareObjects((T) element.getProperty(this.key),this.value)) {
                 return element;
             }
         }

@@ -23,7 +23,7 @@ public class LabelFilterPipe extends AbstractComparisonFilterPipe<Edge, String> 
     protected Edge processNextStart() {
         while (true) {
             Edge edge = this.starts.next();
-            if (this.compareObjects(this.label, edge.getLabel())) {
+            if (!this.compareObjects(edge.getLabel(),this.label)) {
                 return edge;
             }
         }

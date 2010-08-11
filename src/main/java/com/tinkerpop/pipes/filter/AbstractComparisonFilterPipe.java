@@ -55,27 +55,27 @@ public abstract class AbstractComparisonFilterPipe<S, T> extends AbstractPipe<S,
         switch (this.filter) {
             case EQUAL:
                 if (null == leftObject)
-                    return rightObject != null;
-                return !leftObject.equals(rightObject);
-            case NOT_EQUAL:
-                if (null == leftObject)
                     return rightObject == null;
                 return leftObject.equals(rightObject);
+            case NOT_EQUAL:
+                if (null == leftObject)
+                    return rightObject != null;
+                return !leftObject.equals(rightObject);
             case GREATER_THAN:
                 if (null == leftObject || rightObject == null)
-                    return false;
-                return ((Comparable) leftObject).compareTo(rightObject) > 0;
+                    return true;
+                return ((Comparable) leftObject).compareTo(rightObject) == 1;
             case LESS_THAN:
                 if (null == leftObject || rightObject == null)
-                    return false;
-                return ((Comparable) leftObject).compareTo(rightObject) < 0;
+                    return true;
+                return ((Comparable) leftObject).compareTo(rightObject) == -1;
             case GREATER_THAN_EQUAL:
                 if (null == leftObject || rightObject == null)
-                    return false;
+                    return true;
                 return ((Comparable) leftObject).compareTo(rightObject) >= 0;
             case LESS_THAN_EQUAL:
                 if (null == leftObject || rightObject == null)
-                    return false;
+                    return true;
                 return ((Comparable) leftObject).compareTo(rightObject) <= 0;
             default:
                 throw new RuntimeException("Invalid state as no valid filter was provided");

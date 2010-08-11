@@ -21,7 +21,7 @@ public class IdFilterPipe extends AbstractComparisonFilterPipe<Element, Object> 
     protected Element processNextStart() {
         while (true) {
             Element element = this.starts.next();
-            if (this.compareObjects(this.id, element.getId())) {
+            if (!this.compareObjects(element.getId(),this.id)) {
                 return element;
             }
         }
