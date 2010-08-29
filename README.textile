@@ -4,6 +4,6 @@ Pipes is a graph-based data flow framework written in Java 1.6+. A process graph
 
 The following is a list of extensions to the core Pipes framework:
 
-* "Property Graph Model":http://blueprints.tinkerpop.com: a collection of single-step traversals and filters can be composed to yield complex graph traversals data graphs
+* "Property Graph Model":http://blueprints.tinkerpop.com: single-step traversals and filters can be composed to yield complex graph traversals over data graphs
 
 The documentation for Pipes can be found at this "location":http://pipes.tinkerpop.com. Finally, please visit "TinkerPop":http://tinkerpop.com for other software products.
