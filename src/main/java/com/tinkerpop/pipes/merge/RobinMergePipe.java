@@ -30,7 +30,7 @@ public class RobinMergePipe<S> extends AbstractMergePipe<S> {
                 return starts.next();
             } else {
                 this.allStarts.remove(this.currentStarts);
-                if (this.allStarts.size() == 1)
+                if (this.allStarts.size() == this.currentStarts)
                     this.currentStarts = 0;
                 return this.processNextStart();
             }
