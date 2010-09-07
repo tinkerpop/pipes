@@ -25,12 +25,20 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     private E currentEnd;
     private boolean available = false;
 
-    public void setStarts(final Iterator<S> starts) {
+    public void setStarts(final Pipe<?, S> starts) {
         this.starts = starts;
     }
 
+    public void setStarts(final Iterator<S> starts) {
+        IdentityPipe<S> pipe = new IdentityPipe<S>();
+        pipe.setStarts(starts);
+        this.starts = pipe;
+    }
+
     public void setStarts(final Iterable<S> starts) {
-        this.setStarts(starts.iterator());
+        IdentityPipe<S> pipe = new IdentityPipe<S>();
+        pipe.setStarts(starts.iterator());
+        this.starts = pipe;
     }
 
     public ArrayList path() {

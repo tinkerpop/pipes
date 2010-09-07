@@ -32,9 +32,9 @@ public class PipelineTest extends TestCase {
             Edge e = pipeline.next();
             assertTrue(e.getInVertex().getId().equals("4") || e.getInVertex().getId().equals("2") || e.getInVertex().getId().equals("3"));
             List path = pipeline.path();
-            assertTrue(path.equals(Arrays.asList(graph.getEdge("7"))) ||
-                       path.equals(Arrays.asList(graph.getEdge("9"))) ||
-                       path.equals(Arrays.asList(graph.getEdge("8"))));
+            assertTrue(path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("7"))) ||
+                       path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("9"))) ||
+                       path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("8"))));
             counter++;
         }
         assertEquals(3, counter);
@@ -56,7 +56,7 @@ public class PipelineTest extends TestCase {
             assertEquals(pipeline.next().getId(), "3");
             List path = pipeline.path();
             if (counter == 0) {
-              assertEquals(path, Arrays.asList(graph.getEdge(9), graph.getVertex(3)));
+              assertEquals(path, Arrays.asList(graph.getVertex("1"), graph.getEdge(9), graph.getVertex(3)));
             }
             counter++;
         }
