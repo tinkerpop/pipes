@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import com.tinkerpop.pipes.Path;
+import com.tinkerpop.pipes.Pipe;
 
 /**
  * The RobinMergePipe will, in a round robin fashion, process an object from each pipe one in a row until all pipes are exhausted.
@@ -14,6 +16,7 @@ import java.util.NoSuchElementException;
  */
 public class RobinMergePipe<S> extends AbstractMergePipe<S> {
 
+    private Iterator<S> currentPath;
     private final List<Iterator<S>> allStarts = new ArrayList<Iterator<S>>();
     private int currentStarts = 0;
 
@@ -22,11 +25,25 @@ public class RobinMergePipe<S> extends AbstractMergePipe<S> {
         PipeHelper.fillCollection(this.starts, this.allStarts);
     }
 
+    public ArrayList path() {
+        if (this.currentPath != null) {
+            if (this.currentPath instanceof Path) {
+                Path path = (Path)this.currentPath;
+                return path.path();
+            } else {
+                return new ArrayList();
+            }
+        } else {
+            throw new NoSuchElementException("Path can not be returned until the iterator has been incremented.");
+        }
+    }
+
     protected S processNextStart() {
         if (this.allStarts.size() > 0) {
             Iterator<S> starts = this.allStarts.get(this.currentStarts);
             if (starts.hasNext()) {
                 this.currentStarts = ++this.currentStarts % this.allStarts.size();
+                this.currentPath = starts;
                 return starts.next();
             } else {
                 this.allStarts.remove(this.currentStarts);

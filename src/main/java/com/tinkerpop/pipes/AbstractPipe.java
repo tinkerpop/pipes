@@ -24,21 +24,24 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     private E nextEnd;
     private E currentEnd;
     private boolean available = false;
+    protected boolean ensurePipeStarts = true;
 
     public void setStarts(final Pipe<?, S> starts) {
         this.starts = starts;
     }
 
     public void setStarts(final Iterator<S> starts) {
-        IdentityPipe<S> pipe = new IdentityPipe<S>();
-        pipe.setStarts(starts);
-        this.starts = pipe;
+        if (ensurePipeStarts) {
+            IdentityPipe<S> pipe = new IdentityPipe<S>();
+            pipe.setStarts(starts);
+            this.starts = pipe;
+        } else {
+            this.starts = starts;
+        }
     }
 
     public void setStarts(final Iterable<S> starts) {
-        IdentityPipe<S> pipe = new IdentityPipe<S>();
-        pipe.setStarts(starts.iterator());
-        this.starts = pipe;
+        this.setStarts(starts.iterator());
     }
 
     public ArrayList path() {

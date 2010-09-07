@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.merge;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.ArrayList;
 
 /**
  * An ExhaustiveMergePipe will exhaust all the objects in one of its incoming pipes before moving to the next incoming pipe.
@@ -12,6 +13,12 @@ import java.util.NoSuchElementException;
 public class ExhaustiveMergePipe<S> extends AbstractMergePipe<S> {
 
     protected Iterator<S> currentEnds;
+
+    public ArrayList path() {
+        // I think it's impossible to return the path without
+        // precomputing them all from an exhaustive merge.
+        return new ArrayList();
+    }
 
     protected S processNextStart() {
         if (null != this.currentEnds && this.currentEnds.hasNext()) {

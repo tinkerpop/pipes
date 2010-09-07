@@ -9,4 +9,7 @@ import java.util.Iterator;
  */
 public abstract class AbstractMergePipe<S> extends AbstractPipe<Iterator<S>, S> implements MergePipe<S> {
 
+    public AbstractMergePipe() {
+        this.ensurePipeStarts = false;
+    }
 }
