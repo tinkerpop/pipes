@@ -64,6 +64,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public E next() {
+        this.currentEnd = null;
         if (this.available) {
             this.available = false;
             this.currentEnd = this.nextEnd;

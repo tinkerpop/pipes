@@ -2,6 +2,8 @@ package com.tinkerpop.pipes.split;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.Path;
+import java.util.ArrayList;
 
 import java.util.*;
 
@@ -35,6 +37,16 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
 
     protected S processNextStart() throws NoSuchElementException {
         return this.starts.next();
+    }
+
+    public ArrayList path() {
+        if (this.starts instanceof Path) {
+            Path path = (Path)this.starts;
+            return path.path();
+        } else {
+            ArrayList pathElements = new ArrayList();
+            return pathElements;
+        }
     }
 
     public class SplitQueuePipe<S> implements Pipe<S, S> {
@@ -84,6 +96,10 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
                         return;
                 }
             }
+        }
+
+        public ArrayList path() {
+            return splitPipe.path();
         }
 
         public void setStarts(final Iterator<S> starts) {
