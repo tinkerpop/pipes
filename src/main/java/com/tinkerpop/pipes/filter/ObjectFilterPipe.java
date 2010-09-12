@@ -3,7 +3,7 @@ package com.tinkerpop.pipes.filter;
 import java.util.NoSuchElementException;
 
 /**
- * The ObjectFilterPipe will either allow or disallow all objects that pass through it depending on the result of the compareObjectProperty() method.
+ * The ObjectFilterPipe will either allow or disallow all objects that pass through it depending on the result of the compareObject() method.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

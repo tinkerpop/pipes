@@ -7,6 +7,8 @@ import com.tinkerpop.pipes.SingleIterator;
 import java.util.NoSuchElementException;
 
 /**
+ * FutureFilterPipe will allow an object to pass through it if the object has an output from the pipe provided in the constructor of the FutureFilterPipe.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
