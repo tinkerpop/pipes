@@ -40,6 +40,8 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
     }
 
     public ArrayList path() {
+        System.out.print(this);
+
         if (this.starts instanceof Path) {
             Path path = (Path)this.starts;
             return path.path();
@@ -99,6 +101,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         }
 
         public ArrayList path() {
+            System.out.println(this);
             return splitPipe.path();
         }
 

@@ -45,6 +45,10 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public ArrayList path() {
+        System.out.print(this);
+        System.out.print(" = ");
+        System.out.println(this.currentEnd);
+
         if (this.starts instanceof Path) {
             Path path = (Path)this.starts;
             ArrayList pathElements = path.path();
