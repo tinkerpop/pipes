@@ -48,8 +48,9 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         if (this.starts instanceof Path) {
             Path path = (Path)this.starts;
             ArrayList pathElements = path.path();
-            if (pathElements.get(pathElements.size() - 1) != this.currentEnd) {
-              pathElements.add(this.currentEnd);
+            int size = pathElements.size();
+            if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
+                pathElements.add(this.currentEnd);
             }
             return pathElements;
         } else {
