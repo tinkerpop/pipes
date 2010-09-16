@@ -94,7 +94,6 @@
                 </executions>
                 <configuration>
                     <descriptors>
-                        <descriptor>src/assembly/standalone.xml</descriptor>
                         <descriptor>src/assembly/distribution.xml</descriptor>
                     </descriptors>
                     <finalName>pipes-${project.version}</finalName>
