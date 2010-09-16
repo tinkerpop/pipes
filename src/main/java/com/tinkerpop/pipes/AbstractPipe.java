@@ -25,6 +25,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     private E currentEnd;
     private boolean available = false;
     protected boolean ensurePipeStarts = true;
+    protected boolean pathEnabled = false;
 
     public void setStarts(final Pipe<?, S> starts) {
         this.starts = starts;
@@ -44,7 +45,18 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         this.setStarts(starts.iterator());
     }
 
+    public void enablePath() {
+        this.pathEnabled = true;
+        if (this.starts instanceof Path) {
+            Path path = (Path)this.starts;
+            path.enablePath();
+        }
+    }
+
     public ArrayList path() {
+        if (!this.pathEnabled) {
+            throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
+        }
         System.out.print(this);
         System.out.print(" = ");
         System.out.println(this.currentEnd);

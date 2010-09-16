@@ -117,8 +117,12 @@ public class Pipeline<S, E> implements Pipe<S, E> {
         return endPipe.next();
     }
 
+    public void enablePath() {
+        endPipe.enablePath();
+    }
+
     public ArrayList path() {
-      return endPipe.path();
+        return endPipe.path();
     }
 
     /**

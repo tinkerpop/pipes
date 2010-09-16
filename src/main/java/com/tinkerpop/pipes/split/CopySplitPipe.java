@@ -18,6 +18,9 @@ public class CopySplitPipe<S> extends AbstractSplitPipe<S> {
             S item = this.next();
             for (SplitQueuePipe<S> split : this.splits) {
                 split.add(item);
+                if (pathEnabled) {
+                    split.addPath(this.path());
+                }
             }
         }
     }
