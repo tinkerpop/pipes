@@ -39,13 +39,6 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         return this.starts.next();
     }
 
-    public void enablePath() {
-        super.enablePath();
-        for (SplitQueuePipe<S> split : this.splits) {
-            split.enablePath();
-        }
-    }
-
     public ArrayList path() {
         System.out.print(this);
 
@@ -63,8 +56,8 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         private final Queue<S> queue = new LinkedList<S>();
         private final SplitPipe<S> splitPipe;
 
-        private final Queue<S> pathQueue = new LinkedList<ArrayList>();
-        private final boolean pathEnabled = false;
+        private final Queue<ArrayList> pathQueue = new LinkedList<ArrayList>();
+        private boolean pathEnabled = false;
         private ArrayList currentPath;
 
         public SplitQueuePipe(final SplitPipe<S> splitPipe) {
@@ -119,6 +112,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         }
 
         public void enablePath() {
+            this.splitPipe.enablePath();
             this.pathEnabled = true;
         }
 

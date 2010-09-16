@@ -46,10 +46,12 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public void enablePath() {
-        this.pathEnabled = true;
-        if (this.starts instanceof Path) {
-            Path path = (Path)this.starts;
-            path.enablePath();
+        if (!this.pathEnabled) {
+            this.pathEnabled = true;
+            if (this.starts instanceof Path) {
+                Path path = (Path)this.starts;
+                path.enablePath();
+            }
         }
     }
 

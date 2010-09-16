@@ -12,14 +12,6 @@ import java.util.ArrayList;
  */
 public class ExhaustiveMergePipe<S> extends AbstractMergePipe<S> {
 
-    protected Iterator<S> currentEnds;
-
-    public ArrayList path() {
-        // I think it's impossible to return the path without
-        // precomputing them all from an exhaustive merge.
-        return new ArrayList();
-    }
-
     protected S processNextStart() {
         if (null != this.currentEnds && this.currentEnds.hasNext()) {
             return this.currentEnds.next();

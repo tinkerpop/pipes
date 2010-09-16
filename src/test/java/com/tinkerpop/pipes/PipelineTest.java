@@ -28,6 +28,7 @@ public class PipelineTest extends TestCase {
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         int counter = 0;
+        pipeline.enablePath();
         while (pipeline.hasNext()) {
             Edge e = pipeline.next();
             assertTrue(e.getInVertex().getId().equals("4") || e.getInVertex().getId().equals("2") || e.getInVertex().getId().equals("3"));
@@ -52,6 +53,7 @@ public class PipelineTest extends TestCase {
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         int counter = 0;
+        pipeline.enablePath();
         while (pipeline.hasNext()) {
             assertEquals(pipeline.next().getId(), "3");
             List path = pipeline.path();

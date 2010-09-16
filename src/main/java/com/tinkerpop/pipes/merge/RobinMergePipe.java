@@ -16,7 +16,6 @@ import com.tinkerpop.pipes.Pipe;
  */
 public class RobinMergePipe<S> extends AbstractMergePipe<S> {
 
-    private Iterator<S> currentPath;
     private final List<Iterator<S>> allStarts = new ArrayList<Iterator<S>>();
     private int currentStarts = 0;
 
@@ -26,9 +25,9 @@ public class RobinMergePipe<S> extends AbstractMergePipe<S> {
     }
 
     public ArrayList path() {
-        if (this.currentPath != null) {
-            if (this.currentPath instanceof Path) {
-                Path path = (Path)this.currentPath;
+        if (this.currentEnds != null) {
+            if (this.currentEnds instanceof Path) {
+                Path path = (Path)this.currentEnds;
                 return path.path();
             } else {
                 return new ArrayList();
@@ -43,7 +42,7 @@ public class RobinMergePipe<S> extends AbstractMergePipe<S> {
             Iterator<S> starts = this.allStarts.get(this.currentStarts);
             if (starts.hasNext()) {
                 this.currentStarts = ++this.currentStarts % this.allStarts.size();
-                this.currentPath = starts;
+                this.currentEnds = starts;
                 return starts.next();
             } else {
                 this.allStarts.remove(this.currentStarts);
