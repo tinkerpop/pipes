@@ -17,8 +17,8 @@ public class RobinMergePipe<S> extends AbstractMergePipe<S> {
         if (this.allStarts.size() > 0) {
             Iterator<S> starts = this.allStarts.get(this.currentStarts);
             if (starts.hasNext()) {
-                this.currentStarts = ++this.currentStarts % this.allStarts.size();
                 this.currentEnds = starts;
+                this.currentStarts = ++this.currentStarts % this.allStarts.size();
                 return starts.next();
             } else {
                 this.allStarts.remove(this.currentStarts);
