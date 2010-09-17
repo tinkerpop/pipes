@@ -112,6 +112,8 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         }
 
         public void enablePath() {
+            System.out.print("Enable SplitQueuePipe Path: ");
+            System.out.println(this);
             this.splitPipe.enablePath();
             this.pathEnabled = true;
         }

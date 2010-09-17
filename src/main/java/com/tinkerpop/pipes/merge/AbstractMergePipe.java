@@ -1,10 +1,13 @@
 package com.tinkerpop.pipes.merge;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.PipeHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 import com.tinkerpop.pipes.Path;
+import java.util.NoSuchElementException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -12,18 +15,24 @@ import com.tinkerpop.pipes.Path;
 public abstract class AbstractMergePipe<S> extends AbstractPipe<Iterator<S>, S> implements MergePipe<S> {
 
     protected Iterator<S> currentEnds;
+    protected final List<Iterator<S>> allStarts = new ArrayList<Iterator<S>>();
 
     public AbstractMergePipe() {
         this.ensurePipeStarts = false;
     }
 
+    public void setStarts(final Iterator<Iterator<S>> starts) {
+        PipeHelper.fillCollection(starts, this.allStarts);
+        this.starts = this.allStarts.iterator();
+    }
+
     public void enablePath() {
         if (!this.pathEnabled) {
             this.pathEnabled = true;
-            for (Iterator<S> start : this.starts) {
+            for (Iterator<S> start : this.allStarts) {
                 if (start instanceof Path) {
                     Path path = (Path)start;
-                    start.enablePath();
+                    path.enablePath();
                 }
             }
         }

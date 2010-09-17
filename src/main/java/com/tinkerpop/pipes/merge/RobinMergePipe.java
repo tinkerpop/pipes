@@ -1,12 +1,7 @@
 package com.tinkerpop.pipes.merge;
 
-import com.tinkerpop.pipes.PipeHelper;
-
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
-import com.tinkerpop.pipes.Path;
 import com.tinkerpop.pipes.Pipe;
 
 /**
@@ -16,26 +11,7 @@ import com.tinkerpop.pipes.Pipe;
  */
 public class RobinMergePipe<S> extends AbstractMergePipe<S> {
 
-    private final List<Iterator<S>> allStarts = new ArrayList<Iterator<S>>();
     private int currentStarts = 0;
-
-    public void setStarts(final Iterator<Iterator<S>> starts) {
-        this.starts = starts;
-        PipeHelper.fillCollection(this.starts, this.allStarts);
-    }
-
-    public ArrayList path() {
-        if (this.currentEnds != null) {
-            if (this.currentEnds instanceof Path) {
-                Path path = (Path)this.currentEnds;
-                return path.path();
-            } else {
-                return new ArrayList();
-            }
-        } else {
-            throw new NoSuchElementException("Path can not be returned until the iterator has been incremented.");
-        }
-    }
 
     protected S processNextStart() {
         if (this.allStarts.size() > 0) {
