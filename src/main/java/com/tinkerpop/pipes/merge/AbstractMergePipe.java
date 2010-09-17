@@ -45,10 +45,7 @@ public abstract class AbstractMergePipe<S> extends AbstractPipe<Iterator<S>, S> 
         if (this.currentEnds != null) {
             if (this.currentEnds instanceof Path) {
                 Path path = (Path)this.currentEnds;
-                System.out.println("get path for merge:");
                 ArrayList pathElements = path.path();
-                System.out.print("merge path: ");
-                System.out.println(pathElements);
                 return pathElements;
             } else {
                 return new ArrayList();

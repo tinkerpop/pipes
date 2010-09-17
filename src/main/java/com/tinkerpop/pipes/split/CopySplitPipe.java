@@ -21,11 +21,9 @@ public class CopySplitPipe<S> extends AbstractSplitPipe<S> {
             S item = this.next();
             ArrayList splitPath = null;
             if (pathEnabled) {
-                System.out.println(">>>>>> queue path for split " + this + " >>>>>>>");
                 Iterator<SplitQueuePipe<S>> iter = this.splits.iterator();
                 SplitQueuePipe<S> split = iter.next();
                 splitPath = split.splitPath();
-                System.out.println("<<<<<< queue path for split " + this + " <<<<<<<");
             }
             for (SplitQueuePipe<S> split : this.splits) {
                 split.add(item);

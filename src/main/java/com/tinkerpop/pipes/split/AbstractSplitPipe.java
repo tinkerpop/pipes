@@ -42,10 +42,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
     public ArrayList path() {
         if (this.starts instanceof Path) {
             Path path = (Path)this.starts;
-            System.out.println("get split path");
             ArrayList pathElements = path.path();
-            System.out.print("split path: ");
-            System.out.println(pathElements);
             return pathElements;
         } else {
             ArrayList pathElements = new ArrayList();
@@ -75,11 +72,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         }
 
         public void addPath(ArrayList path) {
-            System.out.println("Added path:\n  " + path + "\n  to:");
             this.pathQueue.add((ArrayList)path.clone());
-            for (ArrayList p : this.pathQueue) {
-              System.out.println("  " + p);
-            }
         }
 
         public void remove() {
@@ -130,8 +123,6 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
             if (!this.pathEnabled) {
                 throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
             }
-            System.out.print("queue path: ");
-            System.out.println(this.currentPath);
             return this.currentPath;
         }
 
