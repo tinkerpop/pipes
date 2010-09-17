@@ -47,8 +47,6 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     public void enablePath() {
         if (!this.pathEnabled) {
-            System.out.print("Enable AbstractPipe Path: ");
-            System.out.println(this);
             this.pathEnabled = true;
             if (this.starts instanceof Path) {
                 Path path = (Path)this.starts;
@@ -61,10 +59,6 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         if (!this.pathEnabled) {
             throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
         }
-        System.out.print(this);
-        System.out.print(" = ");
-        System.out.println(this.currentEnd);
-
         if (this.starts instanceof Path) {
             Path path = (Path)this.starts;
             ArrayList pathElements = path.path();
