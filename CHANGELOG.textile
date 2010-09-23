@@ -19,7 +19,6 @@ bc. <dependency>
   <version>0.2-SNAPSHOT</version>
 </dependency>
 
-* Initial release as the core engine for Gremlin 0.5
 
 ==<hr/>==
 
