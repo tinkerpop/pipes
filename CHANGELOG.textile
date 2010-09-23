@@ -9,6 +9,20 @@ bc. <repository>
 
 ==<hr/>==
 
+!http://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-clogged-pipe.png!
+
+h3. Version 0.2 (Clogged -- NOT OFFICIALLY RELEASED YET)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>0.2-SNAPSHOT</version>
+</dependency>
+
+* Initial release as the core engine for Gremlin 0.5
+
+==<hr/>==
+
 !http://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-leaky-pipe.png!
 
 h3. Version 0.1 (Leaky -- September 22, 2010)
