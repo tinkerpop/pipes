@@ -9,7 +9,8 @@
     <packaging>jar</packaging>
     <url>http://pipes.tinkerpop.com</url>
     <name>Pipes: A Data Flow Framework using Process Graphs</name>
-    <description>A process graph is composed of a set of process vertices connected to one another by a set of communication edges.
+    <description>A process graph is composed of a set of process vertices connected to one another by a set of
+        communication edges.
         Pipes supports the splitting, merging, and transformation of data from input to output.
     </description>
     <developers>
@@ -95,6 +96,7 @@
                 <configuration>
                     <descriptors>
                         <descriptor>src/assembly/distribution.xml</descriptor>
+                        <descriptor>src/assembly/standalone.xml</descriptor>
                     </descriptors>
                     <finalName>pipes-${project.version}</finalName>
                     <outputDirectory>target</outputDirectory>
