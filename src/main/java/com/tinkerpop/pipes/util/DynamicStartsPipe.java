@@ -34,14 +34,14 @@ public class DynamicStartsPipe<S> extends AbstractPipe<S, S> {
     public S next() {
         if (this.queue.isEmpty()) {
             this.prepareNext();
+            if (this.queue.isEmpty())
+                throw new NoSuchElementException();
         }
-        if (this.queue.isEmpty())
-            throw new NoSuchElementException();
-        else {
-            S temp = queue.remove();
-            this.prepareNext();
-            return temp;
-        }
+
+        S temp = queue.remove();
+        this.prepareNext();
+        return temp;
+
     }
 
     private void prepareNext() {
@@ -51,7 +51,7 @@ public class DynamicStartsPipe<S> extends AbstractPipe<S, S> {
         }
     }
 
-    protected S processNextStart() { 
+    protected S processNextStart() {
         throw new UnsupportedOperationException();
     }
 }

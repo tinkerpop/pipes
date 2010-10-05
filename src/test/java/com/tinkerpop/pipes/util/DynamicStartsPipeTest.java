@@ -27,7 +27,8 @@ public class DynamicStartsPipeTest extends TestCase {
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
-            System.out.println(pipe.next());
+            pipe.next();
+            //System.out.println(pipe.next());
             counter++;
             if (counter == 1) {
                 pipe.addStart("povel");
@@ -45,7 +46,7 @@ public class DynamicStartsPipeTest extends TestCase {
         pipe.setStarts(names);
         int counter = 0;
         for (String name : pipe) {
-            System.out.println(name);
+            //System.out.println(name);
             counter++;
             if (counter == 1) {
                 pipe.addStart("povel");
@@ -56,4 +57,5 @@ public class DynamicStartsPipeTest extends TestCase {
         }
         assertEquals(counter, 5);
     }
+    
 }
