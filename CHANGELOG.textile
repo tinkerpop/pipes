@@ -19,6 +19,8 @@ bc. <dependency>
   <version>0.2-SNAPSHOT</version>
 </dependency>
 
+* Fixed 'reset pipe' issue in @FutureFilterPipe@
+
 
 ==<hr/>==
 

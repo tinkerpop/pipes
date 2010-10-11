@@ -1,7 +1,16 @@
 package com.tinkerpop.pipes.filter;
 
+import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.BaseTest;
 import com.tinkerpop.pipes.IdentityPipe;
+import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.Pipeline;
+import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
+import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
+import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,5 +43,22 @@ public class FutureFilterPipeTest extends BaseTest {
             assertTrue(name.equals("peter") || name.equals("josh"));
         }
         assertEquals(counter, 2);
+    }
+
+    public void testGraphFutureFilter() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex(1);
+        Pipe outEPipe = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe inVPipe = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        Pipe<Edge, Edge> futureFilterPipe = new FutureFilterPipe<Edge>(new Pipeline<Edge, Vertex>(inVPipe, propertyFilterPipe));
+        Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(outEPipe, futureFilterPipe);
+        pipeline.setStarts(Arrays.asList(marko));
+        int counter = 0;
+        while (pipeline.hasNext()) {
+            counter++;
+            assertEquals(pipeline.next().getId(), "9");
+        }
+        assertEquals(counter, 1);
     }
 }
