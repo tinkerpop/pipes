@@ -19,8 +19,6 @@ bc. <dependency>
   <version>0.2-SNAPSHOT</version>
 </dependency>
 
-* Fixed 'reset pipe' issue in @FutureFilterPipe@
-
 
 ==<hr/>==
 
@@ -31,7 +29,7 @@ h3. Version 0.1.1 (Leaky -- October 28, 2010)
 bc. <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.1.1</version>
 </dependency>
 
 * Fixed 'reset pipe' issue in @FutureFilterPipe@
