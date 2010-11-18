@@ -2,6 +2,7 @@ package com.tinkerpop.pipes;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.ArrayList;
 
 /**
  * An AbstractPipe provides most of the functionality that is repeated in every instance of a Pipe.
@@ -21,14 +22,56 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     protected Iterator<S> starts;
     private E nextEnd;
+    private E currentEnd;
     private boolean available = false;
+    protected boolean ensurePipeStarts = true;
+    protected boolean pathEnabled = false;
+
+    public void setStarts(final Pipe<?, S> starts) {
+        this.starts = starts;
+    }
 
     public void setStarts(final Iterator<S> starts) {
-        this.starts = starts;
+        if (ensurePipeStarts) {
+            IdentityPipe<S> pipe = new IdentityPipe<S>();
+            pipe.setStarts(starts);
+            this.starts = pipe;
+        } else {
+            this.starts = starts;
+        }
     }
 
     public void setStarts(final Iterable<S> starts) {
         this.setStarts(starts.iterator());
+    }
+
+    public void enablePath() {
+        if (!this.pathEnabled) {
+            this.pathEnabled = true;
+            if (this.starts instanceof Path) {
+                Path path = (Path)this.starts;
+                path.enablePath();
+            }
+        }
+    }
+
+    public ArrayList path() {
+        if (!this.pathEnabled) {
+            throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
+        }
+        if (this.starts instanceof Path) {
+            Path path = (Path)this.starts;
+            ArrayList pathElements = path.path();
+            int size = pathElements.size();
+            if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
+                pathElements.add(this.currentEnd);
+            }
+            return pathElements;
+        } else {
+            ArrayList pathElements = new ArrayList();
+            pathElements.add(this.currentEnd);
+            return pathElements;
+        }
     }
 
     public void remove() {
@@ -36,11 +79,14 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public E next() {
+        this.currentEnd = null;
         if (this.available) {
             this.available = false;
+            this.currentEnd = this.nextEnd;
             return this.nextEnd;
         } else {
-            return this.processNextStart();
+            this.currentEnd = this.processNextStart();
+            return this.currentEnd;
         }
     }
 

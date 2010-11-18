@@ -9,7 +9,7 @@ import java.util.Iterator;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
+public interface Pipe<S, E> extends Path, Iterator<E>, Iterable<E> {
 
     /**
      * Set an iterator of S objects to the head (start) of the pipe.

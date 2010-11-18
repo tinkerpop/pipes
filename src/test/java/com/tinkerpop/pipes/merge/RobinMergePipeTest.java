@@ -39,6 +39,28 @@ public class RobinMergePipeTest extends BaseTest {
         Assert.assertEquals(ends.get(6), "rodriguez");
     }
 
+    public void testRobinMergePipeLastEmpty() {
+        RobinMergePipe<String> pipe = new RobinMergePipe<String>();
+        List<String> marko = Arrays.asList("marko");
+        List<String> josh = Arrays.asList("joshua", "shinavier");
+        List<String> peter = Arrays.asList();
+        pipe.setStarts(Arrays.asList(marko.iterator(), josh.iterator(), peter.iterator()).iterator());
+        Assert.assertTrue(pipe.hasNext());
+        int counter = 0;
+        List<String> ends = new ArrayList<String>();
+        while (pipe.hasNext()) {
+            counter++;
+            String name = pipe.next();
+            Assert.assertTrue(marko.contains(name) || peter.contains(name) || josh.contains(name));
+            ends.add(name);
+        }
+        Assert.assertEquals(counter, 3);
+        Assert.assertEquals(counter, ends.size());
+        Assert.assertEquals(ends.get(0), "marko");
+        Assert.assertEquals(ends.get(1), "joshua");
+        Assert.assertEquals(ends.get(2), "shinavier");
+    }
+
     public void testRobinMergePipeSomeEmpty() {
         RobinMergePipe<String> pipe = new RobinMergePipe<String>();
         List<String> marko = Arrays.asList("marko");

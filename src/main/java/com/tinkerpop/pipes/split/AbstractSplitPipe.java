@@ -2,6 +2,8 @@ package com.tinkerpop.pipes.split;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.Path;
+import java.util.ArrayList;
 
 import java.util.*;
 
@@ -37,10 +39,25 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         return this.starts.next();
     }
 
+    public ArrayList path() {
+        if (this.starts instanceof Path) {
+            Path path = (Path)this.starts;
+            ArrayList pathElements = path.path();
+            return pathElements;
+        } else {
+            ArrayList pathElements = new ArrayList();
+            return pathElements;
+        }
+    }
+
     public class SplitQueuePipe<S> implements Pipe<S, S> {
 
         private final Queue<S> queue = new LinkedList<S>();
         private final SplitPipe<S> splitPipe;
+
+        private final Queue<ArrayList> pathQueue = new LinkedList<ArrayList>();
+        private boolean pathEnabled = false;
+        private ArrayList currentPath;
 
         public SplitQueuePipe(final SplitPipe<S> splitPipe) {
             this.splitPipe = splitPipe;
@@ -48,6 +65,14 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
 
         public void add(final S element) {
             this.queue.add(element);
+        }
+
+        public ArrayList splitPath() {
+            return splitPipe.path();
+        }
+
+        public void addPath(ArrayList path) {
+            this.pathQueue.add((ArrayList)path.clone());
         }
 
         public void remove() {
@@ -71,6 +96,9 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
                 throw new NoSuchElementException();
             else {
                 S temp = this.queue.remove();
+                if (pathEnabled) {
+                    this.currentPath = this.pathQueue.remove();
+                }
                 this.prepareNext();
                 return temp;
             }
@@ -84,6 +112,18 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
                         return;
                 }
             }
+        }
+
+        public void enablePath() {
+            this.splitPipe.enablePath();
+            this.pathEnabled = true;
+        }
+
+        public ArrayList path() {
+            if (!this.pathEnabled) {
+                throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
+            }
+            return this.currentPath;
         }
 
         public void setStarts(final Iterator<S> starts) {

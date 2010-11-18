@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.merge;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.ArrayList;
 
 /**
  * An ExhaustiveMergePipe will exhaust all the objects in one of its incoming pipes before moving to the next incoming pipe.
@@ -10,8 +11,6 @@ import java.util.NoSuchElementException;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class ExhaustiveMergePipe<S> extends AbstractMergePipe<S> {
-
-    protected Iterator<S> currentEnds;
 
     protected S processNextStart() {
         if (null != this.currentEnds && this.currentEnds.hasNext()) {

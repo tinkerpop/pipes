@@ -28,9 +28,14 @@ public class PipelineTest extends TestCase {
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         int counter = 0;
+        pipeline.enablePath();
         while (pipeline.hasNext()) {
             Edge e = pipeline.next();
             assertTrue(e.getInVertex().getId().equals("4") || e.getInVertex().getId().equals("2") || e.getInVertex().getId().equals("3"));
+            List path = pipeline.path();
+            assertTrue(path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("7"))) ||
+                       path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("9"))) ||
+                       path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("8"))));
             counter++;
         }
         assertEquals(3, counter);
@@ -48,8 +53,13 @@ public class PipelineTest extends TestCase {
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         int counter = 0;
+        pipeline.enablePath();
         while (pipeline.hasNext()) {
             assertEquals(pipeline.next().getId(), "3");
+            List path = pipeline.path();
+            if (counter == 0) {
+              assertEquals(path, Arrays.asList(graph.getVertex("1"), graph.getEdge(9), graph.getVertex(3)));
+            }
             counter++;
         }
         assertEquals(1, counter);

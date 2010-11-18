@@ -17,7 +17,11 @@ public class RobinSplitPipe<S> extends AbstractSplitPipe<S> {
         final int splitSize = this.splits.size();
         for (int i = 0; i < splitSize; i++) {
             if (this.hasNext()) {
-                this.splits.get(this.currentSplit).add(this.next());
+                SplitQueuePipe<S> split = this.splits.get(this.currentSplit);
+                split.add(this.next());
+                if (pathEnabled) {
+                    split.addPath(split.splitPath());
+                }
                 this.currentSplit = ++this.currentSplit % splitSize;
             } else {
                 break;
