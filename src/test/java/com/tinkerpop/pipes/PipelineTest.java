@@ -3,17 +3,17 @@ package com.tinkerpop.pipes;
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerEdge;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerVertex;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
 import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
 import com.tinkerpop.pipes.pgm.LabelFilterPipe;
+import com.tinkerpop.pipes.pgm.PropertyPipe;
 import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 import junit.framework.TestCase;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
@@ -33,9 +33,7 @@ public class PipelineTest extends TestCase {
             Edge e = pipeline.next();
             assertTrue(e.getInVertex().getId().equals("4") || e.getInVertex().getId().equals("2") || e.getInVertex().getId().equals("3"));
             List path = pipeline.path();
-            assertTrue(path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("7"))) ||
-                       path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("9"))) ||
-                       path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("8"))));
+            assertTrue(path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("7"))) || path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("9"))) || path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("8"))));
             counter++;
         }
         assertEquals(3, counter);
@@ -58,7 +56,7 @@ public class PipelineTest extends TestCase {
             assertEquals(pipeline.next().getId(), "3");
             List path = pipeline.path();
             if (counter == 0) {
-              assertEquals(path, Arrays.asList(graph.getVertex("1"), graph.getEdge(9), graph.getVertex(3)));
+                assertEquals(path, Arrays.asList(graph.getVertex("1"), graph.getEdge(9), graph.getVertex(3)));
             }
             counter++;
         }
@@ -146,6 +144,42 @@ public class PipelineTest extends TestCase {
         assertEquals(counter, 3);
 
 
+    }
+
+    public void testPipelinePathConstruction() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe pipe3 = new PropertyPipe<Vertex, String>("name");
+        Pipe<Vertex, String> pipeline = new Pipeline<Vertex, String>(Arrays.asList(pipe1, pipe2, pipe3));
+        pipeline.setStarts(Arrays.asList(marko).iterator());
+        pipeline.enablePath();
+
+        for (String name : pipeline) {
+            ArrayList path = pipeline.path();
+            assertEquals(path.get(0), marko);
+            assertEquals(path.get(1).getClass(), TinkerEdge.class);
+            assertEquals(path.get(2).getClass(), TinkerVertex.class);
+            assertEquals(path.get(3).getClass(), String.class);
+            if (name.equals("vadas")) {
+                assertEquals(path.get(1), graph.getEdge(7));
+                assertEquals(path.get(2), graph.getVertex(2));
+                assertEquals(path.get(3), "vadas");
+            } else if (name.equals("lop")) {
+                assertEquals(path.get(1), graph.getEdge(9));
+                assertEquals(path.get(2), graph.getVertex(3));
+                assertEquals(path.get(3), "lop");
+            } else if (name.equals("josh")) {
+                assertEquals(path.get(1), graph.getEdge(8));
+                assertEquals(path.get(2), graph.getVertex(4));
+                assertEquals(path.get(3), "josh");
+            } else {
+                assertFalse(true);
+            }
+            //System.out.println(name);
+            //System.out.println(pipeline.getPath());
+        }
     }
 
 }
