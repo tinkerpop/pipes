@@ -9,6 +9,7 @@ import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
 import com.tinkerpop.pipes.pgm.PropertyPipe;
 import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 import com.tinkerpop.pipes.merge.*;
+import com.tinkerpop.pipes.split.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -134,6 +135,75 @@ public class PathSequenceTest extends BaseTest {
         for (List path : paths) {
             assertEquals(path.toString(), expected.next());
             //System.out.println(path);
+        }
+    }
+
+    public void testCopySplitPath() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        Pipe<Vertex, Vertex> source = outE_inV(Arrays.asList(marko).iterator());
+        SplitPipe<Vertex> split = new CopySplitPipe<Vertex>(2);
+        split.setStarts(source.iterator());
+        PathSequence paths1 = new PathSequence(split.getSplit(0));
+        PathSequence paths2 = new PathSequence(split.getSplit(1));
+
+        List expected = Arrays.asList(
+            "[v[1], e[7][1-knows->2], v[2]]",
+            "[v[1], e[9][1-created->3], v[3]]",
+            "[v[1], e[8][1-knows->4], v[4]]",
+            "[v[1], e[7][1-knows->2], v[2]]",
+            "[v[1], e[9][1-created->3], v[3]]",
+            "[v[1], e[8][1-knows->4], v[4]]"
+        );
+
+        Iterator<String> expected1 = expected.iterator();
+        for (List path : paths1) {
+            assertEquals(path.toString(), expected1.next());
+            System.out.println(path);
+        }
+
+        Iterator<String> expected2 = expected.iterator();
+        for (List path : paths2) {
+            assertEquals(path.toString(), expected2.next());
+            //System.out.println(path);
+        }
+    }
+
+    public void testCopySplitExtendedPath() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        Pipe<Vertex, Vertex> source = outE_inV(Arrays.asList(marko).iterator());
+        SplitPipe<Vertex> split = new CopySplitPipe<Vertex>(2);
+        split.setStarts(source.iterator());
+        PathSequence paths1 = new PathSequence(inE_outV(split.getSplit(0)));
+        PathSequence paths2 = new PathSequence(inE_outV(split.getSplit(1)));
+
+        List expected = Arrays.asList(
+            "[v[1], e[7][1-knows->2], v[2], e[7][1-knows->2], v[1]]",
+            "[v[1], e[9][1-created->3], v[3], e[9][1-created->3], v[1]]",
+            "[v[1], e[9][1-created->3], v[3], e[11][4-created->3], v[4]]",
+            "[v[1], e[9][1-created->3], v[3], e[12][6-created->3], v[6]]",
+            "[v[1], e[8][1-knows->4], v[4], e[8][1-knows->4], v[1]]",
+            "[v[1], e[7][1-knows->2], v[2], e[7][1-knows->2], v[1]]",
+            "[v[1], e[9][1-created->3], v[3], e[9][1-created->3], v[1]]",
+            "[v[1], e[9][1-created->3], v[3], e[11][4-created->3], v[4]]",
+            "[v[1], e[9][1-created->3], v[3], e[12][6-created->3], v[6]]"
+        );
+
+        Iterator<String> expected1 = expected.iterator();
+        for (List path : paths1) {
+            String e = expected1.next();
+            //System.out.println("actual, expected:");
+            //System.out.println(path);
+            //System.out.println(e);
+
+            assertEquals(path.toString(), e);
+        }
+
+        Iterator<String> expected2 = expected.iterator();
+        for (List path : paths2) {
+            assertEquals(path.toString(), expected2.next());
+            System.out.println(path);
         }
     }
 }

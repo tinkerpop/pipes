@@ -123,7 +123,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
             if (!this.pathEnabled) {
                 throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
             }
-            return this.currentPath;
+            return (ArrayList)this.currentPath.clone();
         }
 
         public void setStarts(final Iterator<S> starts) {
