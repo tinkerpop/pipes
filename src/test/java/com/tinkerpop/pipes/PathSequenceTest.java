@@ -8,7 +8,7 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerVertex;
 import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
 import com.tinkerpop.pipes.pgm.PropertyPipe;
 import com.tinkerpop.pipes.pgm.VertexEdgePipe;
-import com.tinkerpop.pipes.merge.ExhaustiveMergePipe;
+import com.tinkerpop.pipes.merge.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +18,22 @@ import java.util.Iterator;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class PathSequenceTest extends BaseTest {
+
+    private Pipe<Vertex, Vertex> outE_inV(Iterator source) {
+        Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2));
+        pipeline.setStarts(source);
+        return pipeline;
+    }
+
+    private Pipe<Vertex, Vertex> inE_outV(Iterator source) {
+        Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.IN_EDGES);
+        Pipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX);
+        Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2));
+        pipeline.setStarts(source);
+        return pipeline;
+    }
 
     private Pipe<Vertex, Object> outE_inV_Property(Vertex vertex, String property) {
         Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
@@ -75,7 +91,49 @@ public class PathSequenceTest extends BaseTest {
             "[v[1], e[8][1-knows->4], v[4], 32]").iterator();
         for (List path : paths) {
             assertEquals(path.toString(), expected.next());
-            System.out.println(path);
+            //System.out.println(path);
+        }
+    }
+
+    public void testRobinMergePath() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        Pipe<Vertex, Object> namePipe = outE_inV_Property(marko, "name");
+        Pipe<Vertex, Object> agePipe = outE_inV_Property(marko, "age");
+        RobinMergePipe<Object> mergePipe = new RobinMergePipe<Object>();
+        mergePipe.setStarts(Arrays.asList(namePipe.iterator(), agePipe.iterator()).iterator());
+        PathSequence paths = new PathSequence(mergePipe);
+        Iterator<String> expected = Arrays.asList(
+            "[v[1], e[7][1-knows->2], v[2], vadas]",
+            "[v[1], e[7][1-knows->2], v[2], 27]",
+            "[v[1], e[9][1-created->3], v[3], lop]",
+            "[v[1], e[9][1-created->3], v[3], null]",
+            "[v[1], e[8][1-knows->4], v[4], josh]",
+            "[v[1], e[8][1-knows->4], v[4], 32]").iterator();
+        for (List path : paths) {
+            assertEquals(path.toString(), expected.next());
+            //System.out.println(path);
+        }
+    }
+
+    public void testRobinMergeExtendedPath() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        Vertex vadas = graph.getVertex("2");
+        Pipe<Vertex, Vertex> source1 = outE_inV(Arrays.asList(marko).iterator());
+        Pipe<Vertex, Vertex> source2 = inE_outV(Arrays.asList(vadas).iterator());
+        RobinMergePipe<Vertex> mergePipe = new RobinMergePipe<Vertex>();
+        mergePipe.setStarts(Arrays.asList(source1.iterator(), source2.iterator()).iterator());
+        PathSequence paths = new PathSequence(outE_inV(mergePipe.iterator()));
+        Iterator<String> expected = Arrays.asList(
+            "[v[2], e[7][1-knows->2], v[1], e[7][1-knows->2], v[2]]",
+            "[v[2], e[7][1-knows->2], v[1], e[9][1-created->3], v[3]]",
+            "[v[2], e[7][1-knows->2], v[1], e[8][1-knows->4], v[4]]",
+            "[v[1], e[8][1-knows->4], v[4], e[10][4-created->5], v[5]]",
+            "[v[1], e[8][1-knows->4], v[4], e[11][4-created->3], v[3]]").iterator();
+        for (List path : paths) {
+            assertEquals(path.toString(), expected.next());
+            //System.out.println(path);
         }
     }
 }
