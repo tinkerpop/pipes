@@ -201,7 +201,6 @@ public class PathSequenceTest extends BaseTest {
     }
 
     public void testCopySplitAndRobinMergePath() {
-        System.out.println("public void testCopySplitAndRobinMergePath() {");
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Vertex> source = outE_inV(Arrays.asList(marko).iterator());
@@ -224,7 +223,40 @@ public class PathSequenceTest extends BaseTest {
             "[v[1], e[8][1-knows->4], v[4], e[11][4-created->3], v[3]]"
         ).iterator();
         for (List path : paths) {
-            System.out.println(path);
+            //System.out.println(path);
+            assertEquals(path.toString(), expected.next());
+        }
+    }
+
+    public void testCopySplitAndRobinMergeExtendedPath() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        Pipe<Vertex, Vertex> source = outE_inV(Arrays.asList(marko).iterator());
+        SplitPipe<Vertex> split = new CopySplitPipe<Vertex>(2);
+        split.setStarts(source.iterator());
+        Pipe<Vertex, Vertex> outgoing = outE_inV(split.getSplit(0).iterator());
+        Pipe<Vertex, Vertex> incoming = inE_outV(split.getSplit(1).iterator());
+        MergePipe<Vertex> merge = new ExhaustiveMergePipe<Vertex>();
+        //NOTE: incoming and outgoing are defined in the wrong order here:
+        merge.setStarts(Arrays.asList(incoming.iterator(), outgoing.iterator()).iterator());
+        PathSequence paths = new PathSequence(outE_inV(merge.iterator()));
+
+        Iterator<String> expected = Arrays.asList(
+            "[v[1], e[7][1-knows->2], v[2], e[7][1-knows->2], v[1], e[7][1-knows->2], v[2]]",
+            "[v[1], e[7][1-knows->2], v[2], e[7][1-knows->2], v[1], e[9][1-created->3], v[3]]",
+            "[v[1], e[7][1-knows->2], v[2], e[7][1-knows->2], v[1], e[8][1-knows->4], v[4]]",
+            "[v[1], e[9][1-created->3], v[3], e[9][1-created->3], v[1], e[7][1-knows->2], v[2]]",
+            "[v[1], e[9][1-created->3], v[3], e[9][1-created->3], v[1], e[9][1-created->3], v[3]]",
+            "[v[1], e[9][1-created->3], v[3], e[9][1-created->3], v[1], e[8][1-knows->4], v[4]]",
+            "[v[1], e[9][1-created->3], v[3], e[11][4-created->3], v[4], e[10][4-created->5], v[5]]",
+            "[v[1], e[9][1-created->3], v[3], e[11][4-created->3], v[4], e[11][4-created->3], v[3]]",
+            "[v[1], e[9][1-created->3], v[3], e[12][6-created->3], v[6], e[12][6-created->3], v[3]]",
+            "[v[1], e[8][1-knows->4], v[4], e[8][1-knows->4], v[1], e[7][1-knows->2], v[2]]",
+            "[v[1], e[8][1-knows->4], v[4], e[8][1-knows->4], v[1], e[9][1-created->3], v[3]]",
+            "[v[1], e[8][1-knows->4], v[4], e[8][1-knows->4], v[1], e[8][1-knows->4], v[4]]"
+        ).iterator();
+        for (List path : paths) {
+            //System.out.println(path);
             assertEquals(path.toString(), expected.next());
         }
     }
