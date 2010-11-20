@@ -155,17 +155,14 @@ public class PathSequenceTest extends BaseTest {
             "[v[1], e[9][1-created->3], v[3]]",
             "[v[1], e[8][1-knows->4], v[4]]"
         );
-
         Iterator<String> expected1 = expected.iterator();
         for (List path : paths1) {
+            //System.out.println(path);
             assertEquals(path.toString(), expected1.next());
-            System.out.println(path);
         }
-
         Iterator<String> expected2 = expected.iterator();
         for (List path : paths2) {
             assertEquals(path.toString(), expected2.next());
-            //System.out.println(path);
         }
     }
 
@@ -189,21 +186,46 @@ public class PathSequenceTest extends BaseTest {
             "[v[1], e[9][1-created->3], v[3], e[11][4-created->3], v[4]]",
             "[v[1], e[9][1-created->3], v[3], e[12][6-created->3], v[6]]"
         );
-
         Iterator<String> expected1 = expected.iterator();
         for (List path : paths1) {
             String e = expected1.next();
             //System.out.println("actual, expected:");
             //System.out.println(path);
             //System.out.println(e);
-
             assertEquals(path.toString(), e);
         }
-
         Iterator<String> expected2 = expected.iterator();
         for (List path : paths2) {
             assertEquals(path.toString(), expected2.next());
+        }
+    }
+
+    public void testCopySplitAndRobinMergePath() {
+        System.out.println("public void testCopySplitAndRobinMergePath() {");
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        Pipe<Vertex, Vertex> source = outE_inV(Arrays.asList(marko).iterator());
+        SplitPipe<Vertex> split = new CopySplitPipe<Vertex>(2);
+        split.setStarts(source.iterator());
+        Pipe<Vertex, Vertex> outgoing = outE_inV(split.getSplit(0).iterator());
+        Pipe<Vertex, Vertex> incoming = inE_outV(split.getSplit(1).iterator());
+        MergePipe<Vertex> merge = new ExhaustiveMergePipe<Vertex>();
+        //NOTE: incoming and outgoing are defined in the wrong order here:
+        merge.setStarts(Arrays.asList(incoming.iterator(), outgoing.iterator()).iterator());
+        PathSequence paths = new PathSequence(merge);
+
+        Iterator<String> expected = Arrays.asList(
+            "[v[1], e[7][1-knows->2], v[2], e[7][1-knows->2], v[1]]",
+            "[v[1], e[9][1-created->3], v[3], e[9][1-created->3], v[1]]",
+            "[v[1], e[9][1-created->3], v[3], e[11][4-created->3], v[4]]",
+            "[v[1], e[9][1-created->3], v[3], e[12][6-created->3], v[6]]",
+            "[v[1], e[8][1-knows->4], v[4], e[8][1-knows->4], v[1]]",
+            "[v[1], e[8][1-knows->4], v[4], e[10][4-created->5], v[5]]",
+            "[v[1], e[8][1-knows->4], v[4], e[11][4-created->3], v[3]]"
+        ).iterator();
+        for (List path : paths) {
             System.out.println(path);
+            assertEquals(path.toString(), expected.next());
         }
     }
 }
