@@ -14,6 +14,10 @@ import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import static org.mockito.Mockito.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -125,6 +129,23 @@ public class RangeFilterPipeTest extends TestCase {
             //System.out.println(e);
             assertTrue(true);
         }
+    }
 
+    public void testRangeFilterHalt() {
+        List names = mock(List.class);
+        Iterator iterator = mock(Iterator.class);
+        when(names.iterator()).thenReturn(iterator);
+        when(iterator.next()).thenReturn("duck", "duck", "duck", "goose", "goose").thenThrow(new NoSuchElementException());
+        Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 3);
+        pipe.setStarts(names);
+        int counter = 0;
+        while (pipe.hasNext()) {
+            String name = pipe.next();
+            //System.out.println(name + counter);
+            counter++;
+            assertEquals("duck", name);
+        }
+        assertEquals(counter, 3);
+        verify(iterator, times(4)).next();
     }
 }
