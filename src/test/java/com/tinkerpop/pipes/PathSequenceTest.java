@@ -17,15 +17,19 @@ import java.util.List;
  */
 public class PathSequenceTest extends BaseTest {
 
-    public void testPathSequencing() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Vertex marko = graph.getVertex("1");
+    private Pipe<Vertex, String> outE_inV_Name(Vertex vertex) {
         Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
         Pipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
         Pipe pipe3 = new PropertyPipe<Vertex, String>("name");
         Pipe<Vertex, String> pipeline = new Pipeline<Vertex, String>(Arrays.asList(pipe1, pipe2, pipe3));
-        pipeline.setStarts(Arrays.asList(marko).iterator());
-        PathSequence paths = new PathSequence(pipeline);
+        pipeline.setStarts(Arrays.asList(vertex).iterator());
+        return pipeline;
+    }
+
+    public void testPathSequencing() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        PathSequence paths = new PathSequence(outE_inV_Name(marko));
 
         for (List path : paths) {
             String name = (String) path.get(path.size() - 1);
