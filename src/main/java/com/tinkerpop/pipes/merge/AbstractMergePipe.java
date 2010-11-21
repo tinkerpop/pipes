@@ -38,7 +38,7 @@ public abstract class AbstractMergePipe<S> extends AbstractPipe<Iterator<S>, S> 
 
     public ArrayList path() {
         if (!this.pathEnabled) {
-            throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
+            throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins");
         }
         if (this.currentEnds != null) {
             if (this.currentEnds instanceof Path) {
@@ -49,7 +49,7 @@ public abstract class AbstractMergePipe<S> extends AbstractPipe<Iterator<S>, S> 
                 return new ArrayList();
             }
         } else {
-            throw new NoSuchElementException("Path can not be returned until the iterator has been incremented.");
+            throw new NoSuchElementException("Path can not be returned until the iterator has been incremented");
         }
     }
 

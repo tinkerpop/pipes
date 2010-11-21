@@ -121,7 +121,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
 
         public ArrayList path() {
             if (!this.pathEnabled) {
-                throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
+                throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins");
             }
             return (ArrayList)this.currentPath.clone();
         }

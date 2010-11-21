@@ -55,7 +55,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     public ArrayList path() {
         if (!this.pathEnabled) {
-            throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
+            throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins");
         }
         ArrayList pathElements = getPathToHere();
         int size = pathElements.size();
