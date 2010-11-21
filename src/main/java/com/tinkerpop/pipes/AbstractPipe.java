@@ -59,19 +59,28 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         if (!this.pathEnabled) {
             throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
         }
+        return addElementToPath(getPathToHere(), this.getCurrentEnd());
+    }
+
+    protected ArrayList getPathToHere() {
         if (this.starts instanceof Path) {
             Path path = (Path)this.starts;
-            ArrayList pathElements = path.path();
-            int size = pathElements.size();
-            if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
-                pathElements.add(this.currentEnd);
-            }
-            return pathElements;
+            return path.path();
         } else {
-            ArrayList pathElements = new ArrayList();
-            pathElements.add(this.currentEnd);
-            return pathElements;
+            return new ArrayList();
         }
+    }
+
+    protected Object getCurrentEnd() {
+        return this.currentEnd;
+    }
+
+    protected ArrayList addElementToPath(ArrayList pathElements, Object nextElement) {
+        int size = pathElements.size();
+        if (size == 0 || pathElements.get(size - 1) != nextElement) {
+            pathElements.add(nextElement);
+        }
+        return pathElements;
     }
 
     public void remove() {
