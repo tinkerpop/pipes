@@ -59,26 +59,10 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         if (!this.pathEnabled) {
             throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins.");
         }
-        return addElementToPath(getPathToHere(), this.getCurrentEnd());
-    }
-
-    protected ArrayList getPathToHere() {
-        if (this.starts instanceof Path) {
-            Path path = (Path)this.starts;
-            return path.path();
-        } else {
-            return new ArrayList();
-        }
-    }
-
-    protected Object getCurrentEnd() {
-        return this.currentEnd;
-    }
-
-    protected ArrayList addElementToPath(ArrayList pathElements, Object nextElement) {
+        ArrayList pathElements = getPathToHere();
         int size = pathElements.size();
-        if (size == 0 || pathElements.get(size - 1) != nextElement) {
-            pathElements.add(nextElement);
+        if (size == 0 || pathElements.get(size - 1) != getCurrentEnd()) {
+            pathElements.add(getCurrentEnd());
         }
         return pathElements;
     }
@@ -120,5 +104,17 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     protected abstract E processNextStart() throws NoSuchElementException;
 
+    protected ArrayList getPathToHere() {
+        if (this.starts instanceof Path) {
+            Path path = (Path)this.starts;
+            return path.path();
+        } else {
+            return new ArrayList();
+        }
+    }
+
+    protected E getCurrentEnd() {
+        return this.currentEnd;
+    }
 }
 
