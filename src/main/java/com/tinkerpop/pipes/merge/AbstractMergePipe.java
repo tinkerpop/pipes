@@ -27,13 +27,11 @@ public abstract class AbstractMergePipe<S> extends AbstractPipe<Iterator<S>, S> 
     }
 
     public void enablePath() {
-        if (!this.pathEnabled) {
-            this.pathEnabled = true;
-            for (Iterator<S> start : this.allStarts) {
-                if (start instanceof Path) {
-                    Path path = (Path) start;
-                    path.enablePath();
-                }
+        this.pathEnabled = true;
+        for (Iterator<S> start : this.allStarts) {
+            if (start instanceof Path) {
+                Path path = (Path) start;
+                path.enablePath();
             }
         }
     }
