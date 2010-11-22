@@ -19,6 +19,14 @@
             <url>http://markorodriguez.com</url>
         </developer>
     </developers>
+    <contributors>
+        <contributor>
+            <!-- PATHS -->
+            <name>Darrick Wiebe</name>
+            <email>darrick@innatesoftware.com</email>
+            <url>http://github.com/pangloss</url>
+        </contributor>
+    </contributors>
     <inceptionYear>2010</inceptionYear>
     <dependencies>
         <!-- PROPERTY GRAPH MODEL SUPPORT -->
