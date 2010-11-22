@@ -121,8 +121,8 @@ public class Pipeline<S, E> implements Pipe<S, E> {
         endPipe.enablePath();
     }
 
-    public ArrayList path() {
-        return endPipe.path();
+    public ArrayList getPath() {
+        return endPipe.getPath();
     }
 
     /**

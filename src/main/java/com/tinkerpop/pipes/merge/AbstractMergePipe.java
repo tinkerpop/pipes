@@ -36,14 +36,14 @@ public abstract class AbstractMergePipe<S> extends AbstractPipe<Iterator<S>, S> 
         }
     }
 
-    public ArrayList path() {
+    public ArrayList getPath() {
         if (!this.pathEnabled) {
             throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins");
         }
         if (this.currentEnds != null) {
             if (this.currentEnds instanceof Path) {
                 Path path = (Path) this.currentEnds;
-                ArrayList pathElements = path.path();
+                ArrayList pathElements = path.getPath();
                 return pathElements;
             } else {
                 return new ArrayList();

@@ -25,7 +25,7 @@ public class PathSequence implements Iterable<List>, Iterator<List> {
 
     public List next() {
         this.pipe.next();
-        return this.pipe.path();
+        return this.pipe.getPath();
     }
 
     public boolean hasNext() {

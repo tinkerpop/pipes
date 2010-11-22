@@ -39,10 +39,10 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         return this.starts.next();
     }
 
-    public ArrayList path() {
+    public ArrayList getPath() {
         if (this.starts instanceof Path) {
             Path path = (Path)this.starts;
-            ArrayList pathElements = path.path();
+            ArrayList pathElements = path.getPath();
             return pathElements;
         } else {
             ArrayList pathElements = new ArrayList();
@@ -68,7 +68,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         }
 
         public ArrayList splitPath() {
-            return splitPipe.path();
+            return splitPipe.getPath();
         }
 
         public void addPath(ArrayList path) {
@@ -119,7 +119,7 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
             this.pathEnabled = true;
         }
 
-        public ArrayList path() {
+        public ArrayList getPath() {
             if (!this.pathEnabled) {
                 throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins");
             }

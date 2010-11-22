@@ -53,7 +53,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         }
     }
 
-    public ArrayList path() {
+    public ArrayList getPath() {
         if (!this.pathEnabled) {
             throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins");
         }
@@ -105,7 +105,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     protected ArrayList getPathToHere() {
         if (this.starts instanceof Path) {
             Path path = (Path)this.starts;
-            return path.path();
+            return path.getPath();
         } else {
             return new ArrayList();
         }

@@ -29,5 +29,5 @@ public interface Path {
      * @return an ArrayList of all of the objects of various types
      * traversed for the current iterator position of the pipe.
      */
-    public ArrayList path();
+    public ArrayList getPath();
 }
