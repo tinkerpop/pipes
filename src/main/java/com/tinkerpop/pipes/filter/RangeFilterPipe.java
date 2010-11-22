@@ -32,6 +32,9 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
             if ((this.low == -1 || this.counter >= this.low) && (this.high == -1 || this.counter < this.high)) {
                 return s;
             }
+            if (this.high > 0 && counter >= this.high) {
+                throw new NoSuchElementException();
+            }
         }
     }
 }
