@@ -1,8 +1,9 @@
 package com.tinkerpop.pipes;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * An AbstractPipe provides most of the functionality that is repeated in every instance of a Pipe.
@@ -47,17 +48,17 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     public void enablePath() {
         this.pathEnabled = true;
-        if (this.starts instanceof Path) {
-            Path path = (Path)this.starts;
-            path.enablePath();
+        if (this.starts instanceof Pipe) {
+            Pipe pipe = (Pipe) this.starts;
+            pipe.enablePath();
         }
     }
 
-    public ArrayList getPath() {
+    public List getPath() {
         if (!this.pathEnabled) {
             throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins");
         }
-        ArrayList pathElements = getPathToHere();
+        List pathElements = getPathToHere();
         int size = pathElements.size();
         if (size == 0 || pathElements.get(size - 1) != getCurrentEnd()) {
             pathElements.add(getCurrentEnd());
@@ -102,10 +103,10 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     protected abstract E processNextStart() throws NoSuchElementException;
 
-    protected ArrayList getPathToHere() {
-        if (this.starts instanceof Path) {
-            Path path = (Path)this.starts;
-            return path.getPath();
+    protected List getPathToHere() {
+        if (this.starts instanceof Pipe) {
+            Pipe pipe = (Pipe) this.starts;
+            return pipe.getPath();
         } else {
             return new ArrayList();
         }

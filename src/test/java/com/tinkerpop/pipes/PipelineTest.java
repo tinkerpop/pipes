@@ -157,7 +157,7 @@ public class PipelineTest extends TestCase {
         pipeline.enablePath();
 
         for (String name : pipeline) {
-            ArrayList path = pipeline.getPath();
+            List path = pipeline.getPath();
             assertEquals(path.get(0), marko);
             assertEquals(path.get(1).getClass(), TinkerEdge.class);
             assertEquals(path.get(2).getClass(), TinkerVertex.class);

@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * The generic interface for any Pipe implementation.
@@ -8,8 +9,9 @@ import java.util.Iterator;
  * S refers to <i>starts</i> and the E refers to <i>ends</i>.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
+ * @author Darrick Wiebe (darrick@innatesoftware.com)
  */
-public interface Pipe<S, E> extends Path, Iterator<E>, Iterable<E> {
+public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
 
     /**
      * Set an iterator of S objects to the head (start) of the pipe.
@@ -24,4 +26,20 @@ public interface Pipe<S, E> extends Path, Iterator<E>, Iterable<E> {
      * @param starts the iterable of incoming objects
      */
     public void setStarts(Iterable<S> starts);
+
+    /**
+     * Turns on the additional caching and logic that is needed
+     * to calculate paths. Enabling paths requires more memory and
+     * processing, so will be slightly slower.
+     */
+    public void enablePath();
+
+    /**
+     * Returns the path traversed to arrive at the current result of
+     * the pipe.
+     *
+     * @return an ArrayList of all of the objects of various types
+     *         traversed for the current iterator position of the pipe.
+     */
+    public List getPath();
 }

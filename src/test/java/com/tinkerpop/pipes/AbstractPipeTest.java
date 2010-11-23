@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -52,7 +53,7 @@ public class AbstractPipeTest extends TestCase {
         pipe3.enablePath();
 
         for (String name : pipe3) {
-            ArrayList path = pipe3.getPath();
+            List path = pipe3.getPath();
             assertEquals(path.get(0), marko);
             assertEquals(path.get(1).getClass(), TinkerEdge.class);
             assertEquals(path.get(2).getClass(), TinkerVertex.class);

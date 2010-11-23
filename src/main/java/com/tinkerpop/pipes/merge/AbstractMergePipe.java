@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.merge;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.Path;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeHelper;
 
 import java.util.ArrayList;
@@ -29,22 +29,21 @@ public abstract class AbstractMergePipe<S> extends AbstractPipe<Iterator<S>, S> 
     public void enablePath() {
         this.pathEnabled = true;
         for (Iterator<S> start : this.allStarts) {
-            if (start instanceof Path) {
-                Path path = (Path) start;
-                path.enablePath();
+            if (start instanceof Pipe) {
+                Pipe pipe = (Pipe) start;
+                pipe.enablePath();
             }
         }
     }
 
-    public ArrayList getPath() {
+    public List getPath() {
         if (!this.pathEnabled) {
             throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins");
         }
         if (this.currentEnds != null) {
-            if (this.currentEnds instanceof Path) {
-                Path path = (Path) this.currentEnds;
-                ArrayList pathElements = path.getPath();
-                return pathElements;
+            if (this.currentEnds instanceof Pipe) {
+                Pipe pipe = (Pipe) this.currentEnds;
+                return pipe.getPath();
             } else {
                 return new ArrayList();
             }

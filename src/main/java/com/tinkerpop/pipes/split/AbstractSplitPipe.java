@@ -2,8 +2,6 @@ package com.tinkerpop.pipes.split;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.Path;
-import java.util.ArrayList;
 
 import java.util.*;
 
@@ -39,10 +37,10 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         return this.starts.next();
     }
 
-    public ArrayList getPath() {
-        if (this.starts instanceof Path) {
-            Path path = (Path)this.starts;
-            ArrayList pathElements = path.getPath();
+    public List getPath() {
+        if (this.starts instanceof Pipe) {
+            Pipe pipe = (Pipe) this.starts;
+            List pathElements = pipe.getPath();
             return pathElements;
         } else {
             ArrayList pathElements = new ArrayList();
@@ -55,9 +53,9 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
         private final Queue<S> queue = new LinkedList<S>();
         private final SplitPipe<S> splitPipe;
 
-        private final Queue<ArrayList> pathQueue = new LinkedList<ArrayList>();
+        private final Queue<List> pathQueue = new LinkedList<List>();
         private boolean pathEnabled = false;
-        private ArrayList currentPath;
+        private List currentPath;
 
         public SplitQueuePipe(final SplitPipe<S> splitPipe) {
             this.splitPipe = splitPipe;
@@ -67,12 +65,14 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
             this.queue.add(element);
         }
 
-        public ArrayList splitPath() {
+        public List splitPath() {
             return splitPipe.getPath();
         }
 
-        public void addPath(ArrayList path) {
-            this.pathQueue.add((ArrayList)path.clone());
+        public void addPath(List path) {
+            ArrayList temp = new ArrayList();
+            temp.addAll(path);
+            this.pathQueue.add(temp);
         }
 
         public void remove() {
@@ -119,11 +119,13 @@ public abstract class AbstractSplitPipe<S> extends AbstractPipe<S, S> implements
             this.pathEnabled = true;
         }
 
-        public ArrayList getPath() {
+        public List getPath() {
             if (!this.pathEnabled) {
                 throw new UnsupportedOperationException("To use path(), you must call enablePath() before iteration begins");
             }
-            return (ArrayList)this.currentPath.clone();
+            List<?> path = new ArrayList();
+            path.addAll(this.currentPath);
+            return path;
         }
 
         public void setStarts(final Iterator<S> starts) {

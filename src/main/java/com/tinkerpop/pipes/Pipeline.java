@@ -3,7 +3,6 @@ package com.tinkerpop.pipes;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * A Pipeline is a linear composite of Pipes.
@@ -121,7 +120,7 @@ public class Pipeline<S, E> implements Pipe<S, E> {
         endPipe.enablePath();
     }
 
-    public ArrayList getPath() {
+    public List getPath() {
         return endPipe.getPath();
     }
 
