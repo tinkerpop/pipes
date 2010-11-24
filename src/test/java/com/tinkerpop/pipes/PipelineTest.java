@@ -21,7 +21,6 @@ import java.util.*;
 public class PipelineTest extends TestCase {
 
     public void testOneStagePipeline() {
-        System.out.println("one stage");
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe vep = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
@@ -42,7 +41,6 @@ public class PipelineTest extends TestCase {
             Edge e = pipeline.next();
             assertEquals(expectedEnds.next(), e.getInVertex());
             List path = pipeline.getPath();
-            System.out.println(path);
             assertEquals(expectedPaths.next(), path.toString());
             counter++;
         }
@@ -64,7 +62,6 @@ public class PipelineTest extends TestCase {
             assertEquals(pipeline.next().getId(), "3");
             List path = pipeline.getPath();
             if (counter == 0) {
-                System.out.println(path);
                 assertEquals(path, Arrays.asList(graph.getVertex("1"), graph.getEdge(9), graph.getVertex(3)));
             }
             counter++;
@@ -188,6 +185,42 @@ public class PipelineTest extends TestCase {
             }
             //System.out.println(name);
             //System.out.println(pipeline.getPath());
+        }
+    }
+
+    public void testPathWithPipelineOfPipelines() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe pipe3 = new PropertyPipe<Vertex, String>("name");
+        Pipe<Vertex, Edge> pipeline1 = new Pipeline<Vertex, Edge>(pipe1);
+        Pipe<Edge, Vertex> pipeline2 = new Pipeline<Edge, Vertex>(pipe2);
+        Pipe<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipeline1, pipeline2, pipe3);
+        pipeline.setStarts(Arrays.asList(marko).iterator());
+        pipeline.enablePath();
+
+        for (String name : pipeline) {
+            List path = pipeline.getPath();
+            assertEquals(path.get(0), marko);
+            assertEquals(path.get(1).getClass(), TinkerEdge.class);
+            assertEquals(path.get(2).getClass(), TinkerVertex.class);
+            assertEquals(path.get(3).getClass(), String.class);
+            if (name.equals("vadas")) {
+                assertEquals(path.get(1), graph.getEdge(7));
+                assertEquals(path.get(2), graph.getVertex(2));
+                assertEquals(path.get(3), "vadas");
+            } else if (name.equals("lop")) {
+                assertEquals(path.get(1), graph.getEdge(9));
+                assertEquals(path.get(2), graph.getVertex(3));
+                assertEquals(path.get(3), "lop");
+            } else if (name.equals("josh")) {
+                assertEquals(path.get(1), graph.getEdge(8));
+                assertEquals(path.get(2), graph.getVertex(4));
+                assertEquals(path.get(3), "josh");
+            } else {
+                assertFalse(true);
+            }
         }
     }
 
