@@ -21,6 +21,7 @@ import java.util.*;
 public class PipelineTest extends TestCase {
 
     public void testOneStagePipeline() {
+        System.out.println("one stage");
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe vep = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
@@ -28,17 +29,24 @@ public class PipelineTest extends TestCase {
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         int counter = 0;
+        Iterator<Vertex> expectedEnds = Arrays.asList(
+            graph.getVertex("2"),
+            graph.getVertex("3"),
+            graph.getVertex("4")).iterator();
+        Iterator<String> expectedPaths = Arrays.asList(
+            "[v[1], e[7][1-knows->2]]",
+            "[v[1], e[9][1-created->3]]",
+            "[v[1], e[8][1-knows->4]]").iterator();
         pipeline.enablePath();
         while (pipeline.hasNext()) {
             Edge e = pipeline.next();
-            assertTrue(e.getInVertex().getId().equals("4") || e.getInVertex().getId().equals("2") || e.getInVertex().getId().equals("3"));
+            assertEquals(expectedEnds.next(), e.getInVertex());
             List path = pipeline.getPath();
-            assertTrue(path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("7"))) || path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("9"))) || path.equals(Arrays.asList(graph.getVertex("1"), graph.getEdge("8"))));
+            System.out.println(path);
+            assertEquals(expectedPaths.next(), path.toString());
             counter++;
         }
         assertEquals(3, counter);
-
-
     }
 
     public void testThreeStagePipeline() {
@@ -56,6 +64,7 @@ public class PipelineTest extends TestCase {
             assertEquals(pipeline.next().getId(), "3");
             List path = pipeline.getPath();
             if (counter == 0) {
+                System.out.println(path);
                 assertEquals(path, Arrays.asList(graph.getVertex("1"), graph.getEdge(9), graph.getVertex(3)));
             }
             counter++;
