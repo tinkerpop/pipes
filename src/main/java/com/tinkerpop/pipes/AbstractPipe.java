@@ -33,13 +33,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public void setStarts(final Iterator<S> starts) {
-        if (ensurePipeStarts) {
-            IdentityPipe<S> pipe = new IdentityPipe<S>();
-            pipe.setStarts(starts);
-            this.starts = pipe;
-        } else {
-            this.starts = starts;
-        }
+        this.starts = starts;
     }
 
     public void setStarts(final Iterable<S> starts) {
@@ -51,6 +45,11 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         if (this.starts instanceof Pipe) {
             Pipe pipe = (Pipe) this.starts;
             pipe.enablePath();
+        } else if (ensurePipeStarts && null != this.starts) {
+            IdentityPipe<S> pipe = new IdentityPipe<S>();
+            pipe.setStarts(starts);
+            pipe.enablePath();
+            this.starts = pipe;
         }
     }
 
