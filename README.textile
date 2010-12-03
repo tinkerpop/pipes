@@ -1,4 +1,4 @@
-!http://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-logo.png!
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-logo.png!
 
 Pipes is a graph-based data flow framework written in Java 1.6+. A process graph is composed of a set of process vertices connected to one another by a set of communication edges. Pipes supports the splitting, merging, and transformation of data from input to output.
 
