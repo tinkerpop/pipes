@@ -14,20 +14,21 @@ public class RobinMergePipe<S> extends AbstractMergePipe<S> {
     private int currentStarts = 0;
 
     protected S processNextStart() {
-        if (this.allStarts.size() > 0) {
-            Iterator<S> starts = this.allStarts.get(this.currentStarts);
-            if (starts.hasNext()) {
-                this.currentEnds = starts;
-                this.currentStarts = ++this.currentStarts % this.allStarts.size();
-                return starts.next();
+        while (true) {
+            if (this.allStarts.size() > 0) {
+                Iterator<S> starts = this.allStarts.get(this.currentStarts);
+                if (starts.hasNext()) {
+                    this.currentEnds = starts;
+                    this.currentStarts = ++this.currentStarts % this.allStarts.size();
+                    return starts.next();
+                } else {
+                    this.allStarts.remove(this.currentStarts);
+                    if (this.allStarts.size() == this.currentStarts)
+                        this.currentStarts = 0;
+                }
             } else {
-                this.allStarts.remove(this.currentStarts);
-                if (this.allStarts.size() == this.currentStarts)
-                    this.currentStarts = 0;
-                return this.processNextStart();
+                throw new NoSuchElementException();
             }
-        } else {
-            throw new NoSuchElementException();
         }
     }
 }

@@ -28,20 +28,21 @@ public class GraphElementPipe<E extends Element> extends AbstractPipe<Graph, E> 
 
 
     protected E processNextStart() {
-        if (null != this.nextEnds && this.nextEnds.hasNext()) {
-            return this.nextEnds.next();
-        } else {
-            switch (this.elementType) {
-                case VERTEX: {
-                    this.nextEnds = (Iterator<E>) this.starts.next().getVertices().iterator();
-                    break;
-                }
-                case EDGE: {
-                    this.nextEnds = (Iterator<E>) this.starts.next().getEdges().iterator();
-                    break;
+        while (true) {
+            if (null != this.nextEnds && this.nextEnds.hasNext()) {
+                return this.nextEnds.next();
+            } else {
+                switch (this.elementType) {
+                    case VERTEX: {
+                        this.nextEnds = (Iterator<E>) this.starts.next().getVertices().iterator();
+                        break;
+                    }
+                    case EDGE: {
+                        this.nextEnds = (Iterator<E>) this.starts.next().getEdges().iterator();
+                        break;
+                    }
                 }
             }
-            return this.processNextStart();
         }
     }
 }

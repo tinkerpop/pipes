@@ -13,14 +13,15 @@ import java.util.ArrayList;
 public class ExhaustiveMergePipe<S> extends AbstractMergePipe<S> {
 
     protected S processNextStart() {
-        if (null != this.currentEnds && this.currentEnds.hasNext()) {
-            return this.currentEnds.next();
-        } else {
-            if ((null == this.currentEnds || !this.currentEnds.hasNext()) && this.starts.hasNext()) {
-                this.currentEnds = this.starts.next();
-                return processNextStart();
+        while (true) {
+            if (null != this.currentEnds && this.currentEnds.hasNext()) {
+                return this.currentEnds.next();
             } else {
-                throw new NoSuchElementException();
+                if ((null == this.currentEnds || !this.currentEnds.hasNext()) && this.starts.hasNext()) {
+                    this.currentEnds = this.starts.next();
+                } else {
+                    throw new NoSuchElementException();
+                }
             }
         }
     }
