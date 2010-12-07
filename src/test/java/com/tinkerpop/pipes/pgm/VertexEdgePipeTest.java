@@ -1,9 +1,11 @@
 package com.tinkerpop.pipes.pgm;
 
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.SingleIterator;
 import junit.framework.TestCase;
 
@@ -98,5 +100,23 @@ public class VertexEdgePipeTest extends TestCase {
             assertTrue(edge.getId().equals("8") || edge.getId().equals("10") || edge.getId().equals("11"));
         }
         assertEquals(counter, 3);
+    }
+
+    public void testBigGraphWithNoEdges() {
+        // This used to cause a stack overflow. Not crashing makes this a success.
+        TinkerGraph graph = new TinkerGraph();
+        for (int i = 0; i < 100000; i++) {
+            graph.addVertex(null);
+        }
+        Pipe<Graph, Vertex> vertices = new GraphElementPipe<Vertex>(GraphElementPipe.ElementType.VERTEX);
+        vertices.setStarts(new SingleIterator<Graph>(graph));
+        VertexEdgePipe outEdges = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        outEdges.setStarts(vertices);
+        int counter = 0;
+        while (outEdges.hasNext()) {
+            outEdges.next();
+            counter++;
+        }
+        assertEquals(counter, 0);
     }
 }
