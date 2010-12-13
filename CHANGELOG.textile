@@ -19,6 +19,10 @@ bc. <dependency>
   <version>0.2-SNAPSHOT</version>
 </dependency>
 
+* Added path functionality to get the path pipe traversed
+** Added @PathSequence@ path utility
+** Added @PathPipe@ to support using paths in a computation
+* Numerous test cases added
 
 ==<hr/>==
 
