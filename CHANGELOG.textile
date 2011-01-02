@@ -9,6 +9,19 @@ bc. <repository>
 
 ==<hr/>==
 
+h3. Version 0.3 (Cracked -- NOT OFFICIALLY RELEASED)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>0.3-SNAPSHOT</version>
+</dependency>
+
+* Added @GatherPipe@ as a composite of @SideEffectCapPipe@ and @AggregatorPipe@
+* Remove @EndSupportPipe@ as that is what @ScatterPipe@ no accomplishes
+
+==<hr/>==
+
 !http://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-clogged-pipe.png!
 
 h3. Version 0.2 (Clogged -- December 14, 2010)

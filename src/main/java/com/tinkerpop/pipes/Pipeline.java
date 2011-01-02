@@ -49,8 +49,8 @@ public class Pipeline<S, E> implements Pipe<S, E> {
      */
     protected void setPipes(final List<Pipe> pipes) {
         this.startPipe = (Pipe<S, ?>) pipes.get(0);
-        if (!(this.startPipe instanceof IdentityPipe)) {
-            IdentityPipe<S> newStart = new IdentityPipe<S>();
+        if (!(this.startPipe instanceof BaseIdentityPipe)) {
+            BaseIdentityPipe<S> newStart = new BaseIdentityPipe<S>();
             this.startPipe.setStarts((Iterator) newStart);
             this.startPipe = newStart;
         }

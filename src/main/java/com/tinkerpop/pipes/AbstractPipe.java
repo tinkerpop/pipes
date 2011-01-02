@@ -46,7 +46,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
             Pipe pipe = (Pipe) this.starts;
             pipe.enablePath();
         } else if (ensurePipeStarts && null != this.starts) {
-            IdentityPipe<S> pipe = new IdentityPipe<S>();
+            BaseIdentityPipe<S> pipe = new BaseIdentityPipe<S>();
             pipe.setStarts(starts);
             pipe.enablePath();
             this.starts = pipe;

@@ -22,7 +22,6 @@ public class IdentityPipe<S> extends AbstractPipe<S, S> {
     }
 
     public void setStarts(final Iterator<S> starts) {
-        this.ensurePipeStarts = false;
         this.starts = starts;
     }
 }
