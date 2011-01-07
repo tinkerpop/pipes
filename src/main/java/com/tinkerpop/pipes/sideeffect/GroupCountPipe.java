@@ -6,15 +6,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The CountCombinePipe will simply emit the incoming object, but generate a map side effect.
+ * The GroupCountPipe will simply emit the incoming object, but generate a map side effect.
  * The map's keys are the objects that come into the pipe.
  * The map's values are the number of times that the key object has come into the pipe.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class CountCombinePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Map<S, Long>> {
+public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Map<S, Long>> {
 
-    private final Map<S, Long> countMap = new HashMap<S, Long>();
+    private final Map<S, Long> countMap;
+
+    public GroupCountPipe(Map<S, Long> countMap) {
+        this.countMap = countMap;
+    }
+
+    public GroupCountPipe() {
+        this.countMap = new HashMap<S, Long>();
+    }
 
     protected S processNextStart() {
         S s = this.starts.next();

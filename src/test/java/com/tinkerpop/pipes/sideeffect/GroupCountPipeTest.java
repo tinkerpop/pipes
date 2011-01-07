@@ -9,11 +9,11 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class CountCombinePipeTest extends TestCase {
+public class GroupCountPipeTest extends TestCase {
 
     public void testCountCombinePipeNormal() {
         List<String> names = Arrays.asList("marko", "josh", "peter", "peter", "peter", "josh");
-        SideEffectPipe<String, String, Map<String, Long>> pipe = new CountCombinePipe<String>();
+        SideEffectPipe<String, String, Map<String, Long>> pipe = new GroupCountPipe<String>();
         pipe.setStarts(names);
         assertTrue(pipe.hasNext());
         int counter = 0;
@@ -32,7 +32,7 @@ public class CountCombinePipeTest extends TestCase {
 
     public void testCountCombinePipeZero() {
         List<String> names = Arrays.asList();
-        SideEffectPipe<String, String, Map<String, Long>> pipe = new CountCombinePipe<String>();
+        SideEffectPipe<String, String, Map<String, Long>> pipe = new GroupCountPipe<String>();
         pipe.setStarts(names);
         assertFalse(pipe.hasNext());
         assertNull(pipe.getSideEffect().get("povel"));
