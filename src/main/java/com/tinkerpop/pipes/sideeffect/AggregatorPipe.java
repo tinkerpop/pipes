@@ -17,10 +17,18 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
 
     private final Collection<S> aggregate;
 
+    /**
+     * Construct an AggregatorPipe where the default collection is a LinkedList<S>.
+     */
     public AggregatorPipe() {
         this.aggregate = new LinkedList<S>();
     }
 
+    /**
+     * Construct an AggregatorPipe with the collection that is add()ed to is provided.
+     *
+     * @param collection the provided collection
+     */
     public AggregatorPipe(final Collection<S> collection) {
         this.aggregate = collection;
     }
