@@ -1,7 +1,5 @@
 package com.tinkerpop.pipes;
 
-import java.util.Iterator;
-
 /**
  * The IdentityPipe is the most basic pipe.
  * It simply maps the input to the output without any processing.
@@ -19,9 +17,5 @@ import java.util.Iterator;
 public class IdentityPipe<S> extends AbstractPipe<S, S> {
     protected S processNextStart() {
         return this.starts.next();
-    }
-
-    public void setStarts(final Iterator<S> starts) {
-        this.starts = starts;
     }
 }

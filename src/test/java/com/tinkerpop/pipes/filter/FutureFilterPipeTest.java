@@ -61,4 +61,22 @@ public class FutureFilterPipeTest extends BaseTest {
         }
         assertEquals(counter, 1);
     }
+
+    public void testGraphFutureFilterWithPaths() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex(1);
+        Pipe outEPipe = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe inVPipe = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        Pipe<Edge, Edge> futureFilterPipe = new FutureFilterPipe<Edge>(new Pipeline<Edge, Vertex>(inVPipe, propertyFilterPipe));
+        Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(outEPipe, futureFilterPipe);
+        pipeline.setStarts(Arrays.asList(marko));
+        int counter = 0;
+        pipeline.enablePath();
+        while (pipeline.hasNext()) {
+            counter++;
+            System.out.println(pipeline.next() + "--->" + pipeline.getPath());
+        }
+        assertEquals(counter, 1);
+    }
 }

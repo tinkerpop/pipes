@@ -1,6 +1,8 @@
 package com.tinkerpop.pipes.sideeffect;
 
+import com.tinkerpop.pipes.AbstractMetaPipe;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -34,5 +36,9 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> {
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    public Pipe<S,?> getInternalPipe() {
+        return this.pipeToCap;
     }
 }
