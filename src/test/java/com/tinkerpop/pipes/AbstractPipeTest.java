@@ -50,7 +50,7 @@ public class AbstractPipeTest extends TestCase {
         pipe3.setStarts(pipe2.iterator());
         pipe2.setStarts(pipe1.iterator());
         pipe1.setStarts(Arrays.asList(marko).iterator());
-        pipe3.enablePath();
+        //pipe3.enablePath();
 
         for (String name : pipe3) {
             List path = pipe3.getPath();

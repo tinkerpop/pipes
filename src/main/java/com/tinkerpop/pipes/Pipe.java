@@ -28,13 +28,6 @@ public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
     public void setStarts(Iterable<S> starts);
 
     /**
-     * Turns on the additional caching and logic that is needed
-     * to calculate paths. Enabling paths requires more memory and
-     * processing, so will be slightly slower.
-     */
-    public void enablePath();
-
-    /**
      * Returns the path traversed to arrive at the current result of
      * the pipe.
      *

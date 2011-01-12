@@ -13,7 +13,10 @@ import com.tinkerpop.pipes.pgm.PropertyPipe;
 import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 import junit.framework.TestCase;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
@@ -28,15 +31,9 @@ public class PipelineTest extends TestCase {
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         int counter = 0;
-        Iterator<Vertex> expectedEnds = Arrays.asList(
-            graph.getVertex("2"),
-            graph.getVertex("3"),
-            graph.getVertex("4")).iterator();
-        Iterator<String> expectedPaths = Arrays.asList(
-            "[v[1], e[7][1-knows->2]]",
-            "[v[1], e[9][1-created->3]]",
-            "[v[1], e[8][1-knows->4]]").iterator();
-        pipeline.enablePath();
+        Iterator<Vertex> expectedEnds = Arrays.asList(graph.getVertex("2"), graph.getVertex("3"), graph.getVertex("4")).iterator();
+        Iterator<String> expectedPaths = Arrays.asList("[v[1], e[7][1-knows->2]]", "[v[1], e[9][1-created->3]]", "[v[1], e[8][1-knows->4]]").iterator();
+//        pipeline.enablePath();
         while (pipeline.hasNext()) {
             Edge e = pipeline.next();
             assertEquals(expectedEnds.next(), e.getInVertex());
@@ -57,7 +54,7 @@ public class PipelineTest extends TestCase {
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         int counter = 0;
-        pipeline.enablePath();
+ //       pipeline.enablePath();
         while (pipeline.hasNext()) {
             assertEquals(pipeline.next().getId(), "3");
             List path = pipeline.getPath();
@@ -160,7 +157,7 @@ public class PipelineTest extends TestCase {
         Pipe pipe3 = new PropertyPipe<Vertex, String>("name");
         Pipe<Vertex, String> pipeline = new Pipeline<Vertex, String>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
-        pipeline.enablePath();
+ //       pipeline.enablePath();
 
         for (String name : pipeline) {
             List path = pipeline.getPath();
@@ -198,7 +195,7 @@ public class PipelineTest extends TestCase {
         Pipe<Edge, Vertex> pipeline2 = new Pipeline<Edge, Vertex>(pipe2);
         Pipe<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipeline1, pipeline2, pipe3);
         pipeline.setStarts(Arrays.asList(marko).iterator());
-        pipeline.enablePath();
+//        pipeline.enablePath();
 
         for (String name : pipeline) {
             List path = pipeline.getPath();

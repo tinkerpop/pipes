@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.sideeffect;
 
-import com.tinkerpop.pipes.AbstractMetaPipe;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 
@@ -38,7 +37,7 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> {
         }
     }
 
-    public Pipe<S,?> getInternalPipe() {
+    public Pipe<S, ?> getInternalPipe() {
         return this.pipeToCap;
     }
 }

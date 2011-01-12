@@ -10,8 +10,6 @@ import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
 import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 import junit.framework.TestCase;
 
-import java.util.Arrays;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -24,9 +22,8 @@ public class GatherPipeTest extends TestCase {
         Pipe pipe2 = new GatherPipe();
         Pipe pipeline = new Pipeline(pipe0, pipe1, pipe2);
         pipeline.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
-        pipeline.enablePath();
+        //pipeline.enablePath();
         while (pipeline.hasNext()) {
-
             System.out.println(pipeline.next() + "--->" + pipeline.getPath());
         }
     }

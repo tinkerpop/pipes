@@ -14,7 +14,6 @@ public class PathPipe<S> extends AbstractPipe<S, List> {
 
     public void setStarts(Iterator<S> starts) {
         this.starts = starts;
-        this.enablePath();
     }
 
     public List processNextStart() {

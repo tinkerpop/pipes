@@ -12,7 +12,6 @@ public class PathSequence implements Iterable<List>, Iterator<List> {
 
     public PathSequence(final Pipe pipe) {
         this.pipe = pipe;
-        this.pipe.enablePath();
     }
 
     public void remove() {
