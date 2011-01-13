@@ -42,4 +42,8 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
     public Collection<S> getSideEffect() {
         return this.aggregate;
     }
+
+    public String toString() {
+        return super.toString() + "<" + this.aggregate.getClass().getSimpleName() + ">";
+    }
 }

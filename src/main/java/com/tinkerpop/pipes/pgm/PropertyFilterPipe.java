@@ -3,8 +3,6 @@ package com.tinkerpop.pipes.pgm;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.pipes.filter.AbstractComparisonFilterPipe;
 
-import java.util.NoSuchElementException;
-
 /**
  * The PropertyFilterPipe either allows or disallows all Elements that have the provided value for a particular key.
  *
@@ -25,9 +23,13 @@ public class PropertyFilterPipe<S extends Element, T> extends AbstractComparison
     protected S processNextStart() {
         while (true) {
             S element = this.starts.next();
-            if (!this.compareObjects((T) element.getProperty(this.key),this.value)) {
+            if (!this.compareObjects((T) element.getProperty(this.key), this.value)) {
                 return element;
             }
         }
+    }
+
+    public String toString() {
+        return super.toString() + "<" + this.filter + "," + this.key + "," + this.value + ">";
     }
 }

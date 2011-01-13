@@ -51,6 +51,7 @@ public class PipelineTest extends TestCase {
         Pipe pipe3 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
         Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
+        System.out.println(pipeline);
         assertTrue(pipeline.hasNext());
         int counter = 0;
         while (pipeline.hasNext()) {

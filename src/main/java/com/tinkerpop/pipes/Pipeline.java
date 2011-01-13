@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Pipeline<S, E> implements Pipe<S, E> {
 
     private Pipe<S, ?> startPipe;
     private Pipe<?, E> endPipe;
+    private String pipelineString;
 
     public Pipeline() {
     }
@@ -48,11 +50,15 @@ public class Pipeline<S, E> implements Pipe<S, E> {
      * @param pipes the ordered list of pipes to chain together into a pipeline
      */
     protected void setPipes(final List<Pipe> pipes) {
+        final List<String> pipeNames = new ArrayList<String>();
         this.startPipe = (Pipe<S, ?>) pipes.get(0);
+        pipeNames.add(this.startPipe.toString());
         this.endPipe = (Pipe<?, E>) pipes.get(pipes.size() - 1);
         for (int i = 1; i < pipes.size(); i++) {
             pipes.get(i).setStarts((Iterator) pipes.get(i - 1));
+            pipeNames.add(pipes.get(i).toString());
         }
+        this.pipelineString = pipeNames.toString();
     }
 
     /**
@@ -127,5 +133,9 @@ public class Pipeline<S, E> implements Pipe<S, E> {
      */
     public Iterator<E> iterator() {
         return this;
+    }
+
+    public String toString() {
+        return this.pipelineString;
     }
 }

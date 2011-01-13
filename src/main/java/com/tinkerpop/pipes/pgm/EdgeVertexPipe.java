@@ -45,4 +45,8 @@ public class EdgeVertexPipe extends AbstractPipe<Edge, Vertex> {
         throw new IllegalStateException("This is an illegal state as there is no step set");
     }
 
+    public String toString() {
+        return super.toString() + "<" + this.step + ">";
+    }
+
 }

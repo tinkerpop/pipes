@@ -2,7 +2,6 @@ package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
 
-import java.util.NoSuchElementException;
 import java.util.Random;
 
 /**
@@ -29,5 +28,9 @@ public class RandomFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
                 return s;
             }
         }
+    }
+
+    public String toString() {
+        return super.toString() + "<" + this.bias + ">";
     }
 }

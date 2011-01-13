@@ -19,4 +19,8 @@ public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> {
     protected E processNextStart() {
         return (E) this.starts.next().getProperty(this.key);
     }
+
+    public String toString() {
+        return super.toString() + "<" + this.key + ">";
+    }
 }

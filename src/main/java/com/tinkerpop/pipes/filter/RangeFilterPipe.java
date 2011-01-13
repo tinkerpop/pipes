@@ -37,4 +37,8 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
             }
         }
     }
+
+    public String toString() {
+        return super.toString() + "<" + this.low + "," + this.high + ">";
+    }
 }

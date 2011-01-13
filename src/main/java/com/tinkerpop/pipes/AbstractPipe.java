@@ -44,7 +44,8 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     public List getPath() {
         final List pathElements = getPathToHere();
         final int size = pathElements.size();
-        // do not repeat filters
+        // do not repeat filters as they dup the object
+        // todo: why is size == 0 required (Pangloss?)
         if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
             pathElements.add(this.currentEnd);
         }
@@ -85,6 +86,13 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         return this;
     }
 
+    public String toString() {
+        String pipeString = this.getClass().toString();
+        if (pipeString.contains("."))
+            pipeString = pipeString.substring(pipeString.lastIndexOf(".") + 1);
+        return pipeString;
+    }
+
     protected abstract E processNextStart() throws NoSuchElementException;
 
     private List getPathToHere() {
@@ -98,5 +106,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
             return new ArrayList();
         }
     }
+
+
 }
 

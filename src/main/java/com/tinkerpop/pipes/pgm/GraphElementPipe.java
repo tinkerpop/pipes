@@ -45,4 +45,8 @@ public class GraphElementPipe<E extends Element> extends AbstractPipe<Graph, E> 
             }
         }
     }
+
+    public String toString() {
+        return super.toString() + "<" + this.elementType + ">";
+    }
 }
