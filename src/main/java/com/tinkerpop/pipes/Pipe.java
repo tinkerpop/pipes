@@ -31,8 +31,7 @@ public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
      * Returns the path traversed to arrive at the current result of
      * the pipe.
      *
-     * @return an ArrayList of all of the objects of various types
-     *         traversed for the current iterator position of the pipe.
+     * @return a List of all of the objects traversed for the current iterator position of the pipe.
      */
     public List getPath();
 }

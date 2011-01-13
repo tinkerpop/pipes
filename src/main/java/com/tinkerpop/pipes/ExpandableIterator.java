@@ -32,7 +32,7 @@ public class ExpandableIterator<T> implements Iterator<T> {
         return !this.queue.isEmpty() || this.iterator.hasNext();
     }
 
-    public void add(T t) {
+    public void add(final T t) {
         this.queue.add(t);
     }
 }

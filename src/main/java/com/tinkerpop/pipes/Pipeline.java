@@ -49,12 +49,6 @@ public class Pipeline<S, E> implements Pipe<S, E> {
      */
     protected void setPipes(final List<Pipe> pipes) {
         this.startPipe = (Pipe<S, ?>) pipes.get(0);
-        // todo: might not be needed
-        if (!(this.startPipe instanceof IdentityPipe)) {
-            IdentityPipe<S> newStart = new IdentityPipe<S>();
-            this.startPipe.setStarts((Iterator) newStart);
-            this.startPipe = newStart;
-        }
         this.endPipe = (Pipe<?, E>) pipes.get(pipes.size() - 1);
         for (int i = 1; i < pipes.size(); i++) {
             pipes.get(i).setStarts((Iterator) pipes.get(i - 1));

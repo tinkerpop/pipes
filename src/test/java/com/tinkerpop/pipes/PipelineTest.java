@@ -33,7 +33,6 @@ public class PipelineTest extends TestCase {
         int counter = 0;
         Iterator<Vertex> expectedEnds = Arrays.asList(graph.getVertex("2"), graph.getVertex("3"), graph.getVertex("4")).iterator();
         Iterator<String> expectedPaths = Arrays.asList("[v[1], e[7][1-knows->2]]", "[v[1], e[9][1-created->3]]", "[v[1], e[8][1-knows->4]]").iterator();
-//        pipeline.enablePath();
         while (pipeline.hasNext()) {
             Edge e = pipeline.next();
             assertEquals(expectedEnds.next(), e.getInVertex());
@@ -47,28 +46,25 @@ public class PipelineTest extends TestCase {
     public void testThreeStagePipeline() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe vep = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe lfp = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        Pipe evp = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-        Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(vep, lfp, evp));
+        Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        Pipe pipe3 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         int counter = 0;
- //       pipeline.enablePath();
         while (pipeline.hasNext()) {
             assertEquals(pipeline.next().getId(), "3");
             List path = pipeline.getPath();
-            if (counter == 0) {
-                assertEquals(path, Arrays.asList(graph.getVertex("1"), graph.getEdge(9), graph.getVertex(3)));
-            }
+            assertEquals(path, Arrays.asList(graph.getVertex("1"), graph.getEdge(9), graph.getVertex(3)));
             counter++;
         }
         assertEquals(1, counter);
 
-        vep = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        lfp = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.EQUAL);
-        evp = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-        pipeline = new Pipeline<Vertex, Vertex>(vep, lfp, evp);
+        pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.EQUAL);
+        pipe3 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
         counter = 0;
@@ -157,7 +153,6 @@ public class PipelineTest extends TestCase {
         Pipe pipe3 = new PropertyPipe<Vertex, String>("name");
         Pipe<Vertex, String> pipeline = new Pipeline<Vertex, String>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
- //       pipeline.enablePath();
 
         for (String name : pipeline) {
             List path = pipeline.getPath();
@@ -195,7 +190,6 @@ public class PipelineTest extends TestCase {
         Pipe<Edge, Vertex> pipeline2 = new Pipeline<Edge, Vertex>(pipe2);
         Pipe<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipeline1, pipeline2, pipe3);
         pipeline.setStarts(Arrays.asList(marko).iterator());
-//        pipeline.enablePath();
 
         for (String name : pipeline) {
             List path = pipeline.getPath();

@@ -42,8 +42,9 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public List getPath() {
-        List pathElements = getPathToHere();
-        int size = pathElements.size();
+        final List pathElements = getPathToHere();
+        final int size = pathElements.size();
+        // do not repeat filters
         if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
             pathElements.add(this.currentEnd);
         }
@@ -55,11 +56,10 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public E next() {
-        this.currentEnd = null;
         if (this.available) {
             this.available = false;
             this.currentEnd = this.nextEnd;
-            return this.nextEnd;
+            return this.currentEnd;
         } else {
             this.currentEnd = this.processNextStart();
             return this.currentEnd;
@@ -87,12 +87,11 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     protected abstract E processNextStart() throws NoSuchElementException;
 
-    protected List getPathToHere() {
+    private List getPathToHere() {
         if (this.starts instanceof Pipe) {
-            Pipe pipe = (Pipe) this.starts;
-            return pipe.getPath();
+            return ((Pipe) this.starts).getPath();
         } else if (this.starts instanceof HistoryIterator) {
-            List list = new ArrayList();
+            final List list = new ArrayList();
             list.add(((HistoryIterator) starts).getLast());
             return list;
         } else {
