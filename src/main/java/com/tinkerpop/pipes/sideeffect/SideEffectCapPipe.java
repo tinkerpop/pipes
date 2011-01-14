@@ -42,4 +42,8 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> {
         list.add(this.currentEnd);
         return list;
     }
+
+    public String toString() {
+        return super.toString() + "[" + this.pipeToCap + "]";
+    }
 }
