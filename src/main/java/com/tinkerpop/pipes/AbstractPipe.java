@@ -23,7 +23,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     protected Iterator<S> starts;
     private E nextEnd;
-    private E currentEnd;
+    protected E currentEnd;
     private boolean available = false;
 
     public void setStarts(final Pipe<?, S> starts) {
