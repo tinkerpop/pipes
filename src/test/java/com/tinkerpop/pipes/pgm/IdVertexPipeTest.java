@@ -16,19 +16,19 @@ public class IdVertexPipeTest extends TestCase {
 
     public void testIdVertexPipeGraph() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        List<String> ids = Arrays.asList("1","6","5");
+        List<String> ids = Arrays.asList("1", "6", "5");
         Pipe<String, Vertex> pipe = new IdVertexPipe<String>(graph);
         pipe.setStarts(ids);
         int counter = 0;
-        while(pipe.hasNext()) {
+        while (pipe.hasNext()) {
             Vertex vertex = pipe.next();
-            if(counter == 0) {
+            if (counter == 0) {
                 assertEquals(vertex.getId(), "1");
                 assertEquals(vertex.getProperty("name"), "marko");
-            } else if(counter == 1) {
+            } else if (counter == 1) {
                 assertEquals(vertex.getId(), "6");
                 assertEquals(vertex.getProperty("name"), "peter");
-            } else if(counter == 2) {
+            } else if (counter == 2) {
                 assertEquals(vertex.getId(), "5");
                 assertEquals(vertex.getProperty("name"), "ripple");
             } else {
@@ -37,6 +37,6 @@ public class IdVertexPipeTest extends TestCase {
             counter++;
         }
         assertEquals(counter, 3);
-        
+
     }
 }

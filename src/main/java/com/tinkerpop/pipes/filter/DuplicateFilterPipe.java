@@ -4,7 +4,6 @@ package com.tinkerpop.pipes.filter;
 import com.tinkerpop.pipes.AbstractPipe;
 
 import java.util.HashSet;
-import java.util.NoSuchElementException;
 
 /**
  * The DuplicateFilterPipe will not allow a duplicate object to pass through it.

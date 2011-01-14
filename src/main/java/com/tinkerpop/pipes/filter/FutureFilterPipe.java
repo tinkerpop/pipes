@@ -31,7 +31,7 @@ public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
     }
 
     public String toString() {
-        return super.toString() + "[" + this.pipe + "]";
+        return super.toString() + "<" + this.pipe + ">";
     }
 
 }

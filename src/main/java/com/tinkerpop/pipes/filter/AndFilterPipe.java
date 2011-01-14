@@ -6,7 +6,6 @@ import com.tinkerpop.pipes.SingleIterator;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * The AndFilterPipe takes a collection of pipes, where E is boolean. Each provided pipe is fed the same incoming S object.

@@ -3,7 +3,6 @@ package com.tinkerpop.pipes.filter;
 import com.tinkerpop.pipes.AbstractPipe;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 /**
  * A CollectionFilterPipe will take a collection of objects and a Filter.NOT_EQUAL or Filter.EQUAL argument.

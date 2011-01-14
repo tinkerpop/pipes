@@ -72,7 +72,7 @@ public class FutureFilterPipeTest extends BaseTest {
         Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(outEPipe, futureFilterPipe);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;
-       // pipeline.enablePath();
+        // pipeline.enablePath();
         while (pipeline.hasNext()) {
             counter++;
             System.out.println(pipeline.next() + "--->" + pipeline.getPath());

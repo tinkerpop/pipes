@@ -4,8 +4,6 @@ import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.pipes.filter.AbstractComparisonFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
 
-import java.util.NoSuchElementException;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -21,7 +19,7 @@ public class IdFilterPipe extends AbstractComparisonFilterPipe<Element, Object> 
     protected Element processNextStart() {
         while (true) {
             Element element = this.starts.next();
-            if (!this.compareObjects(element.getId(),this.id)) {
+            if (!this.compareObjects(element.getId(), this.id)) {
                 return element;
             }
         }

@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.pgm;
 
-import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
@@ -21,7 +20,7 @@ public class IdFilterPipeTest extends TestCase {
         VertexEdgePipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
         EdgeVertexPipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
         IdFilterPipe pipe3 = new IdFilterPipe("3", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        Pipeline<Vertex,Vertex> pipeline = new Pipeline<Vertex,Vertex>(pipe1, pipe2, pipe3);
+        Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;
         while (pipeline.hasNext()) {
@@ -32,13 +31,13 @@ public class IdFilterPipeTest extends TestCase {
         assertEquals(counter, 1);
     }
 
-     public void testFilterIds2() {
+    public void testFilterIds2() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         VertexEdgePipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
         EdgeVertexPipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
         IdFilterPipe pipe3 = new IdFilterPipe("3", ComparisonFilterPipe.Filter.EQUAL);
-        Pipeline<Vertex,Vertex> pipeline = new Pipeline<Vertex,Vertex>(pipe1, pipe2, pipe3);
+        Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;
         while (pipeline.hasNext()) {

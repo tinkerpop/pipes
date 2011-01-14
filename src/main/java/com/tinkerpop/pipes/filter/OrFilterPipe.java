@@ -6,7 +6,6 @@ import com.tinkerpop.pipes.SingleIterator;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * The OrFilterPipe takes a collection of pipes that emit boolean objects. Each pipe in the collection is fed the same incoming S object.

@@ -87,10 +87,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public String toString() {
-        String pipeString = this.getClass().toString();
-        if (pipeString.contains("."))
-            pipeString = pipeString.substring(pipeString.lastIndexOf(".") + 1);
-        return pipeString;
+        return this.getClass().getSimpleName();
     }
 
     protected abstract E processNextStart() throws NoSuchElementException;

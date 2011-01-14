@@ -57,5 +57,5 @@ public class DynamicStartsPipeTest extends TestCase {
         }
         assertEquals(counter, 5);
     }
-    
+
 }
