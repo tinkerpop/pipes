@@ -3,6 +3,9 @@ package com.tinkerpop.pipes.filter;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.SingleIterator;
+import com.tinkerpop.pipes.ExpandableIterator;
+
+import java.util.ArrayList;
 
 /**
  * FutureFilterPipe will allow an object to pass through it if the object has an output from the pipe provided in the constructor of the FutureFilterPipe.
@@ -11,20 +14,36 @@ import com.tinkerpop.pipes.SingleIterator;
  */
 public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
+    private final ExpandableIterator<S> expando;
     private final Pipe<S, ?> pipe;
+    private final boolean pipeShouldHaveResult;
 
     public FutureFilterPipe(final Pipe<S, ?> pipe) {
         this.pipe = pipe;
+        this.pipeShouldHaveResult = true;
+        this.expando = new ExpandableIterator<S>(new ArrayList().iterator());
+        pipe.setStarts(expando);
+    }
+
+    public FutureFilterPipe(final Pipe<S, ?> pipe, final boolean pipeShouldHaveResult) {
+        this.pipe = pipe;
+        this.pipeShouldHaveResult = pipeShouldHaveResult;
+        this.expando = new ExpandableIterator<S>(new ArrayList().iterator());
+        pipe.setStarts(expando);
     }
 
     public S processNextStart() {
         while (true) {
             S s = this.starts.next();
-            pipe.setStarts(new SingleIterator<S>(s));
+            this.expando.add(s);
             if (pipe.hasNext()) {
                 while (pipe.hasNext()) {
                     pipe.next();
                 }
+                if (this.pipeShouldHaveResult) {
+                    return s;
+                }
+            } else if (! this.pipeShouldHaveResult) {
                 return s;
             }
         }
