@@ -92,7 +92,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     protected abstract E processNextStart() throws NoSuchElementException;
 
-    private List getPathToHere() {
+    protected List getPathToHere() {
         if (this.starts instanceof Pipe) {
             return ((Pipe) this.starts).getPath();
         } else if (this.starts instanceof HistoryIterator) {
