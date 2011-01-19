@@ -16,7 +16,7 @@ import java.util.Iterator;
  */
 public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Collection<S>> {
 
-    private final Collection<S> aggregate;
+    private Collection<S> aggregate;
     private Iterator<S> aggregateIterator = null;
 
     public AggregatorPipe(final Collection<S> collection) {
@@ -35,5 +35,10 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
 
     public Collection<S> getSideEffect() {
         return this.aggregate;
+    }
+
+    public void reset() {
+        this.aggregate = new LinkedList<S>();
+        super.reset();
     }
 }

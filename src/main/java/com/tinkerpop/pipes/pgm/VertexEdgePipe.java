@@ -54,4 +54,9 @@ public class VertexEdgePipe extends AbstractPipe<Vertex, Edge> {
     public String toString() {
         return super.toString() + "<" + this.step + ">";
     }
+
+    public void reset() {
+        this.nextEnds = null;
+        super.reset();
+    }
 }

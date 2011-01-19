@@ -46,4 +46,10 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> {
     public String toString() {
         return super.toString() + "[" + this.pipeToCap + "]";
     }
+
+    public void reset() {
+        this.pipeToCap.reset();
+        this.alive = true;
+        super.reset();
+    }
 }

@@ -25,4 +25,9 @@ public class CountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
     public String toString() {
         return super.toString() + "<" + this.counter + ">";
     }
+
+    public void reset() {
+        this.counter = 0l;
+        super.reset();
+    }
 }
