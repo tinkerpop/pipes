@@ -40,6 +40,7 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
 
     public void reset() {
         this.aggregate = new LinkedList<S>();
+        this.aggregateIterator = null;
         super.reset();
     }
 }
