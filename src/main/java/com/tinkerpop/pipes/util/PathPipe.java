@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
+ * Emits the path that the traverser has taken up to this object.
+ * In other words, it uses getPath() of the previous pipe to emit the transformation stages.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class PathPipe<S> extends AbstractPipe<S, List> {

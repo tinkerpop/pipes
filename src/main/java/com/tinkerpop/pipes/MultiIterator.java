@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
+ * MultiIterator takes multiple iterators in its constructor and makes them behave like a single iterator.
+ * The order in which objects are next()'d are with respect to the order of the iterators passed into the constructor.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class MultiIterator<T> implements Iterator<T> {

@@ -28,8 +28,7 @@ public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
     public void setStarts(Iterable<S> starts);
 
     /**
-     * Returns the path traversed to arrive at the current result of
-     * the pipe.
+     * Returns the transformation path to arrive at the current object of the pipe.
      *
      * @return a List of all of the objects traversed for the current iterator position of the pipe.
      */

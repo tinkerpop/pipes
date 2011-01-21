@@ -5,6 +5,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
+ * ExpandableIterator takes an iterator and will emit the objects of that iterator.
+ * However, if an object is added to ExpandableIterator, then its put into a queue.
+ * The queue has priority over the iterator when calling next().
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class ExpandableIterator<T> implements Iterator<T> {

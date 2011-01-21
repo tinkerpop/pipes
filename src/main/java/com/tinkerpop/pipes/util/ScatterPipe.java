@@ -19,7 +19,7 @@ public class ScatterPipe<S, E> extends AbstractPipe<S, E> {
             if (null != this.tempIterator && this.tempIterator.hasNext()) {
                 return this.tempIterator.next();
             } else {
-                Object object = this.starts.next();
+                final Object object = this.starts.next();
                 if (object instanceof Iterator)
                     this.tempIterator = (Iterator<E>) object;
                 else if (object instanceof Iterable)

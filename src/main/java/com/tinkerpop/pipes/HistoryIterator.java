@@ -3,6 +3,9 @@ package com.tinkerpop.pipes;
 import java.util.Iterator;
 
 /**
+ * HistoryIterator wraps an iterator. It will behave like the wrapped iterator.
+ * However, it will remember what was last next()ed out of the iterator.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class HistoryIterator<T> implements Iterator<T> {
