@@ -1,11 +1,12 @@
-Pipes: A Data Flow Framework using Process Graphs 
-"http://pipes.tinkerpop.com":http://pipes.tinkerpop.com
+All releases can be accessed through the TinkerPop Maven2 repository identified below.
 
-bc. <repository>
+```xml
+<repository>
   <id>tinkerpop-repository</id>
   <name>TinkerPop Maven2 Repository</name>
   <url>http://tinkerpop.com/maven2</url>
 </repository>
+```
 
 ==<hr/>==
 
@@ -13,13 +14,14 @@ bc. <repository>
 
 h3. Version 0.3 (Mario -- January 22, 2011)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
   <version>0.3</version>
 </dependency>
+```
 
-* Added a general @toString()@ model to articulate pipe construction
 * Redesigned path-model to where @enablePaths()@ no longer required
 ** Added @HistoryIterator@ to replace the @enablePath()@ model
 * Renamed @CountCombine@ to @GroupCount@
@@ -34,11 +36,15 @@ bc. <dependency>
 
 h3. Version 0.2 (Clogged -- December 14, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
   <version>0.2</version>
 </dependency>
+```
+
+Pipes 0.2 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.2/api/
 
 * Added path functionality to get the path pipe traversed
 ** Added @PathSequence@ path utility
@@ -51,20 +57,26 @@ bc. <dependency>
 
 h3. Version 0.1.1 (Leaky -- October 28, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
   <version>0.1.1</version>
 </dependency>
+```
 
 * Fixed 'reset pipe' issue in @FutureFilterPipe@
 
 h3. Version 0.1 (Leaky -- September 22, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
   <version>0.1</version>
 </dependency>
+```
 
-* Initial release as the core engine for Gremlin 0.5
+Pipes 0.1 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.1/api/
+
+* Initial release as the core engine for "Gremlin":http://gremlin.tinkerpop.com 0.5
