@@ -1,2 +1,4 @@
 *.log
 target/
+.idea/
+pipes.iml
