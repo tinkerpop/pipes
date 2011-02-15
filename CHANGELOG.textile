@@ -11,6 +11,16 @@ bc. <repository>
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-mario-pipe.png!
 
+h3. Version 0.3.1 (Mario -- NOT OFFICIALLY RELEASED YET)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>0.3.1</version>
+</dependency>
+
+* Added @VertexEdgeLabelFilterPipe@ to reflect Blueprints @Vertex@ API update
+
 h3. Version 0.3 (Mario -- January 22, 2011)
 
 bc. <dependency>
