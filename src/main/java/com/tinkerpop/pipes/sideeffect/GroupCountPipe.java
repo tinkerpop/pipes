@@ -16,7 +16,7 @@ public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectP
 
     private final Map<S, Long> countMap;
 
-    public GroupCountPipe(Map<S, Long> countMap) {
+    public GroupCountPipe(final Map<S, Long> countMap) {
         this.countMap = countMap;
     }
 
@@ -25,7 +25,7 @@ public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectP
     }
 
     protected S processNextStart() {
-        S s = this.starts.next();
+        final S s = this.starts.next();
         this.updateMap(s);
         return s;
     }
