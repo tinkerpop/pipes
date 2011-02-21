@@ -13,21 +13,26 @@ bc. <repository>
 
 h3. Version 0.3.1 (Mario -- NOT OFFICIALLY RELEASED YET)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
   <version>0.3.1</version>
 </dependency>
+```
 
 * Added @VertexEdgeLabelFilterPipe@ to reflect Blueprints @Vertex@ API update
+* Added @UniquePathFilterPipe@ to filter paths that have visited the same object twice
 
 h3. Version 0.3 (Mario -- January 22, 2011)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
   <version>0.3</version>
 </dependency>
+```
 
 * Added a general @toString()@ model to articulate pipe construction
 * Redesigned path-model to where @enablePaths()@ no longer required
@@ -44,11 +49,13 @@ bc. <dependency>
 
 h3. Version 0.2 (Clogged -- December 14, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
   <version>0.2</version>
 </dependency>
+```
 
 * Added path functionality to get the path pipe traversed
 ** Added @PathSequence@ path utility
@@ -61,20 +68,24 @@ bc. <dependency>
 
 h3. Version 0.1.1 (Leaky -- October 28, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
   <version>0.1.1</version>
 </dependency>
+```
 
 * Fixed 'reset pipe' issue in @FutureFilterPipe@
 
 h3. Version 0.1 (Leaky -- September 22, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
   <version>0.1</version>
 </dependency>
+```
 
 * Initial release as the core engine for Gremlin 0.5
