@@ -1,5 +1,4 @@
-Pipes: A Data Flow Framework using Process Graphs 
-"http://pipes.tinkerpop.com":http://pipes.tinkerpop.com
+All releases can be accessed through the TinkerPop Maven2 repository identified below.
 
 ```xml
 <repository>
@@ -23,6 +22,8 @@ h3. Version 0.3.1 (Mario -- March 2, 2011)
 </dependency>
 ```
 
+Pipes 0.3.1 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.3.1/api/
+
 * Added @VertexEdgeLabelFilterPipe@ to reflect Blueprints @Vertex@ API update
 * Added @UniquePathFilterPipe@ to filter paths that have visited the same object twice
 
@@ -35,6 +36,8 @@ h3. Version 0.3 (Mario -- January 22, 2011)
   <version>0.3</version>
 </dependency>
 ```
+
+Pipes 0.3 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.3/api/
 
 * Added a general @toString()@ model to articulate pipe construction
 * Redesigned path-model to where @enablePaths()@ no longer required
@@ -58,6 +61,8 @@ h3. Version 0.2 (Clogged -- December 14, 2010)
   <version>0.2</version>
 </dependency>
 ```
+
+Pipes 0.2 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.2/api/
 
 * Added path functionality to get the path pipe traversed
 ** Added @PathSequence@ path utility
@@ -90,4 +95,6 @@ h3. Version 0.1 (Leaky -- September 22, 2010)
 </dependency>
 ```
 
-* Initial release as the core engine for Gremlin 0.5
+Pipes 0.1 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.1/api/
+
+* Initial release as the core engine for "Gremlin":http://gremlin.tinkerpop.com 0.5
