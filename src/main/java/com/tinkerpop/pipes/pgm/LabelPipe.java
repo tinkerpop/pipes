@@ -8,6 +8,11 @@ import com.tinkerpop.pipes.AbstractPipe;
  */
 public class LabelPipe extends AbstractPipe<Edge, String> {
 
+	@Override
+	public boolean hasNext() {
+		return this.starts.hasNext();
+	}
+
     protected String processNextStart() {
         return this.starts.next().getLabel();
     }

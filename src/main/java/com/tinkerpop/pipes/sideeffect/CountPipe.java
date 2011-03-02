@@ -12,6 +12,11 @@ public class CountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
 
     private Long counter = 0l;
 
+  	@Override
+  	public boolean hasNext() {
+  		return this.starts.hasNext();
+  	}
+
     protected S processNextStart() {
         S s = this.starts.next();
         this.counter++;

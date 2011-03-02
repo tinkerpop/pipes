@@ -172,6 +172,11 @@ public class OrFilterPipeTest extends TestCase {
     }
 
     private class CharacterCountPipe extends AbstractPipe<String, Integer> {
+	  		@Override
+	  		public boolean hasNext() {
+	  	    	return this.starts.hasNext();
+	  		}
+	  		
         protected Integer processNextStart() {
             return this.starts.next().length();
         }

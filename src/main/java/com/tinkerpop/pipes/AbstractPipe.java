@@ -72,9 +72,9 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
             return true;
         else {
             try {
-                this.nextEnd = this.processNextStart();
-                this.available = true;
-                return true;
+              this.nextEnd = this.processNextStart();
+              this.available = true;
+              return this.available;
             } catch (NoSuchElementException e) {
                 this.available = false;
                 return false;

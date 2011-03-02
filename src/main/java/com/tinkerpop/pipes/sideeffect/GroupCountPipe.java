@@ -24,6 +24,11 @@ public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectP
         this.countMap = new HashMap<S, Long>();
     }
 
+  	@Override
+  	public boolean hasNext() {
+  		return this.starts.hasNext();
+  	}
+
     protected S processNextStart() {
         final S s = this.starts.next();
         this.updateMap(s);

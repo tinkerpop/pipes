@@ -15,6 +15,11 @@ public class IdEdgePipe<S> extends AbstractPipe<S, Edge> {
         this.graph = graph;
     }
 
+  	@Override
+  	public boolean hasNext() {
+  		return this.starts.hasNext();
+  	}
+
     protected Edge processNextStart() {
         return this.graph.getEdge(this.starts.next());
     }

@@ -5,22 +5,28 @@ import com.tinkerpop.pipes.AbstractPipe;
 
 /**
  * The PropertyPipe returns the property value of the Element identified by the provided key.
- *
+ * 
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> {
 
-    private final String key;
+	private final String	key;
 
-    public PropertyPipe(final String key) {
-        this.key = key;
-    }
+	public PropertyPipe(final String key) {
+		this.key = key;
+	}
 
-    protected E processNextStart() {
-        return (E) this.starts.next().getProperty(this.key);
-    }
+	@Override
+	public boolean hasNext() {
+		return this.starts.hasNext();
+	}
 
-    public String toString() {
-        return super.toString() + "<" + this.key + ">";
-    }
+	protected E processNextStart() {
+		return (E) this.starts.next().getProperty(this.key);
+	}
+
+	public String toString() {
+		return super.toString() + "<" + this.key + ">";
+	}
+
 }

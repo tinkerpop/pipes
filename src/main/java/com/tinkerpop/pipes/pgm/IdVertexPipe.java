@@ -15,6 +15,11 @@ public class IdVertexPipe<S> extends AbstractPipe<S, Vertex> {
         this.graph = graph;
     }
 
+  	@Override
+  	public boolean hasNext() {
+  		return this.starts.hasNext();
+  	}
+
     protected Vertex processNextStart() {
         return this.graph.getVertex(this.starts.next());
     }

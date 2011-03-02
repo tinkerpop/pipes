@@ -19,6 +19,13 @@ public class PathPipe<S> extends AbstractPipe<S, List> {
         this.starts = starts;
     }
 
+  	@Override
+  	public boolean hasNext() {
+      if (this.starts instanceof Pipe)
+      	return this.starts.hasNext();
+      return false;
+  	}
+
     public List processNextStart() {
         if (this.starts instanceof Pipe) {
             this.starts.next();

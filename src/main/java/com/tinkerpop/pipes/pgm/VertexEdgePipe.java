@@ -26,7 +26,7 @@ public class VertexEdgePipe extends AbstractPipe<Vertex, Edge> {
             throw new IllegalArgumentException("Step can not be null");
         this.step = step;
     }
-
+		
     protected Edge processNextStart() {
         while (true) {
             if (null != this.nextEnds && this.nextEnds.hasNext()) {
