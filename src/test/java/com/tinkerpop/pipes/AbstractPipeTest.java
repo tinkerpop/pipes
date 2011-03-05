@@ -9,7 +9,6 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerVertex;
 import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
 import com.tinkerpop.pipes.pgm.PropertyPipe;
 import com.tinkerpop.pipes.pgm.VertexEdgePipe;
-import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,7 +17,9 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AbstractPipeTest extends TestCase {
+public class AbstractPipeTest extends BaseTest {
+
+    private static final int TOTAL_RUNS = 10;
 
     public void testIterable() {
         Collection<String> names = Arrays.asList("marko", "josh", "peter");
@@ -75,4 +76,60 @@ public class AbstractPipeTest extends TestCase {
             //System.out.println(pipeline.getPath());
         }
     }
+
+    /*public void testExceptionTiming() throws Exception {
+        Graph graph = new TinkerGraph();
+        GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-2.xml"));
+
+        double totalTime = 0.0d;
+        for (int i = 0; i < TOTAL_RUNS; i++) {
+            this.stopWatch();
+            int counter = 0;
+            for (final Vertex vertex : graph.getVertices()) {
+                for (final Edge edge : vertex.getOutEdges()) {
+                    final Vertex vertex2 = edge.getInVertex();
+                    for (final Edge edge2 : vertex2.getOutEdges()) {
+                        final Vertex vertex3 = edge2.getInVertex();
+                        for (final Edge edge3 : vertex3.getOutEdges()) {
+                            final Vertex vertex4 = edge3.getInVertex();
+                            for (final Edge edge4 : vertex4.getOutEdges()) {
+                                edge4.getInVertex();
+                                counter++;
+                            }
+                        }
+                    }
+                }
+            }
+            double currentTime = this.stopWatch();
+            totalTime = totalTime + currentTime;
+            BaseTest.printPerformance(graph.toString(), counter, "TinkerGraph vertices reached", currentTime);
+        }
+        BaseTest.printPerformance("TinkerGraph", 1, "TinkerGraph embedded for looping", totalTime / (double) TOTAL_RUNS);
+
+
+        totalTime = 0.0d;
+        for (int i = 0; i < TOTAL_RUNS; i++) {
+            this.stopWatch();
+            int counter = 0;
+            final Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+            final Pipe<Edge, Vertex> pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+            final Pipe<Vertex, Edge> pipe3 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+            final Pipe<Edge, Vertex> pipe4 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+            final Pipe<Vertex, Edge> pipe5 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+            final Pipe<Edge, Vertex> pipe6 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+            final Pipe<Vertex, Edge> pipe7 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+            final Pipe<Edge, Vertex> pipe8 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+            final Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3, pipe4, pipe5, pipe6, pipe7, pipe8);
+            pipeline.setStarts(graph.getVertices());
+            while (pipeline.hasNext()) {
+                pipeline.next();
+                counter++;
+            }
+            double currentTime = this.stopWatch();
+            totalTime = totalTime + currentTime;
+            BaseTest.printPerformance(graph.toString(), counter, "TinkerGraph vertices reached", currentTime);
+
+        }
+        BaseTest.printPerformance("TinkerGraph", 1, "TinkerGraph pipes model", totalTime / (double) TOTAL_RUNS);
+    }*/
 }
