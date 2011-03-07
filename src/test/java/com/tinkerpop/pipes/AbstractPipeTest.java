@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class AbstractPipeTest extends BaseTest {
 
-    private static final int TOTAL_RUNS = 10;
+    private static final int TOTAL_RUNS = 25;
 
     public void testIterable() {
         Collection<String> names = Arrays.asList("marko", "josh", "peter");
@@ -91,11 +91,8 @@ public class AbstractPipeTest extends BaseTest {
                     for (final Edge edge2 : vertex2.getOutEdges()) {
                         final Vertex vertex3 = edge2.getInVertex();
                         for (final Edge edge3 : vertex3.getOutEdges()) {
-                            final Vertex vertex4 = edge3.getInVertex();
-                            for (final Edge edge4 : vertex4.getOutEdges()) {
-                                edge4.getInVertex();
-                                counter++;
-                            }
+                            edge3.getInVertex();
+                            counter++;
                         }
                     }
                 }
@@ -111,20 +108,27 @@ public class AbstractPipeTest extends BaseTest {
         for (int i = 0; i < TOTAL_RUNS; i++) {
             this.stopWatch();
             int counter = 0;
-            final Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+            /*final Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
             final Pipe<Edge, Vertex> pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
             final Pipe<Vertex, Edge> pipe3 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
             final Pipe<Edge, Vertex> pipe4 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
             final Pipe<Vertex, Edge> pipe5 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
             final Pipe<Edge, Vertex> pipe6 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-            final Pipe<Vertex, Edge> pipe7 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-            final Pipe<Edge, Vertex> pipe8 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-            final Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3, pipe4, pipe5, pipe6, pipe7, pipe8);
+            final Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
+            final Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
+            final Pipe<Vertex, Edge> pipe3 = new OutEdgesPipe();
+            final Pipe<Edge, Vertex> pipe4 = new InVertexPipe();
+            final Pipe<Vertex, Edge> pipe5 = new OutEdgesPipe();
+            final Pipe<Edge, Vertex> pipe6 = new InVertexPipe();
+            final Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3, pipe4, pipe5, pipe6);
             pipeline.setStarts(graph.getVertices());
+            //try {
             while (pipeline.hasNext()) {
                 pipeline.next();
                 counter++;
             }
+            // } catch (Exception e) {
+            //}
             double currentTime = this.stopWatch();
             totalTime = totalTime + currentTime;
             BaseTest.printPerformance(graph.toString(), counter, "TinkerGraph vertices reached", currentTime);
