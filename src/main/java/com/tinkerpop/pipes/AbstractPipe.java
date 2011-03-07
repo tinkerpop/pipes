@@ -45,7 +45,6 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         final List pathElements = getPathToHere();
         final int size = pathElements.size();
         // do not repeat filters as they dup the object
-        // todo: why is size == 0 required (Pangloss?)
         if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
             pathElements.add(this.currentEnd);
         }
