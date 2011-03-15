@@ -13,6 +13,10 @@ public class BothEdgesPipe extends AbstractEdgesPipe {
         super();
     }
 
+    public BothEdgesPipe(final String label) {
+        super(label);
+    }
+
     protected Edge processNextStart() {
         while (true) {
             if (null != this.nextEnds && this.nextEnds.hasNext()) {

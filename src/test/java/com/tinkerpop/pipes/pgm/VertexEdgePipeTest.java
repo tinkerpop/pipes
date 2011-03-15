@@ -105,7 +105,7 @@ public class VertexEdgePipeTest extends TestCase {
     public void testBigGraphWithNoEdges() {
         // This used to cause a stack overflow. Not crashing makes this a success.
         TinkerGraph graph = new TinkerGraph();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 10000; i++) {
             graph.addVertex(null);
         }
         Pipe<Graph, Vertex> vertices = new GraphElementPipe<Vertex>(GraphElementPipe.ElementType.VERTEX);

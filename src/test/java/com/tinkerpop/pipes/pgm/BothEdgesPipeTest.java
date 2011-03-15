@@ -25,4 +25,19 @@ public class BothEdgesPipeTest extends TestCase {
         }
         assertEquals(counter, 3);
     }
+
+    public void testBothEdgesWithLabels() {
+
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        BothEdgesPipe pipe = new BothEdgesPipe("knows");
+        pipe.setStarts(new SingleIterator<Vertex>(marko));
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            Edge edge = pipe.next();
+            assertTrue(edge.getInVertex().getProperty("name").equals("josh") || edge.getInVertex().getProperty("name").equals("vadas"));
+        }
+        assertEquals(counter, 2);
+    }
 }
