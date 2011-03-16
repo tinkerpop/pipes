@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * The AggregatorPipe produces a side effect that is the provided Collection filled with the contents of all the objects that have passed through it.
