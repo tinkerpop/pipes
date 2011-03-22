@@ -11,6 +11,20 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
+h3. Version 0.4-SNAPSHOT (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>0.4-SNAPSHOT</version>
+</dependency>
+```
+
+* Added @StartPipe@ to aid in creating an @Object@-to-@Pipe@ converter
+
+==<hr/>==
+
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-mario-pipe.png!
 
 h3. Version 0.3.1 (Mario -- March 2, 2011)
