@@ -31,9 +31,9 @@
     <dependencies>
         <!-- PROPERTY GRAPH MODEL SUPPORT -->
         <dependency>
-            <groupId>com.tinkerpop</groupId>
-            <artifactId>blueprints</artifactId>
-            <version>0.5</version>
+            <groupId>com.tinkerpop.blueprints</groupId>
+            <artifactId>blueprints-core</artifactId>
+            <version>0.6-SNAPSHOT</version>
         </dependency>
         <!-- TESTING -->
         <dependency>
