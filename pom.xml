@@ -51,13 +51,13 @@
     </dependencies>
     <repositories>
         <repository>
-            <id>maven repository</id>
-            <url>http://mvnrepository.com</url>
-        </repository>
-        <repository>
             <id>tinkerpop-repository</id>
             <name>TinkerPop Maven2 Repository</name>
             <url>http://tinkerpop.com/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
         </repository>
     </repositories>
     <properties>
