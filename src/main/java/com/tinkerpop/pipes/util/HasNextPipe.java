@@ -24,6 +24,5 @@ public class HasNextPipe<S> extends AbstractPipe<S, Boolean> {
         } else {
             return Boolean.FALSE;
         }
-
     }
 }

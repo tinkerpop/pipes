@@ -20,6 +20,15 @@ public class ScatterPipeTest extends BaseTest {
             counter++;
         }
         assertEquals(counter, 3);
+
+        scatter.setStarts(Arrays.asList(Arrays.asList(1, 2, 3)));
+        scatter.reset();
+        assertEquals(1, scatter.next());
+        scatter.setStarts(Arrays.asList(Arrays.asList(1, 2, 3)));
+        scatter.reset();
+        assertEquals(1, scatter.next());
+        assertEquals(2, scatter.next());
+        assertEquals(3, scatter.next());
     }
 }
 

@@ -41,4 +41,9 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
     public String toString() {
         return super.toString() + "<" + this.low + "," + this.high + ">";
     }
+
+    public void reset() {
+        this.counter = -1;
+        super.reset();
+    }
 }

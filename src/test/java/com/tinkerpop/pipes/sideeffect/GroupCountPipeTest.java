@@ -28,6 +28,8 @@ public class GroupCountPipeTest extends TestCase {
         assertNull(pipe.getSideEffect().get("povel"));
         assertFalse(pipe.hasNext());
 
+        pipe.reset();
+        assertEquals(0, pipe.getSideEffect().size());
     }
 
     public void testCountCombinePipeZero() {

@@ -29,4 +29,9 @@ public class ScatterPipe<S, E> extends AbstractPipe<S, E> {
             }
         }
     }
+
+    public void reset() {
+        this.tempIterator = null;
+        super.reset();
+    }
 }

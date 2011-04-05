@@ -41,6 +41,16 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         this.setStarts(starts.iterator());
     }
 
+    public void reset() {
+        if (this.starts instanceof Pipe) {
+            Pipe pipe = (Pipe) this.starts;
+            pipe.reset();
+        }
+        this.nextEnd = null;
+        this.currentEnd = null;
+        this.available = false;
+    }
+
     public List getPath() {
         final List pathElements = getPathToHere();
         final int size = pathElements.size();

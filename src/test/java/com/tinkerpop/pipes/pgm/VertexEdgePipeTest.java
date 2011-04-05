@@ -102,6 +102,29 @@ public class VertexEdgePipeTest extends TestCase {
         assertEquals(counter, 3);
     }
 
+    public void testReset() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex josh = graph.getVertex("4");
+        VertexEdgePipe vsf = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        vsf.setStarts(Arrays.asList(josh).iterator());
+        assertTrue(vsf.hasNext());
+        assertEquals("5", vsf.next().getInVertex().getId());
+        assertEquals("3", vsf.next().getInVertex().getId());
+        assertFalse(vsf.hasNext());
+        vsf.setStarts(Arrays.asList(josh).iterator());
+        assertEquals("5", vsf.next().getInVertex().getId());
+        vsf.setStarts(Arrays.asList(josh).iterator());
+        // reset is only needed if iteration is abandoned partway through the edge list.
+        vsf.reset();
+        assertEquals("5", vsf.next().getInVertex().getId());
+        assertEquals("3", vsf.next().getInVertex().getId());
+        assertFalse(vsf.hasNext());
+        vsf.setStarts(Arrays.asList(josh).iterator());
+        // reset does not have a negative effect in a normal case.
+        vsf.reset();
+        assertEquals("5", vsf.next().getInVertex().getId());
+    }
+
     public void testBigGraphWithNoEdges() {
         // This used to cause a stack overflow. Not crashing makes this a success.
         TinkerGraph graph = new TinkerGraph();

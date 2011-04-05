@@ -73,6 +73,29 @@ public class OutEdgesPipeTest extends TestCase {
         }
     }
 
+    public void testReset() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex josh = graph.getVertex("4");
+        OutEdgesPipe oep = new OutEdgesPipe();
+        oep.setStarts(Arrays.asList(josh).iterator());
+        assertTrue(oep.hasNext());
+        assertEquals("5", oep.next().getInVertex().getId());
+        assertEquals("3", oep.next().getInVertex().getId());
+        assertFalse(oep.hasNext());
+        oep.setStarts(Arrays.asList(josh).iterator());
+        assertEquals("5", oep.next().getInVertex().getId());
+        oep.setStarts(Arrays.asList(josh).iterator());
+        // reset is only needed if iteration is abandoned partway through the edge list.
+        oep.reset();
+        assertEquals("5", oep.next().getInVertex().getId());
+        assertEquals("3", oep.next().getInVertex().getId());
+        assertFalse(oep.hasNext());
+        oep.setStarts(Arrays.asList(josh).iterator());
+        // reset does not have a negative effect in a normal case.
+        oep.reset();
+        assertEquals("5", oep.next().getInVertex().getId());
+    }
+
     public void testBigGraphWithNoEdges() {
         // This used to cause a stack overflow. Not crashing makes this a success.
         TinkerGraph graph = new TinkerGraph();
