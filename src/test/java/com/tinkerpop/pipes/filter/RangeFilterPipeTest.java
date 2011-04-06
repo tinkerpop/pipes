@@ -83,6 +83,29 @@ public class RangeFilterPipeTest extends TestCase {
         assertEquals(counter, 3);
     }
 
+    public void testRangeFilterEdgeCases() {
+        List<String> names = Arrays.asList("abe", "bob", "carl", "derick", "evan", "fran");
+        Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 0);
+        pipe.setStarts(names);
+        assertFalse(pipe.hasNext());
+        pipe = new RangeFilterPipe<String>(-1, 0);
+        pipe.setStarts(names);
+        assertFalse(pipe.hasNext());
+        pipe = new RangeFilterPipe<String>(0, 1);
+        pipe.setStarts(names);
+        assertTrue(pipe.hasNext());
+        assertEquals("abe", pipe.next());
+        assertFalse(pipe.hasNext());
+        pipe = new RangeFilterPipe<String>(-1, 1);
+        pipe.setStarts(names);
+        assertTrue(pipe.hasNext());
+        assertEquals("abe", pipe.next());
+        assertFalse(pipe.hasNext());
+        pipe = new RangeFilterPipe<String>(1, 1);
+        pipe.setStarts(names);
+        assertFalse(pipe.hasNext());
+    }
+
     public void testRangeFilterLowHighInfinity() {
         List<String> names = Arrays.asList("abe", "bob", "carl", "derick", "evan", "fran");
         Pipe<String, String> pipe = new RangeFilterPipe<String>(-1, -1);
