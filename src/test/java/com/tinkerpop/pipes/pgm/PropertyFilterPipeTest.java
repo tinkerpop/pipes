@@ -20,8 +20,8 @@ public class PropertyFilterPipeTest extends TestCase {
     public void testPropertyFilter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe<Edge, Vertex> pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
+        Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
         Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", "java", ComparisonFilterPipe.Filter.NOT_EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
@@ -47,8 +47,8 @@ public class PropertyFilterPipeTest extends TestCase {
     public void testPropertyFilter2() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe<Edge, Vertex> pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
+        Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
         Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", "java", ComparisonFilterPipe.Filter.EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());

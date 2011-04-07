@@ -7,9 +7,9 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 import com.tinkerpop.pipes.SingleIterator;
-import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
+import com.tinkerpop.pipes.pgm.InVertexPipe;
+import com.tinkerpop.pipes.pgm.OutEdgesPipe;
 import com.tinkerpop.pipes.pgm.PropertyPipe;
-import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -88,9 +88,9 @@ public class RangeFilterPipeTest extends TestCase {
 
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
         Pipe<Edge, Edge> pipe2 = new RangeFilterPipe<Edge>(1, 2);
-        Pipe<Edge, Vertex> pipe3 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Edge, Vertex> pipe3 = new InVertexPipe();
         Pipe<Vertex, String> pipe4 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4);
         pipeline.setStarts(new SingleIterator<Vertex>(marko));
@@ -106,9 +106,9 @@ public class RangeFilterPipeTest extends TestCase {
         // ./outE[position() > 0 and position() < 3]/inV/@name
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
         Pipe<Edge, Edge> pipe2 = new RangeFilterPipe<Edge>(0, 2);
-        Pipe<Edge, Vertex> pipe3 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Edge, Vertex> pipe3 = new InVertexPipe();
         Pipe<Vertex, String> pipe4 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4);
         pipeline.setStarts(new SingleIterator<Vertex>(marko));

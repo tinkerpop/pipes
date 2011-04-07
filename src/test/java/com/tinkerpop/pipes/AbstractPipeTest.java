@@ -6,9 +6,9 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerEdge;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerVertex;
-import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
+import com.tinkerpop.pipes.pgm.InVertexPipe;
+import com.tinkerpop.pipes.pgm.OutEdgesPipe;
 import com.tinkerpop.pipes.pgm.PropertyPipe;
-import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,8 +44,8 @@ public class AbstractPipeTest extends BaseTest {
     public void testPathConstruction() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe<Edge, Vertex> pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
+        Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
         Pipe<Vertex, String> pipe3 = new PropertyPipe<Vertex, String>("name");
         pipe3.setStarts(pipe2.iterator());
         pipe2.setStarts(pipe1.iterator());
@@ -108,12 +108,12 @@ public class AbstractPipeTest extends BaseTest {
         for (int i = 0; i < TOTAL_RUNS; i++) {
             this.stopWatch();
             int counter = 0;
-            /*final Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-            final Pipe<Edge, Vertex> pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-            final Pipe<Vertex, Edge> pipe3 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-            final Pipe<Edge, Vertex> pipe4 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-            final Pipe<Vertex, Edge> pipe5 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-            final Pipe<Edge, Vertex> pipe6 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+            /*final Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
+            final Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
+            final Pipe<Vertex, Edge> pipe3 = new OutEdgesPipe();
+            final Pipe<Edge, Vertex> pipe4 = new InVertexPipe();
+            final Pipe<Vertex, Edge> pipe5 = new OutEdgesPipe();
+            final Pipe<Edge, Vertex> pipe6 = new InVertexPipe();
             final Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
             final Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
             final Pipe<Vertex, Edge> pipe3 = new OutEdgesPipe();

@@ -8,9 +8,9 @@ import com.tinkerpop.pipes.BaseTest;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
+import com.tinkerpop.pipes.pgm.InVertexPipe;
+import com.tinkerpop.pipes.pgm.OutEdgesPipe;
 import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
-import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,8 +48,8 @@ public class FutureFilterPipeTest extends BaseTest {
     public void testGraphFutureFilter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex(1);
-        Pipe outEPipe = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe inVPipe = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe outEPipe = new OutEdgesPipe();
+        Pipe inVPipe = new InVertexPipe();
         Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", ComparisonFilterPipe.Filter.NOT_EQUAL);
         Pipe<Edge, Edge> futureFilterPipe = new FutureFilterPipe<Edge>(new Pipeline<Edge, Vertex>(inVPipe, propertyFilterPipe));
         Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(outEPipe, futureFilterPipe);
@@ -65,8 +65,8 @@ public class FutureFilterPipeTest extends BaseTest {
     public void testGraphFutureFilterWithPaths() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex(1);
-        Pipe outEPipe = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe inVPipe = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe outEPipe = new OutEdgesPipe();
+        Pipe inVPipe = new InVertexPipe();
         Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", ComparisonFilterPipe.Filter.NOT_EQUAL);
         Pipe<Edge, Edge> futureFilterPipe = new FutureFilterPipe<Edge>(new Pipeline<Edge, Vertex>(inVPipe, propertyFilterPipe));
         Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(outEPipe, futureFilterPipe);

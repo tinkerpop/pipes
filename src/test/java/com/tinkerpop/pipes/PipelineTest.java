@@ -7,10 +7,10 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerEdge;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerVertex;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
-import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
+import com.tinkerpop.pipes.pgm.InVertexPipe;
 import com.tinkerpop.pipes.pgm.LabelFilterPipe;
+import com.tinkerpop.pipes.pgm.OutEdgesPipe;
 import com.tinkerpop.pipes.pgm.PropertyPipe;
-import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class PipelineTest extends TestCase {
     public void testOneStagePipeline() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe vep = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe vep = new OutEdgesPipe();
         Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(Arrays.asList(vep));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
@@ -46,9 +46,9 @@ public class PipelineTest extends TestCase {
     public void testThreeStagePipeline() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe pipe1 = new OutEdgesPipe();
         Pipe pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        Pipe pipe3 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe pipe3 = new InVertexPipe();
         Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         System.out.println(pipeline);
@@ -62,9 +62,9 @@ public class PipelineTest extends TestCase {
         }
         assertEquals(1, counter);
 
-        pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        pipe1 = new OutEdgesPipe();
         pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.EQUAL);
-        pipe3 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        pipe3 = new InVertexPipe();
         pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
@@ -87,8 +87,8 @@ public class PipelineTest extends TestCase {
     public void testPipelineResuse() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe vep = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe evp = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe vep = new OutEdgesPipe();
+        Pipe evp = new InVertexPipe();
         Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(vep, evp));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
@@ -149,8 +149,8 @@ public class PipelineTest extends TestCase {
     public void testPipelinePathConstruction() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe pipe1 = new OutEdgesPipe();
+        Pipe pipe2 = new InVertexPipe();
         Pipe pipe3 = new PropertyPipe<Vertex, String>("name");
         Pipe<Vertex, String> pipeline = new Pipeline<Vertex, String>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
@@ -184,8 +184,8 @@ public class PipelineTest extends TestCase {
     public void testPathWithPipelineOfPipelines() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe pipe1 = new OutEdgesPipe();
+        Pipe pipe2 = new InVertexPipe();
         Pipe pipe3 = new PropertyPipe<Vertex, String>("name");
         Pipe<Vertex, Edge> pipeline1 = new Pipeline<Vertex, Edge>(pipe1);
         Pipe<Edge, Vertex> pipeline2 = new Pipeline<Edge, Vertex>(pipe2);

@@ -6,8 +6,8 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipeline;
 import com.tinkerpop.pipes.pgm.LabelFilterPipe;
+import com.tinkerpop.pipes.pgm.OutEdgesPipe;
 import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
-import com.tinkerpop.pipes.pgm.VertexEdgePipe;
 import com.tinkerpop.pipes.util.HasNextPipe;
 import junit.framework.TestCase;
 
@@ -40,7 +40,7 @@ public class AndFilterPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Vertex peter = graph.getVertex("6");
-        VertexEdgePipe pipe0 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        OutEdgesPipe pipe0 = new OutEdgesPipe();
         LabelFilterPipe pipe1 = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.NOT_EQUAL);
         PropertyFilterPipe<Edge, Float> pipe2 = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN_EQUAL);
         AndFilterPipe<Edge> andFilterPipe = new AndFilterPipe<Edge>(new HasNextPipe<Edge>(pipe1), new HasNextPipe<Edge>(pipe2));

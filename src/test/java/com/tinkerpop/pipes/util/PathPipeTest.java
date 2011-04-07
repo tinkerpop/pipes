@@ -7,8 +7,8 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 import com.tinkerpop.pipes.SingleIterator;
-import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
-import com.tinkerpop.pipes.pgm.VertexEdgePipe;
+import com.tinkerpop.pipes.pgm.InVertexPipe;
+import com.tinkerpop.pipes.pgm.OutEdgesPipe;
 import junit.framework.TestCase;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public class PathPipeTest extends TestCase {
     public void testPipeBasic() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe<Edge, Vertex> pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
+        Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
         Pipe<Vertex, List> pipe3 = new PathPipe<Vertex>();
         Pipe<Vertex, List> pipeline = new Pipeline<Vertex, List>(pipe1, pipe2, pipe3);
         pipeline.setStarts(new SingleIterator<Vertex>(marko));

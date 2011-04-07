@@ -17,8 +17,8 @@ public class IdFilterPipeTest extends TestCase {
     public void testFilterIds1() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        VertexEdgePipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        EdgeVertexPipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        OutEdgesPipe pipe1 = new OutEdgesPipe();
+        InVertexPipe pipe2 = new InVertexPipe();
         IdFilterPipe pipe3 = new IdFilterPipe("3", ComparisonFilterPipe.Filter.NOT_EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
@@ -34,8 +34,8 @@ public class IdFilterPipeTest extends TestCase {
     public void testFilterIds2() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        VertexEdgePipe pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        EdgeVertexPipe pipe2 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        OutEdgesPipe pipe1 = new OutEdgesPipe();
+        InVertexPipe pipe2 = new InVertexPipe();
         IdFilterPipe pipe3 = new IdFilterPipe("3", ComparisonFilterPipe.Filter.EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));

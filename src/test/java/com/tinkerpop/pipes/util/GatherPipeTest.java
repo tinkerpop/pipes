@@ -6,8 +6,8 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 import com.tinkerpop.pipes.SingleIterator;
-import com.tinkerpop.pipes.pgm.EdgeVertexPipe;
-import com.tinkerpop.pipes.pgm.VertexEdgePipe;
+import com.tinkerpop.pipes.pgm.InVertexPipe;
+import com.tinkerpop.pipes.pgm.OutEdgesPipe;
 import junit.framework.TestCase;
 
 /**
@@ -17,8 +17,8 @@ public class GatherPipeTest extends TestCase {
 
     public void testBasicGather() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Pipe pipe0 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe pipe1 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe pipe0 = new OutEdgesPipe();
+        Pipe pipe1 = new InVertexPipe();
         Pipe pipe2 = new GatherPipe();
         Pipe pipeline = new Pipeline(pipe0, pipe1, pipe2);
         pipeline.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));

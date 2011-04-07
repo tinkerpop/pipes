@@ -7,7 +7,11 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.pgm.*;
+import com.tinkerpop.pipes.pgm.InVertexPipe;
+import com.tinkerpop.pipes.pgm.LabelFilterPipe;
+import com.tinkerpop.pipes.pgm.OutEdgesPipe;
+import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
+import com.tinkerpop.pipes.pgm.PropertyPipe;
 import com.tinkerpop.pipes.util.HasNextPipe;
 import junit.framework.TestCase;
 
@@ -40,7 +44,7 @@ public class OrFilterPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Vertex peter = graph.getVertex("6");
-        VertexEdgePipe pipe0 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        OutEdgesPipe pipe0 = new OutEdgesPipe();
         LabelFilterPipe pipe1 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
         PropertyFilterPipe<Edge, Float> pipe2 = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN_EQUAL);
         OrFilterPipe<Edge> orFilterPipe = new OrFilterPipe<Edge>(new HasNextPipe<Edge>(pipe1), new HasNextPipe<Edge>(pipe2));
@@ -62,7 +66,7 @@ public class OrFilterPipeTest extends TestCase {
 
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, Edge> pipe1 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
         FilterPipe<Edge> pipeA = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
         FilterPipe<Edge> pipeB = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.NOT_EQUAL);
         FilterPipe<Edge> pipeC = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN_EQUAL);
@@ -103,9 +107,9 @@ public class OrFilterPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
 
-        Pipe<Vertex, Edge> pipeA = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe<Vertex, Edge> pipeA = new OutEdgesPipe();
         Pipe<Edge, Edge> pipeB = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        Pipe<Edge, Vertex> pipeC = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Edge, Vertex> pipeC = new InVertexPipe();
         Pipe<Vertex, Vertex> pipeD = new PropertyFilterPipe<Vertex, String>("name", "lop", ComparisonFilterPipe.Filter.NOT_EQUAL);
         Pipe<Vertex, Vertex> pipe1 = new AndFilterPipe<Vertex>(new HasNextPipe<Vertex>(new Pipeline<Vertex, Vertex>(pipeA, pipeB, pipeC, pipeD)));
         Pipe<Vertex, String> pipe2 = new PropertyPipe<Vertex, String>("name");
@@ -126,12 +130,12 @@ public class OrFilterPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
 
-        Pipe<Vertex, Edge> pipeA = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe<Vertex, Edge> pipeA = new OutEdgesPipe();
         Pipe<Edge, Edge> pipeB = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN);
-        Pipe<Edge, Vertex> pipeC = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Edge, Vertex> pipeC = new InVertexPipe();
         Pipe<Vertex, Vertex> pipe1 = new AndFilterPipe<Vertex>(new HasNextPipe<Vertex>(new Pipeline<Vertex, Vertex>(pipeA, pipeB, pipeC)));
-        Pipe<Vertex, Edge> pipe2 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe<Edge, Vertex> pipe3 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Edge> pipe2 = new OutEdgesPipe();
+        Pipe<Edge, Vertex> pipe3 = new InVertexPipe();
         Pipe<Vertex, String> pipe4 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4);
         pipeline.setStarts(Arrays.asList(marko));
@@ -151,13 +155,13 @@ public class OrFilterPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
 
-        Pipe<Vertex, Edge> pipeA = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe<Edge, Vertex> pipeB = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Edge> pipeA = new OutEdgesPipe();
+        Pipe<Edge, Vertex> pipeB = new InVertexPipe();
         Pipe<Vertex, Vertex> pipe1 = new OrFilterPipe<Vertex>(new HasNextPipe<Vertex>(new Pipeline<Vertex, Vertex>(pipeA, pipeB)));
-        Pipe<Vertex, Edge> pipeC = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe<Vertex, Edge> pipeC = new OutEdgesPipe();
         Pipe<Vertex, Vertex> pipe2 = new OrFilterPipe<Vertex>(new HasNextPipe<Vertex>(pipeC));
-        Pipe<Vertex, Edge> pipe3 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe<Edge, Vertex> pipe4 = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+        Pipe<Vertex, Edge> pipe3 = new OutEdgesPipe();
+        Pipe<Edge, Vertex> pipe4 = new InVertexPipe();
         Pipe<Vertex, String> pipe5 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4, pipe5);
         pipeline.setStarts(Arrays.asList(marko));
