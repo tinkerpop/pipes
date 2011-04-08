@@ -1,13 +1,17 @@
 package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.MetaPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.SingleIterator;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class HasNextPipe<S> extends AbstractPipe<S, Boolean> {
+public class HasNextPipe<S> extends AbstractPipe<S, Boolean> implements MetaPipe {
 
     private final Pipe<S, ?> pipe;
 
@@ -25,5 +29,9 @@ public class HasNextPipe<S> extends AbstractPipe<S, Boolean> {
             return Boolean.FALSE;
         }
 
+    }
+
+    public List<Pipe> getPipes() {
+        return (List) Arrays.asList(pipe);
     }
 }

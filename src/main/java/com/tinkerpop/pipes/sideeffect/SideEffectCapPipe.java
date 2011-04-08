@@ -1,7 +1,10 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.MetaPipe;
+import com.tinkerpop.pipes.Pipe;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -12,7 +15,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> {
+public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> implements MetaPipe {
 
     private final SideEffectPipe<S, ?, T> pipeToCap;
     private boolean alive = true;
@@ -45,5 +48,9 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> {
 
     public String toString() {
         return super.toString() + "[" + this.pipeToCap + "]";
+    }
+
+    public List<Pipe> getPipes() {
+        return Arrays.asList((Pipe) pipeToCap);
     }
 }

@@ -14,11 +14,12 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class Pipeline<S, E> implements Pipe<S, E> {
+public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
 
     private Pipe<S, ?> startPipe;
     private Pipe<?, E> endPipe;
     private String pipelineString;
+    private List<Pipe> pipes;
 
     public Pipeline() {
     }
@@ -30,6 +31,7 @@ public class Pipeline<S, E> implements Pipe<S, E> {
      * @param pipes the ordered list of pipes to chain together into a pipeline
      */
     public Pipeline(final List<Pipe> pipes) {
+        this.pipes = pipes;
         this.setPipes(pipes);
     }
 
@@ -137,5 +139,9 @@ public class Pipeline<S, E> implements Pipe<S, E> {
 
     public String toString() {
         return this.pipelineString;
+    }
+
+    public List<Pipe> getPipes() {
+        return this.pipes;
     }
 }
