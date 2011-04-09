@@ -80,9 +80,9 @@ public class FutureFilterPipeTest extends BaseTest {
     public void testGraphFutureFilterWithRangeFilter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex(1);
-        Pipe outEPipe = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
-        Pipe inVPipe = new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
-        Pipe outE2 = new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+        Pipe outEPipe = new OutEdgesPipe();
+        Pipe inVPipe = new InVertexPipe();
+        Pipe outE2 = new OutEdgesPipe();
         Pipe<Vertex, Vertex> range = new RangeFilterPipe<Vertex>(1, 2);
         Pipe<Vertex, Vertex> futureFilterPipe =
           new FutureFilterPipe<Vertex>(new Pipeline<Vertex, Edge>(outE2, range));
