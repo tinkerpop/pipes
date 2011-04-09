@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * The AggregatorPipe produces a side effect that is the provided Collection filled with the contents of all the objects that have passed through it.
@@ -16,7 +17,7 @@ import java.util.Iterator;
  */
 public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Collection<S>> {
 
-    private final Collection<S> aggregate;
+    private Collection<S> aggregate;
     private Iterator<S> aggregateIterator = null;
 
     public AggregatorPipe(final Collection<S> collection) {
@@ -35,5 +36,11 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
 
     public Collection<S> getSideEffect() {
         return this.aggregate;
+    }
+
+    public void reset() {
+        this.aggregate = new LinkedList<S>();
+        this.aggregateIterator = null;
+        super.reset();
     }
 }

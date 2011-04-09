@@ -26,6 +26,10 @@ public class SideEffectCapPipeTest extends TestCase {
         } catch (NoSuchElementException e) {
             assertFalse(false);
         }
+        pipe.reset();
+        pipe.setStarts(list);
+        assertTrue(pipe.hasNext());
+        assertEquals(6, (long)pipe.next());
     }
 
     public void testSideEffectCapPipeZeroCount() {

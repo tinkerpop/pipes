@@ -41,6 +41,34 @@ public class AbstractPipeTest extends BaseTest {
         assertEquals(counter, 3);
     }
 
+    public void testReset() {
+        Collection<String> names = Arrays.asList("marko", "peter");
+        Pipe<String, String> pipe = new IdentityPipe<String>();
+        pipe.setStarts(names);
+
+        assert(pipe.hasNext());
+        pipe.reset();
+        assert(pipe.hasNext());
+        pipe.reset();
+        assertFalse(pipe.hasNext()); // Pipe has consumed and reset has thrown away all 3 items.
+    }
+
+    public void testResetChain() {
+        Collection<String> names = Arrays.asList("marko", "peter");
+        Pipe<String, String> start_pipe = new IdentityPipe<String>();
+        start_pipe.setStarts(names);
+        Pipe<String, String> middle_pipe = new IdentityPipe<String>();
+        middle_pipe.setStarts(start_pipe.iterator());
+        Pipe<String, String> pipe = new IdentityPipe<String>();
+        pipe.setStarts(middle_pipe.iterator());
+
+        assert(pipe.hasNext());
+        pipe.reset();
+        assert(pipe.hasNext());
+        pipe.reset();
+        assertFalse(pipe.hasNext()); // Pipe has consumed and reset has thrown away both items.
+    }
+
     public void testPathConstruction() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");

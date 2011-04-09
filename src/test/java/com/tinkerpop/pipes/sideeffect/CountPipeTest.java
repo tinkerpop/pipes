@@ -31,6 +31,14 @@ public class CountPipeTest extends TestCase {
         } catch (NoSuchElementException e) {
             assertFalse(false);
         }
+
+        pipe1.reset();
+        assertEquals(0l, (long)pipe1.getSideEffect());
+        pipe1.setStarts(list.iterator());
+        pipe1.next();
+        assertEquals(1l, (long)pipe1.getSideEffect());
+        pipe1.hasNext();
+        assertEquals(2l, (long)pipe1.getSideEffect());
     }
 
 

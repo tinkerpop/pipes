@@ -128,6 +128,10 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
         return endPipe.getPath();
     }
 
+    public void reset() {
+        endPipe.reset();
+    }
+
     /**
      * Simply returns this as as a pipeline (more specifically, pipe) implements Iterator.
      *

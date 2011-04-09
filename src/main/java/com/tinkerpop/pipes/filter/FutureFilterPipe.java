@@ -26,9 +26,7 @@ public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
             S s = this.starts.next();
             pipe.setStarts(new SingleIterator<S>(s));
             if (pipe.hasNext()) {
-                while (pipe.hasNext()) {
-                    pipe.next();
-                }
+                pipe.reset();
                 return s;
             }
         }

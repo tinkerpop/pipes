@@ -34,6 +34,13 @@ public class AggregatorPipeTest extends TestCase {
         for (int i = 0; i < counter; i++) {
             assertEquals(list.get(i), pipe1.getSideEffect().toArray()[i]);
         }
+
+        pipe1.reset();
+        assertEquals(0, pipe1.getSideEffect().size());
+        pipe1.setStarts(list.iterator());
+        counter = 0;
+        assertTrue(pipe1.hasNext());
+        assertEquals(6, pipe1.getSideEffect().size());
     }
 
     public void testSelfFilter() {

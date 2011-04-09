@@ -33,4 +33,6 @@ public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
      * @return a List of all of the objects traversed for the current iterator position of the pipe.
      */
     public List getPath();
+
+    public void reset();
 }

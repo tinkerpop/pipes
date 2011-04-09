@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Map<S, Long>> {
 
-    private final Map<S, Long> countMap;
+    private Map<S, Long> countMap;
 
     public GroupCountPipe(final Map<S, Long> countMap) {
         this.countMap = countMap;
@@ -41,6 +41,10 @@ public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectP
         } else {
             this.countMap.put(s, 1l + temp);
         }
+    }
 
+    public void reset() {
+        this.countMap = new HashMap<S, Long>();
+        super.reset();
     }
 }

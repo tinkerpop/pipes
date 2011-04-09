@@ -33,5 +33,4 @@ public class HistoryIterator<T> implements Iterator<T> {
     public void remove() {
         throw new UnsupportedOperationException();
     }
-
 }

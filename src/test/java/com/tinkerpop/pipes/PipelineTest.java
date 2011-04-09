@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
@@ -84,7 +85,22 @@ public class PipelineTest extends TestCase {
 
     }
 
-    public void testPipelineResuse() {
+    public void testPipelineReset() {
+        Collection<String> names = Arrays.asList("marko", "peter");
+        Pipe<String, String> pipe1 = new IdentityPipe<String>();
+        Pipe<String, String> pipe2 = new IdentityPipe<String>();
+        Pipe<String, String> pipe3 = new IdentityPipe<String>();
+        Pipe<String, String> pipeline = new Pipeline<String, String>(pipe1, pipe2, pipe3);
+        pipeline.setStarts(names);
+
+        assert(pipeline.hasNext());
+        pipeline.reset();
+        assert(pipeline.hasNext());
+        pipeline.reset();
+        assertFalse(pipeline.hasNext()); // Pipe has consumed and reset has thrown away both items.
+    }
+
+    public void testPipelineReuse() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe vep = new OutEdgesPipe();

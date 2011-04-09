@@ -29,4 +29,9 @@ public abstract class AbstractEdgesPipe extends AbstractPipe<Vertex, Edge> {
             return super.toString() + "<" + this.label + ">";
         }
     }
+
+    public void reset() {
+        this.nextEnds = null;
+        super.reset();
+    }
 }

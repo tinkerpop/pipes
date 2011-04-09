@@ -53,4 +53,10 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> implements MetaP
     public List<Pipe> getPipes() {
         return Arrays.asList((Pipe) pipeToCap);
     }
+
+    public void reset() {
+        this.pipeToCap.reset();
+        this.alive = true;
+        super.reset();
+    }
 }
