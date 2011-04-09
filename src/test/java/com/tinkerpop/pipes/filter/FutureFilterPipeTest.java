@@ -8,8 +8,11 @@ import com.tinkerpop.pipes.BaseTest;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
+import com.tinkerpop.pipes.pgm.GraphElementPipe;
 import com.tinkerpop.pipes.pgm.InVertexPipe;
 import com.tinkerpop.pipes.pgm.OutEdgesPipe;
+import com.tinkerpop.pipes.pgm.BothVerticesPipe;
+import com.tinkerpop.pipes.pgm.BothEdgesPipe;
 import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
 
 import java.util.Arrays;
@@ -95,6 +98,26 @@ public class FutureFilterPipeTest extends BaseTest {
             assertEquals("4", v.getId());
         }
         assertEquals(2, counter);
+    }
+
+    public void testGraphFutureFilterWithRangeFilter2() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Pipe vertexPipe = new GraphElementPipe<Vertex>(GraphElementPipe.ElementType.VERTEX);
+        Pipe bothEPipe = new BothEdgesPipe();
+        Pipe bothVPipe = new BothVerticesPipe();
+        Pipe outE2 = new OutEdgesPipe();
+        Pipe<Vertex, Vertex> range = new RangeFilterPipe<Vertex>(2, 3);
+        Pipe<Vertex, Vertex> futureFilterPipe =
+          new FutureFilterPipe<Vertex>(new Pipeline<Vertex, Edge>(outE2, range));
+        Pipe<Graph, Vertex> pipeline = new Pipeline<Graph, Vertex>(vertexPipe, bothEPipe, bothVPipe, futureFilterPipe);
+        pipeline.setStarts(Arrays.asList(graph));
+        int counter = 0;
+        while (pipeline.hasNext()) {
+            counter++;
+            Vertex v = pipeline.next();
+            assertEquals("1", v.getId());
+        }
+        assertEquals(6, counter);
     }
 
     public void testGraphFutureFilterWithPaths() {

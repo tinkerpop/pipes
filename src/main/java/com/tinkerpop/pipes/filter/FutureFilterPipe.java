@@ -40,8 +40,8 @@ public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
         while (true) {
             S s = this.starts.next();
             this.expando.add(s);
+            pipe.reset();
             if (pipe.hasNext()) {
-                pipe.reset();
                 if (this.pipeShouldHaveResult) {
                     return s;
                 }
