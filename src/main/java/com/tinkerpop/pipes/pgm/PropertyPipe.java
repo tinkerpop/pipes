@@ -11,13 +11,30 @@ import com.tinkerpop.pipes.AbstractPipe;
 public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> {
 
     private final String key;
+    private final boolean includeNull;
 
     public PropertyPipe(final String key) {
         this.key = key;
+        this.includeNull = true;
+    }
+
+    public PropertyPipe(final String key, final boolean includeNull) {
+        this.key = key;
+        this.includeNull = includeNull;
     }
 
     protected E processNextStart() {
-        return (E) this.starts.next().getProperty(this.key);
+        while (true) {
+            Element e = this.starts.next();
+            try {
+                E value = (E) e.getProperty(this.key);
+                if (this.includeNull || value != null)
+                    return value;
+            } catch (Exception ex) {
+                if (this.includeNull)
+                    return null;
+            }
+        }
     }
 
     public String toString() {

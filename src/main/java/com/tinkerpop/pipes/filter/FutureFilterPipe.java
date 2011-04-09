@@ -4,6 +4,9 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.MetaPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.SingleIterator;
+import com.tinkerpop.pipes.ExpandableIterator;
+
+import java.util.ArrayList;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,18 +18,34 @@ import java.util.List;
  */
 public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>, MetaPipe {
 
+    private final ExpandableIterator<S> expando;
     private final Pipe<S, ?> pipe;
+    private final boolean pipeShouldHaveResult;
 
     public FutureFilterPipe(final Pipe<S, ?> pipe) {
         this.pipe = pipe;
+        this.pipeShouldHaveResult = true;
+        this.expando = new ExpandableIterator<S>(new ArrayList().iterator());
+        pipe.setStarts(expando);
+    }
+
+    public FutureFilterPipe(final Pipe<S, ?> pipe, final boolean pipeShouldHaveResult) {
+        this.pipe = pipe;
+        this.pipeShouldHaveResult = pipeShouldHaveResult;
+        this.expando = new ExpandableIterator<S>(new ArrayList().iterator());
+        pipe.setStarts(expando);
     }
 
     public S processNextStart() {
         while (true) {
             S s = this.starts.next();
-            pipe.setStarts(new SingleIterator<S>(s));
+            this.expando.add(s);
             if (pipe.hasNext()) {
                 pipe.reset();
+                if (this.pipeShouldHaveResult) {
+                    return s;
+                }
+            } else if (! this.pipeShouldHaveResult) {
                 return s;
             }
         }

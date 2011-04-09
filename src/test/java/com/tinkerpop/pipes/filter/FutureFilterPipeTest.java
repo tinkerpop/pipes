@@ -14,6 +14,7 @@ import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -43,6 +44,20 @@ public class FutureFilterPipeTest extends BaseTest {
             assertTrue(name.equals("peter") || name.equals("josh"));
         }
         assertEquals(counter, 2);
+    }
+
+    public void testAdvancedNegativeFutureFilter() {
+        List<String> names = Arrays.asList("marko", "peter", "povel", "josh");
+        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new CollectionFilterPipe<String>(Arrays.asList("marko", "povel"), ComparisonFilterPipe.Filter.EQUAL), false);
+        pipe1.setStarts(names);
+        int counter = 0;
+        Iterator expected = Arrays.asList("marko", "povel").iterator();
+        while (pipe1.hasNext()) {
+            counter++;
+            String name = pipe1.next();
+            assertEquals(expected.next(), name);
+        }
+        assertEquals(2, counter);
     }
 
     public void testGraphFutureFilter() {
