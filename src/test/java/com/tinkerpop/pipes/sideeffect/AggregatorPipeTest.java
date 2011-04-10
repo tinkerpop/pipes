@@ -18,6 +18,22 @@ import java.util.NoSuchElementException;
  */
 public class AggregatorPipeTest extends TestCase {
 
+    public void testReset() {
+        List<String> aggregate = new ArrayList<String>();
+        List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
+        AggregatorPipe<String> pipe = new AggregatorPipe<String>(aggregate);
+        pipe.setStarts(list.iterator());
+        assertTrue(pipe.hasNext());
+        assertEquals(aggregate.get(0), "marko");
+        assertEquals(aggregate.size(), 6);
+        pipe.reset();
+        assertEquals(aggregate.get(0), "marko");
+        assertEquals(aggregate.size(), 6);
+        assertFalse(pipe.hasNext());
+        assertEquals(pipe.getSideEffect().getClass(), ArrayList.class);
+        assertEquals(pipe.getSideEffect().size(), 0);
+    }
+
     public void testAggregatorPipe() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         AggregatorPipe<String> pipe1 = new AggregatorPipe<String>(new ArrayList<String>());

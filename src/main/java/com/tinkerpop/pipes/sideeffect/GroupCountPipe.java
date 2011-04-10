@@ -44,7 +44,7 @@ public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectP
     }
 
     public void reset() {
-        this.countMap.clear();
+        this.countMap = new HashMap<S, Long>();
         super.reset();
     }
 }
