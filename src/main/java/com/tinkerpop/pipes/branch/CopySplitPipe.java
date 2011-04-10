@@ -42,6 +42,13 @@ public class CopySplitPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         return this.pipes;
     }
 
+    public void reset() {
+        for (final Pipe pipe : this.pipes) {
+            pipe.reset();
+        }
+        super.reset();
+    }
+
     private class CopyExpandablePipe<S> extends AbstractPipe<S, S> {
         private final Queue<S> queue = new LinkedList<S>();
 

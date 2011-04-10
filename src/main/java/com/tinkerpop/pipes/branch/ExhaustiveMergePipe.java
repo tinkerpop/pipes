@@ -37,6 +37,13 @@ public class ExhaustiveMergePipe<S> extends AbstractPipe<S, S> implements MetaPi
         }
     }
 
+    public void reset() {
+        for (final Pipe pipe : this.pipes) {
+            pipe.reset();
+        }
+        super.reset();
+    }
+
     public List<Pipe> getPipes() {
         return this.pipes;
     }

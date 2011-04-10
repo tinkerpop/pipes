@@ -40,6 +40,14 @@ public class FairMergePipe<E> extends AbstractPipe<E, E> implements MetaPipe {
         }
     }
 
+    public void reset() {
+        for (final Pipe pipe : this.pipes) {
+            pipe.reset();
+        }
+        super.reset();
+    }
+
+
     public List<Pipe> getPipes() {
         return this.pipes;
     }
