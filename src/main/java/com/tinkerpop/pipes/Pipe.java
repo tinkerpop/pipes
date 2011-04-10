@@ -34,5 +34,8 @@ public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
      */
     public List getPath();
 
+    /**
+     * A pipe may maintain state. Reset is used to remove state.
+     */
     public void reset();
 }
