@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.Pipe;
+
 import java.util.NoSuchElementException;
 
 /**

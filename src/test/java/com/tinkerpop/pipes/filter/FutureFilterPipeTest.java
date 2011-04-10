@@ -8,16 +8,16 @@ import com.tinkerpop.pipes.BaseTest;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
+import com.tinkerpop.pipes.pgm.BothEdgesPipe;
+import com.tinkerpop.pipes.pgm.BothVerticesPipe;
 import com.tinkerpop.pipes.pgm.GraphElementPipe;
 import com.tinkerpop.pipes.pgm.InVertexPipe;
 import com.tinkerpop.pipes.pgm.OutEdgesPipe;
-import com.tinkerpop.pipes.pgm.BothVerticesPipe;
-import com.tinkerpop.pipes.pgm.BothEdgesPipe;
 import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -88,7 +88,7 @@ public class FutureFilterPipeTest extends BaseTest {
         Pipe outE2 = new OutEdgesPipe();
         Pipe<Vertex, Vertex> range = new RangeFilterPipe<Vertex>(1, 2);
         Pipe<Vertex, Vertex> futureFilterPipe =
-          new FutureFilterPipe<Vertex>(new Pipeline<Vertex, Edge>(outE2, range));
+                new FutureFilterPipe<Vertex>(new Pipeline<Vertex, Edge>(outE2, range));
         Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(outEPipe, inVPipe, futureFilterPipe);
         pipeline.setStarts(Arrays.asList(marko, marko));
         int counter = 0;
@@ -108,7 +108,7 @@ public class FutureFilterPipeTest extends BaseTest {
         Pipe outE2 = new OutEdgesPipe();
         Pipe<Vertex, Vertex> range = new RangeFilterPipe<Vertex>(2, 3);
         Pipe<Vertex, Vertex> futureFilterPipe =
-          new FutureFilterPipe<Vertex>(new Pipeline<Vertex, Edge>(outE2, range));
+                new FutureFilterPipe<Vertex>(new Pipeline<Vertex, Edge>(outE2, range));
         Pipe<Graph, Vertex> pipeline = new Pipeline<Graph, Vertex>(vertexPipe, bothEPipe, bothVPipe, futureFilterPipe);
         pipeline.setStarts(Arrays.asList(graph));
         int counter = 0;

@@ -1,13 +1,11 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.ExpandableIterator;
 import com.tinkerpop.pipes.MetaPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.SingleIterator;
-import com.tinkerpop.pipes.ExpandableIterator;
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
                 if (this.pipeShouldHaveResult) {
                     return s;
                 }
-            } else if (! this.pipeShouldHaveResult) {
+            } else if (!this.pipeShouldHaveResult) {
                 return s;
             }
         }

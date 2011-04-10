@@ -29,7 +29,7 @@ public class SideEffectCapPipeTest extends TestCase {
         pipe.reset();
         pipe.setStarts(list);
         assertTrue(pipe.hasNext());
-        assertEquals(6, (long)pipe.next());
+        assertEquals(6, (long) pipe.next());
     }
 
     public void testSideEffectCapPipeZeroCount() {

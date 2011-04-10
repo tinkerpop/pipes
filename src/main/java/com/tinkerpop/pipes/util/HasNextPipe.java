@@ -4,14 +4,13 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.MetaPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.SingleIterator;
-import java.util.NoSuchElementException;
-import java.util.Iterator;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
- *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @author Darrick Wiebe (http://ofallpossibleworlds.wordpress.com)
  */
@@ -24,7 +23,7 @@ public class HasNextPipe<S> extends AbstractPipe<S, Boolean> implements MetaPipe
 
     /**
      * Initialize this pipe to apply its conditions to its source pipe.
-     **/
+     */
     public HasNextPipe() {
         this.hasOtherPipe = false;
     }
@@ -35,8 +34,8 @@ public class HasNextPipe<S> extends AbstractPipe<S, Boolean> implements MetaPipe
      * individually.
      *
      * @param pipe The pipe that must emit the correct number of elements. The
-     * pipe will be reset between each element.
-     **/
+     *             pipe will be reset between each element.
+     */
     public HasNextPipe(Pipe<S, ?> pipe) {
         this.hasOtherPipe = true;
         this.pipe = pipe;

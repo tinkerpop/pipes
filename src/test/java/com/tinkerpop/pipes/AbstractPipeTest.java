@@ -46,9 +46,9 @@ public class AbstractPipeTest extends BaseTest {
         Pipe<String, String> pipe = new IdentityPipe<String>();
         pipe.setStarts(names);
 
-        assert(pipe.hasNext());
+        assert (pipe.hasNext());
         pipe.reset();
-        assert(pipe.hasNext());
+        assert (pipe.hasNext());
         pipe.reset();
         assertFalse(pipe.hasNext()); // Pipe has consumed and reset has thrown away all 3 items.
     }
@@ -62,9 +62,9 @@ public class AbstractPipeTest extends BaseTest {
         Pipe<String, String> pipe = new IdentityPipe<String>();
         pipe.setStarts(middle_pipe.iterator());
 
-        assert(pipe.hasNext());
+        assert (pipe.hasNext());
         pipe.reset();
-        assert(pipe.hasNext());
+        assert (pipe.hasNext());
         pipe.reset();
         assertFalse(pipe.hasNext()); // Pipe has consumed and reset has thrown away both items.
     }

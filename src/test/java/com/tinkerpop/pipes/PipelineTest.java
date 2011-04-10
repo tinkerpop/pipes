@@ -14,9 +14,9 @@ import com.tinkerpop.pipes.pgm.PropertyPipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Collection;
 import java.util.NoSuchElementException;
 
 /**
@@ -93,9 +93,9 @@ public class PipelineTest extends TestCase {
         Pipe<String, String> pipeline = new Pipeline<String, String>(pipe1, pipe2, pipe3);
         pipeline.setStarts(names);
 
-        assert(pipeline.hasNext());
+        assert (pipeline.hasNext());
         pipeline.reset();
-        assert(pipeline.hasNext());
+        assert (pipeline.hasNext());
         pipeline.reset();
         assertFalse(pipeline.hasNext()); // Pipe has consumed and reset has thrown away both items.
     }
