@@ -24,7 +24,6 @@ public class BackFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<
 
     public S processNextStart() {
         while (true) {
-            this.pipe.reset();
             S s = this.starts.next();
             this.pipe.setStarts(new SingleIterator<S>(s));
             if (pipe.hasNext()) {
