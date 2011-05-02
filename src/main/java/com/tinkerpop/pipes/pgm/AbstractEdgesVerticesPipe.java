@@ -9,16 +9,16 @@ import java.util.Iterator;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public abstract class AbstractEdgesPipe extends AbstractPipe<Vertex, Edge> {
+public abstract class AbstractEdgesVerticesPipe extends AbstractPipe<Vertex, Vertex> {
 
     protected Iterator<Edge> nextEnds;
     protected final String label;
 
-    public AbstractEdgesPipe(final String label) {
+    public AbstractEdgesVerticesPipe(final String label) {
         this.label = label;
     }
 
-    public AbstractEdgesPipe() {
+    public AbstractEdgesVerticesPipe() {
         this.label = null;
     }
 

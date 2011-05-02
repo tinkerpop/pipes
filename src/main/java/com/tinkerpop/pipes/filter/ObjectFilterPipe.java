@@ -24,6 +24,6 @@ public class ObjectFilterPipe<S> extends AbstractComparisonFilterPipe<S, S> {
     }
 
     public String toString() {
-        return super.toString() + "<" + this.object + ">";
+        return super.toString() + "(" + this.object + ")";
     }
 }

@@ -38,6 +38,6 @@ public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> {
     }
 
     public String toString() {
-        return super.toString() + "<" + this.key + ">";
+        return super.toString() + "(" + this.key + ")";
     }
 }

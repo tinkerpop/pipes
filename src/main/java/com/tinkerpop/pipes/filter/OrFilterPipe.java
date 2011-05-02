@@ -42,4 +42,8 @@ public class OrFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>
     public List<Pipe> getPipes() {
         return (List) this.pipes;
     }
+
+    public String toString() {
+        return super.toString() + this.pipes;
+    }
 }

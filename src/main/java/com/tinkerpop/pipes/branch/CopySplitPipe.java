@@ -66,4 +66,8 @@ public class CopySplitPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
             this.queue.add(s);
         }
     }
+
+    public String toString() {
+        return super.toString() + this.pipes;
+    }
 }

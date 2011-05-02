@@ -31,6 +31,6 @@ public class RandomFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
     }
 
     public String toString() {
-        return super.toString() + "<" + this.bias + ">";
+        return super.toString() + "(" + this.bias + ")";
     }
 }

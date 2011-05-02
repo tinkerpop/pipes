@@ -30,6 +30,6 @@ public class PropertyFilterPipe<S extends Element, T> extends AbstractComparison
     }
 
     public String toString() {
-        return super.toString() + "<" + this.key + "," + this.filter + "," + this.value + ">";
+        return super.toString() + "(" + this.key + "," + this.filter + "," + this.value + ")";
     }
 }

@@ -46,27 +46,27 @@ public class AbstractPipeTest extends BaseTest {
         Pipe<String, String> pipe = new IdentityPipe<String>();
         pipe.setStarts(names);
 
-        assert (pipe.hasNext());
+        assertTrue(pipe.hasNext());
         pipe.reset();
-        assert (pipe.hasNext());
+        assertTrue(pipe.hasNext());
         pipe.reset();
         assertFalse(pipe.hasNext()); // Pipe has consumed and reset has thrown away all 3 items.
     }
 
     public void testResetChain() {
         Collection<String> names = Arrays.asList("marko", "peter");
-        Pipe<String, String> start_pipe = new IdentityPipe<String>();
-        start_pipe.setStarts(names);
-        Pipe<String, String> middle_pipe = new IdentityPipe<String>();
-        middle_pipe.setStarts(start_pipe.iterator());
-        Pipe<String, String> pipe = new IdentityPipe<String>();
-        pipe.setStarts(middle_pipe.iterator());
+        Pipe<String, String> startPipe = new IdentityPipe<String>();
+        startPipe.setStarts(names);
+        Pipe<String, String> middlePipe = new IdentityPipe<String>();
+        middlePipe.setStarts(startPipe.iterator());
+        Pipe<String, String> endPipe = new IdentityPipe<String>();
+        endPipe.setStarts(middlePipe.iterator());
 
-        assert (pipe.hasNext());
-        pipe.reset();
-        assert (pipe.hasNext());
-        pipe.reset();
-        assertFalse(pipe.hasNext()); // Pipe has consumed and reset has thrown away both items.
+        assertTrue(endPipe.hasNext());
+        endPipe.reset();
+        assertTrue(endPipe.hasNext());
+        endPipe.reset();
+        assertFalse(endPipe.hasNext()); // Pipe has consumed and reset has thrown away both items.
     }
 
     public void testPathConstruction() {

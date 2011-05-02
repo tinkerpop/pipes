@@ -28,6 +28,6 @@ public class LabelFilterPipe extends AbstractComparisonFilterPipe<Edge, String> 
     }
 
     public String toString() {
-        return super.toString() + "<" + this.filter + "," + this.label + ">";
+        return super.toString() + "(" + this.filter + "," + this.label + ")";
     }
 }

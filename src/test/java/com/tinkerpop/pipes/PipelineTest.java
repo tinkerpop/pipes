@@ -93,9 +93,9 @@ public class PipelineTest extends TestCase {
         Pipe<String, String> pipeline = new Pipeline<String, String>(pipe1, pipe2, pipe3);
         pipeline.setStarts(names);
 
-        assert (pipeline.hasNext());
+        assertTrue(pipeline.hasNext());
         pipeline.reset();
-        assert (pipeline.hasNext());
+        assertTrue(pipeline.hasNext());
         pipeline.reset();
         assertFalse(pipeline.hasNext()); // Pipe has consumed and reset has thrown away both items.
     }

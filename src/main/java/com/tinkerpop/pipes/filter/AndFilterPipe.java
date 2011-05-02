@@ -46,4 +46,8 @@ public class AndFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S
         return (List) this.pipes;
     }
 
+    public String toString() {
+        return super.toString() + this.pipes;
+    }
+
 }
