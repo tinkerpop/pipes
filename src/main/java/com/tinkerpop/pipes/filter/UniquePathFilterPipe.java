@@ -5,9 +5,10 @@ import com.tinkerpop.pipes.Pipe;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
+ * UniquePathFilterPipe will only emit an object if its transformation path has no repeats (loops) in it.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class UniquePathFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
@@ -17,18 +18,9 @@ public class UniquePathFilterPipe<S> extends AbstractPipe<S, S> implements Filte
             final S s = this.starts.next();
             if (this.starts instanceof Pipe) {
                 final List path = ((Pipe) this.starts).getPath();
-                final Set<Object> temp = new HashSet<Object>();
-                boolean doReturn = true;
-                for (final Object object : path) {
-                    if (temp.contains(object)) {
-                        doReturn = false;
-                        break;
-                    } else {
-                        temp.add(object);
-                    }
-                }
-                if (doReturn)
+                if (path.size() == new HashSet(path).size()) {
                     return s;
+                }
             } else {
                 return s;
             }

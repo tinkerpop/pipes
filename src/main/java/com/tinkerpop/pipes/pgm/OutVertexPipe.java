@@ -5,6 +5,8 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
 
 /**
+ * OutVertexPipe emits the tail/source vertex of an edge.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class OutVertexPipe extends AbstractPipe<Edge, Vertex> {

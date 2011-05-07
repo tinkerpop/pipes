@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * PropertyMapPipe emits the property map of an element.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class PropertyMapPipe<S extends Element> extends AbstractPipe<S, Map<String, Object>> {

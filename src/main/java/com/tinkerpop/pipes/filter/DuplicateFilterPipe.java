@@ -25,4 +25,9 @@ public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> implements Filter
             }
         }
     }
+
+    public void reset() {
+        this.historySet.clear();
+        super.reset();
+    }
 }

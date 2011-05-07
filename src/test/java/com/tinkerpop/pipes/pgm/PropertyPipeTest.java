@@ -106,7 +106,7 @@ public class PropertyPipeTest extends TestCase {
         }
     }
 
-    public void testFilterMissingProperty() {
+    public void testAllowNull() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Vertex vadas = graph.getVertex("2");

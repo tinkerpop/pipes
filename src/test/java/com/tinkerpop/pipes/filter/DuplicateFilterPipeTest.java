@@ -28,4 +28,17 @@ public class DuplicateFilterPipeTest extends TestCase {
         assertEquals(counter, 3);
         assertEquals(counter2, 1);
     }
+
+    public void testReset() {
+        List<String> starts = Arrays.asList("marko", "marko", "peter", "marko", "josh");
+        Pipe<String, String> pipe = new DuplicateFilterPipe<String>();
+        pipe.setStarts(starts.iterator());
+        assertTrue(pipe.hasNext());
+        assertEquals(pipe.next(), "marko");
+        assertEquals(pipe.next(), "peter");
+        pipe.reset();
+        assertEquals(pipe.next(), "marko");
+        assertEquals(pipe.next(), "josh");
+        assertFalse(pipe.hasNext());
+    }
 }

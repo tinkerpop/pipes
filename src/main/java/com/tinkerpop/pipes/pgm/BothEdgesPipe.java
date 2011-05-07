@@ -5,6 +5,8 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.MultiIterator;
 
 /**
+ * BothEdgesPipe emits the incoming and outgoing edges of a vertex.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class BothEdgesPipe extends AbstractEdgesPipe {

@@ -3,6 +3,8 @@ package com.tinkerpop.pipes.pgm;
 import com.tinkerpop.blueprints.pgm.Edge;
 
 /**
+ * InEdgesPipe emits the incoming edges to a vertex.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class InEdgesPipe extends AbstractEdgesPipe {

@@ -5,6 +5,8 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
 
 /**
+ * BothVertexPipe emits the tail/source and head/target vertices of an edge.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class BothVerticesPipe extends AbstractPipe<Edge, Vertex> {

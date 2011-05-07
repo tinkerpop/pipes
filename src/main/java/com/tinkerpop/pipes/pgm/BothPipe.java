@@ -5,6 +5,8 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.MultiIterator;
 
 /**
+ * BothPipe will emit those vertices adjacent to the incoming and outgoing edges of the incoming vertex.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class BothPipe extends AbstractEdgesVerticesPipe {

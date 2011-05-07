@@ -11,29 +11,24 @@ import com.tinkerpop.pipes.AbstractPipe;
 public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> {
 
     private final String key;
-    private final boolean includeNull;
+    private final boolean allowNull;
 
     public PropertyPipe(final String key) {
         this.key = key;
-        this.includeNull = true;
+        this.allowNull = true;
     }
 
-    public PropertyPipe(final String key, final boolean includeNull) {
+    public PropertyPipe(final String key, final boolean allowNull) {
         this.key = key;
-        this.includeNull = includeNull;
+        this.allowNull = allowNull;
     }
 
     protected E processNextStart() {
         while (true) {
             Element e = this.starts.next();
-            try {
-                E value = (E) e.getProperty(this.key);
-                if (this.includeNull || value != null)
-                    return value;
-            } catch (Exception ex) {
-                if (this.includeNull)
-                    return null;
-            }
+            E value = (E) e.getProperty(this.key);
+            if (this.allowNull || value != null)
+                return value;
         }
     }
 

@@ -3,6 +3,8 @@ package com.tinkerpop.pipes.pgm;
 import com.tinkerpop.blueprints.pgm.Vertex;
 
 /**
+ * InPipe will emit vertices that are the head/target of the incoming edges to the current vertex.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class InPipe extends AbstractEdgesVerticesPipe {

@@ -11,7 +11,7 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
-h3. Version 0.5 (NOT OFFICIALLY RELEASED YET)
+h3. Version 0.5 (Drain -- NOT OFFICIALLY RELEASED YET)
 
 ```xml
 <dependency>
@@ -20,6 +20,12 @@ h3. Version 0.5 (NOT OFFICIALLY RELEASED YET)
   <version>0.5-SNAPSHOT</version>
 </dependency>
 ```
+
+* Added @OutPipe@, @InPipe@, and @BothPipe@ toa allow for vertex-vertex hoping
+* Removed @VertexEdgeLabelFilterPipe@ as its not covered by more efficient pipes
+* Added the @MetaPipe@ interface to allow pipes to acknowledge pipe wrapping
+* Added @CopySplitPipe@, @ExhaustMergePipe@, and @FairMergePipe@
+* Optimized @PropertyPipe@ and @UniquePathFilterPipe@
 
 
 ==<hr/>==

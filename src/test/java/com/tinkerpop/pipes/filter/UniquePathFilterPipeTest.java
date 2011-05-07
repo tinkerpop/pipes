@@ -33,5 +33,4 @@ public class UniquePathFilterPipeTest extends BaseTest {
         }
         assertEquals(counter, 2);
     }
-
 }

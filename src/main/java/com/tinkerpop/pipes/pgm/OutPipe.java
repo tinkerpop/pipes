@@ -3,6 +3,8 @@ package com.tinkerpop.pipes.pgm;
 import com.tinkerpop.blueprints.pgm.Vertex;
 
 /**
+ * OutPipe emits those vertices on the head of the outgoing edges of a vertex.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class OutPipe extends AbstractEdgesVerticesPipe {
