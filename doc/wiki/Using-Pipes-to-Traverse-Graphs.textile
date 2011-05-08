@@ -35,14 +35,10 @@ In order to provide a balance between the syntactical convenience of Gremlin and
 
 ```java
 public static void coDevelopers(Vertex vertex) {
-   Pipe pipe1 = new OutEdgesPipe();
-   Pipe pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
-   Pipe pipe3 = new InVertexPipe();
-   Pipe pipe4 = new InEdgesPipe();
-   Pipe pipe5 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
-   Pipe pipe6 = new OutVertexPipe();
-   Pipe pipe7 = new ObjectFilterPipe(vertex, true);
-   Pipe<Vertex,Vertex> pipeline = new Pipeline<Vertex,Vertex>(pipe1, pipe2, pipe3, pipe4, pipe5, pipe6, pipe7);
+   Pipe pipe1 = new OutPipe("created");
+   Pipe pipe2 = new InPipe("created");
+   Pipe pipe3 = new ObjectFilterPipe(vertex, true);
+   Pipe<Vertex,Vertex> pipeline = new Pipeline<Vertex,Vertex>(pipe1, pipe2, pipe3);
    pipeline.setStarts(Arrays.asList(vertex));
    while(pipeline.hasNext()) {
       System.out.println(pipeline.next());

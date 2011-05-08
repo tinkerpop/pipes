@@ -4,6 +4,7 @@ Pipes is a data flow framework written in Java 1.6+.[1] There are numerous Pipe 
 
 Please join the Gremlin users group at "http://groups.google.com/group/gremlin-users":http://groups.google.com/group/gremlin-users for all "TinkerPop":http://tinkerpop.com related discussions.
 
+Pipes 0.5 "JavaDoc":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.5/api/
 Pipes 0.4 "JavaDoc":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.4/api/
 Pipes 0.3.1 "JavaDoc":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.3.1/api/
 --Pipes 0.3 "JavaDoc":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.3/api/
@@ -14,18 +15,21 @@ Pipes 0.1 "JavaDoc":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.1/api/
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
-  <version>0.4</version>
+  <version>0.5</version>
 </dependency>
 ```
 
+For non-Maven users, *download the requisite jar*:
+* "http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.5/pipes-0.5.jar":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.5/pipes-0.5.jar
+
 ```java
-Pipe<Vertex,Edge> pipe1 = new OutEdgePipe()
-Pipe<Edge,Edge> pipe2 = new LabelFilterPipe("knows", Filter.NOT_EQUAL);
-Pipe<Edge,Vertex> pipe3 = new InVertexPipe()
+Pipe<Vertex,Edge> pipe1 = new OutEdgesPipe("knows")
+Pipe<Edge,Vertex> pipe2 = new InVertexPipe();
+Pipe<Vertex,String> pipe3 = new PropertyPipe("name");
 Pipe<Vertex,Vertex> pipeline = new Pipeline<Vertex,Vertex>(pipe1, pipe2, pipe3);
 pipeline.setStarts(new SingleIterator<Vertex>(graph.getVertex(1));
-for(Vertex friend : pipeline) {
-  System.out.println(friend);
+for(String friendName : pipeline) {
+  System.out.println(friendName);
 }
 ```
 
@@ -35,7 +39,6 @@ for(Vertex friend : pipeline) {
   ** [[Basic Pipes]]
   ** [[Creating a Pipe]]
   ** [[Filtering Pipes]]
-  ** Looping
   ** [[MetaPipes]]
 * Advanced Concepts
   ** [[Using Pipes to Traverse Graphs]]

@@ -11,18 +11,20 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
-h3. Version 0.5 (Drain -- NOT OFFICIALLY RELEASED YET)
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-drain-pipe.png!
+
+h3. Version 0.5 (Drain -- May 8, 2011)
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <version>0.5</version>
 </dependency>
 ```
 
-* Added @OutPipe@, @InPipe@, and @BothPipe@ toa allow for vertex-vertex hoping
-* Removed @VertexEdgeLabelFilterPipe@ as its not covered by more efficient pipes
+* Added @OutPipe@, @InPipe@, and @BothPipe@ to allow for vertex-vertex hoping
+* Removed @VertexEdgeLabelFilterPipe@ as it is now covered by more efficient pipes
 * Added the @MetaPipe@ interface to allow pipes to acknowledge pipe wrapping
 * Added @CopySplitPipe@, @ExhaustMergePipe@, and @FairMergePipe@
 * Optimized @PropertyPipe@ and @UniquePathFilterPipe@

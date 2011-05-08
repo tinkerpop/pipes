@@ -8,7 +8,29 @@ All releases can be accessed through the TinkerPop Maven2 repository identified 
 </repository>
 ```
 
-https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-spigot-pipe.png!
+==<hr/>==
+
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-drain-pipe.png!
+
+h3. Version 0.5 (Drain -- May 8, 2011)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>0.5</version>
+</dependency>
+```
+
+* Added @OutPipe@, @InPipe@, and @BothPipe@ to allow for vertex-vertex hoping
+* Removed @VertexEdgeLabelFilterPipe@ as it is now covered by more efficient pipes
+* Added the @MetaPipe@ interface to allow pipes to acknowledge pipe wrapping
+* Added @CopySplitPipe@, @ExhaustMergePipe@, and @FairMergePipe@
+* Optimized @PropertyPipe@ and @UniquePathFilterPipe@
+
+==<hr/>==
+
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-spigot-pipe.png!
 
 h3. Version 0.4 (Spigot -- April 4, 2011)
 
@@ -19,6 +41,8 @@ h3. Version 0.4 (Spigot -- April 4, 2011)
   <version>0.4</version>
 </dependency>
 ```
+
+Pipes 0.4 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.4/api/
 
 * Added @StartPipe@ to aid in creating an @Object@-to-@Pipe@ converter
 * Removed @VertexEdge@ and @EdgeVertex@ pipes for more low-level/faster pipes.
