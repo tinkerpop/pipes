@@ -28,7 +28,7 @@ h3. Version 0.5 (Drain -- May 8, 2011)
 * Added the @MetaPipe@ interface to allow pipes to acknowledge pipe wrapping
 * Added @CopySplitPipe@, @ExhaustMergePipe@, and @FairMergePipe@
 * Optimized @PropertyPipe@ and @UniquePathFilterPipe@
-
+* Added support for Pipe.reset() and thus, pipe reuse
 
 ==<hr/>==
 

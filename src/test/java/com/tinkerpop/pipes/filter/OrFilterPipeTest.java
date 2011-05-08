@@ -7,11 +7,7 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.pgm.InVertexPipe;
-import com.tinkerpop.pipes.pgm.LabelFilterPipe;
-import com.tinkerpop.pipes.pgm.OutEdgesPipe;
-import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
-import com.tinkerpop.pipes.pgm.PropertyPipe;
+import com.tinkerpop.pipes.pgm.*;
 import com.tinkerpop.pipes.util.HasNextPipe;
 import junit.framework.TestCase;
 

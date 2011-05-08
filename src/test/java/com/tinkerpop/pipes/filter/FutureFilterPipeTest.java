@@ -8,12 +8,7 @@ import com.tinkerpop.pipes.BaseTest;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.pgm.BothEdgesPipe;
-import com.tinkerpop.pipes.pgm.BothVerticesPipe;
-import com.tinkerpop.pipes.pgm.GraphElementPipe;
-import com.tinkerpop.pipes.pgm.InVertexPipe;
-import com.tinkerpop.pipes.pgm.OutEdgesPipe;
-import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
+import com.tinkerpop.pipes.pgm.*;
 
 import java.util.Arrays;
 import java.util.Iterator;
