@@ -1,3 +1,0 @@
-!https://github.com/tinkerpop/pipes/raw/master/doc/images/plumber.png!
-
-Pipes is a "data flow":http://en.wikipedia.org/wiki/Dataflow_programming framework using "process graphs":http://en.wikipedia.org/wiki/Kahn_process_networks. A process graph is composed of @Pipe@ vertices connected by communication edges. A @Pipe@ implements a simple computational step that can be composed with other @Pipe@ objects to create a larger computation. Larger computations form a process graph (i.e. @Pipeline@). Such graphs allow for the splitting, merging, and in general, the transformation of data from input to output.
