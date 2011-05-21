@@ -29,10 +29,10 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
         while (true) {
             S s = this.starts.next();
             this.counter++;
-            if ((this.low == -1 || this.counter >= this.low) && (this.high == -1 || this.counter < this.high)) {
+            if ((this.low == -1 || this.counter >= this.low) && (this.high == -1 || this.counter <= this.high)) {
                 return s;
             }
-            if (this.high > 0 && counter >= this.high) {
+            if (this.high > 0 && counter > this.high) {
                 throw new NoSuchElementException();
             }
         }

@@ -26,7 +26,7 @@ public class RangeFilterPipeTest extends TestCase {
 
     public void testRangeFilterNormal() {
         List<String> names = Arrays.asList("abe", "bob", "carl", "derick", "evan", "fran");
-        Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 3);
+        Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 2);
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
@@ -41,7 +41,7 @@ public class RangeFilterPipeTest extends TestCase {
 
     public void testRangeFilterReset() {
         List<String> names = Arrays.asList("abe", "bob", "carl", "derick", "evan", "fran");
-        Pipe<String, String> pipe = new RangeFilterPipe<String>(1, 2);
+        Pipe<String, String> pipe = new RangeFilterPipe<String>(1, 1);
         pipe.setStarts(names);
         assertEquals("bob", pipe.next());
         assertFalse(pipe.hasNext());
@@ -70,7 +70,7 @@ public class RangeFilterPipeTest extends TestCase {
 
     public void testRangeFilterLowInfinity() {
         List<String> names = Arrays.asList("abe", "bob", "carl", "derick", "evan", "fran");
-        Pipe<String, String> pipe = new RangeFilterPipe<String>(-1, 3);
+        Pipe<String, String> pipe = new RangeFilterPipe<String>(-1, 2);
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
@@ -87,23 +87,51 @@ public class RangeFilterPipeTest extends TestCase {
         List<String> names = Arrays.asList("abe", "bob", "carl", "derick", "evan", "fran");
         Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 0);
         pipe.setStarts(names);
+        assertTrue(pipe.hasNext());
+        assertEquals("abe", pipe.next());
         assertFalse(pipe.hasNext());
         pipe = new RangeFilterPipe<String>(-1, 0);
         pipe.setStarts(names);
+        assertTrue(pipe.hasNext());
+        assertEquals("abe", pipe.next());
         assertFalse(pipe.hasNext());
         pipe = new RangeFilterPipe<String>(0, 1);
         pipe.setStarts(names);
         assertTrue(pipe.hasNext());
         assertEquals("abe", pipe.next());
+        assertTrue(pipe.hasNext());
+        assertEquals("bob", pipe.next());
         assertFalse(pipe.hasNext());
         pipe = new RangeFilterPipe<String>(-1, 1);
         pipe.setStarts(names);
         assertTrue(pipe.hasNext());
         assertEquals("abe", pipe.next());
+        assertTrue(pipe.hasNext());
+        assertEquals("bob", pipe.next());
         assertFalse(pipe.hasNext());
         pipe = new RangeFilterPipe<String>(1, 1);
         pipe.setStarts(names);
+        assertTrue(pipe.hasNext());
+        assertEquals("bob", pipe.next());
         assertFalse(pipe.hasNext());
+         pipe = new RangeFilterPipe<String>(4, 5);
+        pipe.setStarts(names);
+        assertTrue(pipe.hasNext());
+        assertEquals("evan", pipe.next());
+        assertTrue(pipe.hasNext());
+        assertEquals("fran", pipe.next());
+        assertFalse(pipe.hasNext());
+        pipe = new RangeFilterPipe<String>(5, 5);
+        pipe.setStarts(names);
+        assertTrue(pipe.hasNext());
+        assertEquals("fran", pipe.next());
+        assertFalse(pipe.hasNext());
+        pipe = new RangeFilterPipe<String>(5, 6);
+        pipe.setStarts(names);
+        assertTrue(pipe.hasNext());
+        assertEquals("fran", pipe.next());
+        assertFalse(pipe.hasNext());
+
     }
 
     public void testRangeFilterLowHighInfinity() {
@@ -126,7 +154,7 @@ public class RangeFilterPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
-        Pipe<Edge, Edge> pipe2 = new RangeFilterPipe<Edge>(1, 2);
+        Pipe<Edge, Edge> pipe2 = new RangeFilterPipe<Edge>(1, 1);
         Pipe<Edge, Vertex> pipe3 = new InVertexPipe();
         Pipe<Vertex, String> pipe4 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4);
@@ -144,7 +172,7 @@ public class RangeFilterPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
-        Pipe<Edge, Edge> pipe2 = new RangeFilterPipe<Edge>(0, 2);
+        Pipe<Edge, Edge> pipe2 = new RangeFilterPipe<Edge>(0, 1);
         Pipe<Edge, Vertex> pipe3 = new InVertexPipe();
         Pipe<Vertex, String> pipe4 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4);
@@ -160,7 +188,7 @@ public class RangeFilterPipeTest extends TestCase {
 
     public void testRangeFilterAbsurd() {
         try {
-            Pipe<String, String> pipe = new RangeFilterPipe<String>(2, 1);
+            Pipe<String, String> pipe = new RangeFilterPipe<String>(2, 0);
             assertTrue(false);
         } catch (IllegalArgumentException e) {
             //System.out.println(e);
@@ -173,7 +201,7 @@ public class RangeFilterPipeTest extends TestCase {
         Iterator iterator = mock(Iterator.class);
         when(names.iterator()).thenReturn(iterator);
         when(iterator.next()).thenReturn("duck", "duck", "duck", "goose", "goose").thenThrow(new NoSuchElementException());
-        Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 3);
+        Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 2);
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
