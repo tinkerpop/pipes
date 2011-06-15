@@ -1,0 +1,49 @@
+Pipes can be used to process "property graphs":http://wiki.github.com/tinkerpop/blueprints/property-graph-model. The benefits of this is that it is extremely fast. The drawbacks of this is that, due to Java’s verbosity, queries can be quite lengthy. This section will introduce the basic concepts behind Pipes and then compare it to “hand-written” Java models of graph query. The package @com.tinkerpop.pipes.pgm@ provides the necessary Pipes to do graph traversals over "Blueprints":http://blueprints.tinkerpop.com enabled property graphs. In combination with other Pipes, complex graph traversals can be represented.
+
+# "Co-Developers in Java":#java
+# "Co-Developers in Pipes":#pipes
+
+This subsection presents a collection of graph traversals that yield equivalent results, but each have different syntax conventions. All examples determine the co-developers of a particular vertex. For review, the co-developers of person @A@ are those people that have @created@ the same software as person @A@, but are themselves not person @A@ (as a person can not be a co-developer of his or herself). This idea is diagrammed below.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/grammar-example-1.jpg!
+
+h2(#java). Co-Developers in Java
+
+While Gremlin is expressive, its virtual machine currently rides atop of the Java virtual machine. For increased performance, it is best to write the query in Java. A typical "hand written" method that returns the co-developers of a vertex is defined as follows. Note that there are various ways to write this method. However, a typical @for@-loop based model is presented that is seen as a typical naive syntactic expression of such a traversal. 
+
+```java
+public static void coDevelopers(Vertex vertex) {
+   List<Vertex> projects = new ArrayList<Vertex>();
+   for(Edge edge : vertex.getOutEdges()) {
+       if(edge.getLabel().equals("created")) {
+          projects.add(edge.getInVertex());    
+       }
+   }
+   for(Vertex project : projects) {
+      for(Edge edge : project.getInEdges()) {
+         if(edge.getLabel().equals("created") && edge.getOutVertex() != vertex) {
+             System.out.println(edge.getOutVertex());       
+         }
+      }            
+   }
+}
+```
+
+h2(#pipes). Co-Developers in Pipes
+
+In order to provide a balance between the syntactical convenience of Gremlin and the speed of execution of raw Java, Pipes was developed as an expressive, yet fast, Java framework for traversing a graph. The following code demonstrates how to express co-developers in Pipes.
+
+```java
+public static void coDevelopers(Vertex vertex) {
+   Pipe pipe1 = new OutPipe("created");
+   Pipe pipe2 = new InPipe("created");
+   Pipe pipe3 = new ObjectFilterPipe(vertex, true);
+   Pipe<Vertex,Vertex> pipeline = new Pipeline<Vertex,Vertex>(pipe1, pipe2, pipe3);
+   pipeline.setStarts(Arrays.asList(vertex));
+   while(pipeline.hasNext()) {
+      System.out.println(pipeline.next());
+   }
+}
+```
+
+The main syntactic benefit of Pipes is that the developer is not required to create a complicated collection of @for@-loops. Pipes provides a mechanism to chain together processing units. These pipe units can be composed to form a @Pipeline@. These pipelines are fed an @Iterable@ (or @Iterator@) of @S@-type start object(s) and through the standard @next()@-based iteration model, return @E@-type objects.
