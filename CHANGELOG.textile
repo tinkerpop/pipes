@@ -11,7 +11,9 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
-h3. Version 0.6 (NOT OFFICIALLY RELEASED YET)
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-toilet-pipe.png!
+
+h3. Version 0.6 (Toilet -- NOT OFFICIALLY RELEASED YET)
 
 ```xml
 <dependency>
@@ -20,6 +22,10 @@ h3. Version 0.6 (NOT OFFICIALLY RELEASED YET)
   <version>0.6-SNAPSHOT</version>
 </dependency>
 ```
+
+* @RangeFilterPipe@ max value is now inclusive
+* Added @OptionalPipe@ which is like @BackFilterPipe@, but non-filtering.
+* Updated @AggregatorPipe@ to support multiple @setStarts()@
 
 ==<hr/>==
 

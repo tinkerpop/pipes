@@ -1,6 +1,8 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.HistoryIterator;
+import com.tinkerpop.pipes.Pipe;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -21,6 +23,14 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
 
     public AggregatorPipe(final Collection<S> collection) {
         this.aggregate = collection;
+    }
+
+    public void setStarts(final Iterator<S> starts) {
+        if (starts instanceof Pipe)
+            this.starts = starts;
+        else
+            this.starts = new HistoryIterator<S>(starts);
+        this.aggregateIterator = null;
     }
 
     protected S processNextStart() {
