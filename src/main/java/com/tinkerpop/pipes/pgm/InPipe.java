@@ -9,23 +9,14 @@ import com.tinkerpop.blueprints.pgm.Vertex;
  */
 public class InPipe extends AbstractEdgesVerticesPipe {
 
-    public InPipe(final String label) {
-        super(label);
-    }
-
-    public InPipe() {
-        super();
+    public InPipe(final String... labels) {
+        super(labels);
     }
 
     public Vertex processNextStart() {
         while (true) {
             if (null == this.nextEnds) {
-                final Vertex vertex = this.starts.next();
-                if (null != this.label) {
-                    this.nextEnds = vertex.getInEdges(this.label).iterator();
-                } else {
-                    this.nextEnds = vertex.getInEdges().iterator();
-                }
+                this.nextEnds = this.starts.next().getInEdges(this.labels).iterator();
             } else {
                 if (this.nextEnds.hasNext()) {
                     return this.nextEnds.next().getOutVertex();

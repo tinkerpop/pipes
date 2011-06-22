@@ -9,12 +9,8 @@ import com.tinkerpop.blueprints.pgm.Edge;
  */
 public class InEdgesPipe extends AbstractEdgesPipe {
 
-    public InEdgesPipe() {
-        super();
-    }
-
-    public InEdgesPipe(final String label) {
-        super(label);
+    public InEdgesPipe(final String... labels) {
+        super(labels);
     }
 
     protected Edge processNextStart() {
@@ -22,10 +18,7 @@ public class InEdgesPipe extends AbstractEdgesPipe {
             if (null != this.nextEnds && this.nextEnds.hasNext()) {
                 return this.nextEnds.next();
             } else {
-                if (null == this.label)
-                    this.nextEnds = this.starts.next().getInEdges().iterator();
-                else
-                    this.nextEnds = this.starts.next().getInEdges(this.label).iterator();
+                this.nextEnds = this.starts.next().getInEdges(this.labels).iterator();
             }
         }
     }

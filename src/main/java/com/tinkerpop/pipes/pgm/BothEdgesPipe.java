@@ -11,12 +11,9 @@ import com.tinkerpop.pipes.MultiIterator;
  */
 public class BothEdgesPipe extends AbstractEdgesPipe {
 
-    public BothEdgesPipe() {
-        super();
-    }
 
-    public BothEdgesPipe(final String label) {
-        super(label);
+    public BothEdgesPipe(final String... labels) {
+        super(labels);
     }
 
     protected Edge processNextStart() {
@@ -25,10 +22,7 @@ public class BothEdgesPipe extends AbstractEdgesPipe {
                 return this.nextEnds.next();
             } else {
                 final Vertex vertex = this.starts.next();
-                if (null == this.label)
-                    this.nextEnds = new MultiIterator<Edge>(vertex.getInEdges().iterator(), vertex.getOutEdges().iterator());
-                else
-                    this.nextEnds = new MultiIterator<Edge>(vertex.getInEdges(this.label).iterator(), vertex.getOutEdges(this.label).iterator());
+                this.nextEnds = new MultiIterator<Edge>(vertex.getInEdges(this.labels).iterator(), vertex.getOutEdges(this.labels).iterator());
             }
         }
     }

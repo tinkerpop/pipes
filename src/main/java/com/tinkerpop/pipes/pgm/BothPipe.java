@@ -13,12 +13,8 @@ public class BothPipe extends AbstractEdgesVerticesPipe {
 
     private Vertex startVertex = null;
 
-    public BothPipe(final String label) {
-        super(label);
-    }
-
-    public BothPipe() {
-        super();
+    public BothPipe(final String... labels) {
+        super(labels);
     }
 
     public Vertex processNextStart() {
@@ -36,10 +32,7 @@ public class BothPipe extends AbstractEdgesVerticesPipe {
                 }
             } else {
                 this.startVertex = this.starts.next();
-                if (null == this.label)
-                    this.nextEnds = new MultiIterator<Edge>(this.startVertex.getInEdges().iterator(), this.startVertex.getOutEdges().iterator());
-                else
-                    this.nextEnds = new MultiIterator<Edge>(this.startVertex.getInEdges(this.label).iterator(), this.startVertex.getOutEdges(this.label).iterator());
+                this.nextEnds = new MultiIterator<Edge>(this.startVertex.getInEdges(this.labels).iterator(), this.startVertex.getOutEdges(this.labels).iterator());
             }
         }
     }
