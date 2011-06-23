@@ -11,6 +11,21 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
+h3. Version 0.7 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>0.7-SNAPSHOT</version>
+</dependency>
+```
+
+* Added support for @Vertex.getOutEdges(String...)@ and @Vertex.getInEdges(String...)@.
+
+==<hr/>==
+
+
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-toilet-pipe.png!
 
 h3. Version 0.6 (Toilet -- June 15, 2011)
