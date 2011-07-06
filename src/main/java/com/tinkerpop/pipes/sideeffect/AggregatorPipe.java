@@ -26,6 +26,16 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
         return currentPath;
     }
 
+    public List getPath() {
+        final List pathElements = new ArrayList(getPathToHere());
+        final int size = pathElements.size();
+        // do not repeat filters as they dup the object
+        if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
+            pathElements.add(this.currentEnd);
+        }
+        return pathElements;
+    }
+
     protected S processNextStart() {
         while (true) {
             if (this.currentObjectQueue.isEmpty()) {
@@ -33,6 +43,7 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
                     throw new NoSuchElementException();
                 else {
                     this.currentObjectQueue.clear();
+                    this.currentPathQueue.clear();
                     while (this.starts.hasNext()) {
                         final S s = this.starts.next();
                         this.aggregate.add(s);
