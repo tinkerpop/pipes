@@ -141,4 +141,30 @@ public class AggregatorPipeTest extends TestCase {
         assertEquals(counter, 3);
         assertEquals(pipe1.getSideEffect().size(), 3);
     }
+
+    public void testAggregatorPath() {
+        List<String> list = Arrays.asList("marko", "a.", "rodriguez");
+        Pipe<String, String> pipe = new AggregatorPipe<String>(new ArrayList<String>());
+        pipe.setStarts(list);
+        int counter = 0;
+        while (pipe.hasNext()) {
+            String string = pipe.next();
+            if (counter == 0) {
+                List path = pipe.getPath();
+                assertEquals(path.size(), 1);
+                assertEquals(path.get(0), string);
+                assertEquals(string, "marko");
+            } else if (counter == 1) {
+                assertEquals(string, "a.");
+            } else if (counter == 2) {
+                List path = pipe.getPath();
+                assertEquals(path.size(), 1);
+                assertEquals(path.get(0), string);
+                assertEquals(string, "rodriguez");
+            } else {
+                assertTrue(false);
+            }
+            counter++;
+        }
+    }
 }
