@@ -41,7 +41,7 @@ public class SideEffectClosurePipeTest extends TestCase {
             return null;
         }
 
-        public void setPipe(Pipe pipe) {
+        public void setPipe(Pipe hostPipe) {
 
         }
 

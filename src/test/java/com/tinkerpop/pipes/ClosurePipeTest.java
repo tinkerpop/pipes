@@ -38,8 +38,8 @@ public class ClosurePipeTest extends TestCase {
             return this.pipe.s();
         }
 
-        public void setPipe(Pipe pipe) {
-            this.pipe = (ClosurePipe) pipe;
+        public void setPipe(Pipe hostPipe) {
+            this.pipe = (ClosurePipe) hostPipe;
         }
     }
 
@@ -54,8 +54,8 @@ public class ClosurePipeTest extends TestCase {
             }
         }
 
-        public void setPipe(Pipe pipe) {
-            this.pipe = (ClosurePipe) pipe;
+        public void setPipe(Pipe hostPipe) {
+            this.pipe = (ClosurePipe) hostPipe;
         }
     }
 }

@@ -52,5 +52,9 @@ public class FairMergePipe<E> extends AbstractPipe<E, E> implements MetaPipe {
         return this.pipes;
     }
 
+    public String toString() {
+        return super.toString() + "[" + this.pipes + "]";
+    }
+
 
 }

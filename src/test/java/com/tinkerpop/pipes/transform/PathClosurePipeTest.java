@@ -36,7 +36,7 @@ public class PathClosurePipeTest extends TestCase {
             return (String) vertex.getProperty("name");
         }
 
-        public void setPipe(PathClosurePipe pipe) {
+        public void setPipe(PathClosurePipe hostPipe) {
 
         }
     }

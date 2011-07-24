@@ -5,7 +5,6 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
-import com.tinkerpop.pipes.branch.util.Bundle;
 import com.tinkerpop.pipes.transform.OutPipe;
 import com.tinkerpop.pipes.util.SingleIterator;
 import junit.framework.TestCase;
@@ -17,7 +16,7 @@ public class LoopPipeTest extends TestCase {
 
     public void testLoopPipe() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Pipe pipe = new LoopPipe(new OutPipe(), new LoopPipeClosure());
+        Pipe pipe = new LoopPipe(new OutPipe(), (PipeClosure) new LoopPipeClosure());
         pipe.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
         int counter = 0;
         while (pipe.hasNext()) {
@@ -30,16 +29,15 @@ public class LoopPipeTest extends TestCase {
 
 
     private class LoopPipeClosure implements PipeClosure<Boolean, LoopPipe> {
-
         LoopPipe pipe;
 
         public Boolean compute(Object... parameters) {
-            Bundle bundle = (Bundle) parameters[0];
-            return (bundle.getLoops() < 3);
+            LoopPipe.LoopBundle loopBundle = (LoopPipe.LoopBundle) parameters[0];
+            return (loopBundle.getLoops() < 3);
         }
 
-        public void setPipe(LoopPipe pipe) {
-            this.pipe = pipe;
+        public void setPipe(LoopPipe hostPipe) {
+            this.pipe = hostPipe;
         }
     }
 }

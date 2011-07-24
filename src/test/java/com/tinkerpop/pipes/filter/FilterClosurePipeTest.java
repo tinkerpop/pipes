@@ -31,7 +31,7 @@ public class FilterClosurePipeTest extends TestCase {
             return (((String) objects[0]).startsWith("p"));
         }
 
-        public void setPipe(Pipe pipe) {
+        public void setPipe(Pipe hostPipe) {
         }
     }
 }

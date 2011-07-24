@@ -48,5 +48,9 @@ public class ExhaustiveMergePipe<S> extends AbstractPipe<S, S> implements MetaPi
         return this.pipes;
     }
 
+    public String toString() {
+        return super.toString() + "[" + this.pipes + "]";
+    }
+
 
 }

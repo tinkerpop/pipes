@@ -13,12 +13,12 @@ public interface PipeClosure<T, P extends Pipe> {
      * @param parameters An array of parameters passed in from the host pipe. Implementation specifics determine what the types of the parameters are.
      * @return the result of computing a function on the parameters
      */
-    public T compute(Object... parameters);
+    public T compute(final Object... parameters);
 
     /**
-     * The host pipe for which the PipeClosure is closing.
+     * The host hostPipe for which the PipeClosure is closing.
      *
-     * @param pipe the host pipe
+     * @param hostPipe the host hostPipe
      */
-    public void setPipe(final P pipe);
+    public void setPipe(final P hostPipe);
 }

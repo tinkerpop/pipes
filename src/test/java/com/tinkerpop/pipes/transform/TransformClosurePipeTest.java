@@ -30,7 +30,7 @@ public class TransformClosurePipeTest extends TestCase {
             return ((String) parameters[0]).length();
         }
 
-        public void setPipe(Pipe pipe) {
+        public void setPipe(Pipe hostPipe) {
 
         }
     }

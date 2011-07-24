@@ -27,32 +27,32 @@ public class IfThenElsePipeTest extends TestCase {
     }
 
 
-    private class IfPipeClosure implements PipeClosure<Boolean, IfThenElsePipe> {
+    private class IfPipeClosure implements PipeClosure<Boolean, Pipe> {
         public Boolean compute(Object... parameters) {
             return ((String) parameters[0]).startsWith("p");
         }
 
-        public void setPipe(IfThenElsePipe pipe) {
+        public void setPipe(Pipe hostPipe) {
 
         }
     }
 
-    private class ThenPipeClosure implements PipeClosure<Object, IfThenElsePipe> {
+    private class ThenPipeClosure implements PipeClosure<Object, Pipe> {
         public Object compute(Object... parameters) {
             return ((String) parameters[0]).length();
         }
 
-        public void setPipe(IfThenElsePipe pipe) {
+        public void setPipe(Pipe hostPipe) {
 
         }
     }
 
-    private class ElsePipeClosure implements PipeClosure<Object, IfThenElsePipe> {
+    private class ElsePipeClosure implements PipeClosure<Object, Pipe> {
         public Object compute(Object... parameters) {
             return 0;
         }
 
-        public void setPipe(IfThenElsePipe pipe) {
+        public void setPipe(Pipe hostPipe) {
 
         }
     }
