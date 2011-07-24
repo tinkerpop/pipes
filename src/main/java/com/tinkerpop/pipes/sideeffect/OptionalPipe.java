@@ -1,9 +1,9 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.MetaPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.SingleIterator;
+import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.SingleIterator;
 
 import java.util.Arrays;
 import java.util.List;

@@ -5,10 +5,9 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.BaseTest;
-import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.pgm.*;
+import com.tinkerpop.pipes.transform.*;
+import com.tinkerpop.pipes.util.Pipeline;
 
 import java.util.Arrays;
 import java.util.Iterator;

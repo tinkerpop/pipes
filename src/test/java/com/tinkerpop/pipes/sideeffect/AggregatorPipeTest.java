@@ -1,10 +1,15 @@
 package com.tinkerpop.pipes.sideeffect;
 
 
+import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.Pipeline;
 import com.tinkerpop.pipes.filter.CollectionFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
+import com.tinkerpop.pipes.transform.GatherPipe;
+import com.tinkerpop.pipes.transform.IdentityPipe;
+import com.tinkerpop.pipes.transform.SideEffectCapPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
+import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.TestCase;
 
 import java.util.*;
@@ -80,8 +85,6 @@ public class AggregatorPipeTest extends TestCase {
             counter++;
         }
         assertEquals(counter, 0);
-
-
     }
 
     public void testNullIterator() {
@@ -144,27 +147,56 @@ public class AggregatorPipeTest extends TestCase {
 
     public void testAggregatorPath() {
         List<String> list = Arrays.asList("marko", "a.", "rodriguez");
-        Pipe<String, String> pipe = new AggregatorPipe<String>(new ArrayList<String>());
+        Pipe<String, String> pipe = new Pipeline<String, String>(new AddCharPipe(), new AggregatorPipe<String>(new ArrayList<String>()), new AddCharPipe());
         pipe.setStarts(list);
         int counter = 0;
         while (pipe.hasNext()) {
             String string = pipe.next();
             if (counter == 0) {
                 List path = pipe.getPath();
-                assertEquals(path.size(), 1);
-                assertEquals(path.get(0), string);
-                assertEquals(string, "marko");
+                assertEquals(path.size(), 3);
+                assertEquals(path.get(0), string.substring(0, string.length() - 2));
+                assertEquals(path.get(1), string.substring(0, string.length() - 1));
+                assertEquals(path.get(2), string);
+                assertEquals(string, "marko..");
             } else if (counter == 1) {
-                assertEquals(string, "a.");
+                assertEquals(string, "a...");
             } else if (counter == 2) {
                 List path = pipe.getPath();
-                assertEquals(path.size(), 1);
-                assertEquals(path.get(0), string);
-                assertEquals(string, "rodriguez");
+                assertEquals(path.size(), 3);
+                assertEquals(path.get(0), string.substring(0, string.length() - 2));
+                assertEquals(path.get(1), string.substring(0, string.length() - 1));
+                assertEquals(path.get(2), string);
+                assertEquals(string, "rodriguez..");
             } else {
                 assertTrue(false);
             }
             counter++;
+        }
+    }
+
+    public void testEqualityToGatherWithCap() {
+        List<String> list = Arrays.asList("marko", "a.", "rodriguez");
+        Pipe<String, List<String>> pipeA = new SideEffectCapPipe<String, List<String>>(new AggregatorPipe(new LinkedList<String>()));
+        Pipe<String, List<String>> pipeB = new GatherPipe<String>();
+        pipeA.setStarts(list);
+        pipeB.setStarts(list);
+        assertTrue(PipeHelper.areEqual(((List) pipeA.next()).iterator(), ((List) pipeB.next()).iterator()));
+    }
+
+    public void testEqualityToNonAggregation() {
+        List<String> list = Arrays.asList("marko", "a.", "rodriguez");
+        Pipe<String, String> pipeA = new AggregatorPipe<String>(new HashSet<String>());
+        Pipe<String, String> pipeB = new IdentityPipe<String>();
+        pipeA.setStarts(list);
+        pipeB.setStarts(list);
+        assertTrue(PipeHelper.areEqual(pipeA, pipeB));
+    }
+
+    private class AddCharPipe extends AbstractPipe<String, String> {
+
+        public String processNextStart() {
+            return this.starts.next() + ".";
         }
     }
 }

@@ -6,9 +6,10 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerEdge;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerVertex;
-import com.tinkerpop.pipes.pgm.InVertexPipe;
-import com.tinkerpop.pipes.pgm.OutEdgesPipe;
-import com.tinkerpop.pipes.pgm.PropertyPipe;
+import com.tinkerpop.pipes.transform.IdentityPipe;
+import com.tinkerpop.pipes.transform.InVertexPipe;
+import com.tinkerpop.pipes.transform.OutEdgesPipe;
+import com.tinkerpop.pipes.transform.PropertyPipe;
 
 import java.util.Arrays;
 import java.util.Collection;

@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes;
 
+import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.Assert;
 
 import java.util.ArrayList;

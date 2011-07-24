@@ -4,12 +4,12 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeHelper;
-import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.SingleIterator;
-import com.tinkerpop.pipes.pgm.InVertexPipe;
-import com.tinkerpop.pipes.pgm.LabelPipe;
-import com.tinkerpop.pipes.pgm.OutEdgesPipe;
+import com.tinkerpop.pipes.transform.InVertexPipe;
+import com.tinkerpop.pipes.transform.LabelPipe;
+import com.tinkerpop.pipes.transform.OutEdgesPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
+import com.tinkerpop.pipes.util.Pipeline;
+import com.tinkerpop.pipes.util.SingleIterator;
 import junit.framework.TestCase;
 
 import java.util.*;

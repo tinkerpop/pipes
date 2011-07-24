@@ -21,9 +21,14 @@ h3. Version 0.7 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Added support for @Vertex.getOutEdges(String...)@ and @Vertex.getInEdges(String...)@.
+* Added support for @Vertex.getOutEdges(String...)@ and @Vertex.getInEdges(String...)@
+* Updated @AggregatorPipe@ to be fully @SideEffectPipe@ compliant and to respect @getPath()@
+* Added @PipeClosure@ to support closure-based pipes
+* Migrated all the "Gremlin":http://gremlin.tinkerpop.com specific pipes to Pipes
+* Refactored package names to align with pipe semantics
 
-==<hr/>==
+
+ ==<hr/>==
 
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-toilet-pipe.png!

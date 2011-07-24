@@ -5,19 +5,15 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.SingleIterator;
-import com.tinkerpop.pipes.pgm.InVertexPipe;
-import com.tinkerpop.pipes.pgm.OutEdgesPipe;
-import com.tinkerpop.pipes.pgm.PropertyPipe;
+import com.tinkerpop.pipes.transform.InVertexPipe;
+import com.tinkerpop.pipes.transform.OutEdgesPipe;
+import com.tinkerpop.pipes.transform.PropertyPipe;
+import com.tinkerpop.pipes.util.Pipeline;
+import com.tinkerpop.pipes.util.SingleIterator;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import static org.mockito.Mockito.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -114,7 +110,7 @@ public class RangeFilterPipeTest extends TestCase {
         assertTrue(pipe.hasNext());
         assertEquals("bob", pipe.next());
         assertFalse(pipe.hasNext());
-         pipe = new RangeFilterPipe<String>(4, 5);
+        pipe = new RangeFilterPipe<String>(4, 5);
         pipe.setStarts(names);
         assertTrue(pipe.hasNext());
         assertEquals("evan", pipe.next());
@@ -149,8 +145,6 @@ public class RangeFilterPipeTest extends TestCase {
     }
 
     public void testRangeFilterGraphOneObject() {
-        // ./outE[2]/inV/@name
-
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
@@ -168,7 +162,6 @@ public class RangeFilterPipeTest extends TestCase {
     }
 
     public void testRangeFilterGraphTwoObjects() {
-        // ./outE[position() > 0 and position() < 3]/inV/@name
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
@@ -191,26 +184,7 @@ public class RangeFilterPipeTest extends TestCase {
             Pipe<String, String> pipe = new RangeFilterPipe<String>(2, 0);
             assertTrue(false);
         } catch (IllegalArgumentException e) {
-            //System.out.println(e);
             assertTrue(true);
         }
-    }
-
-    public void testRangeFilterHalt() {
-        List names = mock(List.class);
-        Iterator iterator = mock(Iterator.class);
-        when(names.iterator()).thenReturn(iterator);
-        when(iterator.next()).thenReturn("duck", "duck", "duck", "goose", "goose").thenThrow(new NoSuchElementException());
-        Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 2);
-        pipe.setStarts(names);
-        int counter = 0;
-        while (pipe.hasNext()) {
-            String name = pipe.next();
-            //System.out.println(name + counter);
-            counter++;
-            assertEquals("duck", name);
-        }
-        assertEquals(counter, 3);
-        verify(iterator, times(4)).next();
     }
 }

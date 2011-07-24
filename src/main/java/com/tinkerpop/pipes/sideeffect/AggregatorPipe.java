@@ -18,12 +18,12 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
     private Queue<List> currentPathQueue = new LinkedList<List>();
     private List currentPath;
 
-    public AggregatorPipe(final Collection<S> collection) {
-        this.aggregate = collection;
+    public AggregatorPipe(final Collection<S> aggregate) {
+        this.aggregate = aggregate;
     }
 
     protected List getPathToHere() {
-        return currentPath;
+        return this.currentPath;
     }
 
     public List getPath() {

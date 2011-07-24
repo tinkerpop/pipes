@@ -1,5 +1,7 @@
 package com.tinkerpop.pipes;
 
+import com.tinkerpop.pipes.util.HistoryIterator;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
