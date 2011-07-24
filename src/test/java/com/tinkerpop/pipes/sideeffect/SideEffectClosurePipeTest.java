@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.sideeffect;
 
+import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class SideEffectClosurePipeTest extends TestCase {
 
     }
 
-    private class CountPipeClosure implements PipeClosure {
+    private class CountPipeClosure extends AbstractPipeClosure {
 
         private AtomicInteger integer;
 
@@ -40,10 +40,5 @@ public class SideEffectClosurePipeTest extends TestCase {
             this.integer.getAndAdd(1);
             return null;
         }
-
-        public void setPipe(Pipe hostPipe) {
-
-        }
-
     }
 }

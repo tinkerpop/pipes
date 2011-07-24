@@ -1,7 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.AbstractPipeClosure;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -26,12 +25,9 @@ public class FilterClosurePipeTest extends TestCase {
 
     }
 
-    private class StartsWithPipeClosure implements PipeClosure {
+    private class StartsWithPipeClosure extends AbstractPipeClosure {
         public Boolean compute(Object... objects) {
             return (((String) objects[0]).startsWith("p"));
-        }
-
-        public void setPipe(Pipe hostPipe) {
         }
     }
 }

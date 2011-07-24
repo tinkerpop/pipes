@@ -31,31 +31,19 @@ public class ClosurePipeTest extends TestCase {
         PipeHelper.areEqual(Arrays.asList("povel", "peter").iterator(), pipe.iterator());
     }
 
-    private class IdentityPipeClosure implements PipeClosure {
-        private ClosurePipe pipe;
-
+    private class IdentityPipeClosure extends AbstractPipeClosure<Object, ClosurePipe> {
         public Object compute(Object... parameters) {
             return this.pipe.s();
         }
-
-        public void setPipe(Pipe hostPipe) {
-            this.pipe = (ClosurePipe) hostPipe;
-        }
     }
 
-    private class StartsWithPipeClosure implements PipeClosure {
-        private ClosurePipe pipe;
-
+    private class StartsWithPipeClosure extends AbstractPipeClosure<Object, ClosurePipe> {
         public Object compute(Object... parameters) {
             while (true) {
                 Object s = this.pipe.s();
                 if (((String) s).startsWith("p"))
                     return s;
             }
-        }
-
-        public void setPipe(Pipe hostPipe) {
-            this.pipe = (ClosurePipe) hostPipe;
         }
     }
 }

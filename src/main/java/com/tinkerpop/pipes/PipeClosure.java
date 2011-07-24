@@ -16,9 +16,9 @@ public interface PipeClosure<T, P extends Pipe> {
     public T compute(final Object... parameters);
 
     /**
-     * The host hostPipe for which the PipeClosure is closing.
+     * The host pipe for which the PipeClosure is closing.
      *
-     * @param hostPipe the host hostPipe
+     * @param hostPipe the host pipe
      */
     public void setPipe(final P hostPipe);
 }

@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.transform;
 
+import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
 import junit.framework.TestCase;
@@ -25,13 +26,9 @@ public class TransformClosurePipeTest extends TestCase {
         assertEquals(counter, list.size());
     }
 
-    private class NumCharPipeClosure implements PipeClosure<Integer, Pipe> {
+    private class NumCharPipeClosure extends AbstractPipeClosure<Integer, Pipe> {
         public Integer compute(Object... parameters) {
             return ((String) parameters[0]).length();
-        }
-
-        public void setPipe(Pipe hostPipe) {
-
         }
     }
 }
