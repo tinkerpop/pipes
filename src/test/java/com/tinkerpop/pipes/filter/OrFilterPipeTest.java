@@ -23,8 +23,8 @@ public class OrFilterPipeTest extends TestCase {
 
     public void testOrPipeBasic() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "povel", "marko");
-        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("povel", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.EQUAL);
+        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("povel", ComparisonFilterPipe.Filter.EQUAL);
         OrFilterPipe<String> orFilterPipe = new OrFilterPipe<String>(new HasNextPipe<String>(pipe1), new HasNextPipe<String>(pipe2));
         orFilterPipe.setStarts(names);
         int counter = 0;
@@ -43,8 +43,8 @@ public class OrFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         Vertex peter = graph.getVertex("6");
         OutEdgesPipe pipe0 = new OutEdgesPipe();
-        LabelFilterPipe pipe1 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        PropertyFilterPipe<Edge, Float> pipe2 = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN_EQUAL);
+        LabelFilterPipe pipe1 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.EQUAL);
+        PropertyFilterPipe<Edge, Float> pipe2 = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.GREATER_THAN);
         OrFilterPipe<Edge> orFilterPipe = new OrFilterPipe<Edge>(new HasNextPipe<Edge>(pipe1), new HasNextPipe<Edge>(pipe2));
         Pipeline<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(pipe0, orFilterPipe);
         pipeline.setStarts(Arrays.asList(marko, peter, marko));
@@ -65,9 +65,9 @@ public class OrFilterPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
-        FilterPipe<Edge> pipeA = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        FilterPipe<Edge> pipeB = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.NOT_EQUAL);
-        FilterPipe<Edge> pipeC = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN_EQUAL);
+        FilterPipe<Edge> pipeA = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.EQUAL);
+        FilterPipe<Edge> pipeB = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.EQUAL);
+        FilterPipe<Edge> pipeC = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.GREATER_THAN);
         FilterPipe<Edge> pipeD = new AndFilterPipe<Edge>(new HasNextPipe<Edge>(pipeB), new HasNextPipe<Edge>(pipeC));
         FilterPipe<Edge> pipe2 = new OrFilterPipe<Edge>(new HasNextPipe<Edge>(pipeA), new HasNextPipe<Edge>(pipeD));
         Pipeline<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(pipe1, pipe2);
@@ -85,7 +85,7 @@ public class OrFilterPipeTest extends TestCase {
     public void testFutureFilter() {
         List<String> names = Arrays.asList("marko", "peter", "josh", "marko", "jake", "marko", "marko");
         Pipe<String, Integer> pipeA = new CharacterCountPipe();
-        Pipe<Integer, Integer> pipeB = new ObjectFilterPipe<Integer>(4, ComparisonFilterPipe.Filter.EQUAL);
+        Pipe<Integer, Integer> pipeB = new ObjectFilterPipe<Integer>(4, ComparisonFilterPipe.Filter.NOT_EQUAL);
         Pipe<String, String> pipe1 = new OrFilterPipe<String>(new HasNextPipe<String>(new Pipeline<String, Integer>(pipeA, pipeB)));
         Pipeline<String, String> pipeline = new Pipeline<String, String>(pipe1);
         pipeline.setStarts(names);
@@ -106,9 +106,9 @@ public class OrFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
 
         Pipe<Vertex, Edge> pipeA = new OutEdgesPipe();
-        Pipe<Edge, Edge> pipeB = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        Pipe<Edge, Edge> pipeB = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.EQUAL);
         Pipe<Edge, Vertex> pipeC = new InVertexPipe();
-        Pipe<Vertex, Vertex> pipeD = new PropertyFilterPipe<Vertex, String>("name", "lop", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        Pipe<Vertex, Vertex> pipeD = new PropertyFilterPipe<Vertex, String>("name", "lop", ComparisonFilterPipe.Filter.EQUAL);
         Pipe<Vertex, Vertex> pipe1 = new AndFilterPipe<Vertex>(new HasNextPipe<Vertex>(new Pipeline<Vertex, Vertex>(pipeA, pipeB, pipeC, pipeD)));
         Pipe<Vertex, String> pipe2 = new PropertyPipe<Vertex, String>("name");
         Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2);
@@ -129,7 +129,7 @@ public class OrFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
 
         Pipe<Vertex, Edge> pipeA = new OutEdgesPipe();
-        Pipe<Edge, Edge> pipeB = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.LESS_THAN);
+        Pipe<Edge, Edge> pipeB = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.GREATER_THAN_EQUAL);
         Pipe<Edge, Vertex> pipeC = new InVertexPipe();
         Pipe<Vertex, Vertex> pipe1 = new AndFilterPipe<Vertex>(new HasNextPipe<Vertex>(new Pipeline<Vertex, Vertex>(pipeA, pipeB, pipeC)));
         Pipe<Vertex, Edge> pipe2 = new OutEdgesPipe();

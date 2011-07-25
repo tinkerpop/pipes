@@ -20,7 +20,7 @@ public class IdFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         OutEdgesPipe pipe1 = new OutEdgesPipe();
         InVertexPipe pipe2 = new InVertexPipe();
-        IdFilterPipe pipe3 = new IdFilterPipe("3", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        IdFilterPipe pipe3 = new IdFilterPipe("3", ComparisonFilterPipe.Filter.EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;
@@ -37,7 +37,7 @@ public class IdFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         OutEdgesPipe pipe1 = new OutEdgesPipe();
         InVertexPipe pipe2 = new InVertexPipe();
-        IdFilterPipe pipe3 = new IdFilterPipe("3", ComparisonFilterPipe.Filter.EQUAL);
+        IdFilterPipe pipe3 = new IdFilterPipe("3", ComparisonFilterPipe.Filter.NOT_EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;

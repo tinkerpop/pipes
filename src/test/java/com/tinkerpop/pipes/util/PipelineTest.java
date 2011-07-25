@@ -46,7 +46,7 @@ public class PipelineTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe pipe1 = new OutEdgesPipe();
-        Pipe pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        Pipe pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.EQUAL);
         Pipe pipe3 = new InVertexPipe();
         Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
@@ -62,7 +62,7 @@ public class PipelineTest extends TestCase {
         assertEquals(1, counter);
 
         pipe1 = new OutEdgesPipe();
-        pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.EQUAL);
+        pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
         pipe3 = new InVertexPipe();
         pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko).iterator());

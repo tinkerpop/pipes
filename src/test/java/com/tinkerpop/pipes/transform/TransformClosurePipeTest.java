@@ -2,7 +2,6 @@ package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
 import junit.framework.TestCase;
 
 import java.util.Arrays;

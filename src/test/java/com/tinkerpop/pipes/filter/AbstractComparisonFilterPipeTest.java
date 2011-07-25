@@ -35,10 +35,10 @@ public class AbstractComparisonFilterPipeTest extends TestCase {
         assertFalse(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.EQUAL).compareObjects(1, null));
         assertTrue(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.NOT_EQUAL).compareObjects(1, null));
 
-        assertTrue(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.GREATER_THAN_EQUAL).compareObjects(1, null));
-        assertTrue(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.LESS_THAN_EQUAL).compareObjects(null, 1));
-        assertTrue(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.GREATER_THAN).compareObjects(1, null));
-        assertTrue(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.LESS_THAN).compareObjects(null, 1));
+        assertFalse(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.LESS_THAN).compareObjects(1, null));
+        assertFalse(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.GREATER_THAN).compareObjects(null, 1));
+        assertFalse(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.LESS_THAN_EQUAL).compareObjects(1, null));
+        assertFalse(new BasicComparisonFilterPipe(ComparisonFilterPipe.Filter.GREATER_THAN_EQUAL).compareObjects(null, 1));
     }
 
     public class BasicComparisonFilterPipe extends AbstractComparisonFilterPipe<Object, Object> {

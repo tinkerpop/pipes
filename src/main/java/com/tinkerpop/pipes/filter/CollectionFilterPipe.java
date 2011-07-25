@@ -27,13 +27,10 @@ public class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements Filte
 
     public boolean compareObjects(S leftObject, S rightObject) {
         if (this.filter == ComparisonFilterPipe.Filter.NOT_EQUAL) {
-            if (this.storedCollection.contains(rightObject))
-                return true;
+            return !this.storedCollection.contains(rightObject);
         } else {
-            if (!this.storedCollection.contains(rightObject))
-                return true;
+            return this.storedCollection.contains(rightObject);
         }
-        return false;
     }
 
 
