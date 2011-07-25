@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
 
 /**
@@ -12,14 +13,14 @@ import com.tinkerpop.pipes.PipeClosure;
  */
 public class TransformClosurePipe<S, E> extends AbstractPipe<S, E> {
 
-    private final PipeClosure closure;
+    private final PipeClosure<E, Pipe> closure;
 
-    public TransformClosurePipe(final PipeClosure closure) {
+    public TransformClosurePipe(final PipeClosure<E, Pipe> closure) {
         this.closure = closure;
         this.closure.setPipe(this);
     }
 
     public E processNextStart() {
-        return (E) this.closure.compute(this.starts.next());
+        return this.closure.compute(this.starts.next());
     }
 }

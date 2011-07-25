@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * OptionalPipe will compute the incoming object within the internal pipe.
+ * It is similar to BackFilterPipe, except that no filtering occurs.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class OptionalPipe<S> extends AbstractPipe<S, S> implements MetaPipe {

@@ -4,6 +4,10 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeClosure;
 
 /**
+ * FilterClosurePipe is a generic filter pipe.
+ * It takes a PipeClosure that returns an Object for in its compute() step when the argument is the start of the pipe.
+ * If the return is true (or non-null), then start is emitted. Otherwise, the start is not emitted.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class FilterClosurePipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {

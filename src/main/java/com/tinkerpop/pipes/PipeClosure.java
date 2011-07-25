@@ -17,6 +17,7 @@ public interface PipeClosure<T, P extends Pipe> {
 
     /**
      * The host pipe for which the PipeClosure is closing.
+     * This is a useful reference when needing methods of the host pipe during the computation.
      *
      * @param hostPipe the host pipe
      */

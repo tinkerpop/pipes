@@ -12,7 +12,6 @@ import com.tinkerpop.pipes.AbstractPipe;
  * }
  * </pre>
  * <p/>
- * This Pipe is useful in various test case situations.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

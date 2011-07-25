@@ -79,7 +79,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         private final T t;
         private final int loops;
 
-        public LoopBundle(final T t, final List path, final int loops) {
+        protected LoopBundle(final T t, final List path, final int loops) {
             this.t = t;
             this.path = path;
             // remove the join object

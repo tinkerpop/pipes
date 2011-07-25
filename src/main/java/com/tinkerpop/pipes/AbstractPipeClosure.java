@@ -8,6 +8,9 @@ package com.tinkerpop.pipes;
  */
 public abstract class AbstractPipeClosure<T, P extends Pipe> implements PipeClosure<T, P> {
 
+    /**
+     * The pipe that is hosting the PipeClosure.
+     */
     protected P pipe;
 
     public abstract T compute(final Object... objects);
