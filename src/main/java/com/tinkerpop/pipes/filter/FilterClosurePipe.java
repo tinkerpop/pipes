@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
 
 /**
@@ -12,9 +13,9 @@ import com.tinkerpop.pipes.PipeClosure;
  */
 public class FilterClosurePipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final PipeClosure closure;
+    private final PipeClosure<Boolean, Pipe> closure;
 
-    public FilterClosurePipe(final PipeClosure closure) {
+    public FilterClosurePipe(final PipeClosure<Boolean, Pipe> closure) {
         this.closure = closure;
         this.closure.setPipe(this);
     }
@@ -22,11 +23,7 @@ public class FilterClosurePipe<S> extends AbstractPipe<S, S> implements FilterPi
     public S processNextStart() {
         while (true) {
             final S start = this.starts.next();
-            final Object result = closure.compute(start);
-            if (result instanceof Boolean) {
-                if ((Boolean) result)
-                    return start;
-            } else if (null != result)
+            if (closure.compute(start))
                 return start;
         }
     }
