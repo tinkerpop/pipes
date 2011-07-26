@@ -116,6 +116,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
 
         public T next() {
             if (this.queue.isEmpty()) {
+                this.current = null;
                 return iterator.next();
             } else {
                 this.current = this.queue.remove();
