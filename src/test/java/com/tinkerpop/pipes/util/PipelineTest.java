@@ -50,7 +50,7 @@ public class PipelineTest extends TestCase {
         Pipe pipe3 = new InVertexPipe();
         Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
-        System.out.println(pipeline);
+        //System.out.println(pipeline);
         assertTrue(pipeline.hasNext());
         int counter = 0;
         while (pipeline.hasNext()) {

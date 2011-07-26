@@ -21,7 +21,8 @@ public class GatherPipeTest extends TestCase {
         Pipe pipeline = new Pipeline(pipe0, pipe1, pipe2);
         pipeline.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
         while (pipeline.hasNext()) {
-            System.out.println(pipeline.next() + "--->" + pipeline.getPath());
+            pipeline.next();
+            //System.out.println(pipeline.next() + "--->" + pipeline.getPath());
         }
     }
 

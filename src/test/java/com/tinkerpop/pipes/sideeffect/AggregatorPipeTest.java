@@ -2,6 +2,7 @@ package com.tinkerpop.pipes.sideeffect;
 
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.CollectionFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
@@ -37,27 +38,53 @@ public class AggregatorPipeTest extends TestCase {
 
     public void testAggregatorPipe() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        AggregatorPipe<String> pipe1 = new AggregatorPipe<String>(new ArrayList<String>());
-        pipe1.setStarts(list.iterator());
-        assertTrue(pipe1.hasNext());
+        AggregatorPipe<String> pipe = new AggregatorPipe<String>(new ArrayList<String>());
+        pipe.setStarts(list.iterator());
+        assertTrue(pipe.hasNext());
         int counter = 0;
-        while (pipe1.hasNext()) {
-            assertEquals(pipe1.next(), list.get(counter));
+        while (pipe.hasNext()) {
+            assertEquals(pipe.next(), list.get(counter));
             counter++;
         }
         assertEquals(counter, 6);
-        assertEquals(pipe1.getSideEffect().size(), counter);
+        assertEquals(pipe.getSideEffect().size(), counter);
         assertEquals(list.size(), counter);
         for (int i = 0; i < counter; i++) {
-            assertEquals(list.get(i), pipe1.getSideEffect().toArray()[i]);
+            assertEquals(list.get(i), pipe.getSideEffect().toArray()[i]);
         }
 
-        pipe1.reset();
-        assertEquals(0, pipe1.getSideEffect().size());
-        pipe1.setStarts(list.iterator());
+        pipe.reset();
+        assertEquals(0, pipe.getSideEffect().size());
+        pipe.setStarts(list.iterator());
         counter = 0;
-        assertTrue(pipe1.hasNext());
-        assertEquals(6, pipe1.getSideEffect().size());
+        assertTrue(pipe.hasNext());
+        assertEquals(6, pipe.getSideEffect().size());
+    }
+
+
+    public void testAggregatorPipeWithClosure() {
+        List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
+        AggregatorPipe<String> pipe = new AggregatorPipe<String>(new ArrayList<Integer>(), new LengthPipeClosure());
+        pipe.setStarts(list.iterator());
+        assertTrue(pipe.hasNext());
+        int counter = 0;
+        while (pipe.hasNext()) {
+            assertEquals(pipe.next(), list.get(counter));
+            counter++;
+        }
+        assertEquals(counter, 6);
+        assertEquals(pipe.getSideEffect().size(), counter);
+        assertEquals(list.size(), counter);
+        for (int i = 0; i < counter; i++) {
+            assertEquals(list.get(i).length(), pipe.getSideEffect().toArray()[i]);
+        }
+
+        pipe.reset();
+        assertEquals(0, pipe.getSideEffect().size());
+        pipe.setStarts(list.iterator());
+        counter = 0;
+        assertTrue(pipe.hasNext());
+        assertEquals(6, pipe.getSideEffect().size());
     }
 
     public void testSelfFilter() {
@@ -137,7 +164,7 @@ public class AggregatorPipeTest extends TestCase {
             assertFalse(false);
         }
         counter = 0;
-        for (String s : pipe1.getSideEffect()) {
+        for (String s : (Collection<String>) pipe1.getSideEffect()) {
             assertNull(s);
             counter++;
         }
@@ -197,6 +224,12 @@ public class AggregatorPipeTest extends TestCase {
 
         public String processNextStart() {
             return this.starts.next() + ".";
+        }
+    }
+
+    private class LengthPipeClosure extends AbstractPipeClosure<Integer, Pipe> {
+        public Integer compute(Object... parameters) {
+            return ((String) parameters[0]).length();
         }
     }
 }

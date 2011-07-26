@@ -72,7 +72,7 @@ public class BothPipeTest extends TestCase {
             assertTrue(v.equals(a) || v.equals(b));
             list.add(v);
         }
-        System.out.println(list);
+        //System.out.println(list);
         assertEquals(counter, 4);
         assertEquals(list.size(), 4);
         int t = 0;

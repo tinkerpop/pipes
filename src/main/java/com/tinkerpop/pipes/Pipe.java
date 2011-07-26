@@ -36,6 +36,7 @@ public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
 
     /**
      * A pipe may maintain state. Reset is used to remove state.
+     * The general use case for reset() is to reuse a pipe in another computation without having to create a new Pipe object.
      */
     public void reset();
 }

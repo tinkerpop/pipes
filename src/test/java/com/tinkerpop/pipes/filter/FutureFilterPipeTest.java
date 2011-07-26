@@ -127,7 +127,8 @@ public class FutureFilterPipeTest extends BaseTest {
         // pipeline.enablePath();
         while (pipeline.hasNext()) {
             counter++;
-            System.out.println(pipeline.next() + "--->" + pipeline.getPath());
+            pipeline.next();
+            //System.out.println(pipeline.next() + "--->" + pipeline.getPath());
         }
         assertEquals(counter, 1);
     }
