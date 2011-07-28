@@ -43,7 +43,7 @@ public class LoopPipeTest extends TestCase {
         assertTrue(PipeHelper.areEqual(pipe1, pipe2));
     }
 
-    /*public void testLoopPipe3() {
+    public void testLoopPipe3() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
 
         Set<Vertex> x1 = new HashSet<Vertex>();
@@ -53,8 +53,9 @@ public class LoopPipeTest extends TestCase {
         Set<Vertex> x2 = new HashSet<Vertex>();
         Pipe pipe2 = new Pipeline(new OutPipe(), new AggregatorPipe(x2), new OutPipe(), new AggregatorPipe(x2));
         pipe2.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
+
         assertTrue(PipeHelper.areEqual(pipe1, pipe2));
-    }*/
+    }
 
 
     private class LoopPipeClosure implements PipeClosure<Boolean, LoopPipe> {

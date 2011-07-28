@@ -5,7 +5,12 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
 import com.tinkerpop.pipes.util.MetaPipe;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * LoopPipe takes a Boolean-based PipeClosure.
@@ -105,6 +110,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         private final Queue<LoopBundle<T>> queue = new LinkedList<LoopBundle<T>>();
         private final Iterator<T> iterator;
         private LoopBundle<T> current;
+        private int totalResets = -1;
 
         public ExpandableLoopBundleIterator(final Iterator<T> iterator) {
             this.iterator = iterator;
@@ -117,6 +123,9 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         public T next() {
             if (this.queue.isEmpty()) {
                 this.current = null;
+                if (!this.iterator.hasNext()) {
+                    this.incrTotalResets();
+                }
                 return iterator.next();
             } else {
                 this.current = this.queue.remove();
@@ -125,7 +134,12 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         }
 
         public boolean hasNext() {
-            return !this.queue.isEmpty() || this.iterator.hasNext();
+            if (this.queue.isEmpty() && !this.iterator.hasNext()) {
+                this.incrTotalResets();
+                return false;
+            } else {
+                return true;
+            }
         }
 
         public void add(final LoopBundle<T> loopBundle) {
@@ -140,14 +154,32 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
 
         }
 
-        public int getCurrentLoops() {
+        /*public int getCurrentLoops() {
             if (null == this.current)
                 return 1;
             else
                 return this.current.getLoops();
+        }*/
+
+        public int getCurrentLoops() {
+            if (null != this.current) {
+                return this.current.getLoops();
+            } else {
+                if (this.totalResets == -1)
+                    return 1;
+                else
+                    return totalResets;
+            }
+        }
+
+        private void incrTotalResets() {
+            if (totalResets == -1)
+                totalResets = 0;
+            this.totalResets++;
         }
 
         public void clear() {
+            this.totalResets = -1;
             this.current = null;
             this.queue.clear();
         }

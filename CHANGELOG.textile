@@ -11,7 +11,9 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
-h3. Version 0.7 (NOT OFFICIALLY RELEASED YET)
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-pvc-pipe.png!
+
+h3. Version 0.7 (PVC -- NOT OFFICIALLY RELEASED YET)
 
 ```xml
 <dependency>
@@ -28,6 +30,7 @@ h3. Version 0.7 (NOT OFFICIALLY RELEASED YET)
 * Refactored package names to align with pipe semantics
 * Flipped the meaning of @Filter@, where @true@ means pass, and @false@ means filter
 * Added @AggregatorPipe@ @PipeClosure@ to process object prior to insertion into the aggregate collection
+* Added temporary fix for @AggregatorPipe@/@LoopPipe@ phenomena
 
 
  ==<hr/>==
