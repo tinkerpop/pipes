@@ -32,9 +32,7 @@ h3. Version 0.7 (PVC -- NOT OFFICIALLY RELEASED YET)
 * Added @AggregatorPipe@ @PipeClosure@ to process object prior to insertion into the aggregate collection
 * Added temporary fix for @AggregatorPipe@/@LoopPipe@ phenomena
 
-
- ==<hr/>==
-
+==<hr/>==
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-toilet-pipe.png!
 
