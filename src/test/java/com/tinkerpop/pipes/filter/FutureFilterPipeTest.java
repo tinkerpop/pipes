@@ -6,7 +6,12 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.BaseTest;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.transform.*;
+import com.tinkerpop.pipes.transform.BothEdgesPipe;
+import com.tinkerpop.pipes.transform.BothVerticesPipe;
+import com.tinkerpop.pipes.transform.GraphElementPipe;
+import com.tinkerpop.pipes.transform.IdentityPipe;
+import com.tinkerpop.pipes.transform.InVertexPipe;
+import com.tinkerpop.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.pipes.util.Pipeline;
 
 import java.util.Arrays;

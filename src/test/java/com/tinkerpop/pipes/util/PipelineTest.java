@@ -15,7 +15,11 @@ import com.tinkerpop.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.pipes.transform.PropertyPipe;
 import junit.framework.TestCase;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)

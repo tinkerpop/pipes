@@ -12,7 +12,11 @@ import com.tinkerpop.pipes.util.Pipeline;
 import com.tinkerpop.pipes.util.SingleIterator;
 import junit.framework.TestCase;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

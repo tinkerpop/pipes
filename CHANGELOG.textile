@@ -31,6 +31,7 @@ h3. Version 0.7 (PVC -- NOT OFFICIALLY RELEASED YET)
 * Flipped the meaning of @Filter@, where @true@ means pass, and @false@ means filter
 * Added @AggregatorPipe@ @PipeClosure@ to process object prior to insertion into the aggregate collection
 * Added temporary fix for @AggregatorPipe@/@LoopPipe@ phenomena
+* @IfThenElsePipe@ requires an @elseClosure@
 
 ==<hr/>==
 
