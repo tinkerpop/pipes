@@ -14,7 +14,7 @@ public class IfThenElsePipeTest extends TestCase {
 
     public void testIfThenElse() {
         List<String> names = Arrays.asList("marko", "povel", "pete", "josh", "stephen");
-        List<Integer> results = Arrays.asList(0, 5, 4, 0, 0);
+        List results = Arrays.asList(0, "hehe", 5, 4, 0, "hehe", 0, "hehe");
         Pipe<String, Integer> pipe = new IfThenElsePipe<String, Integer>(new IfPipeClosure(), new ThenPipeClosure(), new ElsePipeClosure());
         pipe.setStarts(names);
         int counter = 0;
@@ -22,7 +22,26 @@ public class IfThenElsePipeTest extends TestCase {
             assertEquals(pipe.next(), results.get(counter));
             counter++;
         }
-        assertEquals(counter, names.size());
+        assertEquals(counter, results.size());
+
+    }
+
+    public void testIfThenElseWithPaths() {
+        List<String> names = Arrays.asList("marko", "povel", "pete", "josh", "stephen");
+        List results = Arrays.asList(0, "hehe", 5, 4, 0, "hehe", 0, "hehe");
+        List path1 = Arrays.asList("marko", "marko", "povel", "pete", "josh", "josh", "stephen", "stephen");
+        Pipe<String, Integer> pipe = new IfThenElsePipe<String, Integer>(new IfPipeClosure(), new ThenPipeClosure(), new ElsePipeClosure());
+        pipe.setStarts(names);
+        int counter = 0;
+        while (pipe.hasNext()) {
+            assertEquals(pipe.next(), results.get(counter));
+            List path = pipe.getPath();
+            assertEquals(path.get(0), path1.get(counter));
+            assertEquals(path.get(1), results.get(counter));
+            assertEquals(path.size(), 2);
+            counter++;
+        }
+        assertEquals(counter, results.size());
 
     }
 
@@ -49,7 +68,7 @@ public class IfThenElsePipeTest extends TestCase {
 
     private class ElsePipeClosure implements PipeClosure<Object, Pipe> {
         public Object compute(Object... parameters) {
-            return 0;
+            return Arrays.asList(0, "hehe");
         }
 
         public void setPipe(Pipe hostPipe) {

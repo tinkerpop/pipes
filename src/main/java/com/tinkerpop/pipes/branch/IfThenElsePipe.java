@@ -7,8 +7,8 @@ import com.tinkerpop.pipes.PipeClosure;
 import java.util.Iterator;
 
 /**
- * IfThenElsePipe will run each incoming S through the provided IfClosure.
- * If the IfClosure return true, then the S object is passed through the thenClosure.
+ * IfThenElsePipe will run each incoming S through the provided ifClosure.
+ * If the ifClosure returns true, then the S object is passed through the thenClosure.
  * Otherwise, the S object is passed through the elseClosure.
  * If the result of the thenClosure and the elseClosure is an iterable/iterator, it is unrolled.
  *
@@ -27,31 +27,27 @@ public class IfThenElsePipe<S, E> extends AbstractPipe<S, E> {
         this.elseClosure = elseClosure;
     }
 
-    public IfThenElsePipe(final PipeClosure ifClosure, final PipeClosure thenClosure) {
-        this(ifClosure, thenClosure, null);
-    }
-
     public E processNextStart() {
         while (true) {
-            if (null != itty && itty.hasNext()) {
-                return itty.next();
+            if (null != this.itty && this.itty.hasNext()) {
+                return this.itty.next();
             } else {
                 final S s = this.starts.next();
                 if (this.ifClosure.compute(s)) {
                     Object e = this.thenClosure.compute(s);
                     if (e instanceof Iterable) {
-                        itty = ((Iterable<E>) e).iterator();
+                        this.itty = ((Iterable<E>) e).iterator();
                     } else if (e instanceof Iterator) {
-                        itty = (Iterator<E>) e;
+                        this.itty = (Iterator<E>) e;
                     } else {
                         return (E) e;
                     }
-                } else if (null != this.elseClosure) {
+                } else {
                     Object e = this.elseClosure.compute(s);
                     if (e instanceof Iterable) {
-                        itty = ((Iterable<E>) e).iterator();
+                        this.itty = ((Iterable<E>) e).iterator();
                     } else if (e instanceof Iterator) {
-                        itty = (Iterator<E>) e;
+                        this.itty = (Iterator<E>) e;
                     } else {
                         return (E) e;
                     }
