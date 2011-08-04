@@ -20,7 +20,7 @@ public class ObjectFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
 
     protected S processNextStart() {
         while (true) {
-            S s = this.starts.next();
+            final S s = this.starts.next();
             if (PipeHelper.compareObjects(this.filter, s, this.object)) {
                 return s;
             }
@@ -28,6 +28,6 @@ public class ObjectFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
     }
 
     public String toString() {
-        return super.toString() + "(" + this.object + ")";
+        return super.toString() + "(" + this.filter + "," + this.object + ")";
     }
 }

@@ -9,6 +9,7 @@ import java.util.HashSet;
  * The DuplicateFilterPipe will not allow a duplicate object to pass through it.
  * This is accomplished by the Pipe maintaining an internal HashSet that is used to store a history of previously seen objects.
  * Thus, the more unique objects that pass through this Pipe, the slower it becomes as a log_2 index is checked for every object.
+ * Also, beware of OutOfMemoryExceptions as if the number of distinct objects is too great, then the HashSet will overflow memory.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -18,7 +19,7 @@ public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> implements Filter
 
     protected S processNextStart() {
         while (true) {
-            S s = this.starts.next();
+            final S s = this.starts.next();
             if (!this.historySet.contains(s)) {
                 this.historySet.add(s);
                 return s;

@@ -25,7 +25,7 @@ public class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements Filte
     }
 
 
-    public boolean compareObjects(S leftObject, S rightObject) {
+    private boolean checkCollection(final S rightObject) {
         if (this.filter == Filter.NOT_EQUAL) {
             return !this.storedCollection.contains(rightObject);
         } else {
@@ -36,10 +36,14 @@ public class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements Filte
 
     protected S processNextStart() {
         while (true) {
-            S s = this.starts.next();
-            if (this.compareObjects(null, s)) {
+            final S s = this.starts.next();
+            if (this.checkCollection(s)) {
                 return s;
             }
         }
+    }
+
+    public String toString() {
+        return super.toString() + "(" + this.filter + ")";
     }
 }

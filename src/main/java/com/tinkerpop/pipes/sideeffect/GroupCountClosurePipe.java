@@ -23,6 +23,8 @@ public class GroupCountClosurePipe<S, K> extends AbstractPipe<S, S> implements S
         this.countMap = countMap;
         this.valueClosure = valueClosure;
         this.keyClosure = keyClosure;
+        this.keyClosure.setPipe(this);
+        this.valueClosure.setPipe(this);
     }
 
     protected S processNextStart() {

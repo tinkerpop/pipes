@@ -25,4 +25,8 @@ public class IdFilterPipe extends AbstractPipe<Element, Element> implements Filt
             }
         }
     }
+
+    public String toString() {
+        return super.toString() + "(" + this.filter + "," + this.id + ")";
+    }
 }

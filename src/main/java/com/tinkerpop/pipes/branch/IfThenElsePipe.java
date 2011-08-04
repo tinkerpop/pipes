@@ -25,6 +25,9 @@ public class IfThenElsePipe<S, E> extends AbstractPipe<S, E> {
         this.ifClosure = ifClosure;
         this.thenClosure = thenClosure;
         this.elseClosure = elseClosure;
+        this.ifClosure.setPipe(this);
+        this.thenClosure.setPipe(this);
+        this.elseClosure.setPipe(this);
     }
 
     public E processNextStart() {
@@ -34,7 +37,7 @@ public class IfThenElsePipe<S, E> extends AbstractPipe<S, E> {
             } else {
                 final S s = this.starts.next();
                 if (this.ifClosure.compute(s)) {
-                    Object e = this.thenClosure.compute(s);
+                    final Object e = this.thenClosure.compute(s);
                     if (e instanceof Iterable) {
                         this.itty = ((Iterable<E>) e).iterator();
                     } else if (e instanceof Iterator) {
@@ -43,7 +46,7 @@ public class IfThenElsePipe<S, E> extends AbstractPipe<S, E> {
                         return (E) e;
                     }
                 } else {
-                    Object e = this.elseClosure.compute(s);
+                    final Object e = this.elseClosure.compute(s);
                     if (e instanceof Iterable) {
                         this.itty = ((Iterable<E>) e).iterator();
                     } else if (e instanceof Iterator) {

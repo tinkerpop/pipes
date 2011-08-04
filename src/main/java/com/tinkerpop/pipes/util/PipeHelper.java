@@ -89,7 +89,7 @@ public class PipeHelper {
                     return false;
                 return ((Comparable) leftObject).compareTo(rightObject) <= 0;
             default:
-                throw new RuntimeException("Invalid state as no valid filter was provided");
+                throw new IllegalArgumentException("Invalid state as no valid filter was provided");
         }
     }
 }
