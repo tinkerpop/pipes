@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Map<S, Long>> {
+public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<S, Long>> {
 
     private Map<S, Long> countMap;
 

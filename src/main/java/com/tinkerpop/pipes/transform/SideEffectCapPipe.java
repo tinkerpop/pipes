@@ -18,10 +18,10 @@ import java.util.NoSuchElementException;
  */
 public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> implements MetaPipe {
 
-    private final SideEffectPipe<S, ?, T> pipeToCap;
+    private final SideEffectPipe<S, T> pipeToCap;
     private boolean alive = true;
 
-    public SideEffectCapPipe(final SideEffectPipe<S, ?, T> pipeToCap) {
+    public SideEffectCapPipe(final SideEffectPipe<S, T> pipeToCap) {
         this.pipeToCap = pipeToCap;
     }
 

@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Map<Object, Number>> {
+public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<Object, Number>> {
 
     private Map<Object, Number> countMap;
     private final PipeClosure valueClosure;

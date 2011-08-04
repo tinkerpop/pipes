@@ -8,7 +8,7 @@ import com.tinkerpop.pipes.Pipe;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public interface SideEffectPipe<S, E, T> extends Pipe<S, E> {
+public interface SideEffectPipe<S, T> extends Pipe<S, S> {
 
     public T getSideEffect();
 }

@@ -21,6 +21,8 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* @SideEffectPipe@ now has signature of @<S,T>@ instead of @<S,E,T>@
+
 ==<hr/>==
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-pvc-pipe.png!
