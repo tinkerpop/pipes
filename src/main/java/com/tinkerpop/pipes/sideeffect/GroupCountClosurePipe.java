@@ -1,20 +1,25 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
 
 import java.util.Map;
 
 /**
+ * GroupCountClosurePipe is analogous to GroupClosurePipe save that it takes two optional closures.
+ * The first closure is a key closure which determines the key to use for each incoming object.
+ * The second closure is a value closure which determines the value to put into the Map for each key.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<Object, Number>> {
+public class GroupCountClosurePipe<S, K> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<K, Number>> {
 
-    private Map<Object, Number> countMap;
-    private final PipeClosure valueClosure;
-    private final PipeClosure keyClosure;
+    private Map<K, Number> countMap;
+    private final PipeClosure<Number, Pipe> valueClosure;
+    private final PipeClosure<K, Pipe> keyClosure;
 
-    public GroupCountClosurePipe(final Map<Object, Number> countMap, final PipeClosure keyClosure, final PipeClosure valueClosure) {
+    public GroupCountClosurePipe(final Map<K, Number> countMap, final PipeClosure<K, Pipe> keyClosure, final PipeClosure<Number, Pipe> valueClosure) {
         this.countMap = countMap;
         this.valueClosure = valueClosure;
         this.keyClosure = keyClosure;
@@ -22,12 +27,12 @@ public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements Side
 
     protected S processNextStart() {
         final S s = this.starts.next();
-        final Object key = this.getKey(s);
+        final K key = this.getKey(s);
         this.countMap.put(key, this.getValue(key));
         return s;
     }
 
-    public Map<Object, Number> getSideEffect() {
+    public Map<K, Number> getSideEffect() {
         return this.countMap;
     }
 
@@ -40,15 +45,15 @@ public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements Side
         super.reset();
     }
 
-    private Object getKey(final S start) {
+    private K getKey(final S start) {
         if (null == keyClosure) {
-            return start;
+            return (K) start;
         } else {
             return keyClosure.compute(start);
         }
     }
 
-    private Number getValue(final Object key) {
+    private Number getValue(final K key) {
         Number number = this.countMap.get(key);
         if (null == number) {
             number = 0l;
@@ -64,7 +69,7 @@ public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements Side
                 return 1 + number.intValue();
             }
         } else {
-            return (Number) this.valueClosure.compute(number);
+            return this.valueClosure.compute(number);
         }
 
     }

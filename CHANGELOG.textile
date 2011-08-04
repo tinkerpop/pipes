@@ -22,6 +22,7 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 ```
 
 * @SideEffectPipe@ now has signature of @<S,T>@ instead of @<S,E,T>@
+* @GroupCountClosurePipe@ has signature of @<S,K>@ to denote the key of its @Map<K,Number>@ side-effect
 
 ==<hr/>==
 
