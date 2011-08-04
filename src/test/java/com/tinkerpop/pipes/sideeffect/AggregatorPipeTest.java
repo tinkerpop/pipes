@@ -5,7 +5,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.CollectionFilterPipe;
-import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
+import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
@@ -97,7 +97,7 @@ public class AggregatorPipeTest extends TestCase {
     public void testSelfFilter() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         AggregatorPipe<String> pipe1 = new AggregatorPipe<String>(new ArrayList<String>());
-        Pipe pipe2 = new CollectionFilterPipe<String>(pipe1.getSideEffect(), ComparisonFilterPipe.Filter.EQUAL);
+        Pipe pipe2 = new CollectionFilterPipe<String>(pipe1.getSideEffect(), FilterPipe.Filter.EQUAL);
         Pipeline<String, String> pipeline = new Pipeline<String, String>(Arrays.asList(pipe1, pipe2));
         pipeline.setStarts(list.iterator());
         int counter = 0;
@@ -109,7 +109,7 @@ public class AggregatorPipeTest extends TestCase {
         assertEquals(counter, 6);
 
         pipe1 = new AggregatorPipe<String>(new ArrayList<String>());
-        pipe2 = new CollectionFilterPipe<String>(pipe1.getSideEffect(), ComparisonFilterPipe.Filter.NOT_EQUAL);
+        pipe2 = new CollectionFilterPipe<String>(pipe1.getSideEffect(), FilterPipe.Filter.NOT_EQUAL);
         pipeline = new Pipeline<String, String>(Arrays.asList(pipe1, pipe2));
         pipeline.setStarts(list.iterator());
         counter = 0;

@@ -23,7 +23,7 @@ public class PropertyFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
         Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
-        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", "java", ComparisonFilterPipe.Filter.EQUAL);
+        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", "java", FilterPipe.Filter.EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
@@ -50,7 +50,7 @@ public class PropertyFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
         Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
-        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", "java", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", "java", FilterPipe.Filter.NOT_EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());

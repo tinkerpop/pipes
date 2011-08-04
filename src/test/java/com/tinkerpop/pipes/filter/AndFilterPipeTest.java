@@ -19,8 +19,8 @@ public class AndFilterPipeTest extends TestCase {
 
     public void testAndPipeBasic() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "povel", "marko");
-        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.EQUAL);
-        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("povel", ComparisonFilterPipe.Filter.EQUAL);
+        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", FilterPipe.Filter.EQUAL);
+        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("povel", FilterPipe.Filter.EQUAL);
         AndFilterPipe<String> andFilterPipe = new AndFilterPipe<String>(new HasNextPipe<String>(pipe1), new HasNextPipe<String>(pipe2));
         andFilterPipe.setStarts(names);
         int counter = 0;
@@ -39,8 +39,8 @@ public class AndFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         Vertex peter = graph.getVertex("6");
         OutEdgesPipe pipe0 = new OutEdgesPipe();
-        LabelFilterPipe pipe1 = new LabelFilterPipe("knows", ComparisonFilterPipe.Filter.EQUAL);
-        PropertyFilterPipe<Edge, Float> pipe2 = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, ComparisonFilterPipe.Filter.GREATER_THAN);
+        LabelFilterPipe pipe1 = new LabelFilterPipe("knows", FilterPipe.Filter.EQUAL);
+        PropertyFilterPipe<Edge, Float> pipe2 = new PropertyFilterPipe<Edge, Float>("weight", 0.5f, FilterPipe.Filter.GREATER_THAN);
         AndFilterPipe<Edge> andFilterPipe = new AndFilterPipe<Edge>(new HasNextPipe<Edge>(pipe1), new HasNextPipe<Edge>(pipe2));
         Pipeline<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(pipe0, andFilterPipe);
         pipeline.setStarts(Arrays.asList(marko, peter, marko));

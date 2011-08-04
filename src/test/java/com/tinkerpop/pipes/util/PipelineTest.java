@@ -7,7 +7,7 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerEdge;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerVertex;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
+import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.LabelFilterPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.InVertexPipe;
@@ -50,7 +50,7 @@ public class PipelineTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe pipe1 = new OutEdgesPipe();
-        Pipe pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.EQUAL);
+        Pipe pipe2 = new LabelFilterPipe("created", FilterPipe.Filter.EQUAL);
         Pipe pipe3 = new InVertexPipe();
         Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
@@ -66,7 +66,7 @@ public class PipelineTest extends TestCase {
         assertEquals(1, counter);
 
         pipe1 = new OutEdgesPipe();
-        pipe2 = new LabelFilterPipe("created", ComparisonFilterPipe.Filter.NOT_EQUAL);
+        pipe2 = new LabelFilterPipe("created", FilterPipe.Filter.NOT_EQUAL);
         pipe3 = new InVertexPipe();
         pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko).iterator());

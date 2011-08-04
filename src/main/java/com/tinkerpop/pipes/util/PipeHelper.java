@@ -1,5 +1,7 @@
 package com.tinkerpop.pipes.util;
 
+import com.tinkerpop.pipes.filter.FilterPipe;
+
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -58,5 +60,36 @@ public class PipeHelper {
                 return false;
         }
         return true;
+    }
+
+    public static boolean compareObjects(final FilterPipe.Filter filter, final Object leftObject, final Object rightObject) {
+        switch (filter) {
+            case EQUAL:
+                if (null == leftObject)
+                    return rightObject == null;
+                return leftObject.equals(rightObject);
+            case NOT_EQUAL:
+                if (null == leftObject)
+                    return rightObject != null;
+                return !leftObject.equals(rightObject);
+            case GREATER_THAN:
+                if (null == leftObject || rightObject == null)
+                    return false;
+                return ((Comparable) leftObject).compareTo(rightObject) == 1;
+            case LESS_THAN:
+                if (null == leftObject || rightObject == null)
+                    return false;
+                return ((Comparable) leftObject).compareTo(rightObject) == -1;
+            case GREATER_THAN_EQUAL:
+                if (null == leftObject || rightObject == null)
+                    return false;
+                return ((Comparable) leftObject).compareTo(rightObject) >= 0;
+            case LESS_THAN_EQUAL:
+                if (null == leftObject || rightObject == null)
+                    return false;
+                return ((Comparable) leftObject).compareTo(rightObject) <= 0;
+            default:
+                throw new RuntimeException("Invalid state as no valid filter was provided");
+        }
     }
 }

@@ -16,7 +16,7 @@ public class CollectionFilterPipeTest extends TestCase {
     public void testBasicCollectionFilterEquals() {
         List<String> names = Arrays.asList("marko", "marko", "peter", "josh", "pavel", "marko");
         Set<String> collection = new HashSet<String>(Arrays.asList("marko", "pavel"));
-        Pipe<String, String> pipe1 = new CollectionFilterPipe<String>(collection, ComparisonFilterPipe.Filter.EQUAL);
+        Pipe<String, String> pipe1 = new CollectionFilterPipe<String>(collection, FilterPipe.Filter.EQUAL);
         pipe1.setStarts(names);
         int counter = 0;
         while (pipe1.hasNext()) {
@@ -30,7 +30,7 @@ public class CollectionFilterPipeTest extends TestCase {
     public void testBasicCollectionFilterNotEquals() {
         List<String> names = Arrays.asList("marko", "marko", "peter", "josh", "pavel", "marko");
         Set<String> collection = new HashSet<String>(Arrays.asList("marko", "pavel"));
-        Pipe<String, String> pipe1 = new CollectionFilterPipe<String>(collection, ComparisonFilterPipe.Filter.NOT_EQUAL);
+        Pipe<String, String> pipe1 = new CollectionFilterPipe<String>(collection, FilterPipe.Filter.NOT_EQUAL);
         pipe1.setStarts(names);
         int counter = 0;
         while (pipe1.hasNext()) {

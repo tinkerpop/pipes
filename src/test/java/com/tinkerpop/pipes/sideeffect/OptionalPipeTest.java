@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.sideeffect;
 
-import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
+import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.ObjectFilterPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.util.Pipeline;
@@ -47,7 +47,7 @@ public class OptionalPipeTest extends TestCase {
     public void testOptionalSideEffectWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
         List<String> results = new ArrayList<String>();
-        OptionalPipe<String> pipe1 = new OptionalPipe<String>(new Pipeline(new AggregatorPipe<String>(results), new ObjectFilterPipe<String>("marko", ComparisonFilterPipe.Filter.EQUAL)));
+        OptionalPipe<String> pipe1 = new OptionalPipe<String>(new Pipeline(new AggregatorPipe<String>(results), new ObjectFilterPipe<String>("marko", FilterPipe.Filter.EQUAL)));
         pipe1.setStarts(names);
         int counter = 0;
         while (pipe1.hasNext()) {

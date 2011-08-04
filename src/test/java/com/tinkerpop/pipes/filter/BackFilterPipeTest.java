@@ -22,7 +22,7 @@ public class BackFilterPipeTest extends TestCase {
 
     public void testBackFilterWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        BackFilterPipe<String> pipe1 = new BackFilterPipe<String>(new CollectionFilterPipe<String>(Arrays.asList("marko", "povel"), ComparisonFilterPipe.Filter.NOT_EQUAL));
+        BackFilterPipe<String> pipe1 = new BackFilterPipe<String>(new CollectionFilterPipe<String>(Arrays.asList("marko", "povel"), FilterPipe.Filter.NOT_EQUAL));
         pipe1.setStarts(names);
         int counter = 0;
         while (pipe1.hasNext()) {

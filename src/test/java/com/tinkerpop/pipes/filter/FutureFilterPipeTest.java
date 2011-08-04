@@ -37,7 +37,7 @@ public class FutureFilterPipeTest extends BaseTest {
 
     public void testAdvancedFutureFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new CollectionFilterPipe<String>(Arrays.asList("marko", "povel"), ComparisonFilterPipe.Filter.NOT_EQUAL));
+        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new CollectionFilterPipe<String>(Arrays.asList("marko", "povel"), FilterPipe.Filter.NOT_EQUAL));
         pipe1.setStarts(names);
         int counter = 0;
         while (pipe1.hasNext()) {
@@ -50,7 +50,7 @@ public class FutureFilterPipeTest extends BaseTest {
 
     public void testAdvancedNegativeFutureFilter() {
         List<String> names = Arrays.asList("marko", "peter", "povel", "josh");
-        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new CollectionFilterPipe<String>(Arrays.asList("marko", "povel"), ComparisonFilterPipe.Filter.NOT_EQUAL), false);
+        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new CollectionFilterPipe<String>(Arrays.asList("marko", "povel"), FilterPipe.Filter.NOT_EQUAL), false);
         pipe1.setStarts(names);
         int counter = 0;
         Iterator expected = Arrays.asList("marko", "povel").iterator();
@@ -67,7 +67,7 @@ public class FutureFilterPipeTest extends BaseTest {
         Vertex marko = graph.getVertex(1);
         Pipe outEPipe = new OutEdgesPipe();
         Pipe inVPipe = new InVertexPipe();
-        Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", ComparisonFilterPipe.Filter.EQUAL);
+        Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", FilterPipe.Filter.EQUAL);
         Pipe<Edge, Edge> futureFilterPipe = new FutureFilterPipe<Edge>(new Pipeline<Edge, Vertex>(inVPipe, propertyFilterPipe));
         Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(outEPipe, futureFilterPipe);
         pipeline.setStarts(Arrays.asList(marko));
@@ -124,7 +124,7 @@ public class FutureFilterPipeTest extends BaseTest {
         Vertex marko = graph.getVertex(1);
         Pipe outEPipe = new OutEdgesPipe();
         Pipe inVPipe = new InVertexPipe();
-        Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", ComparisonFilterPipe.Filter.EQUAL);
+        Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", FilterPipe.Filter.EQUAL);
         Pipe<Edge, Edge> futureFilterPipe = new FutureFilterPipe<Edge>(new Pipeline<Edge, Vertex>(inVPipe, propertyFilterPipe));
         Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(outEPipe, futureFilterPipe);
         pipeline.setStarts(Arrays.asList(marko));

@@ -10,14 +10,14 @@ import java.util.Collection;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>, ComparisonFilterPipe<S, S> {
+public class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private final Collection<S> storedCollection;
-    private final ComparisonFilterPipe.Filter filter;
+    private final FilterPipe.Filter filter;
 
-    public CollectionFilterPipe(final Collection<S> storedCollection, final ComparisonFilterPipe.Filter filter) {
+    public CollectionFilterPipe(final Collection<S> storedCollection, final FilterPipe.Filter filter) {
         this.storedCollection = storedCollection;
-        if (filter == ComparisonFilterPipe.Filter.NOT_EQUAL || filter == ComparisonFilterPipe.Filter.EQUAL) {
+        if (filter == Filter.NOT_EQUAL || filter == Filter.EQUAL) {
             this.filter = filter;
         } else {
             throw new IllegalArgumentException("The only legal filters are equals and not equals");
@@ -26,7 +26,7 @@ public class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements Filte
 
 
     public boolean compareObjects(S leftObject, S rightObject) {
-        if (this.filter == ComparisonFilterPipe.Filter.NOT_EQUAL) {
+        if (this.filter == Filter.NOT_EQUAL) {
             return !this.storedCollection.contains(rightObject);
         } else {
             return this.storedCollection.contains(rightObject);
