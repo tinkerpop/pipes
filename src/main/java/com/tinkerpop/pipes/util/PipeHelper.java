@@ -63,6 +63,14 @@ public class PipeHelper {
         return true;
     }
 
+    /**
+     * Useful for FilterPipes that need to compare two objects given a filter predicate.
+     *
+     * @param filter      the filter predicate
+     * @param leftObject  the first object
+     * @param rightObject the second object
+     * @return whether the predicate holds over the two provided objects
+     */
     public static boolean compareObjects(final FilterPipe.Filter filter, final Object leftObject, final Object rightObject) {
         switch (filter) {
             case EQUAL:
@@ -94,6 +102,13 @@ public class PipeHelper {
         }
     }
 
+    /**
+     * Generate a String representation of a pipe given the pipe and some arguments of the pipe.
+     *
+     * @param pipe      the pipe's class.getSimpleName() is used
+     * @param arguments arguments used in the configuration of the pipe (please avoid objects with massive toString() representations)
+     * @return a String representation of the pipe
+     */
     public static String makePipeString(final Pipe pipe, final Object... arguments) {
         String result = pipe.getClass().getSimpleName();
         if (arguments.length > 0) {
