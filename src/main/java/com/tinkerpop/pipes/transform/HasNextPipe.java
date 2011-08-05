@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.transform;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.SingleIterator;
 
 import java.util.Arrays;
@@ -68,5 +69,9 @@ public class HasNextPipe<S> extends AbstractPipe<S, Boolean> implements MetaPipe
 
     public List<Pipe> getPipes() {
         return (List) Arrays.asList(pipe);
+    }
+
+    public String toString() {
+        return PipeHelper.makePipeString(this, this.pipe);
     }
 }

@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.sideeffect;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.SingleIterator;
 
 import java.util.Arrays;
@@ -34,9 +35,8 @@ public class OptionalPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
 
 
     public String toString() {
-        return super.toString() + "[" + this.pipe + "]";
+        return PipeHelper.makePipeString(this, this.pipe);
     }
-
     public List<Pipe> getPipes() {
         return (List) Arrays.asList(this.pipe);
     }

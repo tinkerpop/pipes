@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.util;
 
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
 import java.util.Collection;
@@ -91,5 +92,17 @@ public class PipeHelper {
             default:
                 throw new IllegalArgumentException("Invalid state as no valid filter was provided");
         }
+    }
+
+    public static String makePipeString(final Pipe pipe, final Object... arguments) {
+        String result = pipe.getClass().getSimpleName();
+        if (arguments.length > 0) {
+            result = result + "(";
+            for (final Object arg : arguments) {
+                result = result + arg.toString() + ",";
+            }
+            result = result.substring(0, result.length() - 1) + ")";
+        }
+        return result;
     }
 }

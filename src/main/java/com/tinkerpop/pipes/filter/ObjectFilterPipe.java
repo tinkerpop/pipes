@@ -28,6 +28,6 @@ public class ObjectFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
     }
 
     public String toString() {
-        return super.toString() + "(" + this.filter + "," + this.object + ")";
+        return PipeHelper.makePipeString(this, this.filter, this.object);
     }
 }

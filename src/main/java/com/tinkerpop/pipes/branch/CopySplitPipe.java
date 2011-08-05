@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.branch;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -68,6 +69,6 @@ public class CopySplitPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
     }
 
     public String toString() {
-        return super.toString() + "[" + this.pipes + "]";
+        return PipeHelper.makePipeString(this, this.pipes);
     }
 }

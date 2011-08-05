@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 
 /**
@@ -23,7 +24,7 @@ public class CountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
     }
 
     public String toString() {
-        return super.toString() + "(" + this.counter + ")";
+        return PipeHelper.makePipeString(this, this.counter);
     }
 
     public void reset() {

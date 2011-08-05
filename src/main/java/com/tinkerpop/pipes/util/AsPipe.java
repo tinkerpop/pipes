@@ -49,7 +49,7 @@ public class AsPipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
 
 
     public String toString() {
-        return super.toString() + "(" + this.name + ")[" + this.pipe + "]";
+        return PipeHelper.makePipeString(this, this.name, this.pipe);
     }
 
     public void reset() {

@@ -2,6 +2,7 @@ package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 /**
  * The PropertyPipe returns the property value of the Element identified by the provided key.
@@ -33,6 +34,6 @@ public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> {
     }
 
     public String toString() {
-        return super.toString() + "(" + this.key + ")";
+        return PipeHelper.makePipeString(this, this.key);
     }
 }

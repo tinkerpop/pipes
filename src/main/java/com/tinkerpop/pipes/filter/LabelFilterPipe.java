@@ -29,6 +29,6 @@ public class LabelFilterPipe extends AbstractPipe<Edge, Edge> implements FilterP
     }
 
     public String toString() {
-        return super.toString() + "(" + this.filter + "," + this.label + ")";
+        return PipeHelper.makePipeString(this, this.filter, this.label);
     }
 }

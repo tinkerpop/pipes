@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes;
 
 import com.tinkerpop.pipes.util.HistoryIterator;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -97,7 +98,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public String toString() {
-        return this.getClass().getSimpleName();
+        return PipeHelper.makePipeString(this);
     }
 
     protected abstract E processNextStart() throws NoSuchElementException;

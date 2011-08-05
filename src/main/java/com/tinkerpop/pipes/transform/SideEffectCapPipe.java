@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -48,7 +49,7 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> implements MetaP
     }
 
     public String toString() {
-        return super.toString() + "[" + this.pipeToCap + "]";
+        return PipeHelper.makePipeString(this, this.pipeToCap);
     }
 
     public List<Pipe> getPipes() {

@@ -29,4 +29,8 @@ public class StartPipe<S> extends AbstractPipe<S, S> {
     public S processNextStart() {
         return (S) this.starts.next();
     }
+
+    public String toString() {
+        return PipeHelper.makePipeString(this, this.starts);
+    }
 }

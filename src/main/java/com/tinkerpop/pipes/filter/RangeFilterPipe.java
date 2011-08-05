@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.NoSuchElementException;
 
@@ -39,7 +40,7 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
     }
 
     public String toString() {
-        return super.toString() + "(" + this.low + "," + this.high + ")";
+        return PipeHelper.makePipeString(this, this.low, this.high);
     }
 
     public void reset() {

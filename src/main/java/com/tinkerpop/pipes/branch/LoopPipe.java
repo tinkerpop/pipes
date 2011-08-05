@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
 import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +57,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
     }
 
     public String toString() {
-        return super.toString() + "[" + this.pipe + "]";
+        return PipeHelper.makePipeString(this, this.pipe);
     }
 
     public int getLoops() {

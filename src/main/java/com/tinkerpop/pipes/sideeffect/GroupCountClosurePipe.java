@@ -63,15 +63,7 @@ public class GroupCountClosurePipe<S, K> extends AbstractPipe<S, S> implements S
             number = 0l;
         }
         if (null == valueClosure) {
-            if (number instanceof Double) {
-                return 1.0d + number.doubleValue();
-            } else if (number instanceof Long) {
-                return 1l + number.longValue();
-            } else if (number instanceof Float) {
-                return 1.0f + number.floatValue();
-            } else {
-                return 1 + number.intValue();
-            }
+            return 1l + number.longValue();
         } else {
             return this.valueClosure.compute(number);
         }

@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.filter;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.SingleIterator;
 
 import java.util.Arrays;
@@ -44,7 +45,7 @@ public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
     }
 
     public String toString() {
-        return super.toString() + "[" + this.pipe + "]";
+        return PipeHelper.makePipeString(this, this.pipe);
     }
 
     public List<Pipe> getPipes() {

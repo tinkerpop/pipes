@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.branch;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -49,8 +50,6 @@ public class ExhaustiveMergePipe<S> extends AbstractPipe<S, S> implements MetaPi
     }
 
     public String toString() {
-        return super.toString() + "[" + this.pipes + "]";
+        return PipeHelper.makePipeString(this, this.pipes);
     }
-
-
 }

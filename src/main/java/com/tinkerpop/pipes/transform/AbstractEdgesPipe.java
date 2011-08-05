@@ -3,8 +3,8 @@ package com.tinkerpop.pipes.transform;
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -20,11 +20,7 @@ public abstract class AbstractEdgesPipe extends AbstractPipe<Vertex, Edge> {
     }
 
     public String toString() {
-        if (this.labels.length == 0) {
-            return super.toString();
-        } else {
-            return super.toString() + "(" + Arrays.asList(this.labels) + ")";
-        }
+        return PipeHelper.makePipeString(this, this.labels);
     }
 
     public void reset() {

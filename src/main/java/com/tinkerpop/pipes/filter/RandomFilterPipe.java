@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Random;
 
@@ -31,6 +32,6 @@ public class RandomFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
     }
 
     public String toString() {
-        return super.toString() + "(" + this.bias + ")";
+        return PipeHelper.makePipeString(this, this.bias);
     }
 }
