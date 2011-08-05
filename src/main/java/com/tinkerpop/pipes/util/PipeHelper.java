@@ -16,14 +16,18 @@ public class PipeHelper {
 
     /**
      * Drain an iterator into a collection. Useful for storing the results of a Pipe into a collection.
+     * Note that the try/catch model is not "acceptable Java," but is more efficient given the architecture of AbstractPipe.
      *
      * @param iterator   the iterator to drain
      * @param collection the collection to fill
      * @param <T>        the object type of the iterator
      */
     public static <T> void fillCollection(final Iterator<T> iterator, final Collection<T> collection) {
-        while (iterator.hasNext()) {
-            collection.add(iterator.next());
+        try {
+            while (true) {
+                collection.add(iterator.next());
+            }
+        } catch (final NoSuchElementException e) {
         }
     }
 
@@ -49,7 +53,7 @@ public class PipeHelper {
 
     /**
      * Checks if the contents of the two iterators are equal and of the same length.
-     * Equality is determined using == operator on the interal objects.
+     * Equality is determined using == operator on the internal objects.
      *
      * @param ittyA An iterator
      * @param ittyB An iterator
