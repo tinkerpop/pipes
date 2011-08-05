@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.filter.FilterPipe;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * PipeHelper provides a collection of static methods that are useful when dealing with Pipes.
@@ -27,17 +28,21 @@ public class PipeHelper {
     }
 
     /**
-     * Count the number of objects in an iterator. Realize that this will exhaust the iterator.
+     * Count the number of objects in an iterator.
+     * This will exhaust the iterator.
+     * Note that the try/catch model is not "acceptable Java," but is more efficient given the architecture of AbstractPipe.
      *
      * @param iterator the iterator to count
-     * @param <T>      the type of the iterator
      * @return the number of objects in the iterator
      */
-    public static <T> long counter(final Iterator<T> iterator) {
+    public static long counter(final Iterator iterator) {
         long counter = 0;
-        while (iterator.hasNext()) {
-            iterator.next();
-            counter++;
+        try {
+            while (true) {
+                iterator.next();
+                counter++;
+            }
+        } catch (final NoSuchElementException e) {
         }
         return counter;
     }
