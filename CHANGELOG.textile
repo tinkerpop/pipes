@@ -26,6 +26,7 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 * Removed @ComparisonFilterPipe@ as it is confusing and now @PipeHelper@ has comparison support
 * Added @PipeHelper.makePipeString()@ to have a single point where all pipe @toString()@s are created
 * Optimized @PipeHelper.counter()@ and @PipeHelper.fillCollection()@ by respecting architecture of @AbstractPipe@
+* Added @PipeHelper.iterate()@ to complete drain an iterator
 
 ==<hr/>==
 

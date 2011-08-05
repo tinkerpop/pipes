@@ -15,6 +15,22 @@ import java.util.NoSuchElementException;
 public class PipeHelper {
 
     /**
+     * This will iterate all the objects out of the iterator.
+     * This is useful for iterators with side-effect behavior as nothing is returned from the iteration.
+     * Note that the try/catch model is not "acceptable Java," but is more efficient given the architecture of AbstractPipe.
+     *
+     * @param iterator the iterator to drain
+     */
+    public static <T> void iterate(final Iterator<T> iterator) {
+        try {
+            while (true) {
+                iterator.next();
+            }
+        } catch (final NoSuchElementException e) {
+        }
+    }
+
+    /**
      * Drain an iterator into a collection. Useful for storing the results of a Pipe into a collection.
      * Note that the try/catch model is not "acceptable Java," but is more efficient given the architecture of AbstractPipe.
      *
