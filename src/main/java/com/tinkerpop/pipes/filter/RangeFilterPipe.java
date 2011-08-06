@@ -28,7 +28,7 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
 
     protected S processNextStart() {
         while (true) {
-            S s = this.starts.next();
+            final S s = this.starts.next();
             this.counter++;
             if ((this.low == -1 || this.counter >= this.low) && (this.high == -1 || this.counter <= this.high)) {
                 return s;

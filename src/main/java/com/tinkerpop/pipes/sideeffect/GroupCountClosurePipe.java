@@ -57,6 +57,7 @@ public class GroupCountClosurePipe<S, K> extends AbstractPipe<S, S> implements S
         }
     }
 
+    //TODO: Fix java.lang.Number issue.
     private Number getValue(final K key) {
         Number number = this.countMap.get(key);
         if (null == number) {

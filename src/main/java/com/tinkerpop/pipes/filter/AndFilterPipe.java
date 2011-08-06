@@ -27,11 +27,12 @@ public class AndFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S
         this.pipes = pipes;
     }
 
+    // Todo: Reset all pipes after break?
     public S processNextStart() {
         while (true) {
-            S s = this.starts.next();
+            final S s = this.starts.next();
             boolean and = true;
-            for (Pipe<S, Boolean> pipe : this.pipes) {
+            for (final Pipe<S, Boolean> pipe : this.pipes) {
                 pipe.setStarts(new SingleIterator<S>(s));
                 if (!pipe.next()) {
                     and = false;

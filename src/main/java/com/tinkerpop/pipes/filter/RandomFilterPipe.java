@@ -24,7 +24,7 @@ public class RandomFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
 
     protected S processNextStart() {
         while (true) {
-            S s = this.starts.next();
+            final S s = this.starts.next();
             if (bias >= RANDOM.nextDouble()) {
                 return s;
             }

@@ -21,7 +21,7 @@ public class LabelFilterPipe extends AbstractPipe<Edge, Edge> implements FilterP
 
     protected Edge processNextStart() {
         while (true) {
-            Edge edge = this.starts.next();
+            final Edge edge = this.starts.next();
             if (PipeHelper.compareObjects(this.filter, edge.getLabel(), this.label)) {
                 return edge;
             }

@@ -31,10 +31,10 @@ public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
 
     public S processNextStart() {
         while (true) {
-            S s = this.starts.next();
-            pipe.reset();
-            pipe.setStarts(new SingleIterator<S>(s));
-            if (pipe.hasNext()) {
+            final S s = this.starts.next();
+            this.pipe.reset();
+            this.pipe.setStarts(new SingleIterator<S>(s));
+            if (this.pipe.hasNext()) {
                 if (this.doFuture) {
                     return s;
                 }

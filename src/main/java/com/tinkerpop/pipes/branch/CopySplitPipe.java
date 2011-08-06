@@ -32,8 +32,8 @@ public class CopySplitPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
     }
 
     public S processNextStart() {
-        S s = this.starts.next();
-        for (CopyExpandablePipe expandable : this.pipeStarts) {
+        final S s = this.starts.next();
+        for (final CopyExpandablePipe expandable : this.pipeStarts) {
             expandable.add(s);
         }
         return s;

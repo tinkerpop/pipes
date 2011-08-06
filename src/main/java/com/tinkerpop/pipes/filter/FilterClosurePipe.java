@@ -22,9 +22,9 @@ public class FilterClosurePipe<S> extends AbstractPipe<S, S> implements FilterPi
 
     public S processNextStart() {
         while (true) {
-            final S start = this.starts.next();
-            if (closure.compute(start))
-                return start;
+            final S s = this.starts.next();
+            if (closure.compute(s))
+                return s;
         }
     }
 }

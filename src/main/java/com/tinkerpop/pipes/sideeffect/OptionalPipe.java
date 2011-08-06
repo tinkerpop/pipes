@@ -8,6 +8,7 @@ import com.tinkerpop.pipes.util.SingleIterator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * OptionalPipe will compute the incoming object within the internal pipe.
@@ -24,11 +25,14 @@ public class OptionalPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
     }
 
     public S processNextStart() {
-        S s = this.starts.next();
+        final S s = this.starts.next();
         this.pipe.setStarts(new SingleIterator<S>(s));
 
-        while (pipe.hasNext()) {
-            pipe.next();
+        try {
+            while (true) {
+                pipe.next();
+            }
+        } catch (final NoSuchElementException e) {
         }
         return s;
     }
@@ -37,6 +41,7 @@ public class OptionalPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
     public String toString() {
         return PipeHelper.makePipeString(this, this.pipe);
     }
+
     public List<Pipe> getPipes() {
         return (List) Arrays.asList(this.pipe);
     }

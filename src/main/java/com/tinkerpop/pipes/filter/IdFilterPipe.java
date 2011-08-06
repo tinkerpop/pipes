@@ -19,7 +19,7 @@ public class IdFilterPipe extends AbstractPipe<Element, Element> implements Filt
 
     protected Element processNextStart() {
         while (true) {
-            Element element = this.starts.next();
+            final Element element = this.starts.next();
             if (PipeHelper.compareObjects(this.filter, element.getId(), this.id)) {
                 return element;
             }

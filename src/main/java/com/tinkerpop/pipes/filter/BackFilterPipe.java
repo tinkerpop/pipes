@@ -8,6 +8,7 @@ import com.tinkerpop.pipes.util.SingleIterator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * BackFilterPipe will fully process the object through its internal pipe.
@@ -25,11 +26,14 @@ public class BackFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<
 
     public S processNextStart() {
         while (true) {
-            S s = this.starts.next();
+            final S s = this.starts.next();
             this.pipe.setStarts(new SingleIterator<S>(s));
-            if (pipe.hasNext()) {
-                while (pipe.hasNext()) {
-                    pipe.next();
+            if (this.pipe.hasNext()) {
+                try {
+                    while (true) {
+                        this.pipe.next();
+                    }
+                } catch (final NoSuchElementException e) {
                 }
                 return s;
             }

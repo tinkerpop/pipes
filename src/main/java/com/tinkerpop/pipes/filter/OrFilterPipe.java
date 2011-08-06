@@ -30,7 +30,7 @@ public class OrFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>
 
     public S processNextStart() {
         while (true) {
-            S s = this.starts.next();
+            final S s = this.starts.next();
             for (Pipe<S, Boolean> pipe : this.pipes) {
                 pipe.setStarts(new SingleIterator<S>(s));
                 if (pipe.next()) {

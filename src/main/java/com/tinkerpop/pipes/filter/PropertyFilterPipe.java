@@ -24,7 +24,7 @@ public class PropertyFilterPipe<S extends Element, T> extends AbstractPipe<S, S>
 
     protected S processNextStart() {
         while (true) {
-            S element = this.starts.next();
+            final S element = this.starts.next();
             if (PipeHelper.compareObjects(this.filter, element.getProperty(this.key), this.value)) {
                 return element;
             }
