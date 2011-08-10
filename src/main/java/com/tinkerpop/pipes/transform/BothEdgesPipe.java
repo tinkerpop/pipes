@@ -11,6 +11,9 @@ import com.tinkerpop.pipes.util.MultiIterator;
  */
 public class BothEdgesPipe extends AbstractEdgesPipe {
 
+    public BothEdgesPipe() {
+        super();
+    }
 
     public BothEdgesPipe(final String... labels) {
         super(labels);

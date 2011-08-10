@@ -9,6 +9,10 @@ import com.tinkerpop.blueprints.pgm.Edge;
  */
 public class InEdgesPipe extends AbstractEdgesPipe {
 
+    public InEdgesPipe() {
+        super();
+    }
+
     public InEdgesPipe(final String... labels) {
         super(labels);
     }
