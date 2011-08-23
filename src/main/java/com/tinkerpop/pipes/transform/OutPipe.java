@@ -9,10 +9,6 @@ import com.tinkerpop.blueprints.pgm.Vertex;
  */
 public class OutPipe extends AbstractEdgesVerticesPipe {
 
-    public OutPipe() {
-        super();
-    }
-
     public OutPipe(final String... labels) {
         super(labels);
     }

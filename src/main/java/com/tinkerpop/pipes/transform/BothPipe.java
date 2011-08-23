@@ -13,10 +13,6 @@ public class BothPipe extends AbstractEdgesVerticesPipe {
 
     private Vertex startVertex = null;
 
-    public BothPipe() {
-        super();
-    }
-
     public BothPipe(final String... labels) {
         super(labels);
     }
