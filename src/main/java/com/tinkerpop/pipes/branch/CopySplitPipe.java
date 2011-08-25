@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -29,6 +30,10 @@ public class CopySplitPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
             pipe.setStarts(expandable.iterator());
             this.pipeStarts.add(expandable);
         }
+    }
+
+    public CopySplitPipe(final Pipe... pipes) {
+        this(Arrays.asList(pipes));
     }
 
     public S processNextStart() {

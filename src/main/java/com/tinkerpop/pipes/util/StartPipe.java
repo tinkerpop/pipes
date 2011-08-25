@@ -2,7 +2,6 @@ package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.AbstractPipe;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -14,7 +13,7 @@ import java.util.Iterator;
  */
 public class StartPipe<S> extends AbstractPipe<S, S> {
 
-    private final Iterator starts;
+    private Iterator starts;
 
     public StartPipe(final Object start) {
         if (start instanceof Iterator) {
@@ -22,15 +21,19 @@ public class StartPipe<S> extends AbstractPipe<S, S> {
         } else if (start instanceof Iterable) {
             this.starts = ((Iterable) start).iterator();
         } else {
-            this.starts = Arrays.asList(start).iterator();
+            this.starts = new SingleIterator(start);
         }
+    }
+
+    public void setStarts(Iterator<S> starts) {
+        this.starts = starts;
+    }
+
+    public void setStarts(Iterable<S> starts) {
+        this.starts = starts.iterator();
     }
 
     public S processNextStart() {
         return (S) this.starts.next();
-    }
-
-    public String toString() {
-        return PipeHelper.makePipeString(this, this.starts);
     }
 }

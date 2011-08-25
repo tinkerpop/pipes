@@ -30,7 +30,7 @@ public class CopySplitPipeTest extends TestCase {
         Pipe pipe3 = new Pipeline(new OutEdgesPipe(), new InVertexPipe());
 
 
-        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
+        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(pipe1, pipe2, pipe3);
         FairMergePipe<Vertex> fairMergePipe = new FairMergePipe<Vertex>(copySplitPipe.getPipes());
         copySplitPipe.setStarts(graph.getVertices());
         assertEquals(PipeHelper.counter(fairMergePipe), PipeHelper.counter(graph.getVertices().iterator()) * 3);
@@ -42,7 +42,7 @@ public class CopySplitPipeTest extends TestCase {
         Pipe pipe2 = new Pipeline(new OutEdgesPipe("created"), new LabelPipe());
 
 
-        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(Arrays.asList(pipe1, pipe2));
+        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(pipe1, pipe2);
         FairMergePipe<Vertex> exhaustiveMergePipe = new FairMergePipe<Vertex>(copySplitPipe.getPipes());
         copySplitPipe.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
         List list = new ArrayList();
@@ -59,8 +59,8 @@ public class CopySplitPipeTest extends TestCase {
         Pipe pipe2 = new Pipeline(new OutEdgesPipe("created"), new LabelPipe());
 
 
-        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(Arrays.asList(pipe1, pipe2));
-        ExhaustiveMergePipe<Vertex> exhaustiveMergePipe = new ExhaustiveMergePipe<Vertex>(copySplitPipe.getPipes());
+        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(pipe1, pipe2);
+        ExhaustMergePipe<Vertex> exhaustiveMergePipe = new ExhaustMergePipe<Vertex>(copySplitPipe.getPipes());
         copySplitPipe.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
         List list = new ArrayList();
         PipeHelper.fillCollection(exhaustiveMergePipe.iterator(), list);
@@ -76,7 +76,7 @@ public class CopySplitPipeTest extends TestCase {
         Pipe pipe2 = new Pipeline(new OutEdgesPipe("created"), new LabelPipe());
 
 
-        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(Arrays.asList(pipe1, pipe2));
+        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(pipe1, pipe2);
         copySplitPipe.setStarts(graph.getVertices());
         int counter = 0;
         Set<Vertex> set = new HashSet<Vertex>();

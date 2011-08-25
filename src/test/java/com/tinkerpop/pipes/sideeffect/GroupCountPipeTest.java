@@ -13,7 +13,7 @@ public class GroupCountPipeTest extends TestCase {
 
     public void testCountCombinePipeNormal() {
         List<String> names = Arrays.asList("marko", "josh", "peter", "peter", "peter", "josh");
-        SideEffectPipe<String, Map<String, Long>> pipe = new GroupCountPipe<String>();
+        SideEffectPipe<String, Map<String, Number>> pipe = new GroupCountPipe<String>();
         pipe.setStarts(names);
         assertTrue(pipe.hasNext());
         int counter = 0;
@@ -34,7 +34,7 @@ public class GroupCountPipeTest extends TestCase {
 
     public void testCountCombinePipeZero() {
         List<String> names = Arrays.asList();
-        SideEffectPipe<String, Map<String, Long>> pipe = new GroupCountPipe<String>();
+        SideEffectPipe<String, Map<String, Number>> pipe = new GroupCountPipe<String>();
         pipe.setStarts(names);
         assertFalse(pipe.hasNext());
         assertNull(pipe.getSideEffect().get("povel"));

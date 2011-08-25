@@ -150,6 +150,15 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
         return this.pipes;
     }
 
+    /**
+     * Clear the pipes in the pipeline.
+     * A way to use the same reference to a newly constructed pipeline.
+     * Generally safer to create a new Pipeline object.
+     */
+    public void clear() {
+        this.pipes.clear();
+    }
+
     public boolean equals(final Object object) {
         return (object instanceof Pipeline) && PipeHelper.areEqual(this, (Pipeline) object);
     }

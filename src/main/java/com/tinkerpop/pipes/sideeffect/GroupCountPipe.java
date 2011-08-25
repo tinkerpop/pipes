@@ -12,16 +12,16 @@ import java.util.Map;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<S, Long>> {
+public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<S, Number>> {
 
-    private Map<S, Long> countMap;
+    private Map<S, Number> countMap;
 
-    public GroupCountPipe(final Map<S, Long> countMap) {
+    public GroupCountPipe(final Map<S, Number> countMap) {
         this.countMap = countMap;
     }
 
     public GroupCountPipe() {
-        this.countMap = new HashMap<S, Long>();
+        this.countMap = new HashMap<S, Number>();
     }
 
     protected S processNextStart() {
@@ -30,21 +30,21 @@ public class GroupCountPipe<S> extends AbstractPipe<S, S> implements SideEffectP
         return s;
     }
 
-    public Map<S, Long> getSideEffect() {
+    public Map<S, Number> getSideEffect() {
         return this.countMap;
     }
 
     private void updateMap(final S s) {
-        final Long temp = this.countMap.get(s);
+        final Number temp = this.countMap.get(s);
         if (null == temp) {
             this.countMap.put(s, 1l);
         } else {
-            this.countMap.put(s, 1l + temp);
+            this.countMap.put(s, 1l + temp.longValue());
         }
     }
 
     public void reset() {
-        this.countMap = new HashMap<S, Long>();
+        this.countMap = new HashMap<S, Number>();
         super.reset();
     }
 }

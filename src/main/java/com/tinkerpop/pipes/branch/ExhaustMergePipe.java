@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -13,15 +14,19 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ExhaustiveMergePipe<S> extends AbstractPipe<S, S> implements MetaPipe {
+public class ExhaustMergePipe<S> extends AbstractPipe<S, S> implements MetaPipe {
 
     private final List<Pipe> pipes;
     int current = 0;
     final int total;
 
-    public ExhaustiveMergePipe(final List<Pipe> pipes) {
+    public ExhaustMergePipe(final List<Pipe> pipes) {
         this.pipes = pipes;
         this.total = pipes.size();
+    }
+
+    public ExhaustMergePipe(final Pipe... pipes) {
+        this(Arrays.asList(pipes));
     }
 
     public S processNextStart() {

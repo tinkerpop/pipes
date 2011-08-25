@@ -3,6 +3,9 @@ package com.tinkerpop.pipes.util;
 import com.tinkerpop.pipes.ClosurePipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.branch.CopySplitPipe;
+import com.tinkerpop.pipes.branch.ExhaustMergePipe;
+import com.tinkerpop.pipes.branch.FairMergePipe;
 import com.tinkerpop.pipes.branch.IfThenElsePipe;
 import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
@@ -26,6 +29,7 @@ import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
 import com.tinkerpop.pipes.sideeffect.OptionalPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectClosurePipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
+import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.transform.BothEdgesPipe;
 import com.tinkerpop.pipes.transform.BothPipe;
 import com.tinkerpop.pipes.transform.BothVerticesPipe;
@@ -68,9 +72,31 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /// BRANCH PIPES ///
     ////////////////////
 
-    // todo copy split pipe
-    // todo exhaustive merge pipe
-    // todo fair merge pipe
+    public FluentPipeline copySplit(final Pipe... pipes) {
+        this.addPipe(new CopySplitPipe(pipes));
+        return this;
+    }
+
+    public FluentPipeline exhaustMerge(final Pipe... pipes) {
+        this.addPipe(new ExhaustMergePipe(pipes));
+        return this;
+    }
+
+    public FluentPipeline exhaustMerge() {
+        this.addPipe(new ExhaustMergePipe((((MetaPipe) this.removePreviousPipes(1).get(0)).getPipes())));
+        return this;
+    }
+
+    public FluentPipeline fairMerge(final Pipe... pipes) {
+        this.addPipe(new FairMergePipe(pipes));
+        return this;
+    }
+
+    public FluentPipeline fairMerge() {
+        this.addPipe(new FairMergePipe((((MetaPipe) this.removePreviousPipes(1).get(0)).getPipes())));
+        return this;
+    }
+
 
     public FluentPipeline ifThenElse(final PipeClosure<Boolean, Pipe> ifClosure, final PipeClosure thenClosure, final PipeClosure elseClosure) {
         this.addPipe(new IfThenElsePipe(ifClosure, thenClosure, elseClosure));
@@ -114,16 +140,31 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
-    // todo collection filter pipe? (or make it abstract)
+    public FluentPipeline back(final int numberedStep) {
+        return this.backFilter(numberedStep);
+    }
 
+    public FluentPipeline back(final String namedStep) {
+        return this.backFilter(namedStep);
+    }
+
+    // todo: rename to UniqueObjectFilterPipe?
     public FluentPipeline duplicateFilter() {
         this.addPipe(new DuplicateFilterPipe());
         return this;
     }
 
+    public FluentPipeline uniqueObject() {
+        return this.duplicateFilter();
+    }
+
     public FluentPipeline exceptFilter(final Collection collection) {
         this.addPipe(new ExceptFilterPipe(collection));
         return this;
+    }
+
+    public FluentPipeline except(final Collection collection) {
+        return this.exceptFilter(collection);
     }
 
     public FluentPipeline filter(final PipeClosure<Boolean, Pipe> closure) {
@@ -173,9 +214,17 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    public FluentPipeline retain(final Collection collection) {
+        return this.retainFilter(collection);
+    }
+
     public FluentPipeline uniquePathFilter() {
         this.addPipe(new UniquePathFilterPipe());
         return this;
+    }
+
+    public FluentPipeline uniquePath() {
+        return this.uniquePathFilter();
     }
 
     /////////////////////////
@@ -190,6 +239,14 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     public FluentPipeline aggregate(final Collection aggregate, final PipeClosure closure) {
         this.addPipe(new AggregatePipe(aggregate, closure));
         return this;
+    }
+
+    public FluentPipeline aggregate() {
+        return this.aggregate(new ArrayList());
+    }
+
+    public FluentPipeline aggregate(final PipeClosure closure) {
+        return this.aggregate(new ArrayList(), closure);
     }
 
     // todo do count pipe? (or remove it)
@@ -239,6 +296,21 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    public FluentPipeline table(final Table table, final Collection<String> columnNames, final PipeClosure... columnClosures) {
+        this.addPipe(new TablePipe(table, columnNames, this.getAsPipes(), columnClosures));
+        return this;
+    }
+
+    public FluentPipeline table(final Table table, final PipeClosure... columnClosures) {
+        this.addPipe(new TablePipe(table, null, this.getAsPipes(), columnClosures));
+        return this;
+    }
+
+    public FluentPipeline table(final Table table) {
+        this.addPipe(new TablePipe(table, null, this.getAsPipes()));
+        return this;
+    }
+
     ///////////////////////
     /// TRANSFORM PIPES ///
     ///////////////////////
@@ -246,6 +318,10 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     public FluentPipeline bothEdges(final String... labels) {
         this.addPipe(new BothEdgesPipe(labels));
         return this;
+    }
+
+    public FluentPipeline bothE(final String... labels) {
+        return this.bothEdges(labels);
     }
 
     public FluentPipeline both(final String... labels) {
@@ -258,9 +334,17 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    public FluentPipeline bothV() {
+        return this.bothVertices();
+    }
+
     public FluentPipeline edges() {
         this.addPipe(new EdgesPipe());
         return this;
+    }
+
+    public FluentPipeline E() {
+        return this.edges();
     }
 
     public FluentPipeline gather() {
@@ -268,14 +352,16 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
-    // todo graph element pipe (or make it abstract)
     // todo has count pipe
     // todo has next pipe
-    // todo id edge pipe (or remove)
 
     public FluentPipeline identity() {
         this.addPipe(new IdentityPipe());
         return this;
+    }
+
+    public FluentPipeline _() {
+        return this.identity();
     }
 
     public FluentPipeline id() {
@@ -290,6 +376,10 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    public FluentPipeline inE(final String... labels) {
+        return this.inEdges(labels);
+    }
+
     public FluentPipeline in(final String... labels) {
         this.addPipe(new InPipe(labels));
         return this;
@@ -298,6 +388,10 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     public FluentPipeline inVertex() {
         this.addPipe(new InVertexPipe());
         return this;
+    }
+
+    public FluentPipeline inV() {
+        return this.inVertex();
     }
 
     public FluentPipeline label() {
@@ -310,6 +404,10 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    public FluentPipeline outE(final String... labels) {
+        return this.outEdges(labels);
+    }
+
     public FluentPipeline out(final String... labels) {
         this.addPipe(new OutPipe(labels));
         return this;
@@ -320,6 +418,10 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    public FluentPipeline outV() {
+        return this.outVertex();
+    }
+
     public FluentPipeline path(PipeClosure... closures) {
         if (closures.length == 0)
             this.addPipe(new PathPipe());
@@ -328,9 +430,18 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    public FluentPipeline path() {
+        this.addPipe(new PathPipe());
+        return this;
+    }
+
     public FluentPipeline propertyMap() {
         this.addPipe(new PropertyMapPipe());
         return this;
+    }
+
+    public FluentPipeline map() {
+        return this.propertyMap();
     }
 
     public FluentPipeline property(final String key) {
@@ -350,6 +461,10 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    public FluentPipeline cap() {
+        return this.sideEffectCap();
+    }
+
     public FluentPipeline transform(PipeClosure closure) {
         this.addPipe(new TransformClosurePipe(closure));
         return this;
@@ -358,6 +473,10 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     public FluentPipeline vertices() {
         this.addPipe(new VerticesPipe());
         return this;
+    }
+
+    public FluentPipeline V() {
+        return this.vertices();
     }
 
 
@@ -390,7 +509,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     }
 
     public List iterate(final int number) {
-        final List list = new ArrayList();
+        final List list = new ArrayList(number);
         PipeHelper.fillCollection(this, list, number);
         return list;
     }

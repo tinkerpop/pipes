@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,6 +23,10 @@ public class FairMergePipe<E> extends AbstractPipe<E, E> implements MetaPipe {
     public FairMergePipe(final List<Pipe> pipes) {
         this.pipes = pipes;
         this.total = pipes.size();
+    }
+
+    public FairMergePipe(final Pipe... pipes) {
+        this(Arrays.asList(pipes));
     }
 
     public E processNextStart() {

@@ -21,6 +21,9 @@ public class PathClosurePipe<S> extends AbstractPipe<S, List> {
 
     public PathClosurePipe(final PipeClosure... pathClosures) {
         this.pathClosures = pathClosures;
+        for (PipeClosure pipeClosure : this.pathClosures) {
+            pipeClosure.setPipe(this);
+        }
     }
 
     public void setStarts(final Iterator<S> starts) {

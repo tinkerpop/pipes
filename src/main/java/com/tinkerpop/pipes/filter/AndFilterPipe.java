@@ -2,32 +2,30 @@ package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.transform.HasNextPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.SingleIterator;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The AndFilterPipe takes a collection of pipes, where E is boolean. Each provided pipe is fed the same incoming S object.
+ * The AndFilterPipe takes a collection of pipes. Each provided pipe is wrapped in a HasNextPipe and is fed the same incoming S object.
  * If all the pipes emit true, then the AndFilterPipe emits the incoming S object. If not, then the incoming S object is not emitted.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class AndFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>, MetaPipe {
 
-    private final List<Pipe<S, Boolean>> pipes;
+    private final List<Pipe<S, Boolean>> pipes = new ArrayList<Pipe<S, Boolean>>();
 
-    public AndFilterPipe(final Pipe<S, Boolean>... pipes) {
-        this.pipes = Arrays.asList(pipes);
+    public AndFilterPipe(final Pipe<S, ?>... pipes) {
+        for (final Pipe<S, ?> pipe : pipes) {
+            this.pipes.add(new HasNextPipe<S>(pipe));
+        }
     }
 
-    public AndFilterPipe(final List<Pipe<S, Boolean>> pipes) {
-        this.pipes = pipes;
-    }
-
-    // Todo: Reset all pipes after break?
     public S processNextStart() {
         while (true) {
             final S s = this.starts.next();
