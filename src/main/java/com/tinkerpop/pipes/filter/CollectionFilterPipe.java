@@ -10,7 +10,7 @@ import java.util.Collection;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
+public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private final Collection<S> storedCollection;
     private final FilterPipe.Filter filter;

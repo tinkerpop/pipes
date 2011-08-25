@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.pipes.sideeffect.AggregatorPipe;
+import com.tinkerpop.pipes.sideeffect.AggregatePipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 
 import java.util.LinkedList;
@@ -14,6 +14,6 @@ import java.util.List;
 public class GatherPipe<S> extends SideEffectCapPipe<S, List<S>> {
 
     public GatherPipe() {
-        super((SideEffectPipe) new AggregatorPipe<S>(new LinkedList<S>()));
+        super((SideEffectPipe) new AggregatePipe<S>(new LinkedList<S>()));
     }
 }

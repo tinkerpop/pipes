@@ -10,10 +10,11 @@ import java.util.Iterator;
 /**
  * The GraphElementPipe takes a start of type Graph and will return elements (i.e. vertices or edges).
  * This pipe is useful for processing all of the vertices (or edges) of a graph.
+ * See respective sub-class for implementations of this abstract form.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GraphElementPipe<E extends Element> extends AbstractPipe<Graph, E> {
+public abstract class GraphElementPipe<E extends Element> extends AbstractPipe<Graph, E> {
 
     protected Iterator<E> nextEnds;
 

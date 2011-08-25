@@ -11,13 +11,13 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 
 /**
- * The AggregatorPipe produces a side effect that is the provided Collection filled with the contents of all the objects that have passed through it.
- * Before the first object is emitted from the AggregatorPipe, all of its incoming objects have been aggregated into the collection.
+ * The AggregatePipe produces a side effect that is the provided Collection filled with the contents of all the objects that have passed through it.
+ * Before the first object is emitted from the AggregatePipe, all of its incoming objects have been aggregated into the collection.
  * Finally, note that different Collections have different behaviors and write/read times.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Collection> {
+public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Collection> {
 
     private Collection aggregate;
     private Queue<S> currentObjectQueue = new LinkedList<S>();
@@ -25,7 +25,7 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
     private List currentPath;
     private PipeClosure closure = null;
 
-    public AggregatorPipe(final Collection aggregate) {
+    public AggregatePipe(final Collection aggregate) {
         this.aggregate = aggregate;
     }
 
@@ -35,7 +35,7 @@ public class AggregatorPipe<S> extends AbstractPipe<S, S> implements SideEffectP
      * @param aggregate the aggregate collection
      * @param closure   a closure to process an object with prior to insertion into the collection
      */
-    public AggregatorPipe(final Collection aggregate, final PipeClosure closure) {
+    public AggregatePipe(final Collection aggregate, final PipeClosure closure) {
         this(aggregate);
         this.closure = closure;
     }

@@ -133,37 +133,6 @@ public class PipelineTest extends TestCase {
         }
     }
 
-    public void testTwoSimilarConstructions() {
-        List<String> names = Arrays.asList("marko", "peter", "josh");
-        IdentityPipe<String> pipe1 = new IdentityPipe<String>();
-        IdentityPipe<String> pipe2 = new IdentityPipe<String>();
-        Pipeline<String, String> pipeline = new Pipeline<String, String>(pipe1, pipe2);
-        pipeline.setStarts(names);
-        int counter = 0;
-        for (String name : pipeline) {
-            counter++;
-            assertTrue(name.equals("marko") || name.equals("peter") || name.equals("josh"));
-        }
-        assertEquals(counter, 3);
-
-        pipe1 = new IdentityPipe<String>();
-        pipe2 = new IdentityPipe<String>();
-        pipeline = new Pipeline<String, String>();
-        pipeline.setStartPipe(pipe1);
-        pipeline.setEndPipe(pipe2);
-        // when only setting starts and ends, the intermediate pipes must be chained manually.
-        pipe2.setStarts((Iterator<String>) pipe1);
-        pipeline.setStarts(names);
-        counter = 0;
-        for (String name : pipeline) {
-            counter++;
-            assertTrue(name.equals("marko") || name.equals("peter") || name.equals("josh"));
-        }
-        assertEquals(counter, 3);
-
-
-    }
-
     public void testPipelinePathConstruction() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");

@@ -48,6 +48,24 @@ public class PipeHelper {
     }
 
     /**
+     * Drain an iterator into a collection. Useful for storing the results of a Pipe into a collection.
+     * Note that the try/catch model is not "acceptable Java," but is more efficient given the architecture of AbstractPipe.
+     *
+     * @param iterator   the iterator to drain
+     * @param collection the collection to fill
+     * @param number     the number of objects to fill into the collection (ordered by iterator)
+     * @param <T>        the object type of the iterator
+     */
+    public static <T> void fillCollection(final Iterator<T> iterator, final Collection<T> collection, final int number) {
+        try {
+            for (int i = 0; i < number; i++) {
+                collection.add(iterator.next());
+            }
+        } catch (final NoSuchElementException e) {
+        }
+    }
+
+    /**
      * Count the number of objects in an iterator.
      * This will exhaust the iterator.
      * Note that the try/catch model is not "acceptable Java," but is more efficient given the architecture of AbstractPipe.

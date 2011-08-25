@@ -8,10 +8,10 @@ import com.tinkerpop.pipes.BaseTest;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.transform.BothEdgesPipe;
 import com.tinkerpop.pipes.transform.BothVerticesPipe;
-import com.tinkerpop.pipes.transform.GraphElementPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.InVertexPipe;
 import com.tinkerpop.pipes.transform.OutEdgesPipe;
+import com.tinkerpop.pipes.transform.VerticesPipe;
 import com.tinkerpop.pipes.util.Pipeline;
 
 import java.util.Arrays;
@@ -37,7 +37,7 @@ public class FutureFilterPipeTest extends BaseTest {
 
     public void testAdvancedFutureFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new CollectionFilterPipe<String>(Arrays.asList("marko", "povel"), FilterPipe.Filter.NOT_EQUAL));
+        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new ExceptFilterPipe<String>(Arrays.asList("marko", "povel")));
         pipe1.setStarts(names);
         int counter = 0;
         while (pipe1.hasNext()) {
@@ -50,7 +50,7 @@ public class FutureFilterPipeTest extends BaseTest {
 
     public void testAdvancedNegativeFutureFilter() {
         List<String> names = Arrays.asList("marko", "peter", "povel", "josh");
-        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new CollectionFilterPipe<String>(Arrays.asList("marko", "povel"), FilterPipe.Filter.NOT_EQUAL), false);
+        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new ExceptFilterPipe<String>(Arrays.asList("marko", "povel")), false);
         pipe1.setStarts(names);
         int counter = 0;
         Iterator expected = Arrays.asList("marko", "povel").iterator();
@@ -101,7 +101,7 @@ public class FutureFilterPipeTest extends BaseTest {
 
     public void testGraphFutureFilterWithRangeFilter2() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Pipe vertexPipe = new GraphElementPipe<Vertex>(GraphElementPipe.ElementType.VERTEX);
+        Pipe vertexPipe = new VerticesPipe();
         Pipe bothEPipe = new BothEdgesPipe();
         Pipe bothVPipe = new BothVerticesPipe();
         Pipe outE2 = new OutEdgesPipe();

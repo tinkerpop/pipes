@@ -2,6 +2,7 @@ package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.Pipe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -17,11 +18,13 @@ import java.util.List;
  */
 public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
 
-    private Pipe<S, ?> startPipe;
-    private Pipe<?, E> endPipe;
-    private List<Pipe> pipes;
+    protected Pipe<S, ?> startPipe;
+    protected Pipe<?, E> endPipe;
+    protected List<Pipe> pipes;
+    protected Iterator<S> starts;
 
     public Pipeline() {
+        this.pipes = new ArrayList<Pipe>();
     }
 
     /**
@@ -47,7 +50,7 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
     /**
-     * Use when extending Pipeline and setting the pipeline chain without making use of the constructor.
+     * Useful for constructing the pipeline chain without making use of the constructor.
      *
      * @param pipes the ordered list of pipes to chain together into a pipeline
      */
@@ -60,7 +63,7 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
     /**
-     * Use when extending Pipeline and setting the pipeline chain without making use of the constructor.
+     * Useful for constructing the pipeline chain without making use of the constructor.
      *
      * @param pipes the ordered array of pipes to chain together into a pipeline
      */
@@ -69,24 +72,17 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
     /**
-     * Only use if the intermediate pipes of the pipeline have been chained together manually.
+     * Adds a new pipe to the end of the pipeline and then reconstructs the pipeline chain.
      *
-     * @param startPipe the start of the pipeline
+     * @param pipe the new pipe to add to the pipeline
      */
-    public void setStartPipe(final Pipe<S, ?> startPipe) {
-        this.startPipe = startPipe;
-    }
-
-    /**
-     * Only use if the intermediate pipes of the pipeline have been chained together manually.
-     *
-     * @param endPipe the end of the pipeline
-     */
-    public void setEndPipe(final Pipe<?, E> endPipe) {
-        this.endPipe = endPipe;
+    public void addPipe(final Pipe pipe) {
+        this.pipes.add(pipe);
+        this.setPipes(this.pipes);
     }
 
     public void setStarts(final Iterator<S> starts) {
+        this.starts = starts;
         this.startPipe.setStarts(starts);
     }
 
@@ -107,7 +103,7 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
      * @return true if an object can be next()'d out of the pipeline
      */
     public boolean hasNext() {
-        return endPipe.hasNext();
+        return this.endPipe.hasNext();
     }
 
     /**
@@ -117,15 +113,24 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
      * @return the next emitted object
      */
     public E next() {
-        return endPipe.next();
+        return this.endPipe.next();
     }
 
     public List getPath() {
-        return endPipe.getPath();
+        return this.endPipe.getPath();
+    }
+
+    /**
+     * Get the number of pipes in the pipeline.
+     *
+     * @return the pipeline length
+     */
+    public int size() {
+        return this.pipes.size();
     }
 
     public void reset() {
-        endPipe.reset();
+        this.endPipe.reset();
     }
 
     /**
@@ -143,5 +148,9 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
 
     public List<Pipe> getPipes() {
         return this.pipes;
+    }
+
+    public boolean equals(final Object object) {
+        return (object instanceof Pipeline) && PipeHelper.areEqual(this, (Pipeline) object);
     }
 }

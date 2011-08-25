@@ -30,7 +30,7 @@ public class OptionalPipeTest extends TestCase {
     public void testOptionalSideEffect() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
         List<String> results = new ArrayList<String>();
-        OptionalPipe<String> pipe1 = new OptionalPipe<String>(new AggregatorPipe<String>(results));
+        OptionalPipe<String> pipe1 = new OptionalPipe<String>(new AggregatePipe<String>(results));
         pipe1.setStarts(names);
         int counter = 0;
         while (pipe1.hasNext()) {
@@ -47,7 +47,7 @@ public class OptionalPipeTest extends TestCase {
     public void testOptionalSideEffectWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
         List<String> results = new ArrayList<String>();
-        OptionalPipe<String> pipe1 = new OptionalPipe<String>(new Pipeline(new AggregatorPipe<String>(results), new ObjectFilterPipe<String>("marko", FilterPipe.Filter.EQUAL)));
+        OptionalPipe<String> pipe1 = new OptionalPipe<String>(new Pipeline(new AggregatePipe<String>(results), new ObjectFilterPipe<String>("marko", FilterPipe.Filter.EQUAL)));
         pipe1.setStarts(names);
         int counter = 0;
         while (pipe1.hasNext()) {

@@ -5,9 +5,9 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
-import com.tinkerpop.pipes.sideeffect.AggregatorPipe;
-import com.tinkerpop.pipes.transform.GraphElementPipe;
+import com.tinkerpop.pipes.sideeffect.AggregatePipe;
 import com.tinkerpop.pipes.transform.OutPipe;
+import com.tinkerpop.pipes.transform.VerticesPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
 import com.tinkerpop.pipes.util.SingleIterator;
@@ -36,7 +36,7 @@ public class LoopPipeTest extends TestCase {
 
     public void testLoopPipe2() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Pipe pipe1 = new Pipeline(new GraphElementPipe(GraphElementPipe.ElementType.VERTEX), new LoopPipe(new OutPipe(), (PipeClosure) new LoopPipeClosure()));
+        Pipe pipe1 = new Pipeline(new VerticesPipe(), new LoopPipe(new OutPipe(), (PipeClosure) new LoopPipeClosure()));
         pipe1.setStarts(new SingleIterator<Graph>(graph));
         Pipe pipe2 = new Pipeline(new OutPipe(), new OutPipe());
         pipe2.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
@@ -47,11 +47,11 @@ public class LoopPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
 
         Set<Vertex> x1 = new HashSet<Vertex>();
-        Pipe pipe1 = new Pipeline(new LoopPipe(new Pipeline(new OutPipe(), new AggregatorPipe(x1)), (PipeClosure) new LoopPipeClosure()));
+        Pipe pipe1 = new Pipeline(new LoopPipe(new Pipeline(new OutPipe(), new AggregatePipe(x1)), (PipeClosure) new LoopPipeClosure()));
         pipe1.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
 
         Set<Vertex> x2 = new HashSet<Vertex>();
-        Pipe pipe2 = new Pipeline(new OutPipe(), new AggregatorPipe(x2), new OutPipe(), new AggregatorPipe(x2));
+        Pipe pipe2 = new Pipeline(new OutPipe(), new AggregatePipe(x2), new OutPipe(), new AggregatePipe(x2));
         pipe2.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
 
         assertTrue(PipeHelper.areEqual(pipe1, pipe2));

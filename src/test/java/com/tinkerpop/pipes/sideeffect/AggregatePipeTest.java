@@ -5,7 +5,9 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.CollectionFilterPipe;
+import com.tinkerpop.pipes.filter.ExceptFilterPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.filter.RetainFilterPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
@@ -25,12 +27,12 @@ import java.util.NoSuchElementException;
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AggregatorPipeTest extends TestCase {
+public class AggregatePipeTest extends TestCase {
 
     public void testReset() {
         List<String> aggregate = new ArrayList<String>();
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        AggregatorPipe<String> pipe = new AggregatorPipe<String>(aggregate);
+        AggregatePipe<String> pipe = new AggregatePipe<String>(aggregate);
         pipe.setStarts(list.iterator());
         assertTrue(pipe.hasNext());
         assertEquals(aggregate.get(0), "marko");
@@ -45,7 +47,7 @@ public class AggregatorPipeTest extends TestCase {
 
     public void testAggregatorPipe() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        AggregatorPipe<String> pipe = new AggregatorPipe<String>(new ArrayList<String>());
+        AggregatePipe<String> pipe = new AggregatePipe<String>(new ArrayList<String>());
         pipe.setStarts(list.iterator());
         assertTrue(pipe.hasNext());
         int counter = 0;
@@ -71,7 +73,7 @@ public class AggregatorPipeTest extends TestCase {
 
     public void testAggregatorPipeWithClosure() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        AggregatorPipe<String> pipe = new AggregatorPipe<String>(new ArrayList<Integer>(), new LengthPipeClosure());
+        AggregatePipe<String> pipe = new AggregatePipe<String>(new ArrayList<Integer>(), new LengthPipeClosure());
         pipe.setStarts(list.iterator());
         assertTrue(pipe.hasNext());
         int counter = 0;
@@ -96,8 +98,8 @@ public class AggregatorPipeTest extends TestCase {
 
     public void testSelfFilter() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        AggregatorPipe<String> pipe1 = new AggregatorPipe<String>(new ArrayList<String>());
-        Pipe pipe2 = new CollectionFilterPipe<String>(pipe1.getSideEffect(), FilterPipe.Filter.EQUAL);
+        AggregatePipe<String> pipe1 = new AggregatePipe<String>(new ArrayList<String>());
+        Pipe pipe2 = new RetainFilterPipe<String>(pipe1.getSideEffect());
         Pipeline<String, String> pipeline = new Pipeline<String, String>(Arrays.asList(pipe1, pipe2));
         pipeline.setStarts(list.iterator());
         int counter = 0;
@@ -108,8 +110,8 @@ public class AggregatorPipeTest extends TestCase {
         }
         assertEquals(counter, 6);
 
-        pipe1 = new AggregatorPipe<String>(new ArrayList<String>());
-        pipe2 = new CollectionFilterPipe<String>(pipe1.getSideEffect(), FilterPipe.Filter.NOT_EQUAL);
+        pipe1 = new AggregatePipe<String>(new ArrayList<String>());
+        pipe2 = new ExceptFilterPipe<String>(pipe1.getSideEffect());
         pipeline = new Pipeline<String, String>(Arrays.asList(pipe1, pipe2));
         pipeline.setStarts(list.iterator());
         counter = 0;
@@ -156,7 +158,7 @@ public class AggregatorPipeTest extends TestCase {
 
     public void testNoSuchElement() {
         List<String> list = Arrays.asList(null, null, null);
-        AggregatorPipe<String> pipe1 = new AggregatorPipe<String>(new ArrayList<String>());
+        AggregatePipe<String> pipe1 = new AggregatePipe<String>(new ArrayList<String>());
         pipe1.setStarts(list.iterator());
         int counter = 0;
         while (pipe1.hasNext()) {
@@ -181,7 +183,7 @@ public class AggregatorPipeTest extends TestCase {
 
     public void testAggregatorPath() {
         List<String> list = Arrays.asList("marko", "a.", "rodriguez");
-        Pipe<String, String> pipe = new Pipeline<String, String>(new AddCharPipe(), new AggregatorPipe<String>(new ArrayList<String>()), new AddCharPipe());
+        Pipe<String, String> pipe = new Pipeline<String, String>(new AddCharPipe(), new AggregatePipe<String>(new ArrayList<String>()), new AddCharPipe());
         pipe.setStarts(list);
         int counter = 0;
         while (pipe.hasNext()) {
@@ -211,7 +213,7 @@ public class AggregatorPipeTest extends TestCase {
 
     public void testEqualityToGatherWithCap() {
         List<String> list = Arrays.asList("marko", "a.", "rodriguez");
-        Pipe<String, List<String>> pipeA = new SideEffectCapPipe<String, List<String>>(new AggregatorPipe(new LinkedList<String>()));
+        Pipe<String, List<String>> pipeA = new SideEffectCapPipe<String, List<String>>(new AggregatePipe(new LinkedList<String>()));
         Pipe<String, List<String>> pipeB = new GatherPipe<String>();
         pipeA.setStarts(list);
         pipeB.setStarts(list);
@@ -220,7 +222,7 @@ public class AggregatorPipeTest extends TestCase {
 
     public void testEqualityToNonAggregation() {
         List<String> list = Arrays.asList("marko", "a.", "rodriguez");
-        Pipe<String, String> pipeA = new AggregatorPipe<String>(new HashSet<String>());
+        Pipe<String, String> pipeA = new AggregatePipe<String>(new HashSet<String>());
         Pipe<String, String> pipeB = new IdentityPipe<String>();
         pipeA.setStarts(list);
         pipeB.setStarts(list);

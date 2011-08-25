@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,6 +28,10 @@ public class GroupCountClosurePipe<S, K> extends AbstractPipe<S, S> implements S
             this.keyClosure.setPipe(this);
         if (null != this.valueClosure)
             this.valueClosure.setPipe(this);
+    }
+
+    public GroupCountClosurePipe(final PipeClosure<K, Pipe> keyClosure, final PipeClosure<Number, Pipe> valueClosure) {
+        this(new HashMap<K, Number>(), keyClosure, valueClosure);
     }
 
     protected S processNextStart() {
