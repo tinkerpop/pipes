@@ -514,6 +514,12 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return list;
     }
 
+    public List toList() {
+        final List list = new ArrayList();
+        PipeHelper.fillCollection(this, list);
+        return list;
+    }
+
     public List<AsPipe> getAsPipes() {
         return this.getAsPipes(this);
     }

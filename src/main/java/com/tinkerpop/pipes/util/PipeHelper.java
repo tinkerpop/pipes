@@ -1,8 +1,11 @@
 package com.tinkerpop.pipes.util;
 
+import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.PipeClosure;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -163,4 +166,27 @@ public class PipeHelper {
         }
         return result;
     }
+
+    /**
+     * Create a PipeClosure for a static method. The method represents PipeClosure.compute().
+     *
+     * @param method a static method that will be invoked for when PipeClosure.compute() is called.
+     * @return a PipeClosure based on the provided compute method.
+     */
+    public static PipeClosure createPipeClosure(final Method method) {
+
+        return new AbstractPipeClosure() {
+            final Method m = method;
+
+            public Object compute(final Object... arguments) {
+                try {
+                    return m.invoke(null, arguments);
+                } catch (final Exception e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
+            }
+        };
+    }
+
+
 }

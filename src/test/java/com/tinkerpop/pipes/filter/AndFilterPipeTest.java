@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.pipes.transform.HasNextPipe;
 import com.tinkerpop.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.TestCase;

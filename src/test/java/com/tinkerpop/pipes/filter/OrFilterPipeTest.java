@@ -6,7 +6,6 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.transform.HasNextPipe;
 import com.tinkerpop.pipes.transform.InVertexPipe;
 import com.tinkerpop.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.pipes.transform.PropertyPipe;
