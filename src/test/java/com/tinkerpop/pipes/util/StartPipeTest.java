@@ -23,7 +23,15 @@ public class StartPipeTest extends TestCase {
         counter = 0;
         while (pipe.hasNext()) {
             counter++;
-            assertTrue(pipe.next().startsWith("he"));
+            String word = pipe.next();
+            if (counter == 1)
+                assertTrue(word.equals("hello"));
+            else if (counter == 2)
+                assertTrue(word.equals("hell"));
+            else if (counter == 3)
+                assertTrue(word.equals("he"));
+            else
+                assertTrue(false);
         }
         assertEquals(counter, 3);
     }

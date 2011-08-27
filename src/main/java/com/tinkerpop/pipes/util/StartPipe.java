@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.util;
 
-import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.IdentityPipe;
 
 import java.util.Iterator;
 
@@ -11,29 +11,15 @@ import java.util.Iterator;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class StartPipe<S> extends AbstractPipe<S, S> {
-
-    private Iterator starts;
+public class StartPipe<S> extends IdentityPipe<S> {
 
     public StartPipe(final Object start) {
         if (start instanceof Iterator) {
-            this.starts = (Iterator) start;
+            this.setStarts((Iterator) start);
         } else if (start instanceof Iterable) {
-            this.starts = ((Iterable) start).iterator();
+            this.setStarts((Iterable) start);
         } else {
-            this.starts = new SingleIterator(start);
+            this.setStarts(new SingleIterator(start));
         }
-    }
-
-    public void setStarts(Iterator<S> starts) {
-        this.starts = starts;
-    }
-
-    public void setStarts(Iterable<S> starts) {
-        this.starts = starts.iterator();
-    }
-
-    public S processNextStart() {
-        return (S) this.starts.next();
     }
 }
