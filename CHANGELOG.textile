@@ -34,6 +34,7 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 * @AndFilterPipe@ and @OrFilterPipe@ will automatically wrap provided pipes in a @HasNextPipe@
 * Generalized @GroupCountPipe@ to have a value of @Map<Object,Number>@ instead of @Long@
 * Migrated @TablePipe@ and @Table@ from Gremlin
+* Simplified the semantics of @HasNextPipe@ (use @Pipe.hasNext()@ to accomplish previous behavior)
 
  ==<hr/>==
 

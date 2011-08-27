@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.util;
 
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.pipes.ClosurePipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
@@ -35,7 +36,10 @@ import com.tinkerpop.pipes.transform.BothPipe;
 import com.tinkerpop.pipes.transform.BothVerticesPipe;
 import com.tinkerpop.pipes.transform.EdgesPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
+import com.tinkerpop.pipes.transform.HasNextPipe;
+import com.tinkerpop.pipes.transform.IdEdgePipe;
 import com.tinkerpop.pipes.transform.IdPipe;
+import com.tinkerpop.pipes.transform.IdVertexPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.InEdgesPipe;
 import com.tinkerpop.pipes.transform.InPipe;
@@ -355,6 +359,16 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     // todo has count pipe
     // todo has next pipe
 
+    public FluentPipeline hasNext(final Pipe pipe) {
+        this.addPipe(new HasNextPipe(pipe));
+        return this;
+    }
+
+    public FluentPipeline idEdge(final Graph graph) {
+        this.addPipe(new IdEdgePipe(graph));
+        return this;
+    }
+
     public FluentPipeline identity() {
         this.addPipe(new IdentityPipe());
         return this;
@@ -369,7 +383,10 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
-    // todo id edge pipe (or remove)
+    public FluentPipeline idVertex(final Graph graph) {
+        this.addPipe(new IdVertexPipe(graph));
+        return this;
+    }
 
     public FluentPipeline inEdges(final String... labels) {
         this.addPipe(new InEdgesPipe(labels));
@@ -422,7 +439,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this.outVertex();
     }
 
-    public FluentPipeline path(PipeClosure... closures) {
+    public FluentPipeline path(final PipeClosure... closures) {
         if (closures.length == 0)
             this.addPipe(new PathPipe());
         else
@@ -465,7 +482,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this.sideEffectCap();
     }
 
-    public FluentPipeline transform(PipeClosure closure) {
+    public FluentPipeline transform(final PipeClosure closure) {
         this.addPipe(new TransformClosurePipe(closure));
         return this;
     }

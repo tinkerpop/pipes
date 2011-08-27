@@ -7,9 +7,7 @@ import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.SingleIterator;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -17,58 +15,28 @@ import java.util.NoSuchElementException;
  */
 public class HasNextPipe<S> extends AbstractPipe<S, Boolean> implements MetaPipe {
 
-    private final boolean hasOtherPipe;
     private Pipe<S, ?> pipe;
-    private Iterator iterator;
-    private boolean finished = false;
 
     /**
-     * Initialize this pipe to apply its conditions to its source pipe.
-     */
-    public HasNextPipe() {
-        this.hasOtherPipe = false;
-    }
-
-    /**
-     * Initialize this pipe to apply its conditions to the given pipe. Each
-     * element in the source pipe will be fed into the given pipe
-     * individually.
+     * Initialize this pipe to apply its conditions to the given pipe.
+     * Each object in the source pipe is fed into the given pipe individually.
      *
-     * @param pipe The pipe that must emit the correct number of elements. The
-     *             pipe will be reset between each element.
+     * @param pipe The pipe to determine if objects exist after input processed
      */
-    public HasNextPipe(Pipe<S, ?> pipe) {
-        this.hasOtherPipe = true;
+    public HasNextPipe(final Pipe<S, ?> pipe) {
         this.pipe = pipe;
-        this.iterator = pipe;
     }
 
     public Boolean processNextStart() {
-        if (this.hasOtherPipe) {
-            final S s = this.starts.next();
-            this.pipe.reset();
-            this.pipe.setStarts(new SingleIterator<S>(s));
-        } else if (this.finished) {
-            throw new NoSuchElementException();
-        } else {
-            this.iterator = this.starts;
-            this.finished = true;
-        }
-        if (this.iterator.hasNext()) {
-            this.iterator.next();
-            return Boolean.TRUE;
-        } else {
-            return Boolean.FALSE;
-        }
-    }
+        final S s = this.starts.next();
+        this.pipe.reset();
+        this.pipe.setStarts(new SingleIterator<S>(s));
+        return this.pipe.hasNext();
 
-    public void reset() {
-        super.reset();
-        this.finished = false;
     }
 
     public List<Pipe> getPipes() {
-        return (List) Arrays.asList(pipe);
+        return (List) Arrays.asList(this.pipe);
     }
 
     public String toString() {

@@ -1,8 +1,10 @@
 package com.tinkerpop.pipes.transform;
 
+import com.tinkerpop.pipes.AbstractPipeClosure;
+import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.filter.FilterClosurePipe;
 import junit.framework.TestCase;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,24 +25,24 @@ public class HasNextPipeTest extends TestCase {
         assertEquals(counter, 4);
     }
 
-    public void testPipeInline() {
+    public void testPipeWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        IdentityPipe<String> source_pipe = new IdentityPipe<String>();
-        source_pipe.setStarts(names);
-        HasNextPipe<String> pipe1 = new HasNextPipe<String>();
-        pipe1.setStarts(source_pipe);
-        assertTrue(pipe1.next());
-        assertFalse(pipe1.hasNext());
-
-        pipe1.reset();
-        source_pipe.setStarts(new ArrayList());
-        assertFalse(pipe1.next());
-        assertFalse(pipe1.hasNext());
-
-        pipe1.reset();
-        source_pipe.setStarts(names);
-        assertTrue(pipe1.next());
-        assertFalse(pipe1.hasNext());
+        HasNextPipe<String> pipe1 = new HasNextPipe<String>(new FilterClosurePipe(new AbstractPipeClosure<Boolean, Pipe>() {
+            public Boolean compute(Object... objects) {
+                return ((String) objects[0]).startsWith("p");
+            }
+        }));
+        pipe1.setStarts(names);
+        int counter = 0;
+        while (pipe1.hasNext()) {
+            if (counter == 1 || counter == 2) {
+                assertTrue(pipe1.next());
+            } else {
+                assertFalse(pipe1.next());
+            }
+            counter++;
+        }
+        assertEquals(counter, 4);
     }
 
 }
