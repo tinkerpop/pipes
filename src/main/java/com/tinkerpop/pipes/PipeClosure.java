@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes;
 
 /**
- * A PipeClosure is a function that is passed into certain Pipes that augment the computation that the Pipe evaluates.
+ * A PipeClosure is a function that is passed into certain Pipes that augments the computation that the Pipe evaluates.
  * The T type is the return type of the compute() method.
  * The P type is the class of the hosting pipe.
  *

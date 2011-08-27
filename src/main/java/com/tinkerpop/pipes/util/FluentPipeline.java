@@ -45,6 +45,7 @@ import com.tinkerpop.pipes.transform.InEdgesPipe;
 import com.tinkerpop.pipes.transform.InPipe;
 import com.tinkerpop.pipes.transform.InVertexPipe;
 import com.tinkerpop.pipes.transform.LabelPipe;
+import com.tinkerpop.pipes.transform.MemoizePipe;
 import com.tinkerpop.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.pipes.transform.OutPipe;
 import com.tinkerpop.pipes.transform.OutVertexPipe;
@@ -413,6 +414,26 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
 
     public FluentPipeline label() {
         this.addPipe(new LabelPipe());
+        return this;
+    }
+
+    public FluentPipeline memoize(final String namedStep) {
+        this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep))));
+        return this;
+    }
+
+    public FluentPipeline memoize(final int numberedStep) {
+        this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep))));
+        return this;
+    }
+
+    public FluentPipeline memoize(final String namedStep, final Map map) {
+        this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep)), map));
+        return this;
+    }
+
+    public FluentPipeline memoize(final int numberedStep, final Map map) {
+        this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep)), map));
         return this;
     }
 
