@@ -71,4 +71,8 @@ public class MemoizePipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
         }
         super.reset();
     }
+
+    public String toString() {
+        return PipeHelper.makePipeString(this, this.pipe);
+    }
 }
