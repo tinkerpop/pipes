@@ -170,8 +170,8 @@ public class PipeHelper {
     /**
      * Create a PipeClosure for a static method. The method represents PipeClosure.compute().
      *
-     * @param method a static method that will be invoked for when PipeClosure.compute() is called.
-     * @return a PipeClosure based on the provided compute method.
+     * @param method a static method that will be invoked for when PipeClosure.compute() is called
+     * @return a PipeClosure based on the provided compute method
      */
     public static PipeClosure createPipeClosure(final Method method) {
 
@@ -186,6 +186,22 @@ public class PipeHelper {
                 }
             }
         };
+    }
+
+    /**
+     * Create a PipeClosure for a static method. The method represents PipeClosure.compute().
+     *
+     * @param clazz         the class hosting the method
+     * @param methodName    the string representation of the method
+     * @param argumentTypes the classes of the arguments
+     * @return a PipeClosure based on the retrived compute method
+     */
+    public static PipeClosure createPipeClosure(final Class clazz, final String methodName, final Class... argumentTypes) {
+        try {
+            return PipeHelper.createPipeClosure(clazz.getMethod(methodName, argumentTypes));
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
 

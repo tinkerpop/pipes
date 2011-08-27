@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.PipeClosure;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -56,11 +57,46 @@ public class FluentPipelineTest extends TestCase {
             assertTrue(name.equals("josh"));
         }
         assertEquals(counter, 1);
+
+        pipeline = new FluentPipeline<Vertex, String>().start(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeClosure(FluentPipelineTest.class, "startsWithJ", String.class));
+        counter = 0;
+        while (pipeline.hasNext()) {
+            counter++;
+            String name = pipeline.next();
+            assertTrue(name.equals("josh"));
+        }
+        assertEquals(counter, 1);
+
+        pipeline = new FluentPipeline<Vertex, String>().start(g.getVertex(1)).out("knows").property("name").filter(startsWithJ);
+        counter = 0;
+        while (pipeline.hasNext()) {
+            counter++;
+            String name = pipeline.next();
+            assertTrue(name.equals("josh"));
+        }
+        assertEquals(counter, 1);
+
+        pipeline = new FluentPipeline<Vertex, String>().start(g.getVertex(1)).out("knows").property("name").filter(startsWithJ2);
+        counter = 0;
+        while (pipeline.hasNext()) {
+            counter++;
+            String name = pipeline.next();
+            assertTrue(name.equals("josh"));
+        }
+        assertEquals(counter, 1);
     }
 
     public static boolean startsWithJ(final String string) {
         return string.startsWith("j");
     }
+
+    private PipeClosure startsWithJ = PipeHelper.createPipeClosure(FluentPipelineTest.class, "startsWithJ", String.class);
+
+    private PipeClosure startsWithJ2 = new AbstractPipeClosure() {
+        public Boolean compute(Object... arguments) {
+            return ((String) arguments[0]).startsWith("j");
+        }
+    };
 
     public void testCoDevelopers() {
         Graph g = TinkerGraphFactory.createTinkerGraph();
