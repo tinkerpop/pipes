@@ -390,6 +390,10 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this.add(new RandomFilterPipe(bias));
     }
 
+    public FluentPipeline random(final Double bias) {
+        return this.randomFilter(bias);
+    }
+
     /**
      * Add a RageFilterPipe to the end of the Pipeline
      *
