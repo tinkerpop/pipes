@@ -20,7 +20,7 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
     private final List<AsPipe> asPipes = new ArrayList<AsPipe>();
     private final boolean doClosures;
 
-    public TablePipe(final Table table, final Collection<String> columnNames, final List<AsPipe> allPreviousAsPipes, final PipeClosure... closures) {
+    public TablePipe(final Table table, final Collection<String> stepNames, final List<AsPipe> allPreviousAsPipes, final PipeClosure... closures) {
         this.table = table;
         this.closures = closures;
 
@@ -30,7 +30,7 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
         final List<String> tempNames = new ArrayList<String>();
         for (final AsPipe asPipe : allPreviousAsPipes) {
             final String columnName = asPipe.getName();
-            if (null == columnNames || columnNames.contains(columnName)) {
+            if (null == stepNames || stepNames.contains(columnName)) {
                 tempNames.add(columnName);
                 this.asPipes.add(asPipe);
             }
