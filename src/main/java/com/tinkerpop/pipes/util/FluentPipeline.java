@@ -64,73 +64,166 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * FluentPipeline allows for the creation of a Pipeline using the fluent-pattern (http://en.wikipedia.org/wiki/Fluent_interface ).
+ * Each Pipe in Pipes maintains a fluent method in FluentPipeline. Moreover, there are two types of methods: verbose and concise.
+ * Verbose methods have a longer name than their respective concise counterpart -- e.g. retainFilter vs. retain.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class FluentPipeline<S, E> extends Pipeline<S, E> {
 
-    public FluentPipeline step(final PipeClosure closure) {
-        this.addPipe(new ClosurePipe(closure));
+    /**
+     * Add an arbitrary Pipe to the end of the pipeline.
+     *
+     * @param pipe the pipe to concatenate to the end of the pipeline
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline add(final Pipe pipe) {
+        this.addPipe(pipe);
         return this;
+    }
+
+    /**
+     * Add a ClosurePipe to the end of the pipeline.
+     *
+     * @param closure the closure of the ClosurePipe
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline step(final PipeClosure closure) {
+        return this.add(new ClosurePipe(closure));
     }
 
     ////////////////////
     /// BRANCH PIPES ///
     ////////////////////
 
+    /**
+     * Add a CopySplitPipe to the end of the pipeline.
+     *
+     * @param pipes the internal pipes of the CopySplitPipe
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline copySplit(final Pipe... pipes) {
-        this.addPipe(new CopySplitPipe(pipes));
-        return this;
+        return this.add(new CopySplitPipe(pipes));
     }
 
+    /**
+     * Add an ExhaustMergePipe to the end of the pipeline.
+     *
+     * @param pipes the internal pipes ExhaustMergePipe
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline exhaustMerge(final Pipe... pipes) {
-        this.addPipe(new ExhaustMergePipe(pipes));
-        return this;
+        return this.add(new ExhaustMergePipe(pipes));
     }
 
+    /**
+     * Add an ExhaustMergePipe to the end of the pipeline.
+     * The one-step previous MetaPipe in the pipeline's pipes are used as the internal pipes.
+     *
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline exhaustMerge() {
         this.addPipe(new ExhaustMergePipe((((MetaPipe) this.removePreviousPipes(1).get(0)).getPipes())));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
         return this;
     }
 
+    /**
+     * Add a FairMergePipe to the end of the pipeline.
+     *
+     * @param pipes the internal pipes of the FairMergePipe
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline fairMerge(final Pipe... pipes) {
-        this.addPipe(new FairMergePipe(pipes));
-        return this;
+        return this.add(new FairMergePipe(pipes));
     }
 
+    /**
+     * Add a FairMergePipe to the end of the Pipeline.
+     * The one-step previous MetaPipe in the pipeline's pipes are used as the internal pipes.
+     *
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline fairMerge() {
         this.addPipe(new FairMergePipe((((MetaPipe) this.removePreviousPipes(1).get(0)).getPipes())));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
         return this;
     }
 
-
+    /**
+     * Add an IfThenElsePipe to the end of the Pipeline.
+     *
+     * @param ifClosure   the closure denoting the "if" part of the pipe
+     * @param thenClosure the closure denoting the "then" part of the pipe
+     * @param elseClosure the closure denoting the "else" part of the pipe
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline ifThenElse(final PipeClosure<Boolean, Pipe> ifClosure, final PipeClosure thenClosure, final PipeClosure elseClosure) {
-        this.addPipe(new IfThenElsePipe(ifClosure, thenClosure, elseClosure));
-        return this;
+        return this.add(new IfThenElsePipe(ifClosure, thenClosure, elseClosure));
     }
 
-    public FluentPipeline loop(final int stepsAgo, final PipeClosure closure) {
-        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(stepsAgo)), closure));
+    /**
+     * Add a LoopPipe to the end of the Pipeline.
+     *
+     * @param numberedStep the number of steps previous to loop back to
+     * @param whileClosure the "while()" whileClosure of the LoopPipe
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline loop(final int numberedStep, final PipeClosure<Boolean, Pipe> whileClosure) {
+        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(numberedStep)), whileClosure));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
         return this;
     }
 
-    public FluentPipeline loop(final String name, final PipeClosure closure) {
-        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(name)), closure));
+    /**
+     * Add a LoopPipe ot the end of the Pipeline.
+     *
+     * @param namedStep    the name of the step previous to loop back to
+     * @param whileClosure the "while()" closure of the LoopPipe
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline loop(final String namedStep, final PipeClosure<Boolean, Pipe> whileClosure) {
+        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(namedStep)), whileClosure));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
         return this;
+    }
+
+    /**
+     * Add a LoopPipe ot the end of the Pipeline.
+     *
+     * @param pipe         the internal pipe of the LoopPipe
+     * @param whileClosure the "while()" closure of the LoopPipe
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline loop(final Pipe pipe, final PipeClosure<Boolean, Pipe> whileClosure) {
+        return this.add(new LoopPipe(pipe, whileClosure));
     }
 
     ////////////////////
     /// FILTER PIPES ///
     ////////////////////
 
+    /**
+     * Add an AndFilterPipe to the end the Pipeline.
+     *
+     * @param pipes the internal pipes of the AndFilterPipe
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline andFilter(final Pipe<S, Boolean>... pipes) {
-        this.addPipe(new AndFilterPipe(pipes));
-        return this;
+        return this.add(new AndFilterPipe(pipes));
     }
 
+    /**
+     * Add a BackFilter to the end of the Pipeline.
+     *
+     * @param numberedStep the number of steps previous to back up to
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline backFilter(final int numberedStep) {
         this.addPipe(new BackFilterPipe(new Pipeline(this.removePreviousPipes(numberedStep))));
         if (this.pipes.size() == 1)
@@ -138,6 +231,12 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    /**
+     * Add a BackFilter to the end of the Pipeline.
+     *
+     * @param namedStep the name of the step previous to back up to
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline backFilter(final String namedStep) {
         this.addPipe(new BackFilterPipe(new Pipeline(this.removePreviousPipes(namedStep))));
         if (this.pipes.size() == 1)
@@ -145,89 +244,209 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
+    /**
+     * Add a BackFilter to the end of the Pipeline.
+     *
+     * @param pipe the internal pipe of the BackFilterPipe
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline backFilter(final Pipe pipe) {
+        return this.add(new BackFilterPipe(pipe));
+    }
+
+    /**
+     * Add a BackFilter to the end of the Pipeline.
+     *
+     * @param numberedStep the number of steps previous to back up to
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline back(final int numberedStep) {
         return this.backFilter(numberedStep);
     }
 
+    /**
+     * Add a BackFilter to the end of the Pipeline.
+     *
+     * @param namedStep the name of the step previous to back up to
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline back(final String namedStep) {
         return this.backFilter(namedStep);
     }
 
+    /**
+     * Add a BackFilter to the end of the Pipeline.
+     *
+     * @param pipe the internal pipe of the BackFilterPipe
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline back(final Pipe pipe) {
+        return this.add(new BackFilterPipe(pipe));
+    }
+
     // todo: rename to UniqueObjectFilterPipe?
     public FluentPipeline duplicateFilter() {
-        this.addPipe(new DuplicateFilterPipe());
-        return this;
+        return this.add(new DuplicateFilterPipe());
     }
 
     public FluentPipeline uniqueObject() {
         return this.duplicateFilter();
     }
 
+    /**
+     * Add an ExceptFilter to the end of the Pipeline
+     *
+     * @param collection the collection except from the stream
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline exceptFilter(final Collection collection) {
-        this.addPipe(new ExceptFilterPipe(collection));
-        return this;
+        return this.add(new ExceptFilterPipe(collection));
     }
 
+    /**
+     * Add an ExceptFilter to the end of the Pipeline
+     *
+     * @param collection the collection except from the stream
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline except(final Collection collection) {
         return this.exceptFilter(collection);
     }
 
-    public FluentPipeline filter(final PipeClosure<Boolean, Pipe> closure) {
-        this.addPipe(new FilterClosurePipe(closure));
-        return this;
+    /**
+     * Add an FilterClosurePipe to the end of the Pipeline
+     *
+     * @param filterClosure the filter closure of the pipe
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline filter(final PipeClosure<Boolean, Pipe> filterClosure) {
+        return this.add(new FilterClosurePipe(filterClosure));
     }
 
     // todo future filter pipe? (or remove it)
 
+    /**
+     * Add an IdFilterPipe to the end of the Pipeline
+     *
+     * @param id     the id to filter on
+     * @param filter the filter of the pipe
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline idFilter(final Object id, final FilterPipe.Filter filter) {
-        this.addPipe(new IdFilterPipe(id, filter));
-        return this;
+        return this.add(new IdFilterPipe(id, filter));
     }
 
+    /**
+     * Add a LabelFilterPipe to the end of the Pipeline
+     *
+     * @param label  the label to filter on
+     * @param filter the filter of the pipe
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline labelFilter(final String label, final FilterPipe.Filter filter) {
-        this.addPipe(new LabelFilterPipe(label, filter));
-        return this;
+        return this.add(new LabelFilterPipe(label, filter));
     }
 
+    /**
+     * Add an ObjectFilterPipe to the end of the Pipeline
+     *
+     * @param object the object to filter on
+     * @param filter the filter of the pipe
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline objectFilter(final Object object, final FilterPipe.Filter filter) {
-        this.addPipe(new ObjectFilterPipe(object, filter));
-        return this;
+        return this.add(new ObjectFilterPipe(object, filter));
     }
 
+    /**
+     * Add an OrFilterPipe to the end the Pipeline.
+     *
+     * @param pipes the internal pipes of the OrFilterPipe
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline orFilter(final Pipe<S, Boolean>... pipes) {
-        this.addPipe(new OrFilterPipe(pipes));
-        return this;
+        return this.add(new OrFilterPipe(pipes));
     }
 
+    /**
+     * Add a PropertyFilterPipe to the end of the Pipeline
+     *
+     * @param key    the property key to check
+     * @param filter the filter of the pipe
+     * @param value  the object to filter on
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline propertyFilter(final String key, final FilterPipe.Filter filter, final Object value) {
-        this.addPipe(new PropertyFilterPipe(key, value, filter));
-        return this;
+        return this.add(new PropertyFilterPipe(key, value, filter));
     }
 
+    /**
+     * Add a RandomFilterPipe to the end of the Pipeline
+     *
+     * @param bias the bias of the random coin
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline randomFilter(final Double bias) {
-        this.addPipe(new RandomFilterPipe(bias));
-        return this;
+        return this.add(new RandomFilterPipe(bias));
     }
 
+    /**
+     * Add a RageFilterPipe to the end of the Pipeline
+     *
+     * @param low  the low end of the range
+     * @param high the high end of the range
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline rangeFilter(final int low, final int high) {
-        this.addPipe(new RangeFilterPipe(low, high));
-        return this;
+        return this.add(new RangeFilterPipe(low, high));
     }
 
+    /**
+     * Add a RageFilterPipe to the end of the Pipeline
+     *
+     * @param index the index of the stream
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline rangeFilter(final int index) {
+        return this.rangeFilter(index, index);
+    }
+
+    /**
+     * Add a RetainFilterPipe to the end of the Pipeline
+     *
+     * @param collection the collection to retain
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline retainFilter(final Collection collection) {
         this.addPipe(new RetainFilterPipe(collection));
         return this;
     }
 
+    /**
+     * Add a RetainFilterPipe to the end of the Pipeline
+     *
+     * @param collection the collection to retain
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline retain(final Collection collection) {
         return this.retainFilter(collection);
     }
 
+    /**
+     * Add a UniquePathFilter to the end of the Pipeline
+     *
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline uniquePathFilter() {
         this.addPipe(new UniquePathFilterPipe());
         return this;
     }
 
+    /**
+     * Add a UniquePathFilter to the end of the Pipeline
+     *
+     * @return the extended FluentPipeline
+     */
     public FluentPipeline uniquePath() {
         return this.uniquePathFilter();
     }

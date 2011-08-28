@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.util.FluentPipeline;
 import junit.framework.TestCase;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +23,10 @@ public class MemoizePipeTest extends TestCase {
     public void testBasicMemoization() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
 
-        FluentPipeline pipe1 = new FluentPipeline().start(graph.getVertices()).out().memoize(1).property("name");
+        Map<Vertex, List<Vertex>> map = new HashMap<Vertex, List<Vertex>>();
+        FluentPipeline pipe1 = new FluentPipeline().start(graph.getVertices()).out().memoize(1, map).property("name");
         pipe1.iterate();
-        Map<Vertex, List<Vertex>> map = ((MemoizePipe<Vertex, Vertex>) pipe1.getPipes().get(1)).getMemoization();
+
         assertEquals(map.get(graph.getVertex(1)).size(), 3);
         assertTrue(map.get(graph.getVertex(1)).contains(graph.getVertex(2)));
         assertTrue(map.get(graph.getVertex(1)).contains(graph.getVertex(3)));

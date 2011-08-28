@@ -58,10 +58,6 @@ public class MemoizePipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
         return (List) Arrays.asList(pipe);
     }
 
-    public Map<S, List<E>> getMemoization() {
-        return this.map;
-    }
-
     public void reset() {
         this.currentIterator = new EmptyIterator<E>();
         try {
