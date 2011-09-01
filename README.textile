@@ -1,9 +1,5 @@
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-logo.png!
 
-Pipes is a Java data flow framework for creating process graphs. A process graph is composed of a set of process vertices connected to one another by a set of communication edges. Pipes supports the splitting, merging, and transformation of data from input to output.
-
-The following is a list of extensions to the core Pipes framework:
-
-* "Property Graph Model":http://blueprints.tinkerpop.com: single-step traversals and filters can be composed to yield complex graph traversals over data graphs
+Pipes is a Java "dataflow":http://en.wikipedia.org/wiki/Dataflow framework in Java that supports the splitting, merging, filtering, and transformation of data from input to output in a "lazy":http://en.wikipedia.org/wiki/Lazy_evaluation, memory-efficient, "combinator":http://en.wikipedia.org/wiki/Function_composition fashion. Pipes provides specific support for traversing "Blueprints":http://blueprints.tinkerpop.com enabled "graph databases":http://en.wikipedia.org/wiki/Graph_database. As such, it can be used as a foundation for graph-based query/traversal langauges.
 
 The documentation for Pipes can be found at this "location":http://pipes.tinkerpop.com. Finally, please visit "TinkerPop":http://tinkerpop.com for other software products.
