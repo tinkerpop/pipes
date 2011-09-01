@@ -46,7 +46,7 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
      * @param pipes the ordered array of pipes to chain together into a pipeline
      */
     public Pipeline(final Pipe... pipes) {
-        this(Arrays.asList(pipes));
+        this(new ArrayList<Pipe>(Arrays.asList(pipes)));
     }
 
     /**

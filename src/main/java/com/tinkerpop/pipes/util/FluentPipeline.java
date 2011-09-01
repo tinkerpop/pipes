@@ -73,6 +73,19 @@ import java.util.Map;
  */
 public class FluentPipeline<S, E> extends Pipeline<S, E> {
 
+    public FluentPipeline() {
+        super();
+    }
+
+    /**
+     * Construct a new FluentPipeline with a StartPipe as the first pipe given provide start object.
+     *
+     * @param starts start object (if iterable/iterator, it is unfolded)
+     */
+    public FluentPipeline(final Object starts) {
+        super(new StartPipe(starts));
+    }
+
     /**
      * Add an arbitrary Pipe to the end of the pipeline.
      *
@@ -903,8 +916,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @return the extended FluentPipeline
      */
     public FluentPipeline out(final String... labels) {
-        this.addPipe(new OutPipe(labels));
-        return this;
+        return this.add(new OutPipe(labels));
     }
 
     /**
@@ -913,8 +925,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @return the extended FluentPipeline
      */
     public FluentPipeline outVertex() {
-        this.addPipe(new OutVertexPipe());
-        return this;
+        return this.add(new OutVertexPipe());
     }
 
     /**
