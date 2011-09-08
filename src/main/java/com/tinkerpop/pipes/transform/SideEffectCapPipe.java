@@ -32,8 +32,11 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> implements MetaP
 
     protected T processNextStart() {
         if (this.alive) {
-            while (this.pipeToCap.hasNext()) {
-                this.pipeToCap.next();
+            try {
+                while (true) {
+                    this.pipeToCap.next();
+                }
+            } catch (final NoSuchElementException e) {
             }
             this.alive = false;
             return this.pipeToCap.getSideEffect();
