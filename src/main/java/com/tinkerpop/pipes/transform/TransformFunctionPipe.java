@@ -10,11 +10,11 @@ import com.tinkerpop.pipes.PipeFunction;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TransformClosurePipe<S, E> extends AbstractPipe<S, E> {
+public class TransformFunctionPipe<S, E> extends AbstractPipe<S, E> {
 
     private final PipeFunction<S, E> function;
 
-    public TransformClosurePipe(final PipeFunction<S, E> function) {
+    public TransformFunctionPipe(final PipeFunction<S, E> function) {
         this.function = function;
     }
 

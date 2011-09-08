@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FilterClosurePipeTest extends TestCase {
+public class FilterFunctionPipeTest extends TestCase {
 
     public void testBasicClosureFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "povel", "marko");
-        FilterPipe<String> pipe = new FilterClosurePipe<String>(new StartsWithPipeFunction());
+        FilterPipe<String> pipe = new FilterFunctionPipe<String>(new StartsWithPipeFunction());
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {

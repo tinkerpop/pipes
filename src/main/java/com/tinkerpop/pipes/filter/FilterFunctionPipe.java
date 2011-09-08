@@ -4,17 +4,17 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 
 /**
- * FilterClosurePipe is a generic filter pipe.
- * It takes a PipeFunction that returns an Object for in its compute() step when the argument is the start of the pipe.
+ * FilterFunctionPipe is a generic filter pipe.
+ * It takes a PipeFunction that returns a Boolean for its compute() step. The argument is the next start of the pipe.
  * If the return is true, then start is emitted. Otherwise, the start is not emitted.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FilterClosurePipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
+public class FilterFunctionPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private final PipeFunction<S, Boolean> function;
 
-    public FilterClosurePipe(final PipeFunction<S, Boolean> function) {
+    public FilterFunctionPipe(final PipeFunction<S, Boolean> function) {
         this.function = function;
     }
 

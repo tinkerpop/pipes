@@ -169,10 +169,10 @@ public class PipeHelper {
     /**
      * Create a PipeFunction for a static method. The method represents PipeFunction.compute().
      *
-     * @param method a static method that will be invoked for when PipeFunction.compute() is called
+     * @param method a single argument, static method that will be invoked for when PipeFunction.compute() is called
      * @return a PipeFunction based on the provided compute method
      */
-    public static PipeFunction createPipeClosure(final Method method) {
+    public static PipeFunction createPipeFunction(final Method method) {
 
         return new PipeFunction() {
             final Method m = method;
@@ -195,9 +195,9 @@ public class PipeHelper {
      * @param argumentTypes the classes of the arguments
      * @return a PipeFunction based on the retrived compute method
      */
-    public static PipeFunction createPipeClosure(final Class clazz, final String methodName, final Class... argumentTypes) {
+    public static PipeFunction createPipeFunction(final Class clazz, final String methodName, final Class... argumentTypes) {
         try {
-            return PipeHelper.createPipeClosure(clazz.getMethod(methodName, argumentTypes));
+            return PipeHelper.createPipeFunction(clazz.getMethod(methodName, argumentTypes));
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

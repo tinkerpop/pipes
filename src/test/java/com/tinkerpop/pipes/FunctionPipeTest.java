@@ -10,11 +10,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ClosurePipeTest extends TestCase {
+public class FunctionPipeTest extends TestCase {
 
     public void testClosurePipeWithIdentity() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        ClosurePipe<String, String> pipe = new ClosurePipe<String, String>(new IdentityPipeFunction());
+        FunctionPipe<String, String> pipe = new FunctionPipe<String, String>(new IdentityPipeFunction());
         pipe.setStarts(names);
         assertEquals(PipeHelper.counter(pipe), 4);
         pipe.reset();
@@ -24,7 +24,7 @@ public class ClosurePipeTest extends TestCase {
 
     public void testClosurePipeWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        ClosurePipe<String, String> pipe = new ClosurePipe<String, String>(new StartsWithPipeFunction());
+        FunctionPipe<String, String> pipe = new FunctionPipe<String, String>(new StartsWithPipeFunction());
         pipe.setStarts(names);
         assertEquals(PipeHelper.counter(pipe), 2);
         pipe.reset();

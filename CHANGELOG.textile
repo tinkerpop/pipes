@@ -37,6 +37,7 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 * Simplified the semantics of @HasNextPipe@ (use @Pipe.hasNext()@ to accomplish previous behavior)
 * Added @MemoizePipe@ to memoize the mapping of a particular pipe
 * Simplified @PipeClosure@ to be purely functional and now named @PipeFunction@
+** Renamed @XXXClosurePipe@ to @XXXFunctionPipe@
 
  ==<hr/>==
 

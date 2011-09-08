@@ -10,12 +10,12 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TransformClosurePipeTest extends TestCase {
+public class TransformFunctionPipeTest extends TestCase {
 
     public void testTransformClosure() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         List<Integer> results = Arrays.asList(5, 7, 9, 3, 4, 1);
-        Pipe<String, Integer> pipe = new TransformClosurePipe<String, Integer>(new NumCharPipeFunction());
+        Pipe<String, Integer> pipe = new TransformFunctionPipe<String, Integer>(new NumCharPipeFunction());
         pipe.setStarts(list);
         int counter = 0;
         while (pipe.hasNext()) {

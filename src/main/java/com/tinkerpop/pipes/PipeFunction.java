@@ -6,11 +6,13 @@ package com.tinkerpop.pipes;
  * The B type is the return type of the compute() method.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
+ * @author Zach Cox (http://theza.ch)
  */
 public interface PipeFunction<A, B> {
 
     /**
      * Compute the function on A to return B.
+     *
      * @param argument An argument of type A
      * @return the result of computing the function on the parameter
      */

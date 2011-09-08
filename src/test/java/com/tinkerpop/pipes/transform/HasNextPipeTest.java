@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.filter.FilterClosurePipe;
+import com.tinkerpop.pipes.filter.FilterFunctionPipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class HasNextPipeTest extends TestCase {
 
     public void testPipeWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        HasNextPipe<String> pipe1 = new HasNextPipe<String>(new FilterClosurePipe(new PipeFunction<String, Boolean>() {
+        HasNextPipe<String> pipe1 = new HasNextPipe<String>(new FilterFunctionPipe(new PipeFunction<String, Boolean>() {
             public Boolean compute(String argument) {
                 return argument.startsWith("p");
             }

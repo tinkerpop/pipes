@@ -47,7 +47,7 @@ public class FluentPipelineTest extends TestCase {
     public void testFilterClosureUsingPipeHelper() throws Exception {
         Graph g = TinkerGraphFactory.createTinkerGraph();
         FluentPipeline<Vertex, String> pipeline =
-                new FluentPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeClosure(FluentPipelineTest.class.getMethod("startsWithJ", String.class)));
+                new FluentPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeFunction(FluentPipelineTest.class.getMethod("startsWithJ", String.class)));
         int counter = 0;
         while (pipeline.hasNext()) {
             counter++;
@@ -56,7 +56,7 @@ public class FluentPipelineTest extends TestCase {
         }
         assertEquals(counter, 1);
 
-        pipeline = new FluentPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeClosure(FluentPipelineTest.class, "startsWithJ", String.class));
+        pipeline = new FluentPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeFunction(FluentPipelineTest.class, "startsWithJ", String.class));
         counter = 0;
         while (pipeline.hasNext()) {
             counter++;
@@ -88,7 +88,7 @@ public class FluentPipelineTest extends TestCase {
         return string.startsWith("j");
     }
 
-    private PipeFunction startsWithJ = PipeHelper.createPipeClosure(FluentPipelineTest.class, "startsWithJ", String.class);
+    private PipeFunction startsWithJ = PipeHelper.createPipeFunction(FluentPipelineTest.class, "startsWithJ", String.class);
 
     private PipeFunction startsWithJ2 = new PipeFunction<String, Boolean>() {
         public Boolean compute(String argument) {

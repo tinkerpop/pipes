@@ -11,13 +11,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SideEffectClosurePipeTest extends TestCase {
+public class SideEffectFunctionPipeTest extends TestCase {
 
     public void testBasicSideEffect() {
         AtomicInteger count = new AtomicInteger(0);
         int counter = 0;
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        Pipe<String, String> pipe = new SideEffectClosurePipe(new CountPipeFunction(count));
+        Pipe<String, String> pipe = new SideEffectFunctionPipe(new CountPipeFunction(count));
         pipe.setStarts(list);
         while (pipe.hasNext()) {
             assertTrue(list.contains(pipe.next()));

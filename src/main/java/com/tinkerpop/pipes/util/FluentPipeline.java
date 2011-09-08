@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.pipes.ClosurePipe;
+import com.tinkerpop.pipes.FunctionPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.CopySplitPipe;
@@ -13,7 +13,7 @@ import com.tinkerpop.pipes.filter.AndFilterPipe;
 import com.tinkerpop.pipes.filter.BackFilterPipe;
 import com.tinkerpop.pipes.filter.DuplicateFilterPipe;
 import com.tinkerpop.pipes.filter.ExceptFilterPipe;
-import com.tinkerpop.pipes.filter.FilterClosurePipe;
+import com.tinkerpop.pipes.filter.FilterFunctionPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.IdFilterPipe;
 import com.tinkerpop.pipes.filter.LabelFilterPipe;
@@ -28,7 +28,7 @@ import com.tinkerpop.pipes.sideeffect.AggregatePipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountClosurePipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
 import com.tinkerpop.pipes.sideeffect.OptionalPipe;
-import com.tinkerpop.pipes.sideeffect.SideEffectClosurePipe;
+import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.transform.BothEdgesPipe;
@@ -55,7 +55,7 @@ import com.tinkerpop.pipes.transform.PropertyMapPipe;
 import com.tinkerpop.pipes.transform.PropertyPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
-import com.tinkerpop.pipes.transform.TransformClosurePipe;
+import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 import com.tinkerpop.pipes.transform.VerticesPipe;
 
 import java.util.ArrayList;
@@ -98,13 +98,13 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     }
 
     /**
-     * Add a ClosurePipe to the end of the pipeline.
+     * Add a FunctionPipe to the end of the pipeline.
      *
-     * @param function the function of the ClosurePipe
+     * @param function the function of the FunctionPipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline step(final PipeFunction function) {
-        return this.add(new ClosurePipe(function));
+        return this.add(new FunctionPipe(function));
     }
 
     ////////////////////
@@ -328,13 +328,13 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     }
 
     /**
-     * Add an FilterClosurePipe to the end of the Pipeline.
+     * Add an FilterFunctionPipe to the end of the Pipeline.
      *
      * @param filterFunction the filter closure of the pipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline filter(final PipeFunction<?, Boolean> filterFunction) {
-        return this.add(new FilterClosurePipe(filterFunction));
+        return this.add(new FilterFunctionPipe(filterFunction));
     }
 
     // todo future filter pipe? (or remove it)
@@ -598,13 +598,13 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     }
 
     /**
-     * Add a SideEffectClosurePipe to the end of the Pipeline.
+     * Add a SideEffectFunctionPipe to the end of the Pipeline.
      *
      * @param sideEffectFunction the closure of the pipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline sideEffect(final PipeFunction sideEffectFunction) {
-        return this.add(new SideEffectClosurePipe(sideEffectFunction));
+        return this.add(new SideEffectFunctionPipe(sideEffectFunction));
     }
 
     /**
@@ -1023,13 +1023,13 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     }
 
     /**
-     * Add a TransformClosurePipe to the end of the Pipeline.
+     * Add a TransformFunctionPipe to the end of the Pipeline.
      *
      * @param function the transformation function of the pipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline transform(final PipeFunction function) {
-        this.addPipe(new TransformClosurePipe(function));
+        this.addPipe(new TransformFunctionPipe(function));
         return this;
     }
 
