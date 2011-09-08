@@ -17,7 +17,7 @@ public class BothEdgesPipe extends AbstractEdgesPipe {
 
     protected Edge processNextStart() {
         while (true) {
-            if (null != this.nextEnds && this.nextEnds.hasNext()) {
+            if (this.nextEnds.hasNext()) {
                 return this.nextEnds.next();
             } else {
                 final Vertex vertex = this.starts.next();

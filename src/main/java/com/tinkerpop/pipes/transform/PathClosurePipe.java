@@ -2,7 +2,7 @@ package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,13 +17,10 @@ import java.util.NoSuchElementException;
  */
 public class PathClosurePipe<S> extends AbstractPipe<S, List> {
 
-    private final PipeClosure[] pathClosures;
+    private final PipeFunction[] pathFunctions;
 
-    public PathClosurePipe(final PipeClosure... pathClosures) {
-        this.pathClosures = pathClosures;
-        for (PipeClosure pipeClosure : this.pathClosures) {
-            pipeClosure.setPipe(this);
-        }
+    public PathClosurePipe(final PipeFunction... pathFunctions) {
+        this.pathFunctions = pathFunctions;
     }
 
     public void setStarts(final Iterator<S> starts) {
@@ -37,8 +34,8 @@ public class PathClosurePipe<S> extends AbstractPipe<S, List> {
             final List closedPath = new LinkedList();
             int nextClosure = 0;
             for (Object object : path) {
-                closedPath.add(pathClosures[nextClosure].compute(object));
-                nextClosure = (nextClosure + 1) % pathClosures.length;
+                closedPath.add(pathFunctions[nextClosure].compute(object));
+                nextClosure = (nextClosure + 1) % pathFunctions.length;
             }
             return closedPath;
         } else {

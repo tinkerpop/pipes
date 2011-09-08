@@ -1,8 +1,7 @@
 package com.tinkerpop.pipes.util;
 
-import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
 import java.lang.reflect.Method;
@@ -168,19 +167,19 @@ public class PipeHelper {
     }
 
     /**
-     * Create a PipeClosure for a static method. The method represents PipeClosure.compute().
+     * Create a PipeFunction for a static method. The method represents PipeFunction.compute().
      *
-     * @param method a static method that will be invoked for when PipeClosure.compute() is called
-     * @return a PipeClosure based on the provided compute method
+     * @param method a static method that will be invoked for when PipeFunction.compute() is called
+     * @return a PipeFunction based on the provided compute method
      */
-    public static PipeClosure createPipeClosure(final Method method) {
+    public static PipeFunction createPipeClosure(final Method method) {
 
-        return new AbstractPipeClosure() {
+        return new PipeFunction() {
             final Method m = method;
 
-            public Object compute(final Object... arguments) {
+            public Object compute(final Object argument) {
                 try {
-                    return m.invoke(null, arguments);
+                    return m.invoke(null, argument);
                 } catch (final Exception e) {
                     throw new RuntimeException(e.getMessage(), e);
                 }
@@ -189,14 +188,14 @@ public class PipeHelper {
     }
 
     /**
-     * Create a PipeClosure for a static method. The method represents PipeClosure.compute().
+     * Create a PipeFunction for a static method. The method represents PipeFunction.compute().
      *
      * @param clazz         the class hosting the method
      * @param methodName    the string representation of the method
      * @param argumentTypes the classes of the arguments
-     * @return a PipeClosure based on the retrived compute method
+     * @return a PipeFunction based on the retrived compute method
      */
-    public static PipeClosure createPipeClosure(final Class clazz, final String methodName, final Class... argumentTypes) {
+    public static PipeFunction createPipeClosure(final Class clazz, final String methodName, final Class... argumentTypes) {
         try {
             return PipeHelper.createPipeClosure(clazz.getMethod(methodName, argumentTypes));
         } catch (NoSuchMethodException e) {

@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.Pipeline;
 import com.tinkerpop.pipes.util.SingleIterator;
 import junit.framework.TestCase;
@@ -19,7 +19,7 @@ public class PathClosurePipeTest extends TestCase {
     public void testPipeBasic() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, List> pipeline = new Pipeline<Vertex, List>(new OutPipe(), new PathClosurePipe<Vertex>(new NamePipeClosure()));
+        Pipe<Vertex, List> pipeline = new Pipeline<Vertex, List>(new OutPipe(), new PathClosurePipe<Vertex>(new NamePipeFunction()));
         pipeline.setStarts(new SingleIterator<Vertex>(marko));
         int counter = 0;
         for (List path : pipeline) {
@@ -30,14 +30,9 @@ public class PathClosurePipeTest extends TestCase {
         assertEquals(counter, 3);
     }
 
-    private class NamePipeClosure implements PipeClosure<String, PathClosurePipe> {
-        public String compute(Object... parameters) {
-            Vertex vertex = (Vertex) parameters[0];
-            return (String) vertex.getProperty("name");
-        }
-
-        public void setPipe(PathClosurePipe hostPipe) {
-
+    private class NamePipeFunction implements PipeFunction<Vertex, String> {
+        public String compute(Vertex argument) {
+            return (String) argument.getProperty("name");
         }
     }
 }

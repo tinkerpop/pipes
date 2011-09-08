@@ -1,23 +1,22 @@
 package com.tinkerpop.pipes;
 
 /**
- * ClosurePipe is a generic pipe where the pipe's computation is determined by the provided PipeClosure.
- * Note that the PipeClosure.compute() method does not take any parameters and the return of the computation is what is emitted.
+ * ClosurePipe is a generic pipe where the pipe's computation is determined by the provided PipeFunction.
+ * Note that the PipeFunction.compute() takes the this.starts of the ClosurePipe.
  * The method s() is a shortcut method to this.starts.next().
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class ClosurePipe<S, E> extends AbstractPipe<S, E> {
 
-    private final PipeClosure closure;
+    private final PipeFunction function;
 
-    public ClosurePipe(final PipeClosure closure) {
-        this.closure = closure;
-        this.closure.setPipe(this);
+    public ClosurePipe(final PipeFunction function) {
+        this.function = function;
     }
 
     public E processNextStart() {
-        return (E) this.closure.compute();
+        return (E) this.function.compute(this.starts);
     }
 
     /**

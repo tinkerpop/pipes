@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.util.PipeHelper;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public class ClosurePipeTest extends TestCase {
 
     public void testClosurePipeWithIdentity() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        ClosurePipe<String, String> pipe = new ClosurePipe<String, String>(new IdentityPipeClosure());
+        ClosurePipe<String, String> pipe = new ClosurePipe<String, String>(new IdentityPipeFunction());
         pipe.setStarts(names);
         assertEquals(PipeHelper.counter(pipe), 4);
         pipe.reset();
@@ -23,7 +24,7 @@ public class ClosurePipeTest extends TestCase {
 
     public void testClosurePipeWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        ClosurePipe<String, String> pipe = new ClosurePipe<String, String>(new StartsWithPipeClosure());
+        ClosurePipe<String, String> pipe = new ClosurePipe<String, String>(new StartsWithPipeFunction());
         pipe.setStarts(names);
         assertEquals(PipeHelper.counter(pipe), 2);
         pipe.reset();
@@ -31,16 +32,16 @@ public class ClosurePipeTest extends TestCase {
         PipeHelper.areEqual(Arrays.asList("povel", "peter").iterator(), pipe.iterator());
     }
 
-    private class IdentityPipeClosure extends AbstractPipeClosure<Object, ClosurePipe> {
-        public Object compute(Object... parameters) {
-            return this.pipe.s();
+    private class IdentityPipeFunction implements PipeFunction<Iterator, Object> {
+        public Object compute(Iterator argument) {
+            return argument.next();
         }
     }
 
-    private class StartsWithPipeClosure extends AbstractPipeClosure<Object, ClosurePipe> {
-        public Object compute(Object... parameters) {
+    private class StartsWithPipeFunction implements PipeFunction<Iterator, Object> {
+        public Object compute(Iterator argument) {
             while (true) {
-                Object s = this.pipe.s();
+                Object s = argument.next();
                 if (((String) s).startsWith("p"))
                     return s;
             }

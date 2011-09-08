@@ -1,8 +1,7 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,21 +16,17 @@ import java.util.Map;
 public class GroupCountClosurePipe<S, K> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<K, Number>> {
 
     private Map<K, Number> countMap;
-    private final PipeClosure<Number, Pipe> valueClosure;
-    private final PipeClosure<K, Pipe> keyClosure;
+    private final PipeFunction<Number, Number> valueFunction;
+    private final PipeFunction<S, K> keyFunction;
 
-    public GroupCountClosurePipe(final Map<K, Number> countMap, final PipeClosure<K, Pipe> keyClosure, final PipeClosure<Number, Pipe> valueClosure) {
+    public GroupCountClosurePipe(final Map<K, Number> countMap, final PipeFunction<S, K> keyFunction, final PipeFunction<Number, Number> valueFunction) {
         this.countMap = countMap;
-        this.valueClosure = valueClosure;
-        this.keyClosure = keyClosure;
-        if (null != this.keyClosure)
-            this.keyClosure.setPipe(this);
-        if (null != this.valueClosure)
-            this.valueClosure.setPipe(this);
+        this.valueFunction = valueFunction;
+        this.keyFunction = keyFunction;
     }
 
-    public GroupCountClosurePipe(final PipeClosure<K, Pipe> keyClosure, final PipeClosure<Number, Pipe> valueClosure) {
-        this(new HashMap<K, Number>(), keyClosure, valueClosure);
+    public GroupCountClosurePipe(final PipeFunction<S, K> keyFunction, final PipeFunction<Number, Number> valueFunction) {
+        this(new HashMap<K, Number>(), keyFunction, valueFunction);
     }
 
     protected S processNextStart() {
@@ -55,10 +50,10 @@ public class GroupCountClosurePipe<S, K> extends AbstractPipe<S, S> implements S
     }
 
     private K getKey(final S start) {
-        if (null == keyClosure) {
+        if (null == keyFunction) {
             return (K) start;
         } else {
-            return keyClosure.compute(start);
+            return keyFunction.compute(start);
         }
     }
 
@@ -68,10 +63,10 @@ public class GroupCountClosurePipe<S, K> extends AbstractPipe<S, S> implements S
         if (null == number) {
             number = 0l;
         }
-        if (null == valueClosure) {
+        if (null == valueFunction) {
             return 1l + number.longValue();
         } else {
-            return this.valueClosure.compute(number);
+            return this.valueFunction.compute(number);
         }
 
     }

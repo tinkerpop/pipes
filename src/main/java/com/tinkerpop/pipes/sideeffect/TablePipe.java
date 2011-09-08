@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.AsPipe;
 import com.tinkerpop.pipes.util.Table;
 
@@ -15,16 +15,16 @@ import java.util.List;
 public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Table> {
 
     private Table table;
-    private final PipeClosure[] closures;
+    private final PipeFunction[] functions;
     private int currentClosure;
     private final List<AsPipe> asPipes = new ArrayList<AsPipe>();
     private final boolean doClosures;
 
-    public TablePipe(final Table table, final Collection<String> stepNames, final List<AsPipe> allPreviousAsPipes, final PipeClosure... closures) {
+    public TablePipe(final Table table, final Collection<String> stepNames, final List<AsPipe> allPreviousAsPipes, final PipeFunction... functions) {
         this.table = table;
-        this.closures = closures;
+        this.functions = functions;
 
-        if (this.doClosures = this.closures.length > 0)
+        if (this.doClosures = this.functions.length > 0)
             currentClosure = 0;
 
         final List<String> tempNames = new ArrayList<String>();
@@ -50,7 +50,7 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
         final List row = new ArrayList();
         for (final AsPipe asPipe : this.asPipes) {
             if (doClosures) {
-                row.add(this.closures[currentClosure++ % closures.length].compute(asPipe.getCurrentEnd()));
+                row.add(this.functions[currentClosure++ % functions.length].compute(asPipe.getCurrentEnd()));
             } else {
                 row.add(asPipe.getCurrentEnd());
             }

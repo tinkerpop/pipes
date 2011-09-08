@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,21 +23,21 @@ public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPi
     private Queue<S> currentObjectQueue = new LinkedList<S>();
     private Queue<List> currentPathQueue = new LinkedList<List>();
     private List currentPath;
-    private PipeClosure closure = null;
+    private PipeFunction function = null;
 
     public AggregatePipe(final Collection aggregate) {
         this.aggregate = aggregate;
     }
 
     /**
-     * The provided PipeClosure will process the object prior to inserting it into the aggregate collection.
+     * The provided PipeFunction will process the object prior to inserting it into the aggregate collection.
      *
      * @param aggregate the aggregate collection
-     * @param closure   a closure to process an object with prior to insertion into the collection
+     * @param function  a function to process an object with prior to insertion into the collection
      */
-    public AggregatePipe(final Collection aggregate, final PipeClosure closure) {
+    public AggregatePipe(final Collection aggregate, final PipeFunction function) {
         this(aggregate);
-        this.closure = closure;
+        this.function = function;
     }
 
     protected List getPathToHere() {
@@ -64,8 +64,8 @@ public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPi
                     this.currentPathQueue.clear();
                     while (this.starts.hasNext()) {
                         final S s = this.starts.next();
-                        if (this.closure != null)
-                            this.aggregate.add(this.closure.compute(s));
+                        if (this.function != null)
+                            this.aggregate.add(this.function.compute(s));
                         else
                             this.aggregate.add(s);
                         this.currentObjectQueue.add(s);

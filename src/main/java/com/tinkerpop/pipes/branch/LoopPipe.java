@@ -2,7 +2,7 @@ package com.tinkerpop.pipes.branch;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
@@ -14,32 +14,31 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * LoopPipe takes a Boolean-based PipeClosure.
- * For each object of the LoopPipe, the PipeClosure is called.
- * The first parameter of the PipeClosure is a LoopBundle object which is the object plus some metadata.
- * The PipeClosure returns a Boolean.
+ * LoopPipe takes a Boolean-based PipeFunction.
+ * For each object of the LoopPipe, the PipeFunction is called.
+ * The first parameter of the PipeFunction is a LoopBundle object which is the object plus some metadata.
+ * The PipeFunction returns a Boolean.
  * The Boolean determines whether the object should be put back at the start of the LoopPipe or not.
- * In essence, the semantics of the PipeClosure is "while."
+ * In essence, the semantics of the PipeFunction is "while."
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
 
-    private final PipeClosure<Boolean, Pipe> closure;
+    private final PipeFunction<LoopBundle<S>, Boolean> function;
     private final Pipe<S, S> pipe;
     private ExpandableLoopBundleIterator<S> expando;
 
-    public LoopPipe(final Pipe<S, S> pipe, final PipeClosure<Boolean, Pipe> closure) {
+    public LoopPipe(final Pipe<S, S> pipe, final PipeFunction<LoopBundle<S>, Boolean> function) {
         this.pipe = pipe;
-        this.closure = closure;
-        this.closure.setPipe(this);
+        this.function = function;
     }
 
     protected S processNextStart() {
         while (true) {
             final S s = this.pipe.next();
             final LoopBundle<S> loopBundle = new LoopBundle<S>(s, this.getPath(), this.getLoops());
-            if (closure.compute(loopBundle)) {
+            if (function.compute(loopBundle)) {
                 this.expando.add(loopBundle);
             } else {
                 return s;

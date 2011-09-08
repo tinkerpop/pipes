@@ -23,7 +23,7 @@ public class AsPipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
     }
 
     public void setStarts(final Iterator<S> starts) {
-        this.pipe.setStarts((Iterator) starts);
+        this.pipe.setStarts(starts);
         this.starts = starts;
     }
 

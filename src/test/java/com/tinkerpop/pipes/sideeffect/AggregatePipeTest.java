@@ -2,8 +2,8 @@ package com.tinkerpop.pipes.sideeffect;
 
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.filter.ExceptFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
@@ -71,7 +71,7 @@ public class AggregatePipeTest extends TestCase {
 
     public void testAggregatorPipeWithClosure() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        AggregatePipe<String> pipe = new AggregatePipe<String>(new ArrayList<Integer>(), new LengthPipeClosure());
+        AggregatePipe<String> pipe = new AggregatePipe<String>(new ArrayList<Integer>(), new LengthPipeFunction());
         pipe.setStarts(list.iterator());
         assertTrue(pipe.hasNext());
         int counter = 0;
@@ -234,9 +234,9 @@ public class AggregatePipeTest extends TestCase {
         }
     }
 
-    private class LengthPipeClosure extends AbstractPipeClosure<Integer, Pipe> {
-        public Integer compute(Object... parameters) {
-            return ((String) parameters[0]).length();
+    private class LengthPipeFunction implements PipeFunction<String, Integer> {
+        public Integer compute(String argument) {
+            return argument.length();
         }
     }
 }

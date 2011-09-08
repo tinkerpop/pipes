@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.transform;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.EmptyIterator;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Iterator;
@@ -16,7 +17,7 @@ import java.util.Iterator;
  */
 public abstract class GraphElementPipe<E extends Element> extends AbstractPipe<Graph, E> {
 
-    protected Iterator<E> nextEnds;
+    protected Iterator<E> nextEnds = new EmptyIterator<E>();
 
     private final ElementType elementType;
 
@@ -50,5 +51,10 @@ public abstract class GraphElementPipe<E extends Element> extends AbstractPipe<G
 
     public String toString() {
         return PipeHelper.makePipeString(this, this.elementType);
+    }
+
+    public void reset() {
+        super.reset();
+        this.nextEnds = new EmptyIterator<E>();
     }
 }

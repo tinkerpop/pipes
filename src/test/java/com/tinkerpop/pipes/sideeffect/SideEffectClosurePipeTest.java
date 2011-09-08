@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.sideeffect;
 
-import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.PipeFunction;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -17,7 +17,7 @@ public class SideEffectClosurePipeTest extends TestCase {
         AtomicInteger count = new AtomicInteger(0);
         int counter = 0;
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        Pipe<String, String> pipe = new SideEffectClosurePipe(new CountPipeClosure(count));
+        Pipe<String, String> pipe = new SideEffectClosurePipe(new CountPipeFunction(count));
         pipe.setStarts(list);
         while (pipe.hasNext()) {
             assertTrue(list.contains(pipe.next()));
@@ -28,15 +28,15 @@ public class SideEffectClosurePipeTest extends TestCase {
 
     }
 
-    private class CountPipeClosure extends AbstractPipeClosure {
+    private class CountPipeFunction implements PipeFunction<Object, Object> {
 
         private AtomicInteger integer;
 
-        public CountPipeClosure(AtomicInteger integer) {
+        public CountPipeFunction(AtomicInteger integer) {
             this.integer = integer;
         }
 
-        public Object compute(Object... parameters) {
+        public Object compute(Object argument) {
             this.integer.getAndAdd(1);
             return null;
         }

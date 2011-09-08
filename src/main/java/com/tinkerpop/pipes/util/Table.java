@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.util;
 
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,19 +23,19 @@ public class Table extends ArrayList<Table.Row> {
         this.tableWidth = columnNames.length;
     }
 
-    public Table apply(final PipeClosure... closures) {
-        if (tableWidth != -1 && closures.length == tableWidth) {
+    public Table apply(final PipeFunction... functions) {
+        if (tableWidth != -1 && functions.length == tableWidth) {
             Table table = new Table();
             for (final Row row : this) {
                 List temp = new ArrayList();
                 for (int i = 0; i < row.size(); i++) {
-                    temp.add(closures[i].compute(row.get(i)));
+                    temp.add(functions[i].compute(row.get(i)));
                 }
                 table.addRow(temp);
             }
             return table;
         } else {
-            throw new RuntimeException("Table width is " + this.tableWidth + " and closures length is " + closures.length);
+            throw new RuntimeException("Table width is " + this.tableWidth + " and functions length is " + functions.length);
         }
     }
 

@@ -1,33 +1,29 @@
 package com.tinkerpop.pipes.branch;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.Iterator;
 
 /**
- * IfThenElsePipe will run each incoming S through the provided ifClosure.
- * If the ifClosure returns true, then the S object is passed through the thenClosure.
- * Otherwise, the S object is passed through the elseClosure.
- * If the result of the thenClosure and the elseClosure is an iterable/iterator, it is unrolled.
+ * IfThenElsePipe will run each incoming S through the provided ifFunction.
+ * If the ifFunction returns true, then the S object is passed through the thenFunction.
+ * Otherwise, the S object is passed through the elseFunction.
+ * If the result of the thenFunction and the elseFunction is an iterable/iterator, it is unrolled.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class IfThenElsePipe<S, E> extends AbstractPipe<S, E> {
 
-    private final PipeClosure<Boolean, Pipe> ifClosure;
-    private final PipeClosure thenClosure;
-    private final PipeClosure elseClosure;
+    private final PipeFunction<S, Boolean> ifFunction;
+    private final PipeFunction thenFunction;
+    private final PipeFunction elseFunction;
     private Iterator<E> itty = null;
 
-    public IfThenElsePipe(final PipeClosure<Boolean, Pipe> ifClosure, final PipeClosure thenClosure, final PipeClosure elseClosure) {
-        this.ifClosure = ifClosure;
-        this.thenClosure = thenClosure;
-        this.elseClosure = elseClosure;
-        this.ifClosure.setPipe(this);
-        this.thenClosure.setPipe(this);
-        this.elseClosure.setPipe(this);
+    public IfThenElsePipe(final PipeFunction<S, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction) {
+        this.ifFunction = ifFunction;
+        this.thenFunction = thenFunction;
+        this.elseFunction = elseFunction;
     }
 
     public E processNextStart() {
@@ -36,8 +32,8 @@ public class IfThenElsePipe<S, E> extends AbstractPipe<S, E> {
                 return this.itty.next();
             } else {
                 final S s = this.starts.next();
-                if (this.ifClosure.compute(s)) {
-                    final Object e = this.thenClosure.compute(s);
+                if (this.ifFunction.compute(s)) {
+                    final Object e = this.thenFunction.compute(s);
                     if (e instanceof Iterable) {
                         this.itty = ((Iterable<E>) e).iterator();
                     } else if (e instanceof Iterator) {
@@ -46,7 +42,7 @@ public class IfThenElsePipe<S, E> extends AbstractPipe<S, E> {
                         return (E) e;
                     }
                 } else {
-                    final Object e = this.elseClosure.compute(s);
+                    final Object e = this.elseFunction.compute(s);
                     if (e instanceof Iterable) {
                         this.itty = ((Iterable<E>) e).iterator();
                     } else if (e instanceof Iterator) {

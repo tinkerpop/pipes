@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.pipes.AbstractPipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -13,7 +13,7 @@ public class FilterClosurePipeTest extends TestCase {
 
     public void testBasicClosureFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "povel", "marko");
-        FilterPipe<String> pipe = new FilterClosurePipe<String>(new StartsWithPipeClosure());
+        FilterPipe<String> pipe = new FilterClosurePipe<String>(new StartsWithPipeFunction());
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
@@ -25,9 +25,9 @@ public class FilterClosurePipeTest extends TestCase {
 
     }
 
-    private class StartsWithPipeClosure extends AbstractPipeClosure {
-        public Boolean compute(Object... objects) {
-            return (((String) objects[0]).startsWith("p"));
+    private class StartsWithPipeFunction implements PipeFunction<String, Boolean> {
+        public Boolean compute(String argument) {
+            return argument.startsWith("p");
         }
     }
 }

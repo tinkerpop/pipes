@@ -9,7 +9,8 @@
     <packaging>jar</packaging>
     <url>http://pipes.tinkerpop.com</url>
     <name>Pipes: A Lazy Data Flow Framework</name>
-    <description>Pipes is a dataflow framework written in Java that enables the splitting, merging, filtering, and transformation of data from input to output.
+    <description>Pipes is a dataflow framework written in Java that enables the splitting, merging, filtering, and
+        transformation of data from input to output.
         Computations are expressed using a combinator model and are evaluated in a memory-efficient, lazy fashion.
     </description>
     <developers>

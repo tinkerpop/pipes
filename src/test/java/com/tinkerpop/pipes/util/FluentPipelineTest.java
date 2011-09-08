@@ -3,9 +3,7 @@ package com.tinkerpop.pipes.util;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.pipes.AbstractPipeClosure;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -32,9 +30,9 @@ public class FluentPipelineTest extends TestCase {
     public void testFilterClosureUsingInnerClass() {
         Graph g = TinkerGraphFactory.createTinkerGraph();
         FluentPipeline<Vertex, String> pipeline = new FluentPipeline<Vertex, String>();
-        pipeline.start(g.getVertex(1)).out("knows").property("name").filter(new AbstractPipeClosure<Boolean, Pipe>() {
-            public Boolean compute(Object... objects) {
-                return ((String) objects[0]).startsWith("j");
+        pipeline.start(g.getVertex(1)).out("knows").property("name").filter(new PipeFunction<String, Boolean>() {
+            public Boolean compute(String argument) {
+                return argument.startsWith("j");
             }
         });
         int counter = 0;
@@ -90,11 +88,11 @@ public class FluentPipelineTest extends TestCase {
         return string.startsWith("j");
     }
 
-    private PipeClosure startsWithJ = PipeHelper.createPipeClosure(FluentPipelineTest.class, "startsWithJ", String.class);
+    private PipeFunction startsWithJ = PipeHelper.createPipeClosure(FluentPipelineTest.class, "startsWithJ", String.class);
 
-    private PipeClosure startsWithJ2 = new AbstractPipeClosure() {
-        public Boolean compute(Object... arguments) {
-            return ((String) arguments[0]).startsWith("j");
+    private PipeFunction startsWithJ2 = new PipeFunction<String, Boolean>() {
+        public Boolean compute(String argument) {
+            return argument.startsWith("j");
         }
     };
 

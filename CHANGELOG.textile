@@ -36,6 +36,7 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 * Migrated @TablePipe@ and @Table@ from Gremlin
 * Simplified the semantics of @HasNextPipe@ (use @Pipe.hasNext()@ to accomplish previous behavior)
 * Added @MemoizePipe@ to memoize the mapping of a particular pipe
+* Simplified @PipeClosure@ to be purely functional and now named @PipeFunction@
 
  ==<hr/>==
 
@@ -53,13 +54,13 @@ h3. Version 0.7 (PVC -- August 1, 2011)
 
 * Added support for @Vertex.getOutEdges(String...)@ and @Vertex.getInEdges(String...)@
 * Updated @AggregatorPipe@ to be fully @SideEffectPipe@ compliant and to respect @getPath()@
-* Added @PipeClosure@ to support closure-based pipes
+* Added @PipeClosure@ to support function-based pipes
 * Migrated all the "Gremlin":http://gremlin.tinkerpop.com specific pipes to Pipes
 * Refactored package names to align with pipe semantics
 * Flipped the meaning of @Filter@, where @true@ means pass, and @false@ means filter
 * Added @AggregatorPipe@ @PipeClosure@ to process object prior to insertion into the aggregate collection
 * Added temporary fix for @AggregatorPipe@/@LoopPipe@ phenomena
-* @IfThenElsePipe@ now requires an @elseClosure@
+* @IfThenElsePipe@ now requires an @elseFunction@
 
 ==<hr/>==
 

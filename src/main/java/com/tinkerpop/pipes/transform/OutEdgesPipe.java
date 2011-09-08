@@ -15,7 +15,7 @@ public class OutEdgesPipe extends AbstractEdgesPipe {
 
     protected Edge processNextStart() {
         while (true) {
-            if (null != this.nextEnds && this.nextEnds.hasNext()) {
+            if (this.nextEnds.hasNext()) {
                 return this.nextEnds.next();
             } else {
                 this.nextEnds = this.starts.next().getOutEdges(this.labels).iterator();

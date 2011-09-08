@@ -3,7 +3,7 @@ package com.tinkerpop.pipes.util;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.pipes.ClosurePipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.CopySplitPipe;
 import com.tinkerpop.pipes.branch.ExhaustMergePipe;
 import com.tinkerpop.pipes.branch.FairMergePipe;
@@ -100,11 +100,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add a ClosurePipe to the end of the pipeline.
      *
-     * @param closure the closure of the ClosurePipe
+     * @param function the function of the ClosurePipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline step(final PipeClosure closure) {
-        return this.add(new ClosurePipe(closure));
+    public FluentPipeline step(final PipeFunction function) {
+        return this.add(new ClosurePipe(function));
     }
 
     ////////////////////
@@ -170,24 +170,24 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add an IfThenElsePipe to the end of the Pipeline.
      *
-     * @param ifClosure   the closure denoting the "if" part of the pipe
-     * @param thenClosure the closure denoting the "then" part of the pipe
-     * @param elseClosure the closure denoting the "else" part of the pipe
+     * @param ifFunction   the closure denoting the "if" part of the pipe
+     * @param thenFunction the closure denoting the "then" part of the pipe
+     * @param elseFunction the closure denoting the "else" part of the pipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline ifThenElse(final PipeClosure<Boolean, Pipe> ifClosure, final PipeClosure thenClosure, final PipeClosure elseClosure) {
-        return this.add(new IfThenElsePipe(ifClosure, thenClosure, elseClosure));
+    public FluentPipeline ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction) {
+        return this.add(new IfThenElsePipe(ifFunction, thenFunction, elseFunction));
     }
 
     /**
      * Add a LoopPipe to the end of the Pipeline.
      *
-     * @param numberedStep the number of steps previous to loop back to
-     * @param whileClosure the "while()" whileClosure of the LoopPipe
+     * @param numberedStep  the number of steps previous to loop back to
+     * @param whileFunction the "while()" whileFunction of the LoopPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline loop(final int numberedStep, final PipeClosure<Boolean, Pipe> whileClosure) {
-        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(numberedStep)), whileClosure));
+    public FluentPipeline loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction) {
+        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(numberedStep)), whileFunction));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
         return this;
@@ -196,12 +196,12 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add a LoopPipe ot the end of the Pipeline.
      *
-     * @param namedStep    the name of the step previous to loop back to
-     * @param whileClosure the "while()" closure of the LoopPipe
+     * @param namedStep     the name of the step previous to loop back to
+     * @param whileFunction the "while()" closure of the LoopPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline loop(final String namedStep, final PipeClosure<Boolean, Pipe> whileClosure) {
-        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(namedStep)), whileClosure));
+    public FluentPipeline loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction) {
+        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(namedStep)), whileFunction));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
         return this;
@@ -210,12 +210,12 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add a LoopPipe ot the end of the Pipeline.
      *
-     * @param pipe         the internal pipe of the LoopPipe
-     * @param whileClosure the "while()" closure of the LoopPipe
+     * @param pipe          the internal pipe of the LoopPipe
+     * @param whileFunction the "while()" closure of the LoopPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline loop(final Pipe pipe, final PipeClosure<Boolean, Pipe> whileClosure) {
-        return this.add(new LoopPipe(pipe, whileClosure));
+    public FluentPipeline loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction) {
+        return this.add(new LoopPipe(pipe, whileFunction));
     }
 
     ////////////////////
@@ -330,11 +330,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add an FilterClosurePipe to the end of the Pipeline.
      *
-     * @param filterClosure the filter closure of the pipe
+     * @param filterFunction the filter closure of the pipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline filter(final PipeClosure<Boolean, Pipe> filterClosure) {
-        return this.add(new FilterClosurePipe(filterClosure));
+    public FluentPipeline filter(final PipeFunction<?, Boolean> filterFunction) {
+        return this.add(new FilterClosurePipe(filterFunction));
     }
 
     // todo future filter pipe? (or remove it)
@@ -493,12 +493,12 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add an AggregatePipe to the end of the Pipeline.
      *
-     * @param aggregate        the collection to aggregate results into
-     * @param aggregateClosure the closure to run over each object prior to insertion into the aggregate
+     * @param aggregate         the collection to aggregate results into
+     * @param aggregateFunction the closure to run over each object prior to insertion into the aggregate
      * @return the extended FluentPipeline
      */
-    public FluentPipeline aggregate(final Collection aggregate, final PipeClosure aggregateClosure) {
-        this.addPipe(new AggregatePipe(aggregate, aggregateClosure));
+    public FluentPipeline aggregate(final Collection aggregate, final PipeFunction aggregateFunction) {
+        this.addPipe(new AggregatePipe(aggregate, aggregateFunction));
         return this;
     }
 
@@ -516,11 +516,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * Add an AggregatePipe to the end of the Pipeline.
      * An ArrayList aggregate is provided.
      *
-     * @param aggregateClosure the closure to run over each object prior to insertion into the aggregate
+     * @param aggregateFunction the closure to run over each object prior to insertion into the aggregate
      * @return the extended FluentPipeline
      */
-    public FluentPipeline aggregate(final PipeClosure aggregateClosure) {
-        return this.aggregate(new ArrayList(), aggregateClosure);
+    public FluentPipeline aggregate(final PipeFunction aggregateFunction) {
+        return this.aggregate(new ArrayList(), aggregateFunction);
     }
 
     // todo do count pipe? (or remove it)
@@ -528,37 +528,37 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add a GroupCountPipe or GroupCountClosurePipe to the end of the Pipeline.
      *
-     * @param map      a provided count map
-     * @param closures the key and value closures (max 2 is allowed)
+     * @param map       a provided count map
+     * @param functions the key and value functions (max 2 is allowed)
      * @return the extended FluentPipeline
      */
-    public FluentPipeline groupCount(final Map<Object, Number> map, final PipeClosure<Number, Pipe>... closures) {
-        if (closures.length == 0)
+    public FluentPipeline groupCount(final Map<Object, Number> map, final PipeFunction... functions) {
+        if (functions.length == 0)
             return this.add(new GroupCountPipe(map));
-        else if (closures.length == 2)
-            return this.add(new GroupCountClosurePipe(map, closures[0], closures[1]));
-        else if (closures.length == 1)
-            return this.add(new GroupCountClosurePipe(map, closures[0], null));
+        else if (functions.length == 2)
+            return this.add(new GroupCountClosurePipe(map, functions[0], functions[1]));
+        else if (functions.length == 1)
+            return this.add(new GroupCountClosurePipe(map, functions[0], null));
         else
-            throw new IllegalArgumentException("The provided closures must have a length of 0, 1, or 2");
+            throw new IllegalArgumentException("The provided functions must have a length of 0, 1, or 2");
     }
 
     /**
      * Add a GroupCountPipe or GroupCountClosurePipe to the end of the Pipeline.
      * A java.util.HashMap is the constructed count map.
      *
-     * @param closures the key and value closures (max 2 is allowed)
+     * @param functions the key and value functions (max 2 is allowed)
      * @return the extended FluentPipeline
      */
-    public FluentPipeline groupCount(final PipeClosure<Number, Pipe>... closures) {
-        if (closures.length == 0)
+    public FluentPipeline groupCount(final PipeFunction... functions) {
+        if (functions.length == 0)
             return this.add(new GroupCountPipe());
-        else if (closures.length == 2)
-            return this.add(new GroupCountClosurePipe(closures[0], closures[1]));
-        else if (closures.length == 1)
-            return this.add(new GroupCountClosurePipe(closures[0], null));
+        else if (functions.length == 2)
+            return this.add(new GroupCountClosurePipe(functions[0], functions[1]));
+        else if (functions.length == 1)
+            return this.add(new GroupCountClosurePipe(functions[0], null));
         else
-            throw new IllegalArgumentException("The provided closures must have a length of 0, 1, or 2");
+            throw new IllegalArgumentException("The provided functions must have a length of 0, 1, or 2");
     }
 
     /**
@@ -600,34 +600,34 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add a SideEffectClosurePipe to the end of the Pipeline.
      *
-     * @param sideEffectClosure the closure of the pipe
+     * @param sideEffectFunction the closure of the pipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline sideEffect(final PipeClosure sideEffectClosure) {
-        return this.add(new SideEffectClosurePipe(sideEffectClosure));
+    public FluentPipeline sideEffect(final PipeFunction sideEffectFunction) {
+        return this.add(new SideEffectClosurePipe(sideEffectFunction));
     }
 
     /**
      * Add a TablePipe to the end of the Pipeline.
      *
-     * @param table          the table to fill
-     * @param stepNames      the named steps to include in the filling
-     * @param columnClosures the post-processing closures for each column
+     * @param table           the table to fill
+     * @param stepNames       the named steps to include in the filling
+     * @param columnFunctions the post-processing closures for each column
      * @return the extended FluentPipeline
      */
-    public FluentPipeline table(final Table table, final Collection<String> stepNames, final PipeClosure... columnClosures) {
-        return this.add(new TablePipe(table, stepNames, this.getAsPipes(), columnClosures));
+    public FluentPipeline table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
+        return this.add(new TablePipe(table, stepNames, this.getAsPipes(), columnFunctions));
     }
 
     /**
      * Add a TablePipe to the end of the Pipeline.
      *
-     * @param table          the table to fill
-     * @param columnClosures the post-processing closures for each column
+     * @param table           the table to fill
+     * @param columnFunctions the post-processing closures for each column
      * @return the extended FluentPipeline
      */
-    public FluentPipeline table(final Table table, final PipeClosure... columnClosures) {
-        return this.add(new TablePipe(table, null, this.getAsPipes(), columnClosures));
+    public FluentPipeline table(final Table table, final PipeFunction... columnFunctions) {
+        return this.add(new TablePipe(table, null, this.getAsPipes(), columnFunctions));
     }
 
     /**
@@ -940,14 +940,14 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add a PathPipe or PathClosurePipe to the end of the Pipeline.
      *
-     * @param pathClosures the path closures of the PathClosurePipe
+     * @param pathFunctions the path closures of the PathClosurePipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline path(final PipeClosure... pathClosures) {
-        if (pathClosures.length == 0)
+    public FluentPipeline path(final PipeFunction... pathFunctions) {
+        if (pathFunctions.length == 0)
             this.addPipe(new PathPipe());
         else
-            this.addPipe(new PathClosurePipe(pathClosures));
+            this.addPipe(new PathClosurePipe(pathFunctions));
         return this;
     }
 
@@ -1025,11 +1025,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add a TransformClosurePipe to the end of the Pipeline.
      *
-     * @param closure the transformation closure of the pipe
+     * @param function the transformation function of the pipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline transform(final PipeClosure closure) {
-        this.addPipe(new TransformClosurePipe(closure));
+    public FluentPipeline transform(final PipeFunction function) {
+        this.addPipe(new TransformClosurePipe(function));
         return this;
     }
 

@@ -1,7 +1,6 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.pipes.AbstractPipeClosure;
-import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.filter.FilterClosurePipe;
 import junit.framework.TestCase;
 
@@ -27,9 +26,9 @@ public class HasNextPipeTest extends TestCase {
 
     public void testPipeWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
-        HasNextPipe<String> pipe1 = new HasNextPipe<String>(new FilterClosurePipe(new AbstractPipeClosure<Boolean, Pipe>() {
-            public Boolean compute(Object... objects) {
-                return ((String) objects[0]).startsWith("p");
+        HasNextPipe<String> pipe1 = new HasNextPipe<String>(new FilterClosurePipe(new PipeFunction<String, Boolean>() {
+            public Boolean compute(String argument) {
+                return argument.startsWith("p");
             }
         }));
         pipe1.setStarts(names);

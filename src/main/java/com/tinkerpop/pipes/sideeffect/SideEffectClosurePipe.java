@@ -1,26 +1,25 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 
 /**
- * SideEffectClosurePipe will emit the incoming object, but compute the PipeClosure on S.
- * The result of the PipeClosure is not account for.
+ * SideEffectClosurePipe will emit the incoming object, but compute the PipeFunction on S.
+ * The result of the PipeFunction is not account for.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class SideEffectClosurePipe<S> extends AbstractPipe<S, S> {
 
-    private final PipeClosure closure;
+    private final PipeFunction<S, ?> function;
 
-    public SideEffectClosurePipe(final PipeClosure closure) {
-        this.closure = closure;
-        this.closure.setPipe(this);
+    public SideEffectClosurePipe(final PipeFunction<S, ?> function) {
+        this.function = function;
     }
 
     public S processNextStart() {
         final S s = this.starts.next();
-        this.closure.compute(s);
+        this.function.compute(s);
         return s;
     }
 }

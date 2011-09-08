@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.PipeFunction;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -15,7 +15,7 @@ public class TransformClosurePipeTest extends TestCase {
     public void testTransformClosure() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         List<Integer> results = Arrays.asList(5, 7, 9, 3, 4, 1);
-        Pipe<String, Integer> pipe = new TransformClosurePipe<String, Integer>(new NumCharPipeClosure());
+        Pipe<String, Integer> pipe = new TransformClosurePipe<String, Integer>(new NumCharPipeFunction());
         pipe.setStarts(list);
         int counter = 0;
         while (pipe.hasNext()) {
@@ -25,9 +25,9 @@ public class TransformClosurePipeTest extends TestCase {
         assertEquals(counter, list.size());
     }
 
-    private class NumCharPipeClosure extends AbstractPipeClosure<Integer, Pipe> {
-        public Integer compute(Object... parameters) {
-            return ((String) parameters[0]).length();
+    private class NumCharPipeFunction implements PipeFunction<String, Integer> {
+        public Integer compute(String argument) {
+            return argument.length();
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.branch;
 
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeClosure;
+import com.tinkerpop.pipes.PipeFunction;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -15,7 +15,7 @@ public class IfThenElsePipeTest extends TestCase {
     public void testIfThenElse() {
         List<String> names = Arrays.asList("marko", "povel", "pete", "josh", "stephen");
         List results = Arrays.asList(0, "hehe", 5, 4, 0, "hehe", 0, "hehe");
-        Pipe<String, Integer> pipe = new IfThenElsePipe<String, Integer>(new IfPipeClosure(), new ThenPipeClosure(), new ElsePipeClosure());
+        Pipe<String, Integer> pipe = new IfThenElsePipe<String, Integer>(new IfPipeFunction(), new ThenPipeFunction(), new ElsePipeFunction());
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
@@ -30,7 +30,7 @@ public class IfThenElsePipeTest extends TestCase {
         List<String> names = Arrays.asList("marko", "povel", "pete", "josh", "stephen");
         List results = Arrays.asList(0, "hehe", 5, 4, 0, "hehe", 0, "hehe");
         List path1 = Arrays.asList("marko", "marko", "povel", "pete", "josh", "josh", "stephen", "stephen");
-        Pipe<String, Integer> pipe = new IfThenElsePipe<String, Integer>(new IfPipeClosure(), new ThenPipeClosure(), new ElsePipeClosure());
+        Pipe<String, Integer> pipe = new IfThenElsePipe<String, Integer>(new IfPipeFunction(), new ThenPipeFunction(), new ElsePipeFunction());
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
@@ -46,33 +46,21 @@ public class IfThenElsePipeTest extends TestCase {
     }
 
 
-    private class IfPipeClosure implements PipeClosure<Boolean, Pipe> {
-        public Boolean compute(Object... parameters) {
-            return ((String) parameters[0]).startsWith("p");
-        }
-
-        public void setPipe(Pipe hostPipe) {
-
+    private class IfPipeFunction implements PipeFunction<String, Boolean> {
+        public Boolean compute(String argument) {
+            return argument.startsWith("p");
         }
     }
 
-    private class ThenPipeClosure implements PipeClosure<Object, Pipe> {
-        public Object compute(Object... parameters) {
-            return ((String) parameters[0]).length();
-        }
-
-        public void setPipe(Pipe hostPipe) {
-
+    private class ThenPipeFunction implements PipeFunction<String, Integer> {
+        public Integer compute(String argument) {
+            return argument.length();
         }
     }
 
-    private class ElsePipeClosure implements PipeClosure<Object, Pipe> {
-        public Object compute(Object... parameters) {
+    private class ElsePipeFunction implements PipeFunction<Object, List> {
+        public List compute(Object argument) {
             return Arrays.asList(0, "hehe");
-        }
-
-        public void setPipe(Pipe hostPipe) {
-
         }
     }
 }
