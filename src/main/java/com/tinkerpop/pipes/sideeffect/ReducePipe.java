@@ -2,37 +2,28 @@ package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.Pair;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ReducePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S> {
+public class ReducePipe<S, T> extends AbstractPipe<S, S> implements SideEffectPipe<S, T> {
 
-    private final PipeFunction<Tuple<S>, S> reduceFunction;
-    private S total;
+    private final PipeFunction<Pair<S, T>, T> reduceFunction;
+    private T total;
 
-    public ReducePipe(final S first, final PipeFunction<Tuple<S>, S> reduceFunction) {
+    public ReducePipe(final T first, final PipeFunction<Pair<S, T>, T> reduceFunction) {
         this.total = first;
         this.reduceFunction = reduceFunction;
     }
 
     public S processNextStart() {
         final S s = this.starts.next();
-        this.total = this.reduceFunction.compute(new Tuple<S>(this.total, s));
+        this.total = this.reduceFunction.compute(new Pair<S, T>(s, this.total));
         return s;
     }
 
-    public S getSideEffect() {
+    public T getSideEffect() {
         return this.total;
-    }
-
-    public class Tuple<A> {
-        public final A a;
-        public final A b;
-
-        public Tuple(final A a, final A b) {
-            this.a = a;
-            this.b = b;
-        }
     }
 }

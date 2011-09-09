@@ -570,7 +570,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param <S>            the reduction yields an S from an S
      * @return the extended FluentPipeline
      */
-    public <S> FluentPipeline reduce(final S first, PipeFunction<ReducePipe.Tuple, S> reduceFunction) {
+    public <S> FluentPipeline reduce(final S first, PipeFunction<Pair, S> reduceFunction) {
         return this.add(new ReducePipe(first, reduceFunction));
     }
 
