@@ -27,7 +27,7 @@ import com.tinkerpop.pipes.filter.UniquePathFilterPipe;
 import com.tinkerpop.pipes.sideeffect.AggregatePipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountClosurePipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
-import com.tinkerpop.pipes.sideeffect.OptionalPipe;
+import com.tinkerpop.pipes.sideeffect.ReducePipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
@@ -46,6 +46,7 @@ import com.tinkerpop.pipes.transform.InPipe;
 import com.tinkerpop.pipes.transform.InVertexPipe;
 import com.tinkerpop.pipes.transform.LabelPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
+import com.tinkerpop.pipes.transform.OptionalPipe;
 import com.tinkerpop.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.pipes.transform.OutPipe;
 import com.tinkerpop.pipes.transform.OutVertexPipe;
@@ -562,39 +563,15 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     }
 
     /**
-     * Add an OptionalPipe to the end of the Pipeline.
+     * Add a ReducePipe to the end of the Pipeline.
      *
-     * @param numberedStep the number of steps previous to optional back to
+     * @param first          the stating value of the reduction
+     * @param reduceFunction the function that yields a value reduction from streaming objects
+     * @param <S>            the reduction yields an S from an S
      * @return the extended FluentPipeline
      */
-    public FluentPipeline optional(final int numberedStep) {
-        this.addPipe(new OptionalPipe(new Pipeline(this.removePreviousPipes(numberedStep))));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return this;
-    }
-
-    /**
-     * Add an OptionalPipe to the end of the Pipeline.
-     *
-     * @param namedStep the name of the step previous to optional back to
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline optional(final String namedStep) {
-        this.addPipe(new OptionalPipe(new Pipeline(this.removePreviousPipes(namedStep))));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return this;
-    }
-
-    /**
-     * Add an OptionalPipe to the end of the Pipeline.
-     *
-     * @param pipe the internal pipe of the OptionalPipe
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline optional(final Pipe pipe) {
-        return this.add(new OptionalPipe(pipe));
+    public <S> FluentPipeline reduce(final S first, PipeFunction<ReducePipe.Tuple, S> reduceFunction) {
+        return this.add(new ReducePipe(first, reduceFunction));
     }
 
     /**
@@ -886,6 +863,42 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     public FluentPipeline memoize(final int numberedStep, final Map map) {
         this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep)), map));
         return this;
+    }
+
+    /**
+     * Add an OptionalPipe to the end of the Pipeline.
+     *
+     * @param numberedStep the number of steps previous to optional back to
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline optional(final int numberedStep) {
+        this.addPipe(new OptionalPipe(new Pipeline(this.removePreviousPipes(numberedStep))));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
+        return this;
+    }
+
+    /**
+     * Add an OptionalPipe to the end of the Pipeline.
+     *
+     * @param namedStep the name of the step previous to optional back to
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline optional(final String namedStep) {
+        this.addPipe(new OptionalPipe(new Pipeline(this.removePreviousPipes(namedStep))));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
+        return this;
+    }
+
+    /**
+     * Add an OptionalPipe to the end of the Pipeline.
+     *
+     * @param pipe the internal pipe of the OptionalPipe
+     * @return the extended FluentPipeline
+     */
+    public FluentPipeline optional(final Pipe pipe) {
+        return this.add(new OptionalPipe(pipe));
     }
 
     /**

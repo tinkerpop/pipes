@@ -1,4 +1,4 @@
-package com.tinkerpop.pipes.sideeffect;
+package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
