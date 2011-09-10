@@ -69,7 +69,7 @@ public class AggregatePipeTest extends TestCase {
     }
 
 
-    public void testAggregatorPipeWithClosure() {
+    public void testAggregatorPipeWithFunction() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         AggregatePipe<String> pipe = new AggregatePipe<String>(new ArrayList<Integer>(), new LengthPipeFunction());
         pipe.setStarts(list.iterator());

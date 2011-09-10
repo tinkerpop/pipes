@@ -4,7 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 
 /**
- * TransformClosure computes a transformation on the S object, where the PipeFunction determines the E.
+ * TransformFunctionPipe computes a transformation on the S object, where the PipeFunction determines the E.
  * The first parameter of the PipeFunction is the S of the pipe.
  * The results of the PipeFunction is the E of the pipe.
  *
@@ -12,13 +12,13 @@ import com.tinkerpop.pipes.PipeFunction;
  */
 public class TransformFunctionPipe<S, E> extends AbstractPipe<S, E> {
 
-    private final PipeFunction<S, E> function;
+    private final PipeFunction<S, E> transformFunction;
 
-    public TransformFunctionPipe(final PipeFunction<S, E> function) {
-        this.function = function;
+    public TransformFunctionPipe(final PipeFunction<S, E> transformFunction) {
+        this.transformFunction = transformFunction;
     }
 
     public E processNextStart() {
-        return this.function.compute(this.starts.next());
+        return this.transformFunction.compute(this.starts.next());
     }
 }

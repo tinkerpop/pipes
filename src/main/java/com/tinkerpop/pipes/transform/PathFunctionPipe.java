@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * PathClosurePipe is analogous to PathPipe, except that for each path emitted, a closure is applied to the objects of that path.
- * The path closures are applied in a round robin fashion. As such, the number of closures need not equal the number of objects in the path.
+ * PathFunctionPipe is analogous to PathPipe, except that for each path emitted, a function is applied to the objects of that path.
+ * The path functions are applied in a round robin fashion. As such, the number of functions need not equal the number of objects in the path.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PathClosurePipe<S> extends AbstractPipe<S, List> {
+public class PathFunctionPipe<S> extends AbstractPipe<S, List> {
 
     private final PipeFunction[] pathFunctions;
 
-    public PathClosurePipe(final PipeFunction... pathFunctions) {
+    public PathFunctionPipe(final PipeFunction... pathFunctions) {
         this.pathFunctions = pathFunctions;
     }
 
@@ -32,10 +32,10 @@ public class PathClosurePipe<S> extends AbstractPipe<S, List> {
             this.starts.next();
             final List path = ((Pipe) this.starts).getPath();
             final List closedPath = new LinkedList();
-            int nextClosure = 0;
+            int nextFunction = 0;
             for (Object object : path) {
-                closedPath.add(pathFunctions[nextClosure].compute(object));
-                nextClosure = (nextClosure + 1) % pathFunctions.length;
+                closedPath.add(pathFunctions[nextFunction].compute(object));
+                nextFunction = (nextFunction + 1) % pathFunctions.length;
             }
             return closedPath;
         } else {

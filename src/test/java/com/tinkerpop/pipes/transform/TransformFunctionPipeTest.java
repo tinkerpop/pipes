@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class TransformFunctionPipeTest extends TestCase {
 
-    public void testTransformClosure() {
+    public void testTransformFunction() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         List<Integer> results = Arrays.asList(5, 7, 9, 3, 4, 1);
         Pipe<String, Integer> pipe = new TransformFunctionPipe<String, Integer>(new NumCharPipeFunction());

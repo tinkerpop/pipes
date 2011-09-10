@@ -12,16 +12,16 @@ import com.tinkerpop.pipes.PipeFunction;
  */
 public class FilterFunctionPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final PipeFunction<S, Boolean> function;
+    private final PipeFunction<S, Boolean> filterFunction;
 
-    public FilterFunctionPipe(final PipeFunction<S, Boolean> function) {
-        this.function = function;
+    public FilterFunctionPipe(final PipeFunction<S, Boolean> filterFunction) {
+        this.filterFunction = filterFunction;
     }
 
     public S processNextStart() {
         while (true) {
             final S s = this.starts.next();
-            if (function.compute(s))
+            if (filterFunction.compute(s))
                 return s;
         }
     }

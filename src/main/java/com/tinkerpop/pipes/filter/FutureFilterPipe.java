@@ -17,16 +17,9 @@ import java.util.List;
 public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>, MetaPipe {
 
     private final Pipe<S, ?> pipe;
-    private final boolean doFuture;
 
     public FutureFilterPipe(final Pipe<S, ?> pipe) {
         this.pipe = pipe;
-        this.doFuture = true;
-    }
-
-    public FutureFilterPipe(final Pipe<S, ?> pipe, final boolean doFuture) {
-        this.pipe = pipe;
-        this.doFuture = doFuture;
     }
 
     public S processNextStart() {
@@ -35,10 +28,6 @@ public class FutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
             this.pipe.reset();
             this.pipe.setStarts(new SingleIterator<S>(s));
             if (this.pipe.hasNext()) {
-                if (this.doFuture) {
-                    return s;
-                }
-            } else if (!this.doFuture) {
                 return s;
             }
         }

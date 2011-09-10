@@ -15,17 +15,17 @@ import java.util.List;
 public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Table> {
 
     private Table table;
-    private final PipeFunction[] functions;
-    private int currentClosure;
+    private final PipeFunction[] columnFunctions;
+    private int currentFunction;
     private final List<AsPipe> asPipes = new ArrayList<AsPipe>();
-    private final boolean doClosures;
+    private final boolean doFunctions;
 
-    public TablePipe(final Table table, final Collection<String> stepNames, final List<AsPipe> allPreviousAsPipes, final PipeFunction... functions) {
+    public TablePipe(final Table table, final Collection<String> stepNames, final List<AsPipe> allPreviousAsPipes, final PipeFunction... columnFunctions) {
         this.table = table;
-        this.functions = functions;
+        this.columnFunctions = columnFunctions;
 
-        if (this.doClosures = this.functions.length > 0)
-            currentClosure = 0;
+        if (this.doFunctions = this.columnFunctions.length > 0)
+            currentFunction = 0;
 
         final List<String> tempNames = new ArrayList<String>();
         for (final AsPipe asPipe : allPreviousAsPipes) {
@@ -49,8 +49,8 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
         final S s = this.starts.next();
         final List row = new ArrayList();
         for (final AsPipe asPipe : this.asPipes) {
-            if (doClosures) {
-                row.add(this.functions[currentClosure++ % functions.length].compute(asPipe.getCurrentEnd()));
+            if (doFunctions) {
+                row.add(this.columnFunctions[currentFunction++ % columnFunctions.length].compute(asPipe.getCurrentEnd()));
             } else {
                 row.add(asPipe.getCurrentEnd());
             }
@@ -61,7 +61,7 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
 
     public void reset() {
         this.table = new Table();
-        this.currentClosure = 0;
+        this.currentFunction = 0;
         super.reset();
     }
 }

@@ -23,7 +23,7 @@ public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPi
     private Queue<S> currentObjectQueue = new LinkedList<S>();
     private Queue<List> currentPathQueue = new LinkedList<List>();
     private List currentPath;
-    private PipeFunction function = null;
+    private PipeFunction<S, ?> preAggregateFunction = null;
 
     public AggregatePipe(final Collection aggregate) {
         this.aggregate = aggregate;
@@ -32,12 +32,12 @@ public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPi
     /**
      * The provided PipeFunction will process the object prior to inserting it into the aggregate collection.
      *
-     * @param aggregate the aggregate collection
-     * @param function  a function to process an object with prior to insertion into the collection
+     * @param aggregate            the aggregate collection
+     * @param preAggregateFunction a function to process an object with prior to insertion into the collection
      */
-    public AggregatePipe(final Collection aggregate, final PipeFunction function) {
+    public AggregatePipe(final Collection aggregate, final PipeFunction<S, ?> preAggregateFunction) {
         this(aggregate);
-        this.function = function;
+        this.preAggregateFunction = preAggregateFunction;
     }
 
     protected List getPathToHere() {
@@ -64,8 +64,8 @@ public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPi
                     this.currentPathQueue.clear();
                     while (this.starts.hasNext()) {
                         final S s = this.starts.next();
-                        if (this.function != null)
-                            this.aggregate.add(this.function.compute(s));
+                        if (this.preAggregateFunction != null)
+                            this.aggregate.add(this.preAggregateFunction.compute(s));
                         else
                             this.aggregate.add(s);
                         this.currentObjectQueue.add(s);

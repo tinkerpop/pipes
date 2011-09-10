@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class FunctionPipeTest extends TestCase {
 
-    public void testClosurePipeWithIdentity() {
+    public void testFunctionPipeWithIdentity() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
         FunctionPipe<String, String> pipe = new FunctionPipe<String, String>(new IdentityPipeFunction());
         pipe.setStarts(names);
@@ -22,7 +22,7 @@ public class FunctionPipeTest extends TestCase {
         PipeHelper.areEqual(names.iterator(), pipe.iterator());
     }
 
-    public void testClosurePipeWithFilter() {
+    public void testFunctionPipeWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
         FunctionPipe<String, String> pipe = new FunctionPipe<String, String>(new StartsWithPipeFunction());
         pipe.setStarts(names);

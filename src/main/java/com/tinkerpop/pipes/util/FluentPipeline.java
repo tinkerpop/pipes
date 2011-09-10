@@ -25,7 +25,7 @@ import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
 import com.tinkerpop.pipes.filter.UniquePathFilterPipe;
 import com.tinkerpop.pipes.sideeffect.AggregatePipe;
-import com.tinkerpop.pipes.sideeffect.GroupCountClosurePipe;
+import com.tinkerpop.pipes.sideeffect.GroupCountFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
 import com.tinkerpop.pipes.sideeffect.ReducePipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
@@ -50,7 +50,7 @@ import com.tinkerpop.pipes.transform.OptionalPipe;
 import com.tinkerpop.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.pipes.transform.OutPipe;
 import com.tinkerpop.pipes.transform.OutVertexPipe;
-import com.tinkerpop.pipes.transform.PathClosurePipe;
+import com.tinkerpop.pipes.transform.PathFunctionPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.PropertyMapPipe;
 import com.tinkerpop.pipes.transform.PropertyPipe;
@@ -171,9 +171,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add an IfThenElsePipe to the end of the Pipeline.
      *
-     * @param ifFunction   the closure denoting the "if" part of the pipe
-     * @param thenFunction the closure denoting the "then" part of the pipe
-     * @param elseFunction the closure denoting the "else" part of the pipe
+     * @param ifFunction   the function denoting the "if" part of the pipe
+     * @param thenFunction the function denoting the "then" part of the pipe
+     * @param elseFunction the function denoting the "else" part of the pipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction) {
@@ -198,7 +198,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * Add a LoopPipe ot the end of the Pipeline.
      *
      * @param namedStep     the name of the step previous to loop back to
-     * @param whileFunction the "while()" closure of the LoopPipe
+     * @param whileFunction the "while()" function of the LoopPipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction) {
@@ -212,7 +212,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * Add a LoopPipe ot the end of the Pipeline.
      *
      * @param pipe          the internal pipe of the LoopPipe
-     * @param whileFunction the "while()" closure of the LoopPipe
+     * @param whileFunction the "while()" function of the LoopPipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction) {
@@ -331,7 +331,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add an FilterFunctionPipe to the end of the Pipeline.
      *
-     * @param filterFunction the filter closure of the pipe
+     * @param filterFunction the filter function of the pipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline filter(final PipeFunction<?, Boolean> filterFunction) {
@@ -495,7 +495,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * Add an AggregatePipe to the end of the Pipeline.
      *
      * @param aggregate         the collection to aggregate results into
-     * @param aggregateFunction the closure to run over each object prior to insertion into the aggregate
+     * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
      * @return the extended FluentPipeline
      */
     public FluentPipeline aggregate(final Collection aggregate, final PipeFunction aggregateFunction) {
@@ -517,7 +517,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * Add an AggregatePipe to the end of the Pipeline.
      * An ArrayList aggregate is provided.
      *
-     * @param aggregateFunction the closure to run over each object prior to insertion into the aggregate
+     * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
      * @return the extended FluentPipeline
      */
     public FluentPipeline aggregate(final PipeFunction aggregateFunction) {
@@ -527,7 +527,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     // todo do count pipe? (or remove it)
 
     /**
-     * Add a GroupCountPipe or GroupCountClosurePipe to the end of the Pipeline.
+     * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
      *
      * @param map       a provided count map
      * @param functions the key and value functions (max 2 is allowed)
@@ -537,15 +537,15 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         if (functions.length == 0)
             return this.add(new GroupCountPipe(map));
         else if (functions.length == 2)
-            return this.add(new GroupCountClosurePipe(map, functions[0], functions[1]));
+            return this.add(new GroupCountFunctionPipe(map, functions[0], functions[1]));
         else if (functions.length == 1)
-            return this.add(new GroupCountClosurePipe(map, functions[0], null));
+            return this.add(new GroupCountFunctionPipe(map, functions[0], null));
         else
             throw new IllegalArgumentException("The provided functions must have a length of 0, 1, or 2");
     }
 
     /**
-     * Add a GroupCountPipe or GroupCountClosurePipe to the end of the Pipeline.
+     * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
      * A java.util.HashMap is the constructed count map.
      *
      * @param functions the key and value functions (max 2 is allowed)
@@ -555,9 +555,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         if (functions.length == 0)
             return this.add(new GroupCountPipe());
         else if (functions.length == 2)
-            return this.add(new GroupCountClosurePipe(functions[0], functions[1]));
+            return this.add(new GroupCountFunctionPipe(functions[0], functions[1]));
         else if (functions.length == 1)
-            return this.add(new GroupCountClosurePipe(functions[0], null));
+            return this.add(new GroupCountFunctionPipe(functions[0], null));
         else
             throw new IllegalArgumentException("The provided functions must have a length of 0, 1, or 2");
     }
@@ -577,7 +577,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /**
      * Add a SideEffectFunctionPipe to the end of the Pipeline.
      *
-     * @param sideEffectFunction the closure of the pipe
+     * @param sideEffectFunction the function of the pipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline sideEffect(final PipeFunction sideEffectFunction) {
@@ -589,7 +589,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      *
      * @param table           the table to fill
      * @param stepNames       the named steps to include in the filling
-     * @param columnFunctions the post-processing closures for each column
+     * @param columnFunctions the post-processing function for each column
      * @return the extended FluentPipeline
      */
     public FluentPipeline table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
@@ -600,7 +600,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * Add a TablePipe to the end of the Pipeline.
      *
      * @param table           the table to fill
-     * @param columnFunctions the post-processing closures for each column
+     * @param columnFunctions the post-processing function for each column
      * @return the extended FluentPipeline
      */
     public FluentPipeline table(final Table table, final PipeFunction... columnFunctions) {
@@ -695,8 +695,6 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     public FluentPipeline E() {
         return this.edges();
     }
-
-    // todo: for gather -- add a TranformFilterClosure too?
 
     /**
      * Add a GatherPipe to the end of the Pipeline.
@@ -951,16 +949,16 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     }
 
     /**
-     * Add a PathPipe or PathClosurePipe to the end of the Pipeline.
+     * Add a PathPipe or PathFunctionPipe to the end of the Pipeline.
      *
-     * @param pathFunctions the path closures of the PathClosurePipe
+     * @param pathFunctions the path function of the PathFunctionPipe
      * @return the extended FluentPipeline
      */
     public FluentPipeline path(final PipeFunction... pathFunctions) {
         if (pathFunctions.length == 0)
             this.addPipe(new PathPipe());
         else
-            this.addPipe(new PathClosurePipe(pathFunctions));
+            this.addPipe(new PathFunctionPipe(pathFunctions));
         return this;
     }
 

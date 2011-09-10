@@ -25,20 +25,20 @@ import java.util.Queue;
  */
 public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
 
-    private final PipeFunction<LoopBundle<S>, Boolean> function;
+    private final PipeFunction<LoopBundle<S>, Boolean> whileFunction;
     private final Pipe<S, S> pipe;
     private ExpandableLoopBundleIterator<S> expando;
 
-    public LoopPipe(final Pipe<S, S> pipe, final PipeFunction<LoopBundle<S>, Boolean> function) {
+    public LoopPipe(final Pipe<S, S> pipe, final PipeFunction<LoopBundle<S>, Boolean> whileFunction) {
         this.pipe = pipe;
-        this.function = function;
+        this.whileFunction = whileFunction;
     }
 
     protected S processNextStart() {
         while (true) {
             final S s = this.pipe.next();
             final LoopBundle<S> loopBundle = new LoopBundle<S>(s, this.getPath(), this.getLoops());
-            if (function.compute(loopBundle)) {
+            if (whileFunction.compute(loopBundle)) {
                 this.expando.add(loopBundle);
             } else {
                 return s;

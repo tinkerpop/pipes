@@ -16,11 +16,11 @@ import java.util.Iterator;
 public class IfThenElsePipe<S, E> extends AbstractPipe<S, E> {
 
     private final PipeFunction<S, Boolean> ifFunction;
-    private final PipeFunction thenFunction;
-    private final PipeFunction elseFunction;
+    private final PipeFunction<S, ?> thenFunction;
+    private final PipeFunction<S, ?> elseFunction;
     private Iterator<E> itty = null;
 
-    public IfThenElsePipe(final PipeFunction<S, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction) {
+    public IfThenElsePipe(final PipeFunction<S, Boolean> ifFunction, final PipeFunction<S, ?> thenFunction, final PipeFunction<S, ?> elseFunction) {
         this.ifFunction = ifFunction;
         this.thenFunction = thenFunction;
         this.elseFunction = elseFunction;

@@ -14,12 +14,12 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PathClosurePipeTest extends TestCase {
+public class PathFunctionPipeTest extends TestCase {
 
     public void testPipeBasic() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, List> pipeline = new Pipeline<Vertex, List>(new OutPipe(), new PathClosurePipe<Vertex>(new NamePipeFunction()));
+        Pipe<Vertex, List> pipeline = new Pipeline<Vertex, List>(new OutPipe(), new PathFunctionPipe<Vertex>(new NamePipeFunction()));
         pipeline.setStarts(new SingleIterator<Vertex>(marko));
         int counter = 0;
         for (List path : pipeline) {

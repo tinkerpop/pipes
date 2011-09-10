@@ -48,20 +48,6 @@ public class FutureFilterPipeTest extends BaseTest {
         assertEquals(counter, 2);
     }
 
-    public void testAdvancedNegativeFutureFilter() {
-        List<String> names = Arrays.asList("marko", "peter", "povel", "josh");
-        FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new ExceptFilterPipe<String>(Arrays.asList("marko", "povel")), false);
-        pipe1.setStarts(names);
-        int counter = 0;
-        Iterator expected = Arrays.asList("marko", "povel").iterator();
-        while (pipe1.hasNext()) {
-            counter++;
-            String name = pipe1.next();
-            assertEquals(expected.next(), name);
-        }
-        assertEquals(2, counter);
-    }
-
     public void testGraphFutureFilter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex(1);

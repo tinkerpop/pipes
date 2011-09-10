@@ -27,7 +27,7 @@ public class FluentPipelineTest extends TestCase {
         assertEquals(counter, 2);
     }
 
-    public void testFilterClosureUsingInnerClass() {
+    public void testFilterFunctionUsingInnerClass() {
         Graph g = TinkerGraphFactory.createTinkerGraph();
         FluentPipeline<Vertex, String> pipeline = new FluentPipeline<Vertex, String>();
         pipeline.start(g.getVertex(1)).out("knows").property("name").filter(new PipeFunction<String, Boolean>() {
@@ -44,7 +44,7 @@ public class FluentPipelineTest extends TestCase {
         assertEquals(counter, 1);
     }
 
-    public void testFilterClosureUsingPipeHelper() throws Exception {
+    public void testFilterFunctionUsingPipeHelper() throws Exception {
         Graph g = TinkerGraphFactory.createTinkerGraph();
         FluentPipeline<Vertex, String> pipeline =
                 new FluentPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeFunction(FluentPipelineTest.class.getMethod("startsWithJ", String.class)));

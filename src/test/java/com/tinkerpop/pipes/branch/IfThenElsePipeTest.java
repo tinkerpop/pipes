@@ -58,8 +58,8 @@ public class IfThenElsePipeTest extends TestCase {
         }
     }
 
-    private class ElsePipeFunction implements PipeFunction<Object, List> {
-        public List compute(Object argument) {
+    private class ElsePipeFunction implements PipeFunction<String, List> {
+        public List compute(String argument) {
             return Arrays.asList(0, "hehe");
         }
     }
