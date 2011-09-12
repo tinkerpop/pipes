@@ -38,7 +38,6 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 * Added @MemoizePipe@ to memoize the mapping of a particular pipe
 * Simplified @PipeClosure@ to be purely functional and now named @PipeFunction@
 ** Renamed @XXXClosurePipe@ to @XXXFunctionPipe@
-* Added @ReducePipe@ as a @SideEffectPipe@ where the reduction is the side-effect
 
  ==<hr/>==
 

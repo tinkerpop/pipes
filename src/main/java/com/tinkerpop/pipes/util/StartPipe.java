@@ -5,8 +5,8 @@ import com.tinkerpop.pipes.transform.IdentityPipe;
 import java.util.Iterator;
 
 /**
- * StartPipe is a handy was to create a pipe out of the provided object.
- * The provided object is set as the start of the Pipe that simply returns the object or
+ * StartPipe is a handy way to create a pipe out of the provided object.
+ * The provided object is set as the start of the Pipe that simply emits the object or
  * if the object is an iterator/iterable, the objects of the object.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
