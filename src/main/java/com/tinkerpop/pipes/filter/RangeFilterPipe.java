@@ -14,11 +14,11 @@ import java.util.NoSuchElementException;
  */
 public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final int low;
-    private final int high;
+    private final long low;
+    private final long high;
     private int counter = -1;
 
-    public RangeFilterPipe(final int low, final int high) {
+    public RangeFilterPipe(final long low, final long high) {
         this.low = low;
         this.high = high;
         if (this.low != -1 && this.high != -1 && this.low > this.high) {

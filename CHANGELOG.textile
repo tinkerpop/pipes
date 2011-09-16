@@ -38,7 +38,7 @@ h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
 * Added @MemoizePipe@ to memoize the mapping of a particular pipe
 * Simplified @PipeClosure@ to be purely functional and now named @PipeFunction@
 ** Renamed @XXXClosurePipe@ to @XXXFunctionPipe@
-* Fixed performance issue in @RangeFilterPipe@
+* Fixed performance issue in @RangeFilterPipe@ and provided @long@ ranges
 
  ==<hr/>==
 
