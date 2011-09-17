@@ -11,7 +11,7 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
-!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-pvc-pipe.png!
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-cleaner-pipe.png!
 
 h3. Version 0.8 (Cleaner -- September 18, 2011)
 
