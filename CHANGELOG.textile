@@ -11,18 +11,20 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
-h3. Version 0.8 (NOT OFFICIALLY RELEASED YET)
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-pvc-pipe.png!
+
+h3. Version 0.8 (Cleaner -- September 18, 2011)
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
-  <version>0.8-SNAPSHOT</version>
+  <version>0.8</version>
 </dependency>
 ```
 
 * @SideEffectPipe@ now has signature of @<S,T>@ instead of @<S,E,T>@
-* @GroupCountClosurePipe@ has signature of @<S,K>@ to denote the key of its @Map<K,Number>@ side-effect
+* @GroupCountFunctionPipe@ has signature of @<S,K>@ to denote the key of its @Map<K,Number>@ side-effect
 * Removed @ComparisonFilterPipe@ as it is confusing and now @PipeHelper@ has comparison support
 * Added @PipeHelper.makePipeString()@ to have a single point where all pipe @toString()@s are created
 * Optimized @PipeHelper.counter()@ and @PipeHelper.fillCollection()@ by respecting architecture of @AbstractPipe@
