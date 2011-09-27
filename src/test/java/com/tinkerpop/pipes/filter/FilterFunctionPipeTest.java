@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class FilterFunctionPipeTest extends TestCase {
 
-    public void testBasicFunctionFilter() {
+    public void testPipeBasic() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "povel", "marko");
         FilterPipe<String> pipe = new FilterFunctionPipe<String>(new StartsWithPipeFunction());
         pipe.setStarts(names);

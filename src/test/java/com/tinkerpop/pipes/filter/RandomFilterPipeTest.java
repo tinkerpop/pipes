@@ -9,7 +9,7 @@ import junit.framework.Assert;
  */
 public class RandomFilterPipeTest extends BaseTest {
 
-    public void testRandomFilterPipe() {
+    public void testPipeBasic() {
         Pipe<String, String> pipe = new RandomFilterPipe<String>(1.0d);
         pipe.setStarts(BaseTest.generateUUIDs(100).iterator());
         int counter = 0;
@@ -37,7 +37,6 @@ public class RandomFilterPipeTest extends BaseTest {
             counter++;
             pipe.next();
         }
-        //System.out.println(counter);
         Assert.assertTrue(counter > 400 && counter < 600);
     }
 }

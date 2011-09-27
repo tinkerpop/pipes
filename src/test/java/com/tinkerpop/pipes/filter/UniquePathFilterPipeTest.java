@@ -1,11 +1,24 @@
 package com.tinkerpop.pipes.filter;
 
+import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.BaseTest;
+import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.Pipeline;
+
+import java.util.Arrays;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class UniquePathFilterPipeTest extends BaseTest {
+
+    /*public void testPipeBasic() {
+        Pipe pipe = new Pipeline(new CharacterCountPipe(), new ToStringPipe(), new CharacterCountPipe());
+        pipe.setStarts(Arrays.asList("1", "11"));
+        while(pipe.hasNext()) {
+            assertEquals(pipe.next(), 2);
+        }
+    }*/
 
     /*  public void testUniquePathFilter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
@@ -26,5 +39,17 @@ public class UniquePathFilterPipeTest extends BaseTest {
 
     public void testTrue() {
         assertTrue(true);
+    }
+
+    private class CharacterCountPipe extends AbstractPipe<String, Integer> {
+        protected Integer processNextStart() {
+            return this.starts.next().length();
+        }
+    }
+
+    private class ToStringPipe extends AbstractPipe<Integer, String> {
+        protected String processNextStart() {
+            return this.starts.next().toString();
+        }
     }
 }

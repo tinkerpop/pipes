@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class FutureFilterPipeTest extends TestCase {
 
-    public void testBasicFutureFilter() {
+    public void testPipeBasic() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
         FutureFilterPipe<String> pipe1 = new FutureFilterPipe<String>(new IdentityPipe<String>());
         pipe1.setStarts(names);
@@ -35,80 +35,4 @@ public class FutureFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
     }
-
-    /* public void testGraphFutureFilter() {
-      Graph graph = TinkerGraphFactory.createTinkerGraph();
-      Vertex marko = graph.getVertex(1);
-      Pipe outEPipe = new OutEdgesPipe();
-      Pipe inVPipe = new InVertexPipe();
-      Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", FilterPipe.Filter.EQUAL);
-      Pipe<Edge, Edge> futureFilterPipe = new FutureFilterPipe<Edge>(new Pipeline<Edge, Vertex>(inVPipe, propertyFilterPipe));
-      Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(outEPipe, futureFilterPipe);
-      pipeline.setStarts(Arrays.asList(marko));
-      int counter = 0;
-      while (pipeline.hasNext()) {
-          counter++;
-          assertEquals(pipeline.next().getId(), "9");
-      }
-      assertEquals(counter, 1);
-  }
-
-  public void testGraphFutureFilterWithRangeFilter() {
-      Graph graph = TinkerGraphFactory.createTinkerGraph();
-      Vertex marko = graph.getVertex(1);
-      Pipe outEPipe = new OutEdgesPipe();
-      Pipe inVPipe = new InVertexPipe();
-      Pipe outE2 = new OutEdgesPipe();
-      Pipe<Vertex, Vertex> range = new RangeFilterPipe<Vertex>(1, 2);
-      Pipe<Vertex, Vertex> futureFilterPipe =
-              new FutureFilterPipe<Vertex>(new Pipeline<Vertex, Edge>(outE2, range));
-      Pipe<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(outEPipe, inVPipe, futureFilterPipe);
-      pipeline.setStarts(Arrays.asList(marko, marko));
-      int counter = 0;
-      while (pipeline.hasNext()) {
-          counter++;
-          Vertex v = pipeline.next();
-          assertEquals("4", v.getId());
-      }
-      assertEquals(2, counter);
-  }
-
-  public void testGraphFutureFilterWithRangeFilter2() {
-      Graph graph = TinkerGraphFactory.createTinkerGraph();
-      Pipe vertexPipe = new VerticesPipe();
-      Pipe bothEPipe = new BothEdgesPipe();
-      Pipe bothVPipe = new BothVerticesPipe();
-      Pipe outE2 = new OutEdgesPipe();
-      Pipe<Vertex, Vertex> range = new RangeFilterPipe<Vertex>(2, 3);
-      Pipe<Vertex, Vertex> futureFilterPipe =
-              new FutureFilterPipe<Vertex>(new Pipeline<Vertex, Edge>(outE2, range));
-      Pipe<Graph, Vertex> pipeline = new Pipeline<Graph, Vertex>(vertexPipe, bothEPipe, bothVPipe, futureFilterPipe);
-      pipeline.setStarts(Arrays.asList(graph));
-      int counter = 0;
-      while (pipeline.hasNext()) {
-          counter++;
-          Vertex v = pipeline.next();
-          assertEquals("1", v.getId());
-      }
-      assertEquals(6, counter);
-  }
-
-  public void testGraphFutureFilterWithPaths() {
-      Graph graph = TinkerGraphFactory.createTinkerGraph();
-      Vertex marko = graph.getVertex(1);
-      Pipe outEPipe = new OutEdgesPipe();
-      Pipe inVPipe = new InVertexPipe();
-      Pipe<Vertex, Vertex> propertyFilterPipe = new PropertyFilterPipe<Vertex, String>("name", "lop", FilterPipe.Filter.EQUAL);
-      Pipe<Edge, Edge> futureFilterPipe = new FutureFilterPipe<Edge>(new Pipeline<Edge, Vertex>(inVPipe, propertyFilterPipe));
-      Pipe<Vertex, Edge> pipeline = new Pipeline<Vertex, Edge>(outEPipe, futureFilterPipe);
-      pipeline.setStarts(Arrays.asList(marko));
-      int counter = 0;
-      // pipeline.enablePath();
-      while (pipeline.hasNext()) {
-          counter++;
-          pipeline.next();
-          //System.out.println(pipeline.next() + "--->" + pipeline.getPath());
-      }
-      assertEquals(counter, 1);
-  }  */
 }

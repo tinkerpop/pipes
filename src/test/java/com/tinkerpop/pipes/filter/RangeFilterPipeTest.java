@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class RangeFilterPipeTest extends TestCase {
 
-    public void testRangeFilterNormal() {
+    public void testPipeBasic() {
         List<String> names = Arrays.asList("abe", "bob", "carl", "derick", "evan", "fran");
         Pipe<String, String> pipe = new RangeFilterPipe<String>(0, 2);
         pipe.setStarts(names);
@@ -135,44 +135,9 @@ public class RangeFilterPipeTest extends TestCase {
         assertEquals(counter, 6);
     }
 
-    /* public void testRangeFilterGraphOneObject() {
-       Graph graph = TinkerGraphFactory.createTinkerGraph();
-       Vertex marko = graph.getVertex("1");
-       Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
-       Pipe<Edge, Edge> pipe2 = new RangeFilterPipe<Edge>(1, 1);
-       Pipe<Edge, Vertex> pipe3 = new InVertexPipe();
-       Pipe<Vertex, String> pipe4 = new PropertyPipe<Vertex, String>("name");
-       Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4);
-       pipeline.setStarts(new SingleIterator<Vertex>(marko));
-       int counter = 0;
-       while (pipeline.hasNext()) {
-           counter++;
-           assertEquals(pipeline.next(), "lop");
-       }
-       assertEquals(counter, 1);
-   }
-
-   public void testRangeFilterGraphTwoObjects() {
-       Graph graph = TinkerGraphFactory.createTinkerGraph();
-       Vertex marko = graph.getVertex("1");
-       Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
-       Pipe<Edge, Edge> pipe2 = new RangeFilterPipe<Edge>(0, 1);
-       Pipe<Edge, Vertex> pipe3 = new InVertexPipe();
-       Pipe<Vertex, String> pipe4 = new PropertyPipe<Vertex, String>("name");
-       Pipeline<Vertex, String> pipeline = new Pipeline<Vertex, String>(pipe1, pipe2, pipe3, pipe4);
-       pipeline.setStarts(new SingleIterator<Vertex>(marko));
-       int counter = 0;
-       while (pipeline.hasNext()) {
-           counter++;
-           String name = pipeline.next();
-           assertTrue(name.equals("lop") || name.equals("vadas"));
-       }
-       assertEquals(counter, 2);
-   } */
-
     public void testRangeFilterAbsurd() {
         try {
-            Pipe<String, String> pipe = new RangeFilterPipe<String>(2, 0);
+            new RangeFilterPipe<String>(2, 0);
             assertTrue(false);
         } catch (IllegalArgumentException e) {
             assertTrue(true);

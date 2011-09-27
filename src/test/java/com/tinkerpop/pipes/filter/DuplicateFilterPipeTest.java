@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DuplicateFilterPipeTest extends TestCase {
 
-    public void testDuplicateFilter() {
+    public void testPipeBasic() {
         List<String> starts = Arrays.asList("marko", "josh", "peter", "marko", "marko");
         Pipe<String, String> dfp = new DuplicateFilterPipe<String>();
         dfp.setStarts(starts.iterator());
