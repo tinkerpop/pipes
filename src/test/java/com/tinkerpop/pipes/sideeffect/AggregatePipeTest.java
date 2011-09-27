@@ -27,23 +27,7 @@ import java.util.NoSuchElementException;
  */
 public class AggregatePipeTest extends TestCase {
 
-    public void testReset() {
-        List<String> aggregate = new ArrayList<String>();
-        List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
-        AggregatePipe<String> pipe = new AggregatePipe<String>(aggregate);
-        pipe.setStarts(list.iterator());
-        assertTrue(pipe.hasNext());
-        assertEquals(aggregate.get(0), "marko");
-        assertEquals(aggregate.size(), 6);
-        pipe.reset();
-        assertEquals(aggregate.get(0), "marko");
-        assertEquals(aggregate.size(), 6);
-        assertFalse(pipe.hasNext());
-        assertEquals(pipe.getSideEffect().getClass(), ArrayList.class);
-        assertEquals(pipe.getSideEffect().size(), 0);
-    }
-
-    public void testAggregatorPipe() {
+    public void testPipeBasic() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         AggregatePipe<String> pipe = new AggregatePipe<String>(new ArrayList<String>());
         pipe.setStarts(list.iterator());
@@ -69,7 +53,23 @@ public class AggregatePipeTest extends TestCase {
     }
 
 
-    public void testAggregatorPipeWithFunction() {
+    public void testReset() {
+        List<String> aggregate = new ArrayList<String>();
+        List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
+        AggregatePipe<String> pipe = new AggregatePipe<String>(aggregate);
+        pipe.setStarts(list.iterator());
+        assertTrue(pipe.hasNext());
+        assertEquals(aggregate.get(0), "marko");
+        assertEquals(aggregate.size(), 6);
+        pipe.reset();
+        assertEquals(aggregate.get(0), "marko");
+        assertEquals(aggregate.size(), 6);
+        assertFalse(pipe.hasNext());
+        assertEquals(pipe.getSideEffect().getClass(), ArrayList.class);
+        assertEquals(pipe.getSideEffect().size(), 0);
+    }
+
+    public void testPipeWithFunction() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         AggregatePipe<String> pipe = new AggregatePipe<String>(new ArrayList<Integer>(), new LengthPipeFunction());
         pipe.setStarts(list.iterator());

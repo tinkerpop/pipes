@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.util;
 
-import com.tinkerpop.pipes.BaseTest;
+import com.tinkerpop.pipes.TimingTest;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SingleIteratorTest extends BaseTest {
+public class SingleIteratorTest extends TimingTest {
 
     public void testSingleIterator() {
         SingleIterator<String> itty = new SingleIterator<String>("marko");
@@ -51,4 +51,6 @@ public class SingleIteratorTest extends BaseTest {
         }
         printPerformance("SingleIterator for single object", numberToDo, "iterators constructed and next()'d", this.stopWatch());
     }
+
+
 }

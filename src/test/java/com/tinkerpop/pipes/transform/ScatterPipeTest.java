@@ -1,14 +1,14 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.pipes.BaseTest;
 import com.tinkerpop.pipes.Pipe;
+import junit.framework.TestCase;
 
 import java.util.Arrays;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ScatterPipeTest extends BaseTest {
+public class ScatterPipeTest extends TestCase {
 
     public void testPipeBasic() {
         Pipe scatter = new ScatterPipe();

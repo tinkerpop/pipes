@@ -1,22 +1,28 @@
 package com.tinkerpop.pipes.transform;
 
+import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.util.FluentPipeline;
 import junit.framework.TestCase;
+
+import java.util.Arrays;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class MemoizePipeTest extends TestCase {
 
-    /* public void testBasicPipeEquality() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        assertEquals(new FluentPipeline().start(graph.getVertices()).out().out().memoize(1).property("name"), new FluentPipeline().start(graph.getVertices()).out().out().property("name"));
+    public void testPipeEquality() {
+        assertEquals(
+                new FluentPipeline().start(Arrays.asList("a", "b", "c")).identity().objectFilter("x", FilterPipe.Filter.NOT_EQUAL).memoize(1).identity(),
+                new FluentPipeline().start(Arrays.asList("a", "b", "c")).identity().objectFilter("x", FilterPipe.Filter.NOT_EQUAL).identity());
     }
 
-    public void testBasicMemoization() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
+    /*public void testBasicMemoization() {
 
-        Map<Vertex, List<Vertex>> map = new HashMap<Vertex, List<Vertex>>();
-        FluentPipeline pipe1 = new FluentPipeline().start(graph.getVertices()).out().memoize(1, map).property("name");
+
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        Pipe pipe = new Pipeline(new IdentityPipe(), new AppendCharAndLengthPipe(), new MemoizePipe())
         pipe1.iterate();
 
         assertEquals(map.get(graph.getVertex(1)).size(), 3);
@@ -38,7 +44,21 @@ public class MemoizePipeTest extends TestCase {
         assertTrue(map.get(graph.getVertex(6)).contains(graph.getVertex(3)));
     }*/
 
-    public void testTrue() {
-        assertTrue(true);
+    private class AppendCharAndLengthPipe extends AbstractPipe<String, Object> {
+        Integer n;
+
+        public Object processNextStart() {
+            if (null != n) {
+                Integer temp = n;
+                n = null;
+                return temp;
+            } else {
+                String temp = this.starts.next() + "a";
+                n = temp.length();
+                return temp;
+            }
+        }
     }
+
+
 }

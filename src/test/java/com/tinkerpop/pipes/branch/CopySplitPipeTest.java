@@ -1,78 +1,105 @@
 package com.tinkerpop.pipes.branch;
 
+import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.filter.ObjectFilterPipe;
 import junit.framework.TestCase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class CopySplitPipeTest extends TestCase {
 
-    /*public void testFairMerge() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Pipe pipe1 = new Pipeline(new OutEdgesPipe(), new InVertexPipe());
-        Pipe pipe2 = new Pipeline(new OutEdgesPipe(), new InVertexPipe());
-        Pipe pipe3 = new Pipeline(new OutEdgesPipe(), new InVertexPipe());
+    public void testFairMerge() {
+
+        Pipe<String, String> pipe1 = new AppendCharPipe("a");
+        Pipe<String, String> pipe2 = new AppendCharPipe("b");
+        Pipe<String, String> pipe3 = new AppendCharPipe("c");
 
 
-        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(pipe1, pipe2, pipe3);
-        FairMergePipe<Vertex> fairMergePipe = new FairMergePipe<Vertex>(copySplitPipe.getPipes());
-        copySplitPipe.setStarts(graph.getVertices());
-        assertEquals(PipeHelper.counter(fairMergePipe), PipeHelper.counter(graph.getVertices().iterator()) * 3);
-    }
-
-    public void testFairMerge2() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Pipe pipe1 = new Pipeline(new OutEdgesPipe("knows"), new LabelPipe());
-        Pipe pipe2 = new Pipeline(new OutEdgesPipe("created"), new LabelPipe());
-
-
-        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(pipe1, pipe2);
-        FairMergePipe<Vertex> exhaustiveMergePipe = new FairMergePipe<Vertex>(copySplitPipe.getPipes());
-        copySplitPipe.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
-        List list = new ArrayList();
-        PipeHelper.fillCollection(exhaustiveMergePipe.iterator(), list);
-        assertEquals(list.get(0), "knows");
-        assertEquals(list.get(1), "created");
-        assertEquals(list.get(2), "knows");
-        assertEquals(list.size(), 3);
-    }
-
-    public void testExhaustiveMerge() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Pipe pipe1 = new Pipeline(new OutEdgesPipe("knows"), new LabelPipe());
-        Pipe pipe2 = new Pipeline(new OutEdgesPipe("created"), new LabelPipe());
-
-
-        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(pipe1, pipe2);
-        ExhaustMergePipe<Vertex> exhaustiveMergePipe = new ExhaustMergePipe<Vertex>(copySplitPipe.getPipes());
-        copySplitPipe.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
-        List list = new ArrayList();
-        PipeHelper.fillCollection(exhaustiveMergePipe.iterator(), list);
-        assertEquals(list.get(0), "knows");
-        assertEquals(list.get(1), "knows");
-        assertEquals(list.get(2), "created");
-        assertEquals(list.size(), 3);
-    }
-
-    public void testBasicNext() {
-        Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Pipe pipe1 = new Pipeline(new OutEdgesPipe("knows"), new LabelPipe());
-        Pipe pipe2 = new Pipeline(new OutEdgesPipe("created"), new LabelPipe());
-
-
-        CopySplitPipe<Vertex> copySplitPipe = new CopySplitPipe<Vertex>(pipe1, pipe2);
-        copySplitPipe.setStarts(graph.getVertices());
+        CopySplitPipe<String> copySplitPipe = new CopySplitPipe<String>(pipe1, pipe2, pipe3);
+        FairMergePipe<String> fairMergePipe = new FairMergePipe<String>(copySplitPipe.getPipes());
+        copySplitPipe.setStarts(Arrays.asList("1", "2"));
         int counter = 0;
-        Set<Vertex> set = new HashSet<Vertex>();
-        for (Vertex vertex : copySplitPipe) {
+        List<String> list = new ArrayList<String>();
+        while (fairMergePipe.hasNext()) {
             counter++;
-            set.add(vertex);
+            list.add(fairMergePipe.next());
         }
+        assertEquals(list.size(), 6);
         assertEquals(counter, 6);
-        assertEquals(set.size(), 6);
-    } */
+        assertEquals(list.get(0), "1a");
+        assertEquals(list.get(1), "1b");
+        assertEquals(list.get(2), "1c");
+        assertEquals(list.get(3), "2a");
+        assertEquals(list.get(4), "2b");
+        assertEquals(list.get(5), "2c");
+    }
 
-    public void testTrue() {
-        assertTrue(true);
+    public void testExhaustMerge() {
+
+        Pipe<String, String> pipe1 = new AppendCharPipe("a");
+        Pipe<String, String> pipe2 = new AppendCharPipe("b");
+        Pipe<String, String> pipe3 = new AppendCharPipe("c");
+
+
+        CopySplitPipe<String> copySplitPipe = new CopySplitPipe<String>(pipe1, pipe2, pipe3);
+        ExhaustMergePipe<String> exhaustMergePipe = new ExhaustMergePipe<String>(copySplitPipe.getPipes());
+        copySplitPipe.setStarts(Arrays.asList("1", "2"));
+        int counter = 0;
+        List<String> list = new ArrayList<String>();
+        while (exhaustMergePipe.hasNext()) {
+            counter++;
+            list.add(exhaustMergePipe.next());
+        }
+        assertEquals(list.size(), 6);
+        assertEquals(counter, 6);
+        assertEquals(list.get(0), "1a");
+        assertEquals(list.get(1), "2a");
+        assertEquals(list.get(2), "1b");
+        assertEquals(list.get(3), "2b");
+        assertEquals(list.get(4), "1c");
+        assertEquals(list.get(5), "2c");
+    }
+
+    public void testExhaustMergeFilter() {
+
+        Pipe<String, String> pipe1 = new ObjectFilterPipe<String>("x", FilterPipe.Filter.EQUAL);
+        Pipe<String, String> pipe2 = new AppendCharPipe("b");
+        Pipe<String, String> pipe3 = new AppendCharPipe("c");
+
+        CopySplitPipe<String> copySplitPipe = new CopySplitPipe<String>(pipe1, pipe2, pipe3);
+        ExhaustMergePipe<String> exhaustMergePipe = new ExhaustMergePipe<String>(copySplitPipe.getPipes());
+        copySplitPipe.setStarts(Arrays.asList("1", "2"));
+        int counter = 0;
+        List<String> list = new ArrayList<String>();
+        while (exhaustMergePipe.hasNext()) {
+            counter++;
+            list.add(exhaustMergePipe.next());
+        }
+        assertEquals(list.size(), 4);
+        assertEquals(counter, 4);
+        assertEquals(list.get(0), "1b");
+        assertEquals(list.get(1), "2b");
+        assertEquals(list.get(2), "1c");
+        assertEquals(list.get(3), "2c");
+    }
+
+
+    private class AppendCharPipe extends AbstractPipe<String, String> {
+        String c;
+
+        public AppendCharPipe(String c) {
+            this.c = c;
+        }
+
+        public String processNextStart() {
+            return this.starts.next() + c;
+        }
     }
 }

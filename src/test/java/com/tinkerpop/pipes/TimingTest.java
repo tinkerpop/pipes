@@ -2,6 +2,7 @@ package com.tinkerpop.pipes;
 
 import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.Assert;
+import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +12,9 @@ import java.util.UUID;
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TimingTest extends BaseTest {
+public class TimingTest extends TestCase {
+
+    double timer = -1.0d;
 
     public void testForLoopVsIterator() {
         int numberOfStarts = 100000;
@@ -27,7 +30,7 @@ public class TimingTest extends BaseTest {
         for (String uuid : uuids) {
             tempUUIDs.add(uuid.toUpperCase().toLowerCase().toUpperCase().toLowerCase());
         }
-        BaseTest.printPerformance("Pipes", numberOfStarts, "single for-loop 4 operations", this.stopWatch());
+        this.printPerformance("Pipes", numberOfStarts, "single for-loop 4 operations", this.stopWatch());
         Assert.assertEquals(tempUUIDs.size(), uuids.size());
 
         // MULTI FOR-LOOP MODEL
@@ -48,7 +51,7 @@ public class TimingTest extends BaseTest {
         for (String uuid : tempUUIDs) {
             tempUUIDs2.add(uuid.toLowerCase());
         }
-        BaseTest.printPerformance("Pipes", numberOfStarts, "multi for-loop 4 operations", this.stopWatch());
+        this.printPerformance("Pipes", numberOfStarts, "multi for-loop 4 operations", this.stopWatch());
         Assert.assertEquals(tempUUIDs2.size(), uuids.size());
 
 
@@ -66,7 +69,7 @@ public class TimingTest extends BaseTest {
             tempUUIDs.add(pipeline.next());
             counter++;
         }
-        BaseTest.printPerformance("Pipes", numberOfStarts, "pipes 4 operations", this.stopWatch());
+        this.printPerformance("Pipes", numberOfStarts, "pipes 4 operations", this.stopWatch());
         Assert.assertEquals(counter, uuids.size());
     }
 
@@ -83,4 +86,23 @@ public class TimingTest extends BaseTest {
             return this.starts.next().toLowerCase();
         }
     }
+
+    protected double stopWatch() {
+        if (this.timer == -1.0d) {
+            this.timer = System.nanoTime() / 1000000.0d;
+            return -1.0d;
+        } else {
+            double temp = (System.nanoTime() / 1000000.0d) - this.timer;
+            this.timer = -1.0d;
+            return temp;
+        }
+    }
+
+    protected void printPerformance(String name, Integer events, String eventName, double timeInMilliseconds) {
+        if (null != events)
+            System.out.println("\t" + name + ": " + events + " " + eventName + " in " + timeInMilliseconds + "ms");
+        else
+            System.out.println("\t" + name + ": " + eventName + " in " + timeInMilliseconds + "ms");
+    }
+
 }

@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public class TransformFunctionPipeTest extends TestCase {
 
-    public void testTransformFunction() {
+    public void testPipeBasic() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         List<Integer> results = Arrays.asList(5, 7, 9, 3, 4, 1);
         Pipe<String, Integer> pipe = new TransformFunctionPipe<String, Integer>(new NumCharPipeFunction());
@@ -23,6 +24,17 @@ public class TransformFunctionPipeTest extends TestCase {
             counter++;
         }
         assertEquals(counter, list.size());
+    }
+
+    public void testPipeNoElements() {
+        Pipe<String, Integer> pipe = new TransformFunctionPipe<String, Integer>(new NumCharPipeFunction());
+        pipe.setStarts(new ArrayList<String>());
+        int counter = 0;
+        while (pipe.hasNext()) {
+            pipe.next();
+            counter++;
+        }
+        assertEquals(counter, 0);
     }
 
     private class NumCharPipeFunction implements PipeFunction<String, Integer> {

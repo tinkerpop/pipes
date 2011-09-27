@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.pipes.BaseTest;
 import com.tinkerpop.pipes.Pipe;
+import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IdentityPipeTest extends BaseTest {
+public class IdentityPipeTest extends TestCase {
 
     public void testPipeBasic() {
         List<String> list = Arrays.asList("marko", "peter", "josh", "pavel", "stephen", "alex", "darrick", "pierre");
