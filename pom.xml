@@ -30,13 +30,6 @@
     </contributors>
     <inceptionYear>2010</inceptionYear>
     <dependencies>
-        <!-- PROPERTY GRAPH MODEL SUPPORT -->
-        <dependency>
-            <groupId>com.tinkerpop.blueprints</groupId>
-            <artifactId>blueprints-core</artifactId>
-            <version>1.1-SNAPSHOT</version>
-        </dependency>
-        <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

@@ -1,11 +1,5 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.pipes.transform.OutEdgesPipe;
-import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -31,7 +25,7 @@ public class AndFilterPipeTest extends TestCase {
         assertEquals(counter, 0);
     }
 
-    public void testAndPipeGraph() {
+    /*public void testAndPipeGraph() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Vertex peter = graph.getVertex("6");
@@ -50,6 +44,6 @@ public class AndFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-    }
+    }*/
 
 }

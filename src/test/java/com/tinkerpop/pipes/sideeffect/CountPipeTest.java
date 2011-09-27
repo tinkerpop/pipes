@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  */
 public class CountPipeTest extends TestCase {
 
-    public void testCountPipeNormal() {
+    public void testPipeBasic() {
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");
         CountPipe<String> pipe1 = new CountPipe<String>();
         pipe1.setStarts(list.iterator());
@@ -42,7 +42,7 @@ public class CountPipeTest extends TestCase {
     }
 
 
-    public void testCountPipeZero() {
+    public void testPipeNoElements() {
         List<String> list = Arrays.asList();
         CountPipe<String> pipe1 = new CountPipe<String>();
         pipe1.setStarts(list.iterator());

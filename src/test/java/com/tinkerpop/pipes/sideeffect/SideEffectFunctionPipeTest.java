@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class SideEffectFunctionPipeTest extends TestCase {
 
-    public void testBasicSideEffect() {
+    public void testPipeBasic() {
         AtomicInteger count = new AtomicInteger(0);
         int counter = 0;
         List<String> list = Arrays.asList("marko", "antonio", "rodriguez", "was", "here", ".");

@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class GroupCountPipeTest extends TestCase {
 
-    public void testCountCombinePipeNormal() {
+    public void testPipeBasic() {
         List<String> names = Arrays.asList("marko", "josh", "peter", "peter", "peter", "josh");
         SideEffectPipe<String, Map<String, Number>> pipe = new GroupCountPipe<String>();
         pipe.setStarts(names);
@@ -32,7 +32,7 @@ public class GroupCountPipeTest extends TestCase {
         assertEquals(0, pipe.getSideEffect().size());
     }
 
-    public void testCountCombinePipeZero() {
+    public void testPipeNoElements() {
         List<String> names = Arrays.asList();
         SideEffectPipe<String, Map<String, Number>> pipe = new GroupCountPipe<String>();
         pipe.setStarts(names);

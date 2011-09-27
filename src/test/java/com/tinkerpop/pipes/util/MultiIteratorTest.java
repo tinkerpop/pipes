@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.BaseTest;
+import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -10,7 +11,7 @@ import java.util.NoSuchElementException;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class MultiIteratorTest extends BaseTest {
+public class MultiIteratorTest extends TestCase {
 
     public void testMultiIteratorSimple() {
         List<Integer> a = Arrays.asList(1, 2);

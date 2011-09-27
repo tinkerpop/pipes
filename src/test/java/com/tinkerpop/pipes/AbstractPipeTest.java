@@ -1,24 +1,15 @@
 package com.tinkerpop.pipes;
 
-import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerEdge;
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerVertex;
 import com.tinkerpop.pipes.transform.IdentityPipe;
-import com.tinkerpop.pipes.transform.InVertexPipe;
-import com.tinkerpop.pipes.transform.OutEdgesPipe;
-import com.tinkerpop.pipes.transform.PropertyPipe;
+import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AbstractPipeTest extends BaseTest {
+public class AbstractPipeTest extends TestCase {
 
     private static final int TOTAL_RUNS = 25;
 
@@ -70,7 +61,7 @@ public class AbstractPipeTest extends BaseTest {
         assertFalse(endPipe.hasNext()); // Pipe has consumed and reset has thrown away both items.
     }
 
-    public void testPathConstruction() {
+    /*public void testPathConstruction() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
@@ -104,7 +95,8 @@ public class AbstractPipeTest extends BaseTest {
             //System.out.println(name);
             //System.out.println(pipeline.getPath());
         }
-    }
+    } */
+
 
     /*public void testExceptionTiming() throws Exception {
         Graph graph = new TinkerGraph();

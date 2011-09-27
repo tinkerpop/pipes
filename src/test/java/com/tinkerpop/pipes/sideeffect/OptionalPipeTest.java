@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class OptionalPipeTest extends TestCase {
 
-    public void testOptionalBasic() {
+    public void testPipeBasic() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
         OptionalPipe<String> pipe1 = new OptionalPipe<String>(new IdentityPipe<String>());
         pipe1.setStarts(names);

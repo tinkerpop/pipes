@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 public class ScatterPipeTest extends BaseTest {
 
-    public void testScatterPipe() {
+    public void testPipeBasic() {
         Pipe scatter = new ScatterPipe();
         scatter.setStarts(Arrays.asList(Arrays.asList(1, 2, 3)));
         int counter = 0;

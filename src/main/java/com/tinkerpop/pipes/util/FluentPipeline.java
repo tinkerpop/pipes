@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.util;
 
-import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.pipes.FunctionPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
@@ -15,11 +14,8 @@ import com.tinkerpop.pipes.filter.DuplicateFilterPipe;
 import com.tinkerpop.pipes.filter.ExceptFilterPipe;
 import com.tinkerpop.pipes.filter.FilterFunctionPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
-import com.tinkerpop.pipes.filter.IdFilterPipe;
-import com.tinkerpop.pipes.filter.LabelFilterPipe;
 import com.tinkerpop.pipes.filter.ObjectFilterPipe;
 import com.tinkerpop.pipes.filter.OrFilterPipe;
-import com.tinkerpop.pipes.filter.PropertyFilterPipe;
 import com.tinkerpop.pipes.filter.RandomFilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
@@ -31,32 +27,15 @@ import com.tinkerpop.pipes.sideeffect.OptionalPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
-import com.tinkerpop.pipes.transform.BothEdgesPipe;
-import com.tinkerpop.pipes.transform.BothPipe;
-import com.tinkerpop.pipes.transform.BothVerticesPipe;
-import com.tinkerpop.pipes.transform.EdgesPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.HasNextPipe;
-import com.tinkerpop.pipes.transform.IdEdgePipe;
-import com.tinkerpop.pipes.transform.IdPipe;
-import com.tinkerpop.pipes.transform.IdVertexPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
-import com.tinkerpop.pipes.transform.InEdgesPipe;
-import com.tinkerpop.pipes.transform.InPipe;
-import com.tinkerpop.pipes.transform.InVertexPipe;
-import com.tinkerpop.pipes.transform.LabelPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
-import com.tinkerpop.pipes.transform.OutEdgesPipe;
-import com.tinkerpop.pipes.transform.OutPipe;
-import com.tinkerpop.pipes.transform.OutVertexPipe;
 import com.tinkerpop.pipes.transform.PathFunctionPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
-import com.tinkerpop.pipes.transform.PropertyMapPipe;
-import com.tinkerpop.pipes.transform.PropertyPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
-import com.tinkerpop.pipes.transform.VerticesPipe;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,7 +50,7 @@ import java.util.Map;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FluentPipeline<S, E> extends Pipeline<S, E> {
+public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, E> {
 
     public FluentPipeline() {
         super();
@@ -92,9 +71,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param pipe the pipe to concatenate to the end of the pipeline
      * @return the extended FluentPipeline
      */
-    public FluentPipeline add(final Pipe pipe) {
+    public T add(final Pipe pipe) {
         this.addPipe(pipe);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -103,7 +82,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param function the function of the FunctionPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline step(final PipeFunction function) {
+    public T step(final PipeFunction function) {
         return this.add(new FunctionPipe(function));
     }
 
@@ -117,7 +96,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param pipes the internal pipes of the CopySplitPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline copySplit(final Pipe... pipes) {
+    public T copySplit(final Pipe... pipes) {
         return this.add(new CopySplitPipe(pipes));
     }
 
@@ -127,7 +106,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param pipes the internal pipes ExhaustMergePipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline exhaustMerge(final Pipe... pipes) {
+    public T exhaustMerge(final Pipe... pipes) {
         return this.add(new ExhaustMergePipe(pipes));
     }
 
@@ -137,11 +116,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline exhaustMerge() {
+    public T exhaustMerge() {
         this.addPipe(new ExhaustMergePipe((((MetaPipe) this.removePreviousPipes(1).get(0)).getPipes())));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -150,7 +129,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param pipes the internal pipes of the FairMergePipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline fairMerge(final Pipe... pipes) {
+    public T fairMerge(final Pipe... pipes) {
         return this.add(new FairMergePipe(pipes));
     }
 
@@ -160,11 +139,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline fairMerge() {
+    public T fairMerge() {
         this.addPipe(new FairMergePipe((((MetaPipe) this.removePreviousPipes(1).get(0)).getPipes())));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -175,7 +154,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param elseFunction the function denoting the "else" part of the pipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction) {
+    public T ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction) {
         return this.add(new IfThenElsePipe(ifFunction, thenFunction, elseFunction));
     }
 
@@ -186,11 +165,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param whileFunction the "while()" whileFunction of the LoopPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction) {
+    public T loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction) {
         this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(numberedStep)), whileFunction));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -200,11 +179,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param whileFunction the "while()" function of the LoopPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction) {
+    public T loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction) {
         this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(namedStep)), whileFunction));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -214,7 +193,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param whileFunction the "while()" function of the LoopPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction) {
+    public T loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction) {
         return this.add(new LoopPipe(pipe, whileFunction));
     }
 
@@ -228,7 +207,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param pipes the internal pipes of the AndFilterPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline andFilter(final Pipe<S, Boolean>... pipes) {
+    public T andFilter(final Pipe<S, Boolean>... pipes) {
         return this.add(new AndFilterPipe(pipes));
     }
 
@@ -238,11 +217,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param numberedStep the number of steps previous to back up to
      * @return the extended FluentPipeline
      */
-    public FluentPipeline backFilter(final int numberedStep) {
+    public T backFilter(final int numberedStep) {
         this.addPipe(new BackFilterPipe(new Pipeline(this.removePreviousPipes(numberedStep))));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -251,11 +230,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param namedStep the name of the step previous to back up to
      * @return the extended FluentPipeline
      */
-    public FluentPipeline backFilter(final String namedStep) {
+    public T backFilter(final String namedStep) {
         this.addPipe(new BackFilterPipe(new Pipeline(this.removePreviousPipes(namedStep))));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -264,7 +243,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param pipe the internal pipe of the BackFilterPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline backFilter(final Pipe pipe) {
+    public T backFilter(final Pipe pipe) {
         return this.add(new BackFilterPipe(pipe));
     }
 
@@ -274,7 +253,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param numberedStep the number of steps previous to back up to
      * @return the extended FluentPipeline
      */
-    public FluentPipeline back(final int numberedStep) {
+    public T back(final int numberedStep) {
         return this.backFilter(numberedStep);
     }
 
@@ -284,7 +263,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param namedStep the name of the step previous to back up to
      * @return the extended FluentPipeline
      */
-    public FluentPipeline back(final String namedStep) {
+    public T back(final String namedStep) {
         return this.backFilter(namedStep);
     }
 
@@ -294,16 +273,16 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param pipe the internal pipe of the BackFilterPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline back(final Pipe pipe) {
+    public T back(final Pipe pipe) {
         return this.add(new BackFilterPipe(pipe));
     }
 
     // todo: rename to UniqueObjectFilterPipe?
-    public FluentPipeline duplicateFilter() {
+    public T duplicateFilter() {
         return this.add(new DuplicateFilterPipe());
     }
 
-    public FluentPipeline uniqueObject() {
+    public T uniqueObject() {
         return this.duplicateFilter();
     }
 
@@ -313,7 +292,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param collection the collection except from the stream
      * @return the extended FluentPipeline
      */
-    public FluentPipeline exceptFilter(final Collection collection) {
+    public T exceptFilter(final Collection collection) {
         return this.add(new ExceptFilterPipe(collection));
     }
 
@@ -323,7 +302,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param collection the collection except from the stream
      * @return the extended FluentPipeline
      */
-    public FluentPipeline except(final Collection collection) {
+    public T except(final Collection collection) {
         return this.exceptFilter(collection);
     }
 
@@ -333,33 +312,12 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param filterFunction the filter function of the pipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline filter(final PipeFunction<?, Boolean> filterFunction) {
+    public T filter(final PipeFunction<?, Boolean> filterFunction) {
         return this.add(new FilterFunctionPipe(filterFunction));
     }
 
     // todo future filter pipe? (or remove it)
 
-    /**
-     * Add an IdFilterPipe to the end of the Pipeline.
-     *
-     * @param id     the id to filter on
-     * @param filter the filter of the pipe
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline idFilter(final Object id, final FilterPipe.Filter filter) {
-        return this.add(new IdFilterPipe(id, filter));
-    }
-
-    /**
-     * Add a LabelFilterPipe to the end of the Pipeline.
-     *
-     * @param label  the label to filter on
-     * @param filter the filter of the pipe
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline labelFilter(final String label, final FilterPipe.Filter filter) {
-        return this.add(new LabelFilterPipe(label, filter));
-    }
 
     /**
      * Add an ObjectFilterPipe to the end of the Pipeline.
@@ -368,7 +326,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param filter the filter of the pipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline objectFilter(final Object object, final FilterPipe.Filter filter) {
+    public T objectFilter(final Object object, final FilterPipe.Filter filter) {
         return this.add(new ObjectFilterPipe(object, filter));
     }
 
@@ -378,20 +336,8 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param pipes the internal pipes of the OrFilterPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline orFilter(final Pipe<S, Boolean>... pipes) {
+    public T orFilter(final Pipe<S, Boolean>... pipes) {
         return this.add(new OrFilterPipe(pipes));
-    }
-
-    /**
-     * Add a PropertyFilterPipe to the end of the Pipeline.
-     *
-     * @param key    the property key to check
-     * @param filter the filter of the pipe
-     * @param value  the object to filter on
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline propertyFilter(final String key, final FilterPipe.Filter filter, final Object value) {
-        return this.add(new PropertyFilterPipe(key, value, filter));
     }
 
     /**
@@ -400,7 +346,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param bias the bias of the random coin
      * @return the extended FluentPipeline
      */
-    public FluentPipeline randomFilter(final Double bias) {
+    public T randomFilter(final Double bias) {
         return this.add(new RandomFilterPipe(bias));
     }
 
@@ -410,7 +356,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param bias the bias of the random coin
      * @return the extended FluentPipeline
      */
-    public FluentPipeline random(final Double bias) {
+    public T random(final Double bias) {
         return this.randomFilter(bias);
     }
 
@@ -421,7 +367,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param high the high end of the range
      * @return the extended FluentPipeline
      */
-    public FluentPipeline rangeFilter(final int low, final int high) {
+    public T rangeFilter(final int low, final int high) {
         return this.add(new RangeFilterPipe(low, high));
     }
 
@@ -431,7 +377,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param index the index of the stream
      * @return the extended FluentPipeline
      */
-    public FluentPipeline rangeFilter(final int index) {
+    public T rangeFilter(final int index) {
         return this.rangeFilter(index, index);
     }
 
@@ -441,9 +387,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param collection the collection to retain
      * @return the extended FluentPipeline
      */
-    public FluentPipeline retainFilter(final Collection collection) {
+    public T retainFilter(final Collection collection) {
         this.addPipe(new RetainFilterPipe(collection));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -452,7 +398,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param collection the collection to retain
      * @return the extended FluentPipeline
      */
-    public FluentPipeline retain(final Collection collection) {
+    public T retain(final Collection collection) {
         return this.retainFilter(collection);
     }
 
@@ -461,9 +407,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline uniquePathFilter() {
+    public T uniquePathFilter() {
         this.addPipe(new UniquePathFilterPipe());
-        return this;
+        return (T) this;
     }
 
     /**
@@ -471,7 +417,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline uniquePath() {
+    public T uniquePath() {
         return this.uniquePathFilter();
     }
 
@@ -485,9 +431,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param aggregate the collection to aggregate results into
      * @return the extended FluentPipeline
      */
-    public FluentPipeline aggregate(final Collection aggregate) {
+    public T aggregate(final Collection aggregate) {
         this.addPipe(new AggregatePipe(aggregate));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -497,9 +443,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
      * @return the extended FluentPipeline
      */
-    public FluentPipeline aggregate(final Collection aggregate, final PipeFunction aggregateFunction) {
+    public T aggregate(final Collection aggregate, final PipeFunction aggregateFunction) {
         this.addPipe(new AggregatePipe(aggregate, aggregateFunction));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -508,7 +454,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline aggregate() {
+    public T aggregate() {
         return this.aggregate(new ArrayList());
     }
 
@@ -519,7 +465,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
      * @return the extended FluentPipeline
      */
-    public FluentPipeline aggregate(final PipeFunction aggregateFunction) {
+    public T aggregate(final PipeFunction aggregateFunction) {
         return this.aggregate(new ArrayList(), aggregateFunction);
     }
 
@@ -531,11 +477,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param numberedStep the number of steps previous to optional back to
      * @return the extended FluentPipeline
      */
-    public FluentPipeline optional(final int numberedStep) {
+    public T optional(final int numberedStep) {
         this.addPipe(new OptionalPipe(new Pipeline(this.removePreviousPipes(numberedStep))));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -544,11 +490,11 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param namedStep the name of the step previous to optional back to
      * @return the extended FluentPipeline
      */
-    public FluentPipeline optional(final String namedStep) {
+    public T optional(final String namedStep) {
         this.addPipe(new OptionalPipe(new Pipeline(this.removePreviousPipes(namedStep))));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -557,7 +503,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param pipe the internal pipe of the OptionalPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline optional(final Pipe pipe) {
+    public T optional(final Pipe pipe) {
         return this.add(new OptionalPipe(pipe));
     }
 
@@ -568,7 +514,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param functions the key and value functions (max 2 is allowed)
      * @return the extended FluentPipeline
      */
-    public FluentPipeline groupCount(final Map<Object, Number> map, final PipeFunction... functions) {
+    public T groupCount(final Map<Object, Number> map, final PipeFunction... functions) {
         if (functions.length == 0)
             return this.add(new GroupCountPipe(map));
         else if (functions.length == 2)
@@ -586,7 +532,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param functions the key and value functions (max 2 is allowed)
      * @return the extended FluentPipeline
      */
-    public FluentPipeline groupCount(final PipeFunction... functions) {
+    public T groupCount(final PipeFunction... functions) {
         if (functions.length == 0)
             return this.add(new GroupCountPipe());
         else if (functions.length == 2)
@@ -603,7 +549,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param sideEffectFunction the function of the pipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline sideEffect(final PipeFunction sideEffectFunction) {
+    public T sideEffect(final PipeFunction sideEffectFunction) {
         return this.add(new SideEffectFunctionPipe(sideEffectFunction));
     }
 
@@ -615,7 +561,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param columnFunctions the post-processing function for each column
      * @return the extended FluentPipeline
      */
-    public FluentPipeline table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
+    public T table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
         return this.add(new TablePipe(table, stepNames, this.getAsPipes(), columnFunctions));
     }
 
@@ -626,7 +572,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param columnFunctions the post-processing function for each column
      * @return the extended FluentPipeline
      */
-    public FluentPipeline table(final Table table, final PipeFunction... columnFunctions) {
+    public T table(final Table table, final PipeFunction... columnFunctions) {
         return this.add(new TablePipe(table, null, this.getAsPipes(), columnFunctions));
     }
 
@@ -636,7 +582,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param table the table to fill
      * @return the extended FluentPipeline
      */
-    public FluentPipeline table(final Table table) {
+    public T table(final Table table) {
         return this.add(new TablePipe(table, null, this.getAsPipes()));
     }
 
@@ -645,7 +591,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline table() {
+    public T table() {
         return this.add(new TablePipe(new Table(), null, this.getAsPipes()));
     }
 
@@ -653,97 +599,22 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     /// TRANSFORM PIPES ///
     ///////////////////////
 
-    /**
-     * Add a BothEdgesPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline bothEdges(final String... labels) {
-        return this.add(new BothEdgesPipe(labels));
-    }
-
-    /**
-     * Add a BothEdgesPipe to the end of the Pipeline.
-     *
-     * @param labels the edges labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline bothE(final String... labels) {
-        return this.bothEdges(labels);
-    }
-
-    /**
-     * Add a BothPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline both(final String... labels) {
-        return this.add(new BothPipe(labels));
-    }
-
-    /**
-     * Add a BothVerticesPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline bothVertices() {
-        return this.add(new BothVerticesPipe());
-    }
-
-    /**
-     * Add a BothVerticesPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline bothV() {
-        return this.bothVertices();
-    }
-
-    /**
-     * Add an EdgesPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline edges() {
-        return this.add(new EdgesPipe());
-    }
-
-    /**
-     * Add an EdgesPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline E() {
-        return this.edges();
-    }
 
     /**
      * Add a GatherPipe to the end of the Pipeline.
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline gather() {
+    public T gather() {
         return this.add(new GatherPipe());
     }
 
     // todo has count pipe
     // todo has next pipe
 
-    public FluentPipeline hasNext(final Pipe pipe) {
+    public T hasNext(final Pipe pipe) {
         this.addPipe(new HasNextPipe(pipe));
-        return this;
-    }
-
-    /**
-     * Add an IdEdgePipe to the end of the Pipeline.
-     *
-     * @param graph the graph of the pipe
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline idEdge(final Graph graph) {
-        return this.add(new IdEdgePipe(graph));
+        return (T) this;
     }
 
     /**
@@ -751,7 +622,7 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline identity() {
+    public T identity() {
         return this.add(new IdentityPipe());
     }
 
@@ -760,84 +631,8 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline _() {
+    public T _() {
         return this.identity();
-    }
-
-    /**
-     * Add an IdPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline id() {
-        return this.add(new IdPipe());
-    }
-
-    /**
-     * Add an IdVertexPipe to the end of the Pipeline.
-     *
-     * @param graph the graph of the pipe
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline idVertex(final Graph graph) {
-        return this.add(new IdVertexPipe(graph));
-    }
-
-    /**
-     * Add an InEdgesPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline inEdges(final String... labels) {
-        return this.add(new InEdgesPipe(labels));
-    }
-
-    /**
-     * Add an InEdgesPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline inE(final String... labels) {
-        return this.inEdges(labels);
-    }
-
-    /**
-     * Add a InPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline in(final String... labels) {
-        return this.add(new InPipe(labels));
-    }
-
-    /**
-     * Add an InVertexPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline inVertex() {
-        return this.add(new InVertexPipe());
-    }
-
-    /**
-     * Add an InVertexPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline inV() {
-        return this.inVertex();
-    }
-
-    /**
-     * Add an LabelPipe to the end of the Pipeline
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline label() {
-        return this.add(new LabelPipe());
     }
 
     /**
@@ -846,9 +641,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param namedStep the name of the step previous to memoize to
      * @return the extended FluentPipeline
      */
-    public FluentPipeline memoize(final String namedStep) {
+    public T memoize(final String namedStep) {
         this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep))));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -857,9 +652,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param numberedStep the number of the step previous to memoize to
      * @return the extended FluentPipeline
      */
-    public FluentPipeline memoize(final int numberedStep) {
+    public T memoize(final int numberedStep) {
         this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep))));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -869,9 +664,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param map       the memoization map
      * @return the extended FluentPipeline
      */
-    public FluentPipeline memoize(final String namedStep, final Map map) {
+    public T memoize(final String namedStep, final Map map) {
         this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep)), map));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -884,55 +679,6 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
     public FluentPipeline memoize(final int numberedStep, final Map map) {
         this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep)), map));
         return this;
-    }
-
-    /**
-     * Add an OutEdgesPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline outEdges(final String... labels) {
-        this.addPipe(new OutEdgesPipe(labels));
-        return this;
-    }
-
-    /**
-     * Add an OutEdgesPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline outE(final String... labels) {
-        return this.outEdges(labels);
-    }
-
-    /**
-     * Add an OutPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline out(final String... labels) {
-        return this.add(new OutPipe(labels));
-    }
-
-    /**
-     * Add an OutVertexPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline outVertex() {
-        return this.add(new OutVertexPipe());
-    }
-
-    /**
-     * Add an OutVertexPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline outV() {
-        return this.outVertex();
     }
 
     /**
@@ -956,36 +702,6 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      */
     public FluentPipeline path() {
         this.addPipe(new PathPipe());
-        return this;
-    }
-
-    /**
-     * Add a PropertyMapPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline propertyMap() {
-        this.addPipe(new PropertyMapPipe());
-        return this;
-    }
-
-    /**
-     * Add a PropertyMapPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline map() {
-        return this.propertyMap();
-    }
-
-    /**
-     * Add a PropertyPipe to the end of the Pipeline.
-     *
-     * @param key the property key
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline property(final String key) {
-        this.addPipe(new PropertyPipe(key));
         return this;
     }
 
@@ -1031,25 +747,6 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
         return this;
     }
 
-    /**
-     * Add a VerticesPipe to the end of the Pipeline
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline vertices() {
-        return this.add(new VerticesPipe());
-    }
-
-    /**
-     * Add a VerticesPipe to the end of the Pipeline
-     *
-     * @return the extended FluentPipeline
-     */
-    public FluentPipeline V() {
-        return this.vertices();
-    }
-
-
     //////////////////////
     /// UTILITY PIPES ///
     //////////////////////
@@ -1074,9 +771,9 @@ public class FluentPipeline<S, E> extends Pipeline<S, E> {
      * @param object the object that serves as the start of the pipeline (iterator/iterable are unfolded)
      * @return the extended FluentPipeline
      */
-    public FluentPipeline start(final Object object) {
+    public T start(final Object object) {
         this.addPipe(new StartPipe(object));
-        return this;
+        return (T) this;
     }
 
     ///////////////////////
