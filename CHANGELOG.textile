@@ -11,6 +11,20 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
+h3. Version 0.9 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>0.9-SNAPSHOT</version>
+</dependency>
+```
+
+* Removed all "Blueprints":http://blueprints.tinkerpop.com graph related dependencies
+
+==<hr/>==
+
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-cleaner-pipe.png!
 
 h3. Version 0.8 (Cleaner -- September 18, 2011)

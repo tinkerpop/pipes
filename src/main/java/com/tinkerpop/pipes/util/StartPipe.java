@@ -15,11 +15,11 @@ public class StartPipe<S> extends IdentityPipe<S> {
 
     public StartPipe(final Object start) {
         if (start instanceof Iterator) {
-            this.setStarts((Iterator) start);
+            super.setStarts((Iterator) start);
         } else if (start instanceof Iterable) {
-            this.setStarts((Iterable) start);
+            super.setStarts((Iterable) start);
         } else {
-            this.setStarts(new SingleIterator(start));
+            super.setStarts(new SingleIterator(start));
         }
     }
 }
