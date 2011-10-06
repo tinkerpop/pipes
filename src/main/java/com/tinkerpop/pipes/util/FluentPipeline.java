@@ -39,6 +39,7 @@ import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,13 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      */
     public FluentPipeline(final Object starts) {
         super(new StartPipe(starts));
+        if (starts instanceof Iterator) {
+            this.starts = (Iterator) starts;
+        } else if (starts instanceof Iterable) {
+            this.starts = ((Iterable) starts).iterator();
+        } else {
+            this.starts = new SingleIterator(starts);
+        }
     }
 
     /**
@@ -84,6 +92,10 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      */
     public T step(final PipeFunction function) {
         return this.add(new FunctionPipe(function));
+    }
+
+    public T step(final Pipe pipe) {
+        return this.add(pipe);
     }
 
     ////////////////////
@@ -388,8 +400,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T retainFilter(final Collection collection) {
-        this.addPipe(new RetainFilterPipe(collection));
-        return (T) this;
+        return this.add(new RetainFilterPipe(collection));
     }
 
     /**
@@ -408,8 +419,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T uniquePathFilter() {
-        this.addPipe(new UniquePathFilterPipe());
-        return (T) this;
+        return this.add(new UniquePathFilterPipe());
     }
 
     /**
@@ -432,8 +442,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T aggregate(final Collection aggregate) {
-        this.addPipe(new AggregatePipe(aggregate));
-        return (T) this;
+        return this.add(new AggregatePipe(aggregate));
     }
 
     /**
@@ -444,8 +453,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T aggregate(final Collection aggregate, final PipeFunction aggregateFunction) {
-        this.addPipe(new AggregatePipe(aggregate, aggregateFunction));
-        return (T) this;
+        return this.add(new AggregatePipe(aggregate, aggregateFunction));
     }
 
     /**
@@ -613,8 +621,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
     // todo has next pipe
 
     public T hasNext(final Pipe pipe) {
-        this.addPipe(new HasNextPipe(pipe));
-        return (T) this;
+        return this.add(new HasNextPipe(pipe));
     }
 
     /**
@@ -642,8 +649,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T memoize(final String namedStep) {
-        this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep))));
-        return (T) this;
+        return this.add(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep))));
     }
 
     /**
@@ -653,8 +659,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T memoize(final int numberedStep) {
-        this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep))));
-        return (T) this;
+        return this.add(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep))));
     }
 
     /**
@@ -665,8 +670,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T memoize(final String namedStep, final Map map) {
-        this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep)), map));
-        return (T) this;
+        return this.add(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep)), map));
     }
 
     /**
@@ -676,9 +680,8 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param map          the memoization map
      * @return the extended FluentPipeline
      */
-    public FluentPipeline memoize(final int numberedStep, final Map map) {
-        this.addPipe(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep)), map));
-        return this;
+    public T memoize(final int numberedStep, final Map map) {
+        return this.add(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep)), map));
     }
 
     /**
@@ -687,12 +690,12 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param pathFunctions the path function of the PathFunctionPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline path(final PipeFunction... pathFunctions) {
+    public T path(final PipeFunction... pathFunctions) {
         if (pathFunctions.length == 0)
             this.addPipe(new PathPipe());
         else
             this.addPipe(new PathFunctionPipe(pathFunctions));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -700,9 +703,8 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline path() {
-        this.addPipe(new PathPipe());
-        return this;
+    public T path() {
+        return this.add(new PathPipe());
     }
 
     /**
@@ -710,9 +712,8 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline scatter() {
-        this.addPipe(new ScatterPipe());
-        return this;
+    public T scatter() {
+        return this.add(new ScatterPipe());
     }
 
     /**
@@ -720,11 +721,11 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline sideEffectCap() {
+    public T sideEffectCap() {
         this.addPipe(new SideEffectCapPipe((SideEffectPipe) this.removePreviousPipes(1).get(0)));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -732,7 +733,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      *
      * @return the extended FluentPipeline
      */
-    public FluentPipeline cap() {
+    public T cap() {
         return this.sideEffectCap();
     }
 
@@ -742,9 +743,8 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param function the transformation function of the pipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline transform(final PipeFunction function) {
-        this.addPipe(new TransformFunctionPipe(function));
-        return this;
+    public T transform(final PipeFunction function) {
+        return this.add(new TransformFunctionPipe(function));
     }
 
     //////////////////////
@@ -757,11 +757,11 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param name the name of the AsPipe
      * @return the extended FluentPipeline
      */
-    public FluentPipeline as(final String name) {
+    public T as(final String name) {
         this.addPipe(new AsPipe(name, this.removePreviousPipes(1).get(0)));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -772,8 +772,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T start(final Object object) {
-        this.addPipe(new StartPipe(object));
-        return (T) this;
+        return this.add(new StartPipe(object));
     }
 
     ///////////////////////
@@ -830,7 +829,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
     }
 
     private List<AsPipe> getAsPipes(final MetaPipe metaPipe) {
-        List<AsPipe> asPipes = new ArrayList<AsPipe>();
+        final List<AsPipe> asPipes = new ArrayList<AsPipe>();
         for (final Pipe subPipe : metaPipe.getPipes()) {
             if (subPipe instanceof AsPipe) {
                 asPipes.add((AsPipe) subPipe);

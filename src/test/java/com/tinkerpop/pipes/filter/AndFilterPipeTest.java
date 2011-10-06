@@ -18,7 +18,7 @@ public class AndFilterPipeTest extends TestCase {
         andFilterPipe.setStarts(names);
         int counter = 0;
         while (andFilterPipe.hasNext()) {
-            assertEquals(andFilterPipe.next(),"marko");
+            assertEquals(andFilterPipe.next(), "marko");
             counter++;
         }
         assertEquals(counter, 2);
@@ -37,8 +37,6 @@ public class AndFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 0);
     }
-
-
 
 
 }
