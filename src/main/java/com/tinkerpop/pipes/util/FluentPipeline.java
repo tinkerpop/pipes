@@ -802,8 +802,8 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param number the number of objects to return
      * @return a list of X objects (if X objects occur)
      */
-    public List next(final int number) {
-        final List list = new ArrayList(number);
+    public List<E> next(final int number) {
+        final List<E> list = new ArrayList<E>(number);
         PipeHelper.fillCollection(this, list, number);
         return list;
     }
@@ -813,8 +813,8 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      *
      * @return a list of all the objects
      */
-    public List toList() {
-        final List list = new ArrayList();
+    public List<E> toList() {
+        final List<E> list = new ArrayList<E>();
         PipeHelper.fillCollection(this, list);
         return list;
     }
