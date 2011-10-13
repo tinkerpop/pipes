@@ -10,6 +10,7 @@ import com.tinkerpop.pipes.branch.IfThenElsePipe;
 import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
 import com.tinkerpop.pipes.filter.BackFilterPipe;
+import com.tinkerpop.pipes.filter.CyclicPathFilterPipe;
 import com.tinkerpop.pipes.filter.DuplicateFilterPipe;
 import com.tinkerpop.pipes.filter.ExceptFilterPipe;
 import com.tinkerpop.pipes.filter.FilterFunctionPipe;
@@ -19,7 +20,6 @@ import com.tinkerpop.pipes.filter.OrFilterPipe;
 import com.tinkerpop.pipes.filter.RandomFilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
-import com.tinkerpop.pipes.filter.UniquePathFilterPipe;
 import com.tinkerpop.pipes.sideeffect.AggregatePipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
@@ -219,17 +219,17 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param pipes the internal pipes of the AndFilterPipe
      * @return the extended FluentPipeline
      */
-    public T andFilter(final Pipe<S, Boolean>... pipes) {
+    public T and(final Pipe<S, Boolean>... pipes) {
         return this.add(new AndFilterPipe(pipes));
     }
 
     /**
-     * Add a BackFilter to the end of the Pipeline.
+     * Add a BackFilterPipe to the end of the Pipeline.
      *
      * @param numberedStep the number of steps previous to back up to
      * @return the extended FluentPipeline
      */
-    public T backFilter(final int numberedStep) {
+    public T back(final int numberedStep) {
         this.addPipe(new BackFilterPipe(new Pipeline(this.removePreviousPipes(numberedStep))));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
@@ -237,12 +237,12 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
     }
 
     /**
-     * Add a BackFilter to the end of the Pipeline.
+     * Add a BackFilterPipe to the end of the Pipeline.
      *
      * @param namedStep the name of the step previous to back up to
      * @return the extended FluentPipeline
      */
-    public T backFilter(final String namedStep) {
+    public T back(final String namedStep) {
         this.addPipe(new BackFilterPipe(new Pipeline(this.removePreviousPipes(namedStep))));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
@@ -250,37 +250,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
     }
 
     /**
-     * Add a BackFilter to the end of the Pipeline.
-     *
-     * @param pipe the internal pipe of the BackFilterPipe
-     * @return the extended FluentPipeline
-     */
-    public T backFilter(final Pipe pipe) {
-        return this.add(new BackFilterPipe(pipe));
-    }
-
-    /**
-     * Add a BackFilter to the end of the Pipeline.
-     *
-     * @param numberedStep the number of steps previous to back up to
-     * @return the extended FluentPipeline
-     */
-    public T back(final int numberedStep) {
-        return this.backFilter(numberedStep);
-    }
-
-    /**
-     * Add a BackFilter to the end of the Pipeline.
-     *
-     * @param namedStep the name of the step previous to back up to
-     * @return the extended FluentPipeline
-     */
-    public T back(final String namedStep) {
-        return this.backFilter(namedStep);
-    }
-
-    /**
-     * Add a BackFilter to the end of the Pipeline.
+     * Add a BackFilterPipe to the end of the Pipeline.
      *
      * @param pipe the internal pipe of the BackFilterPipe
      * @return the extended FluentPipeline
@@ -289,33 +259,23 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
         return this.add(new BackFilterPipe(pipe));
     }
 
-    // todo: rename to UniqueObjectFilterPipe?
-    public T duplicateFilter() {
+    /**
+     * Add a DuplicateFilterPipe to the end of the Pipeline.
+     *
+     * @return the extended FluentPipeline
+     */
+    public T dedup() {
         return this.add(new DuplicateFilterPipe());
     }
 
-    public T uniqueObject() {
-        return this.duplicateFilter();
-    }
-
     /**
-     * Add an ExceptFilter to the end of the Pipeline.
-     *
-     * @param collection the collection except from the stream
-     * @return the extended FluentPipeline
-     */
-    public T exceptFilter(final Collection collection) {
-        return this.add(new ExceptFilterPipe(collection));
-    }
-
-    /**
-     * Add an ExceptFilter to the end of the Pipeline.
+     * Add an ExceptFilterPipe to the end of the Pipeline.
      *
      * @param collection the collection except from the stream
      * @return the extended FluentPipeline
      */
     public T except(final Collection collection) {
-        return this.exceptFilter(collection);
+        return this.add(new ExceptFilterPipe(collection));
     }
 
     /**
@@ -348,7 +308,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param pipes the internal pipes of the OrFilterPipe
      * @return the extended FluentPipeline
      */
-    public T orFilter(final Pipe<S, Boolean>... pipes) {
+    public T or(final Pipe<S, Boolean>... pipes) {
         return this.add(new OrFilterPipe(pipes));
     }
 
@@ -358,18 +318,8 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param bias the bias of the random coin
      * @return the extended FluentPipeline
      */
-    public T randomFilter(final Double bias) {
-        return this.add(new RandomFilterPipe(bias));
-    }
-
-    /**
-     * Add a RandomFilterPipe to the end of the Pipeline.
-     *
-     * @param bias the bias of the random coin
-     * @return the extended FluentPipeline
-     */
     public T random(final Double bias) {
-        return this.randomFilter(bias);
+        return this.add(new RandomFilterPipe(bias));
     }
 
     /**
@@ -379,28 +329,8 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param high the high end of the range
      * @return the extended FluentPipeline
      */
-    public T rangeFilter(final int low, final int high) {
+    public T range(final int low, final int high) {
         return this.add(new RangeFilterPipe(low, high));
-    }
-
-    /**
-     * Add a RageFilterPipe to the end of the Pipeline.
-     *
-     * @param index the index of the stream
-     * @return the extended FluentPipeline
-     */
-    public T rangeFilter(final int index) {
-        return this.rangeFilter(index, index);
-    }
-
-    /**
-     * Add a RetainFilterPipe to the end of the Pipeline.
-     *
-     * @param collection the collection to retain
-     * @return the extended FluentPipeline
-     */
-    public T retainFilter(final Collection collection) {
-        return this.add(new RetainFilterPipe(collection));
     }
 
     /**
@@ -410,25 +340,16 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T retain(final Collection collection) {
-        return this.retainFilter(collection);
+        return this.add(new RetainFilterPipe(collection));
     }
 
     /**
-     * Add a UniquePathFilter to the end of the Pipeline.
+     * Add a CyclicPathFilterPipe to the end of the Pipeline.
      *
      * @return the extended FluentPipeline
      */
-    public T uniquePathFilter() {
-        return this.add(new UniquePathFilterPipe());
-    }
-
-    /**
-     * Add a UniquePathFilter to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public T uniquePath() {
-        return this.uniquePathFilter();
+    public T simplePath() {
+        return this.add(new CyclicPathFilterPipe());
     }
 
     /////////////////////////

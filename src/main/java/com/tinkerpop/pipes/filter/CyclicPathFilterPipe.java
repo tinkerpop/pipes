@@ -7,11 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * UniquePathFilterPipe will only emit an object if its transformation path has no repeats (loops) in it.
+ * CyclicPathFilterPipe will only emit an object if its transformation path has no repeats (loops) in it.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class UniquePathFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
+public class CyclicPathFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     public S processNextStart() {
         while (true) {
