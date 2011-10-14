@@ -439,38 +439,68 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
      *
-     * @param map       a provided count map
-     * @param functions the key and value functions (max 2 is allowed)
+     * @param map           a provided count map
+     * @param keyFunction   the key function to determine map key
+     * @param valueFunction the value function to determine map value
      * @return the extended FluentPipeline
      */
-    public T groupCount(final Map<Object, Number> map, final PipeFunction... functions) {
-        if (functions.length == 0)
-            return this.add(new GroupCountPipe(map));
-        else if (functions.length == 2)
-            return this.add(new GroupCountFunctionPipe(map, functions[0], functions[1]));
-        else if (functions.length == 1)
-            return this.add(new GroupCountFunctionPipe(map, functions[0], null));
-        else
-            throw new IllegalArgumentException("The provided functions must have a length of 0, 1, or 2");
+    public T groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
+        return this.add(new GroupCountFunctionPipe(map, keyFunction, valueFunction));
     }
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
-     * A java.util.HashMap is the constructed count map.
      *
-     * @param functions the key and value functions (max 2 is allowed)
+     * @param keyFunction   the key function to determine map key
+     * @param valueFunction the value function to determine map value
      * @return the extended FluentPipeline
      */
-    public T groupCount(final PipeFunction... functions) {
-        if (functions.length == 0)
-            return this.add(new GroupCountPipe());
-        else if (functions.length == 2)
-            return this.add(new GroupCountFunctionPipe(functions[0], functions[1]));
-        else if (functions.length == 1)
-            return this.add(new GroupCountFunctionPipe(functions[0], null));
-        else
-            throw new IllegalArgumentException("The provided functions must have a length of 0, 1, or 2");
+    public T groupCount(final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
+        return this.add(new GroupCountFunctionPipe(keyFunction, valueFunction));
     }
+
+
+    /**
+     * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
+     *
+     * @param map         a provided count map
+     * @param keyFunction the key function to determine map key
+     * @return the extended FluentPipeline
+     */
+    public T groupCount(final Map<?, Number> map, final PipeFunction keyFunction) {
+        return this.add(new GroupCountFunctionPipe(map, keyFunction, null));
+    }
+
+    /**
+     * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
+     *
+     * @param keyFunction the key function to determine map key
+     * @return the extended FluentPipeline
+     */
+    public T groupCount(final PipeFunction keyFunction) {
+        return this.add(new GroupCountFunctionPipe(keyFunction, null));
+    }
+
+
+    /**
+     * Add a GroupCountPipe to the end of the Pipeline.
+     *
+     * @param map a provided count map
+     * @return the extended FluentPipeline
+     */
+    public T groupCount(final Map<?, Number> map) {
+        return this.add(new GroupCountPipe(map));
+    }
+
+    /**
+     * Add a GroupCountPipe to the end of the Pipeline.
+     *
+     * @return the extended FluentPipeline
+     */
+    public T groupCount() {
+        return this.add(new GroupCountPipe());
+    }
+
 
     /**
      * Add a SideEffectFunctionPipe to the end of the Pipeline.
@@ -536,6 +566,11 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      */
     public T gather() {
         return this.add(new GatherPipe());
+    }
+
+    public T gather(PipeFunction<List, ?> function) {
+        this.addPipe(new GatherPipe());
+        return this.add(new TransformFunctionPipe(function));
     }
 
     // todo has count pipe
