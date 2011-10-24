@@ -150,6 +150,18 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
         return this.pipes;
     }
 
+    public Iterator<S> getStarts() {
+        return this.starts;
+    }
+
+    public Pipe remove(final int index) {
+        return this.pipes.remove(index);
+    }
+
+    public Pipe get(final int index) {
+        return this.pipes.get(index);
+    }
+
     /**
      * Clear the pipes in the pipeline.
      * A way to use the same reference to a newly constructed pipeline.

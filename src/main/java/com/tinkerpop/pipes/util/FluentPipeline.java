@@ -45,9 +45,8 @@ import java.util.Map;
 
 /**
  * FluentPipeline allows for the creation of a Pipeline using the fluent-pattern (http://en.wikipedia.org/wiki/Fluent_interface ).
- * Each Pipe in Pipes maintains a fluent method in FluentPipeline. Moreover, there are two types of methods: verbose and concise.
- * Verbose methods have a longer name than their respective concise counterpart -- e.g. retainFilter vs. retain.
- * Moreover, numerous method overloading are provided in order to accommodate the various ways in which one logically thinks of a pipeline structure.
+ * Each Pipe in Pipes maintains a fluent method in FluentPipeline.
+ * Numerous method overloadings are provided in order to accommodate the various ways in which one logically thinks of a pipeline structure.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -129,10 +128,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T exhaustMerge() {
-        this.addPipe(new ExhaustMergePipe((((MetaPipe) this.removePreviousPipes(1).get(0)).getPipes())));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new ExhaustMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
     }
 
     /**
@@ -152,10 +148,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T fairMerge() {
-        this.addPipe(new FairMergePipe((((MetaPipe) this.removePreviousPipes(1).get(0)).getPipes())));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new FairMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
     }
 
     /**
@@ -178,10 +171,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction) {
-        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(numberedStep)), whileFunction));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction));
     }
 
     /**
@@ -192,10 +182,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction) {
-        this.addPipe(new LoopPipe(new Pipeline(this.removePreviousPipes(namedStep)), whileFunction));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
     }
 
     /**
@@ -230,10 +217,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T back(final int numberedStep) {
-        this.addPipe(new BackFilterPipe(new Pipeline(this.removePreviousPipes(numberedStep))));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new BackFilterPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
     }
 
     /**
@@ -243,10 +227,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T back(final String namedStep) {
-        this.addPipe(new BackFilterPipe(new Pipeline(this.removePreviousPipes(namedStep))));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new BackFilterPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
     /**
@@ -287,9 +268,6 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
     public T filter(final PipeFunction<?, Boolean> filterFunction) {
         return this.add(new FilterFunctionPipe(filterFunction));
     }
-
-    // todo future filter pipe? (or remove it)
-
 
     /**
      * Add an ObjectFilterPipe to the end of the Pipeline.
@@ -407,10 +385,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T optional(final int numberedStep) {
-        this.addPipe(new OptionalPipe(new Pipeline(this.removePreviousPipes(numberedStep))));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
     }
 
     /**
@@ -420,10 +395,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T optional(final String namedStep) {
-        this.addPipe(new OptionalPipe(new Pipeline(this.removePreviousPipes(namedStep))));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
     /**
@@ -521,7 +493,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(table, stepNames, this.getAsPipes(), columnFunctions));
+        return this.add(new TablePipe(table, stepNames, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
     /**
@@ -532,7 +504,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T table(final Table table, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(table, null, this.getAsPipes(), columnFunctions));
+        return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
     /**
@@ -542,7 +514,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T table(final Table table) {
-        return this.add(new TablePipe(table, null, this.getAsPipes()));
+        return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this)));
     }
 
     /**
@@ -551,7 +523,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T table() {
-        return this.add(new TablePipe(new Table(), null, this.getAsPipes()));
+        return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this)));
     }
 
     ///////////////////////
@@ -572,9 +544,6 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
         this.addPipe(new GatherPipe());
         return this.add(new TransformFunctionPipe(function));
     }
-
-    // todo has count pipe
-    // todo has next pipe
 
     public T hasNext(final Pipe pipe) {
         return this.add(new HasNextPipe(pipe));
@@ -605,7 +574,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T memoize(final String namedStep) {
-        return this.add(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep))));
+        return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
     /**
@@ -615,7 +584,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T memoize(final int numberedStep) {
-        return this.add(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep))));
+        return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
     }
 
     /**
@@ -626,7 +595,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T memoize(final String namedStep, final Map map) {
-        return this.add(new MemoizePipe(new Pipeline(this.removePreviousPipes(namedStep)), map));
+        return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), map));
     }
 
     /**
@@ -637,7 +606,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T memoize(final int numberedStep, final Map map) {
-        return this.add(new MemoizePipe(new Pipeline(this.removePreviousPipes(numberedStep)), map));
+        return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), map));
     }
 
     /**
@@ -678,10 +647,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T sideEffectCap() {
-        this.addPipe(new SideEffectCapPipe((SideEffectPipe) this.removePreviousPipes(1).get(0)));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new SideEffectCapPipe((SideEffectPipe) FluentUtility.removePreviousPipes(this, 1).get(0)));
     }
 
     /**
@@ -714,10 +680,7 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @return the extended FluentPipeline
      */
     public T as(final String name) {
-        this.addPipe(new AsPipe(name, this.removePreviousPipes(1).get(0)));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-        return (T) this;
+        return this.add(new AsPipe(name, FluentUtility.removePreviousPipes(this, 1).get(0)));
     }
 
     /**
@@ -775,64 +738,4 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
         return list;
     }
 
-    /**
-     * Get all the AsPipes in the pipeline.
-     *
-     * @return all the AsPipes
-     */
-    public List<AsPipe> getAsPipes() {
-        return this.getAsPipes(this);
-    }
-
-    private List<AsPipe> getAsPipes(final MetaPipe metaPipe) {
-        final List<AsPipe> asPipes = new ArrayList<AsPipe>();
-        for (final Pipe subPipe : metaPipe.getPipes()) {
-            if (subPipe instanceof AsPipe) {
-                asPipes.add((AsPipe) subPipe);
-            }
-            if (subPipe instanceof MetaPipe) {
-                asPipes.addAll(this.getAsPipes((MetaPipe) subPipe));
-            }
-        }
-        return asPipes;
-    }
-
-    /**
-     * A utility method to remove all the pipes back some number of steps and return them as a list.
-     *
-     * @param numberedStep the number of steps back to remove from the pipeline
-     * @return the removed pipes
-     */
-    protected List<Pipe> removePreviousPipes(final int numberedStep) {
-        final List<Pipe> previousPipes = new ArrayList<Pipe>();
-        for (int i = this.pipes.size() - 1; i > ((this.pipes.size() - 1) - numberedStep); i--) {
-            previousPipes.add(0, this.pipes.get(i));
-        }
-        for (int i = 0; i < numberedStep; i++) {
-            this.pipes.remove(this.pipes.size() - 1);
-        }
-        return previousPipes;
-    }
-
-    /**
-     * A utility method to remove all the pipes back some named step and return them as a list.
-     *
-     * @param namedStep the name of the step previous to remove from the pipeline
-     * @return the removed pipes
-     */
-    protected List<Pipe> removePreviousPipes(final String namedStep) {
-        final List<Pipe> previousPipes = new ArrayList<Pipe>();
-        for (int i = this.pipes.size() - 1; i >= 0; i--) {
-            final Pipe pipe = this.pipes.get(i);
-            if (pipe instanceof AsPipe && ((AsPipe) pipe).getName().equals(namedStep)) {
-                break;
-            } else {
-                previousPipes.add(0, pipe);
-            }
-        }
-        for (int i = 0; i < previousPipes.size(); i++) {
-            this.pipes.remove(this.pipes.size() - 1);
-        }
-        return previousPipes;
-    }
 }
