@@ -2,7 +2,7 @@ package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
-import com.tinkerpop.pipes.util.FluentPipeline;
+import com.tinkerpop.pipes.util.PipesPipeline;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -14,8 +14,8 @@ public class MemoizePipeTest extends TestCase {
 
     public void testPipeEquality() {
         assertEquals(
-                new FluentPipeline().start(Arrays.asList("a", "b", "c")).identity().objectFilter("x", FilterPipe.Filter.NOT_EQUAL).memoize(1).identity(),
-                new FluentPipeline().start(Arrays.asList("a", "b", "c")).identity().objectFilter("x", FilterPipe.Filter.NOT_EQUAL).identity());
+                new PipesPipeline().start(Arrays.asList("a", "b", "c")).identity().objectFilter("x", FilterPipe.Filter.NOT_EQUAL).memoize(1).identity(),
+                new PipesPipeline().start(Arrays.asList("a", "b", "c")).identity().objectFilter("x", FilterPipe.Filter.NOT_EQUAL).identity());
     }
 
     /*public void testBasicMemoization() {

@@ -3,7 +3,7 @@ package com.tinkerpop.pipes.sideeffect;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.LoopPipe;
-import com.tinkerpop.pipes.util.FluentPipeline;
+import com.tinkerpop.pipes.util.PipesPipeline;
 import com.tinkerpop.pipes.util.Table;
 import junit.framework.TestCase;
 
@@ -17,7 +17,7 @@ public class TablePipeTest extends TestCase {
     public void testTablePipe() throws Exception {
 
         Table t = new Table();
-        new FluentPipeline(Arrays.asList("a", "b")).as("1").step(new StringCharPipe()).as("2").table(t).iterate();
+        new PipesPipeline(Arrays.asList("a", "b")).as("1").step(new StringCharPipe()).as("2").table(t).iterate();
 
         assertEquals(t.get(0, 0), "a");
         assertEquals(t.get(0, 1), "a");
@@ -31,7 +31,7 @@ public class TablePipeTest extends TestCase {
         assertEquals(t.getRowCount(), 4);
 
         t = new Table();
-        new FluentPipeline(Arrays.asList("a", "b")).as("1").step(new StringCharPipe()).as("2").table(t, new PipeFunction<String, Integer>() {
+        new PipesPipeline(Arrays.asList("a", "b")).as("1").step(new StringCharPipe()).as("2").table(t, new PipeFunction<String, Integer>() {
             public Integer compute(String s) {
                 return s.length();
             }
@@ -53,7 +53,7 @@ public class TablePipeTest extends TestCase {
 
     public void testTablePipeWithMetaPipes() {
         Table t = new Table();
-        new FluentPipeline(Arrays.asList("a")).as("1").step(new StringLengthPipe()).as("2").back(1).step(new StringCharPipe()).as("3").table(t).iterate();
+        new PipesPipeline(Arrays.asList("a")).as("1").step(new StringLengthPipe()).as("2").back(1).step(new StringCharPipe()).as("3").table(t).iterate();
         assertEquals(t.get(0, 0), "a");
         assertEquals(t.get(0, 1), 1);
         assertEquals(t.get(0, 2), "a");
@@ -67,7 +67,7 @@ public class TablePipeTest extends TestCase {
     public void testTablePipeWithLoop() {
         Table t = new Table();
 
-        new FluentPipeline("a").as("1").step(new StringCharPipe()).loop(1, new PipeFunction<LoopPipe.LoopBundle, Boolean>() {
+        new PipesPipeline("a").as("1").step(new StringCharPipe()).loop(1, new PipeFunction<LoopPipe.LoopBundle, Boolean>() {
             @Override
             public Boolean compute(LoopPipe.LoopBundle argument) {
                 return argument.getLoops() < 3;
@@ -89,7 +89,7 @@ public class TablePipeTest extends TestCase {
     public void testTableFunctions() {
 
         Table t = new Table();
-        new FluentPipeline(Arrays.asList("a", "b")).as("1").step(new StringCharPipe()).as("2").table(t).iterate();
+        new PipesPipeline(Arrays.asList("a", "b")).as("1").step(new StringCharPipe()).as("2").table(t).iterate();
 
         assertEquals(t.get(0, 0), "a");
         assertEquals(t.get(0, 1), "a");
@@ -129,7 +129,7 @@ public class TablePipeTest extends TestCase {
     public void testTablePipeWithSubColumns() {
 
         Table t = new Table();
-        new FluentPipeline("a").as("1").step(new StringCharPipe()).as("NO").step(new StringLengthPipe()).as("2").table(t, Arrays.asList("1", "2"), new PipeFunction<String, String>() {
+        new PipesPipeline("a").as("1").step(new StringCharPipe()).as("NO").step(new StringLengthPipe()).as("2").table(t, Arrays.asList("1", "2"), new PipeFunction<String, String>() {
                     public String compute(String a) {
                         return a + "!";
                     }
@@ -149,7 +149,7 @@ public class TablePipeTest extends TestCase {
         assertEquals(t.getRowCount(), 2);
 
         t.clear();
-        new FluentPipeline("a").as("1").step(new StringCharPipe()).as("NO").step(new StringLengthPipe()).as("2").table(t, Arrays.asList("1", "2"), new PipeFunction<Object, String>() {
+        new PipesPipeline("a").as("1").step(new StringCharPipe()).as("NO").step(new StringLengthPipe()).as("2").table(t, Arrays.asList("1", "2"), new PipeFunction<Object, String>() {
             public String compute(Object a) {
                 return a.toString() + "!#@";
             }
@@ -170,7 +170,7 @@ public class TablePipeTest extends TestCase {
         Table t = new Table();
         assertEquals(t.getColumnCount(), -1);
         assertEquals(t.getColumnNames().size(), 0);
-        new FluentPipeline("x").as("a").filter(new PipeFunction<Object, Boolean>() {
+        new PipesPipeline("x").as("a").filter(new PipeFunction<Object, Boolean>() {
             public Boolean compute(Object argument) {
                 return false;
             }

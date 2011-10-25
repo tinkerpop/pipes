@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.util;
 import com.tinkerpop.pipes.Pipe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -73,5 +74,15 @@ public class FluentUtility {
             pipeline.setStarts(pipeline.getStarts());
 
         return previousPipes;
+    }
+
+    public static void setStarts(final Pipeline pipeline, final Object starts) {
+        if (starts instanceof Iterator) {
+            pipeline.setStarts((Iterator) starts);
+        } else if (starts instanceof Iterable) {
+            pipeline.setStarts(((Iterable) starts).iterator());
+        } else {
+            pipeline.setStarts(new SingleIterator(starts));
+        }
     }
 }

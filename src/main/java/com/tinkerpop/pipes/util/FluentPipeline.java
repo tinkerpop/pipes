@@ -1,101 +1,28 @@
 package com.tinkerpop.pipes.util;
 
-import com.tinkerpop.pipes.FunctionPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.branch.CopySplitPipe;
-import com.tinkerpop.pipes.branch.ExhaustMergePipe;
-import com.tinkerpop.pipes.branch.FairMergePipe;
-import com.tinkerpop.pipes.branch.IfThenElsePipe;
-import com.tinkerpop.pipes.branch.LoopPipe;
-import com.tinkerpop.pipes.filter.AndFilterPipe;
-import com.tinkerpop.pipes.filter.BackFilterPipe;
-import com.tinkerpop.pipes.filter.CyclicPathFilterPipe;
-import com.tinkerpop.pipes.filter.DuplicateFilterPipe;
-import com.tinkerpop.pipes.filter.ExceptFilterPipe;
-import com.tinkerpop.pipes.filter.FilterFunctionPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
-import com.tinkerpop.pipes.filter.ObjectFilterPipe;
-import com.tinkerpop.pipes.filter.OrFilterPipe;
-import com.tinkerpop.pipes.filter.RandomFilterPipe;
-import com.tinkerpop.pipes.filter.RangeFilterPipe;
-import com.tinkerpop.pipes.filter.RetainFilterPipe;
-import com.tinkerpop.pipes.sideeffect.AggregatePipe;
-import com.tinkerpop.pipes.sideeffect.GroupCountFunctionPipe;
-import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
-import com.tinkerpop.pipes.sideeffect.OptionalPipe;
-import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
-import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
-import com.tinkerpop.pipes.sideeffect.TablePipe;
-import com.tinkerpop.pipes.transform.GatherPipe;
-import com.tinkerpop.pipes.transform.HasNextPipe;
-import com.tinkerpop.pipes.transform.IdentityPipe;
-import com.tinkerpop.pipes.transform.MemoizePipe;
-import com.tinkerpop.pipes.transform.PathFunctionPipe;
-import com.tinkerpop.pipes.transform.PathPipe;
-import com.tinkerpop.pipes.transform.ScatterPipe;
-import com.tinkerpop.pipes.transform.SideEffectCapPipe;
-import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
- * FluentPipeline allows for the creation of a Pipeline using the fluent-pattern (http://en.wikipedia.org/wiki/Fluent_interface ).
- * Each Pipe in Pipes maintains a fluent method in FluentPipeline.
- * Numerous method overloadings are provided in order to accommodate the various ways in which one logically thinks of a pipeline structure.
- *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, E> {
+public interface FluentPipeline<S, E> {
 
-    public FluentPipeline() {
-        super();
-    }
-
-    /**
-     * Construct a new FluentPipeline with a StartPipe as the first pipe given provide start object.
-     *
-     * @param starts start object (if iterable/iterator, it is unfolded)
-     */
-    public FluentPipeline(final Object starts) {
-        super(new StartPipe(starts));
-        if (starts instanceof Iterator) {
-            this.starts = (Iterator) starts;
-        } else if (starts instanceof Iterable) {
-            this.starts = ((Iterable) starts).iterator();
-        } else {
-            this.starts = new SingleIterator(starts);
-        }
-    }
-
-    /**
-     * Add an arbitrary Pipe to the end of the pipeline.
-     *
-     * @param pipe the pipe to concatenate to the end of the pipeline
-     * @return the extended FluentPipeline
-     */
-    public T add(final Pipe pipe) {
-        this.addPipe(pipe);
-        return (T) this;
-    }
 
     /**
      * Add a FunctionPipe to the end of the pipeline.
      *
      * @param function the function of the FunctionPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T step(final PipeFunction function) {
-        return this.add(new FunctionPipe(function));
-    }
+    public FluentPipeline step(final PipeFunction function);
 
-    public T step(final Pipe pipe) {
-        return this.add(pipe);
-    }
+    public FluentPipeline step(final Pipe pipe);
 
     ////////////////////
     /// BRANCH PIPES ///
@@ -105,51 +32,41 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * Add a CopySplitPipe to the end of the pipeline.
      *
      * @param pipes the internal pipes of the CopySplitPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T copySplit(final Pipe... pipes) {
-        return this.add(new CopySplitPipe(pipes));
-    }
+    public FluentPipeline copySplit(final Pipe... pipes);
 
     /**
      * Add an ExhaustMergePipe to the end of the pipeline.
      *
      * @param pipes the internal pipes ExhaustMergePipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T exhaustMerge(final Pipe... pipes) {
-        return this.add(new ExhaustMergePipe(pipes));
-    }
+    public FluentPipeline exhaustMerge(final Pipe... pipes);
 
     /**
      * Add an ExhaustMergePipe to the end of the pipeline.
      * The one-step previous MetaPipe in the pipeline's pipes are used as the internal pipes.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T exhaustMerge() {
-        return this.add(new ExhaustMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
-    }
+    public FluentPipeline exhaustMerge();
 
     /**
      * Add a FairMergePipe to the end of the pipeline.
      *
      * @param pipes the internal pipes of the FairMergePipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T fairMerge(final Pipe... pipes) {
-        return this.add(new FairMergePipe(pipes));
-    }
+    public FluentPipeline fairMerge(final Pipe... pipes);
 
     /**
      * Add a FairMergePipe to the end of the Pipeline.
      * The one-step previous MetaPipe in the pipeline's pipes are used as the internal pipes.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T fairMerge() {
-        return this.add(new FairMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
-    }
+    public FluentPipeline fairMerge();
 
     /**
      * Add an IfThenElsePipe to the end of the Pipeline.
@@ -157,44 +74,36 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param ifFunction   the function denoting the "if" part of the pipe
      * @param thenFunction the function denoting the "then" part of the pipe
      * @param elseFunction the function denoting the "else" part of the pipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction) {
-        return this.add(new IfThenElsePipe(ifFunction, thenFunction, elseFunction));
-    }
+    public FluentPipeline ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction);
 
     /**
      * Add a LoopPipe to the end of the Pipeline.
      *
      * @param numberedStep  the number of steps previous to loop back to
      * @param whileFunction the "while()" whileFunction of the LoopPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction));
-    }
+    public FluentPipeline loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction);
 
     /**
      * Add a LoopPipe ot the end of the Pipeline.
      *
      * @param namedStep     the name of the step previous to loop back to
      * @param whileFunction the "while()" function of the LoopPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
-    }
+    public FluentPipeline loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction);
 
     /**
      * Add a LoopPipe ot the end of the Pipeline.
      *
      * @param pipe          the internal pipe of the LoopPipe
      * @param whileFunction the "while()" function of the LoopPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction) {
-        return this.add(new LoopPipe(pipe, whileFunction));
-    }
+    public FluentPipeline loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction);
 
     ////////////////////
     /// FILTER PIPES ///
@@ -204,131 +113,105 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * Add an AndFilterPipe to the end the Pipeline.
      *
      * @param pipes the internal pipes of the AndFilterPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T and(final Pipe<S, Boolean>... pipes) {
-        return this.add(new AndFilterPipe(pipes));
-    }
+    public FluentPipeline and(final Pipe<?, Boolean>... pipes);
 
     /**
      * Add a BackFilterPipe to the end of the Pipeline.
      *
      * @param numberedStep the number of steps previous to back up to
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T back(final int numberedStep) {
-        return this.add(new BackFilterPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
-    }
+    public FluentPipeline back(final int numberedStep);
 
     /**
      * Add a BackFilterPipe to the end of the Pipeline.
      *
      * @param namedStep the name of the step previous to back up to
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T back(final String namedStep) {
-        return this.add(new BackFilterPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
-    }
+    public FluentPipeline back(final String namedStep);
 
     /**
      * Add a BackFilterPipe to the end of the Pipeline.
      *
      * @param pipe the internal pipe of the BackFilterPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T back(final Pipe pipe) {
-        return this.add(new BackFilterPipe(pipe));
-    }
+    public FluentPipeline back(final Pipe pipe);
 
     /**
      * Add a DuplicateFilterPipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T dedup() {
-        return this.add(new DuplicateFilterPipe());
-    }
+    public FluentPipeline dedup();
 
     /**
      * Add an ExceptFilterPipe to the end of the Pipeline.
      *
      * @param collection the collection except from the stream
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T except(final Collection collection) {
-        return this.add(new ExceptFilterPipe(collection));
-    }
+    public FluentPipeline except(final Collection collection);
 
     /**
      * Add an FilterFunctionPipe to the end of the Pipeline.
      *
      * @param filterFunction the filter function of the pipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T filter(final PipeFunction<?, Boolean> filterFunction) {
-        return this.add(new FilterFunctionPipe(filterFunction));
-    }
+    public FluentPipeline filter(final PipeFunction<?, Boolean> filterFunction);
 
     /**
      * Add an ObjectFilterPipe to the end of the Pipeline.
      *
      * @param object the object to filter on
      * @param filter the filter of the pipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T objectFilter(final Object object, final FilterPipe.Filter filter) {
-        return this.add(new ObjectFilterPipe(object, filter));
-    }
+    public FluentPipeline objectFilter(final Object object, final FilterPipe.Filter filter);
 
     /**
      * Add an OrFilterPipe to the end the Pipeline.
      *
      * @param pipes the internal pipes of the OrFilterPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T or(final Pipe<S, Boolean>... pipes) {
-        return this.add(new OrFilterPipe(pipes));
-    }
+    public FluentPipeline or(final Pipe<S, Boolean>... pipes);
 
     /**
      * Add a RandomFilterPipe to the end of the Pipeline.
      *
      * @param bias the bias of the random coin
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T random(final Double bias) {
-        return this.add(new RandomFilterPipe(bias));
-    }
+    public FluentPipeline random(final Double bias);
 
     /**
      * Add a RageFilterPipe to the end of the Pipeline.
      *
      * @param low  the low end of the range
      * @param high the high end of the range
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T range(final int low, final int high) {
-        return this.add(new RangeFilterPipe(low, high));
-    }
+    public FluentPipeline range(final int low, final int high);
 
     /**
      * Add a RetainFilterPipe to the end of the Pipeline.
      *
      * @param collection the collection to retain
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T retain(final Collection collection) {
-        return this.add(new RetainFilterPipe(collection));
-    }
+    public FluentPipeline retain(final Collection collection);
 
     /**
      * Add a CyclicPathFilterPipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T simplePath() {
-        return this.add(new CyclicPathFilterPipe());
-    }
+    public FluentPipeline simplePath();
 
     /////////////////////////
     /// SIDE-EFFECT PIPES ///
@@ -338,75 +221,59 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * Add an AggregatePipe to the end of the Pipeline.
      *
      * @param aggregate the collection to aggregate results into
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T aggregate(final Collection aggregate) {
-        return this.add(new AggregatePipe(aggregate));
-    }
+    public FluentPipeline aggregate(final Collection aggregate);
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
      *
      * @param aggregate         the collection to aggregate results into
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T aggregate(final Collection aggregate, final PipeFunction aggregateFunction) {
-        return this.add(new AggregatePipe(aggregate, aggregateFunction));
-    }
+    public FluentPipeline aggregate(final Collection aggregate, final PipeFunction aggregateFunction);
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
      * An ArrayList aggregate is provided.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T aggregate() {
-        return this.aggregate(new ArrayList());
-    }
+    public FluentPipeline aggregate();
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
      * An ArrayList aggregate is provided.
      *
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T aggregate(final PipeFunction aggregateFunction) {
-        return this.aggregate(new ArrayList(), aggregateFunction);
-    }
-
-    // todo do count pipe? (or remove it)
+    public FluentPipeline aggregate(final PipeFunction aggregateFunction);
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
      *
      * @param numberedStep the number of steps previous to optional back to
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T optional(final int numberedStep) {
-        return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
-    }
+    public FluentPipeline optional(final int numberedStep);
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
      *
      * @param namedStep the name of the step previous to optional back to
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T optional(final String namedStep) {
-        return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
-    }
+    public FluentPipeline optional(final String namedStep);
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
      *
      * @param pipe the internal pipe of the OptionalPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T optional(final Pipe pipe) {
-        return this.add(new OptionalPipe(pipe));
-    }
+    public FluentPipeline optional(final Pipe pipe);
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
@@ -414,22 +281,18 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param map           a provided count map
      * @param keyFunction   the key function to determine map key
      * @param valueFunction the value function to determine map value
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
-        return this.add(new GroupCountFunctionPipe(map, keyFunction, valueFunction));
-    }
+    public FluentPipeline groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction);
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
      *
      * @param keyFunction   the key function to determine map key
      * @param valueFunction the value function to determine map value
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T groupCount(final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
-        return this.add(new GroupCountFunctionPipe(keyFunction, valueFunction));
-    }
+    public FluentPipeline groupCount(final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction);
 
 
     /**
@@ -437,52 +300,42 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      *
      * @param map         a provided count map
      * @param keyFunction the key function to determine map key
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T groupCount(final Map<?, Number> map, final PipeFunction keyFunction) {
-        return this.add(new GroupCountFunctionPipe(map, keyFunction, null));
-    }
+    public FluentPipeline groupCount(final Map<?, Number> map, final PipeFunction keyFunction);
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
      *
      * @param keyFunction the key function to determine map key
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T groupCount(final PipeFunction keyFunction) {
-        return this.add(new GroupCountFunctionPipe(keyFunction, null));
-    }
+    public FluentPipeline groupCount(final PipeFunction keyFunction);
 
 
     /**
      * Add a GroupCountPipe to the end of the Pipeline.
      *
      * @param map a provided count map
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T groupCount(final Map<?, Number> map) {
-        return this.add(new GroupCountPipe(map));
-    }
+    public FluentPipeline groupCount(final Map<?, Number> map);
 
     /**
      * Add a GroupCountPipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T groupCount() {
-        return this.add(new GroupCountPipe());
-    }
+    public FluentPipeline groupCount();
 
 
     /**
      * Add a SideEffectFunctionPipe to the end of the Pipeline.
      *
      * @param sideEffectFunction the function of the pipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T sideEffect(final PipeFunction sideEffectFunction) {
-        return this.add(new SideEffectFunctionPipe(sideEffectFunction));
-    }
+    public FluentPipeline sideEffect(final PipeFunction sideEffectFunction);
 
     /**
      * Add a TablePipe to the end of the Pipeline.
@@ -490,41 +343,33 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param table           the table to fill
      * @param stepNames       the named steps to include in the filling
      * @param columnFunctions the post-processing function for each column
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(table, stepNames, FluentUtility.getAsPipes(this), columnFunctions));
-    }
+    public FluentPipeline table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions);
 
     /**
      * Add a TablePipe to the end of the Pipeline.
      *
      * @param table           the table to fill
      * @param columnFunctions the post-processing function for each column
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T table(final Table table, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this), columnFunctions));
-    }
+    public FluentPipeline table(final Table table, final PipeFunction... columnFunctions);
 
     /**
      * Add a TablePipe to the end of the Pipeline.
      *
      * @param table the table to fill
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T table(final Table table) {
-        return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this)));
-    }
+    public FluentPipeline table(final Table table);
 
     /**
      * Add a TablePipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T table() {
-        return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this)));
-    }
+    public FluentPipeline table();
 
     ///////////////////////
     /// TRANSFORM PIPES ///
@@ -534,140 +379,96 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
     /**
      * Add a GatherPipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T gather() {
-        return this.add(new GatherPipe());
-    }
+    public FluentPipeline gather();
 
-    public T gather(PipeFunction<List, ?> function) {
-        this.addPipe(new GatherPipe());
-        return this.add(new TransformFunctionPipe(function));
-    }
-
-    public T hasNext(final Pipe pipe) {
-        return this.add(new HasNextPipe(pipe));
-    }
+    public FluentPipeline gather(PipeFunction<List, ?> function);
 
     /**
      * Add an IdentityPipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T identity() {
-        return this.add(new IdentityPipe());
-    }
-
-    /**
-     * Add an IdentityPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public T _() {
-        return this.identity();
-    }
+    public FluentPipeline _();
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
      *
      * @param namedStep the name of the step previous to memoize to
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T memoize(final String namedStep) {
-        return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
-    }
+    public FluentPipeline memoize(final String namedStep);
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
      *
      * @param numberedStep the number of the step previous to memoize to
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T memoize(final int numberedStep) {
-        return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
-    }
+    public FluentPipeline memoize(final int numberedStep);
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
      *
      * @param namedStep the name of the step previous to memoize to
      * @param map       the memoization map
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T memoize(final String namedStep, final Map map) {
-        return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), map));
-    }
+    public FluentPipeline memoize(final String namedStep, final Map map);
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
      *
      * @param numberedStep the number of the step previous to memoize to
      * @param map          the memoization map
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T memoize(final int numberedStep, final Map map) {
-        return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), map));
-    }
+    public FluentPipeline memoize(final int numberedStep, final Map map);
 
     /**
      * Add a PathPipe or PathFunctionPipe to the end of the Pipeline.
      *
      * @param pathFunctions the path function of the PathFunctionPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T path(final PipeFunction... pathFunctions) {
-        if (pathFunctions.length == 0)
-            this.addPipe(new PathPipe());
-        else
-            this.addPipe(new PathFunctionPipe(pathFunctions));
-        return (T) this;
-    }
+    public FluentPipeline path(final PipeFunction... pathFunctions);
 
     /**
      * Add a PathPipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T path() {
-        return this.add(new PathPipe());
-    }
+    public FluentPipeline path();
 
     /**
      * Add a ScatterPipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T scatter() {
-        return this.add(new ScatterPipe());
-    }
+    public FluentPipeline scatter();
 
     /**
      * Add a SideEffectCapPipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T sideEffectCap() {
-        return this.add(new SideEffectCapPipe((SideEffectPipe) FluentUtility.removePreviousPipes(this, 1).get(0)));
-    }
+    public FluentPipeline sideEffectCap();
 
     /**
      * Add a SideEffectCapPipe to the end of the Pipeline.
      *
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T cap() {
-        return this.sideEffectCap();
-    }
+    public FluentPipeline cap();
 
     /**
      * Add a TransformFunctionPipe to the end of the Pipeline.
      *
      * @param function the transformation function of the pipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T transform(final PipeFunction function) {
-        return this.add(new TransformFunctionPipe(function));
-    }
+    public FluentPipeline transform(final PipeFunction function);
 
     //////////////////////
     /// UTILITY PIPES ///
@@ -677,22 +478,18 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * Wrap the previous step in an AsPipe
      *
      * @param name the name of the AsPipe
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T as(final String name) {
-        return this.add(new AsPipe(name, FluentUtility.removePreviousPipes(this, 1).get(0)));
-    }
+    public FluentPipeline as(final String name);
 
     /**
      * Add a StartPipe to the end of the pipeline.
      * Though, in practice, a StartPipe is usually the beginning.
      *
      * @param object the object that serves as the start of the pipeline (iterator/iterable are unfolded)
-     * @return the extended FluentPipeline
+     * @return the extended Pipeline
      */
-    public T start(final Object object) {
-        return this.add(new StartPipe(object));
-    }
+    public FluentPipeline start(final Object object);
 
     ///////////////////////
     /// UTILITY METHODS ///
@@ -703,17 +500,13 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      *
      * @return the number of objects iterated
      */
-    public long count() {
-        return PipeHelper.counter(this);
-    }
+    public long count();
 
     /**
      * Completely drain the pipeline of its objects.
      * Useful when a sideEffect of the pipeline is desired.
      */
-    public void iterate() {
-        PipeHelper.iterate(this);
-    }
+    public void iterate();
 
     /**
      * Return the next X objects in the pipeline as a list.
@@ -721,21 +514,13 @@ public class FluentPipeline<S, E, T extends FluentPipeline> extends Pipeline<S, 
      * @param number the number of objects to return
      * @return a list of X objects (if X objects occur)
      */
-    public List<E> next(final int number) {
-        final List<E> list = new ArrayList<E>(number);
-        PipeHelper.fillCollection(this, list, number);
-        return list;
-    }
+    public List<E> next(final int number);
 
     /**
      * Return a list of all the objects in the pipeline.
      *
      * @return a list of all the objects
      */
-    public List<E> toList() {
-        final List<E> list = new ArrayList<E>();
-        PipeHelper.fillCollection(this, list);
-        return list;
-    }
+    public List<E> toList();
 
 }
