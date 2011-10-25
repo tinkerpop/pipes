@@ -13,16 +13,15 @@ import java.util.Map;
  */
 public interface FluentPipeline<S, E> {
 
-
     /**
      * Add a FunctionPipe to the end of the pipeline.
      *
      * @param function the function of the FunctionPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline step(final PipeFunction function);
+    public FluentPipeline<S, ?> step(final PipeFunction function);
 
-    public FluentPipeline step(final Pipe pipe);
+    public <T> FluentPipeline<S, T> step(final Pipe<?, T> pipe);
 
     ////////////////////
     /// BRANCH PIPES ///
@@ -34,7 +33,7 @@ public interface FluentPipeline<S, E> {
      * @param pipes the internal pipes of the CopySplitPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline copySplit(final Pipe... pipes);
+    public FluentPipeline<S, ?> copySplit(final Pipe... pipes);
 
     /**
      * Add an ExhaustMergePipe to the end of the pipeline.
@@ -42,7 +41,7 @@ public interface FluentPipeline<S, E> {
      * @param pipes the internal pipes ExhaustMergePipe
      * @return the extended Pipeline
      */
-    public FluentPipeline exhaustMerge(final Pipe... pipes);
+    public FluentPipeline<S, ?> exhaustMerge(final Pipe... pipes);
 
     /**
      * Add an ExhaustMergePipe to the end of the pipeline.
@@ -50,7 +49,7 @@ public interface FluentPipeline<S, E> {
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline exhaustMerge();
+    public FluentPipeline<S, ?> exhaustMerge();
 
     /**
      * Add a FairMergePipe to the end of the pipeline.
@@ -58,7 +57,7 @@ public interface FluentPipeline<S, E> {
      * @param pipes the internal pipes of the FairMergePipe
      * @return the extended Pipeline
      */
-    public FluentPipeline fairMerge(final Pipe... pipes);
+    public FluentPipeline<S, ?> fairMerge(final Pipe... pipes);
 
     /**
      * Add a FairMergePipe to the end of the Pipeline.
@@ -66,7 +65,7 @@ public interface FluentPipeline<S, E> {
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline fairMerge();
+    public FluentPipeline<S, ?> fairMerge();
 
     /**
      * Add an IfThenElsePipe to the end of the Pipeline.
@@ -76,7 +75,7 @@ public interface FluentPipeline<S, E> {
      * @param elseFunction the function denoting the "else" part of the pipe
      * @return the extended Pipeline
      */
-    public FluentPipeline ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction);
+    public FluentPipeline<S, ?> ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction);
 
     /**
      * Add a LoopPipe to the end of the Pipeline.
@@ -85,7 +84,7 @@ public interface FluentPipeline<S, E> {
      * @param whileFunction the "while()" whileFunction of the LoopPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction);
+    public FluentPipeline<S, E> loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction);
 
     /**
      * Add a LoopPipe ot the end of the Pipeline.
@@ -94,7 +93,7 @@ public interface FluentPipeline<S, E> {
      * @param whileFunction the "while()" function of the LoopPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction);
+    public FluentPipeline<S, E> loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction);
 
     /**
      * Add a LoopPipe ot the end of the Pipeline.
@@ -103,7 +102,7 @@ public interface FluentPipeline<S, E> {
      * @param whileFunction the "while()" function of the LoopPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction);
+    public FluentPipeline<S, E> loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction);
 
     ////////////////////
     /// FILTER PIPES ///
@@ -115,7 +114,7 @@ public interface FluentPipeline<S, E> {
      * @param pipes the internal pipes of the AndFilterPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline and(final Pipe<?, Boolean>... pipes);
+    public FluentPipeline<S, E> and(final Pipe<?, Boolean>... pipes);
 
     /**
      * Add a BackFilterPipe to the end of the Pipeline.
@@ -123,7 +122,7 @@ public interface FluentPipeline<S, E> {
      * @param numberedStep the number of steps previous to back up to
      * @return the extended Pipeline
      */
-    public FluentPipeline back(final int numberedStep);
+    public FluentPipeline<S, ?> back(final int numberedStep);
 
     /**
      * Add a BackFilterPipe to the end of the Pipeline.
@@ -131,7 +130,7 @@ public interface FluentPipeline<S, E> {
      * @param namedStep the name of the step previous to back up to
      * @return the extended Pipeline
      */
-    public FluentPipeline back(final String namedStep);
+    public FluentPipeline<S, ?> back(final String namedStep);
 
     /**
      * Add a BackFilterPipe to the end of the Pipeline.
@@ -139,14 +138,14 @@ public interface FluentPipeline<S, E> {
      * @param pipe the internal pipe of the BackFilterPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline back(final Pipe pipe);
+    public FluentPipeline<S, ?> back(final Pipe pipe);
 
     /**
      * Add a DuplicateFilterPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline dedup();
+    public FluentPipeline<S, E> dedup();
 
     /**
      * Add an ExceptFilterPipe to the end of the Pipeline.
@@ -154,7 +153,7 @@ public interface FluentPipeline<S, E> {
      * @param collection the collection except from the stream
      * @return the extended Pipeline
      */
-    public FluentPipeline except(final Collection collection);
+    public FluentPipeline<S, E> except(final Collection collection);
 
     /**
      * Add an FilterFunctionPipe to the end of the Pipeline.
@@ -162,7 +161,7 @@ public interface FluentPipeline<S, E> {
      * @param filterFunction the filter function of the pipe
      * @return the extended Pipeline
      */
-    public FluentPipeline filter(final PipeFunction<?, Boolean> filterFunction);
+    public FluentPipeline<S, E> filter(final PipeFunction<?, Boolean> filterFunction);
 
     /**
      * Add an ObjectFilterPipe to the end of the Pipeline.
@@ -171,7 +170,7 @@ public interface FluentPipeline<S, E> {
      * @param filter the filter of the pipe
      * @return the extended Pipeline
      */
-    public FluentPipeline objectFilter(final Object object, final FilterPipe.Filter filter);
+    public FluentPipeline<S, E> objectFilter(final Object object, final FilterPipe.Filter filter);
 
     /**
      * Add an OrFilterPipe to the end the Pipeline.
@@ -179,7 +178,7 @@ public interface FluentPipeline<S, E> {
      * @param pipes the internal pipes of the OrFilterPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline or(final Pipe<S, Boolean>... pipes);
+    public FluentPipeline<S, E> or(final Pipe<S, Boolean>... pipes);
 
     /**
      * Add a RandomFilterPipe to the end of the Pipeline.
@@ -187,7 +186,7 @@ public interface FluentPipeline<S, E> {
      * @param bias the bias of the random coin
      * @return the extended Pipeline
      */
-    public FluentPipeline random(final Double bias);
+    public FluentPipeline<S, E> random(final Double bias);
 
     /**
      * Add a RageFilterPipe to the end of the Pipeline.
@@ -196,7 +195,7 @@ public interface FluentPipeline<S, E> {
      * @param high the high end of the range
      * @return the extended Pipeline
      */
-    public FluentPipeline range(final int low, final int high);
+    public FluentPipeline<S, E> range(final int low, final int high);
 
     /**
      * Add a RetainFilterPipe to the end of the Pipeline.
@@ -204,14 +203,14 @@ public interface FluentPipeline<S, E> {
      * @param collection the collection to retain
      * @return the extended Pipeline
      */
-    public FluentPipeline retain(final Collection collection);
+    public FluentPipeline<S, E> retain(final Collection collection);
 
     /**
      * Add a CyclicPathFilterPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline simplePath();
+    public FluentPipeline<S, E> simplePath();
 
     /////////////////////////
     /// SIDE-EFFECT PIPES ///
@@ -223,7 +222,7 @@ public interface FluentPipeline<S, E> {
      * @param aggregate the collection to aggregate results into
      * @return the extended Pipeline
      */
-    public FluentPipeline aggregate(final Collection aggregate);
+    public FluentPipeline<S, E> aggregate(final Collection aggregate);
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
@@ -232,7 +231,7 @@ public interface FluentPipeline<S, E> {
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
      * @return the extended Pipeline
      */
-    public FluentPipeline aggregate(final Collection aggregate, final PipeFunction aggregateFunction);
+    public FluentPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction aggregateFunction);
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
@@ -240,7 +239,7 @@ public interface FluentPipeline<S, E> {
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline aggregate();
+    public FluentPipeline<S, E> aggregate();
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
@@ -249,7 +248,7 @@ public interface FluentPipeline<S, E> {
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
      * @return the extended Pipeline
      */
-    public FluentPipeline aggregate(final PipeFunction aggregateFunction);
+    public FluentPipeline<S, E> aggregate(final PipeFunction aggregateFunction);
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
@@ -257,7 +256,7 @@ public interface FluentPipeline<S, E> {
      * @param numberedStep the number of steps previous to optional back to
      * @return the extended Pipeline
      */
-    public FluentPipeline optional(final int numberedStep);
+    public FluentPipeline<S, ?> optional(final int numberedStep);
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
@@ -265,7 +264,7 @@ public interface FluentPipeline<S, E> {
      * @param namedStep the name of the step previous to optional back to
      * @return the extended Pipeline
      */
-    public FluentPipeline optional(final String namedStep);
+    public FluentPipeline<S, ?> optional(final String namedStep);
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
@@ -273,7 +272,7 @@ public interface FluentPipeline<S, E> {
      * @param pipe the internal pipe of the OptionalPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline optional(final Pipe pipe);
+    public FluentPipeline<S, ?> optional(final Pipe pipe);
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
@@ -283,7 +282,7 @@ public interface FluentPipeline<S, E> {
      * @param valueFunction the value function to determine map value
      * @return the extended Pipeline
      */
-    public FluentPipeline groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction);
+    public FluentPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction);
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
@@ -292,7 +291,7 @@ public interface FluentPipeline<S, E> {
      * @param valueFunction the value function to determine map value
      * @return the extended Pipeline
      */
-    public FluentPipeline groupCount(final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction);
+    public FluentPipeline<S, E> groupCount(final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction);
 
 
     /**
@@ -302,7 +301,7 @@ public interface FluentPipeline<S, E> {
      * @param keyFunction the key function to determine map key
      * @return the extended Pipeline
      */
-    public FluentPipeline groupCount(final Map<?, Number> map, final PipeFunction keyFunction);
+    public FluentPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction);
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
@@ -310,7 +309,7 @@ public interface FluentPipeline<S, E> {
      * @param keyFunction the key function to determine map key
      * @return the extended Pipeline
      */
-    public FluentPipeline groupCount(final PipeFunction keyFunction);
+    public FluentPipeline<S, E> groupCount(final PipeFunction keyFunction);
 
 
     /**
@@ -319,14 +318,14 @@ public interface FluentPipeline<S, E> {
      * @param map a provided count map
      * @return the extended Pipeline
      */
-    public FluentPipeline groupCount(final Map<?, Number> map);
+    public FluentPipeline<S, E> groupCount(final Map<?, Number> map);
 
     /**
      * Add a GroupCountPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline groupCount();
+    public FluentPipeline<S, E> groupCount();
 
 
     /**
@@ -335,7 +334,7 @@ public interface FluentPipeline<S, E> {
      * @param sideEffectFunction the function of the pipe
      * @return the extended Pipeline
      */
-    public FluentPipeline sideEffect(final PipeFunction sideEffectFunction);
+    public FluentPipeline<S, E> sideEffect(final PipeFunction sideEffectFunction);
 
     /**
      * Add a TablePipe to the end of the Pipeline.
@@ -345,7 +344,7 @@ public interface FluentPipeline<S, E> {
      * @param columnFunctions the post-processing function for each column
      * @return the extended Pipeline
      */
-    public FluentPipeline table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions);
+    public FluentPipeline<S, E> table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions);
 
     /**
      * Add a TablePipe to the end of the Pipeline.
@@ -354,7 +353,7 @@ public interface FluentPipeline<S, E> {
      * @param columnFunctions the post-processing function for each column
      * @return the extended Pipeline
      */
-    public FluentPipeline table(final Table table, final PipeFunction... columnFunctions);
+    public FluentPipeline<S, E> table(final Table table, final PipeFunction... columnFunctions);
 
     /**
      * Add a TablePipe to the end of the Pipeline.
@@ -362,14 +361,14 @@ public interface FluentPipeline<S, E> {
      * @param table the table to fill
      * @return the extended Pipeline
      */
-    public FluentPipeline table(final Table table);
+    public FluentPipeline<S, E> table(final Table table);
 
     /**
      * Add a TablePipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline table();
+    public FluentPipeline<S, E> table();
 
     ///////////////////////
     /// TRANSFORM PIPES ///
@@ -381,16 +380,16 @@ public interface FluentPipeline<S, E> {
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline gather();
+    public FluentPipeline<S, List<?>> gather();
 
-    public FluentPipeline gather(PipeFunction<List, ?> function);
+    public FluentPipeline<S, ?> gather(PipeFunction<List, ?> function);
 
     /**
      * Add an IdentityPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline _();
+    public FluentPipeline<S, E> _();
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
@@ -398,7 +397,7 @@ public interface FluentPipeline<S, E> {
      * @param namedStep the name of the step previous to memoize to
      * @return the extended Pipeline
      */
-    public FluentPipeline memoize(final String namedStep);
+    public FluentPipeline<S, E> memoize(final String namedStep);
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
@@ -406,7 +405,7 @@ public interface FluentPipeline<S, E> {
      * @param numberedStep the number of the step previous to memoize to
      * @return the extended Pipeline
      */
-    public FluentPipeline memoize(final int numberedStep);
+    public FluentPipeline<S, E> memoize(final int numberedStep);
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
@@ -415,7 +414,7 @@ public interface FluentPipeline<S, E> {
      * @param map       the memoization map
      * @return the extended Pipeline
      */
-    public FluentPipeline memoize(final String namedStep, final Map map);
+    public FluentPipeline<S, E> memoize(final String namedStep, final Map map);
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
@@ -424,7 +423,7 @@ public interface FluentPipeline<S, E> {
      * @param map          the memoization map
      * @return the extended Pipeline
      */
-    public FluentPipeline memoize(final int numberedStep, final Map map);
+    public FluentPipeline<S, E> memoize(final int numberedStep, final Map map);
 
     /**
      * Add a PathPipe or PathFunctionPipe to the end of the Pipeline.
@@ -432,35 +431,21 @@ public interface FluentPipeline<S, E> {
      * @param pathFunctions the path function of the PathFunctionPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline path(final PipeFunction... pathFunctions);
-
-    /**
-     * Add a PathPipe to the end of the Pipeline.
-     *
-     * @return the extended Pipeline
-     */
-    public FluentPipeline path();
+    public FluentPipeline<S, List<?>> path(final PipeFunction... pathFunctions);
 
     /**
      * Add a ScatterPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline scatter();
+    public FluentPipeline<S, ?> scatter();
 
     /**
      * Add a SideEffectCapPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public FluentPipeline sideEffectCap();
-
-    /**
-     * Add a SideEffectCapPipe to the end of the Pipeline.
-     *
-     * @return the extended Pipeline
-     */
-    public FluentPipeline cap();
+    public FluentPipeline<S, ?> cap();
 
     /**
      * Add a TransformFunctionPipe to the end of the Pipeline.
@@ -468,7 +453,7 @@ public interface FluentPipeline<S, E> {
      * @param function the transformation function of the pipe
      * @return the extended Pipeline
      */
-    public FluentPipeline transform(final PipeFunction function);
+    public FluentPipeline<S, ?> transform(final PipeFunction function);
 
     //////////////////////
     /// UTILITY PIPES ///
@@ -480,7 +465,7 @@ public interface FluentPipeline<S, E> {
      * @param name the name of the AsPipe
      * @return the extended Pipeline
      */
-    public FluentPipeline as(final String name);
+    public FluentPipeline<S, E> as(final String name);
 
     /**
      * Add a StartPipe to the end of the pipeline.
@@ -489,7 +474,7 @@ public interface FluentPipeline<S, E> {
      * @param object the object that serves as the start of the pipeline (iterator/iterable are unfolded)
      * @return the extended Pipeline
      */
-    public FluentPipeline start(final Object object);
+    public FluentPipeline<S, E> start(final Object object);
 
     ///////////////////////
     /// UTILITY METHODS ///
