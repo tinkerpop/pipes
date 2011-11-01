@@ -89,7 +89,7 @@
                 <configuration>
                     <descriptors>
                         <descriptor>src/assembly/distribution.xml</descriptor>
-                        <descriptor>src/assembly/standalone.xml</descriptor>
+                        <!--<descriptor>src/assembly/standalone.xml</descriptor>-->
                     </descriptors>
                     <finalName>${project.artifactId}-${project.version}</finalName>
                     <outputDirectory>target</outputDirectory>
