@@ -78,7 +78,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         super.reset();
     }
 
-    public class LoopBundle<T> {
+    public static class LoopBundle<T> {
 
         private final List path;
         private final T t;
