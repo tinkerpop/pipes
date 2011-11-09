@@ -3,186 +3,124 @@ package com.tinkerpop.pipes.branch;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.util.MetaPipe;
-import com.tinkerpop.pipes.util.PipeHelper;
+import com.tinkerpop.pipes.branch.util.LoopBundle;
+import com.tinkerpop.pipes.util.EmptyIterator;
+import com.tinkerpop.pipes.util.ExpandablePipe;
+import com.tinkerpop.pipes.util.Pipeline;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 
 /**
- * LoopPipe takes a Boolean-based PipeFunction.
- * For each object of the LoopPipe, the PipeFunction is called.
- * The first parameter of the PipeFunction is a LoopBundle object which is the object plus some metadata.
- * The PipeFunction returns a Boolean.
- * The Boolean determines whether the object should be put back at the start of the LoopPipe or not.
- * In essence, the semantics of the PipeFunction is "while."
- *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
+public class LoopPipe<S> extends AbstractPipe<S, S> {
 
-    private final PipeFunction<LoopBundle<S>, Boolean> whileFunction;
-    private final Pipe<S, S> pipe;
-    private ExpandableLoopBundleIterator<S> expando;
+    protected final PipeFunction<?, Pipe<S, S>> pipeFunction;
+    protected final PipeFunction<LoopBundle<S>, Boolean> whileFunction;
+    protected final PipeFunction<LoopBundle<S>, Boolean> emitFunction;
+    protected final Queue<S> endQueue = new LinkedList<S>();
+    protected final Queue<Integer> stepQueue = new LinkedList<Integer>();
+    protected int currentStep;
 
-    public LoopPipe(final Pipe<S, S> pipe, final PipeFunction<LoopBundle<S>, Boolean> whileFunction) {
-        this.pipe = pipe;
+    final List<Pipeline<S, S>> pipes = new ArrayList<Pipeline<S, S>>();
+
+
+    public LoopPipe(final PipeFunction<LoopBundle<S>, Boolean> whileFunction, final PipeFunction<?, Pipe<S, S>> pipeFunction, final PipeFunction<LoopBundle<S>, Boolean> emitFunction) {
+        this.pipeFunction = pipeFunction;
         this.whileFunction = whileFunction;
+        this.emitFunction = emitFunction;
+        this.createInternalPipeline();
     }
 
-    protected S processNextStart() {
-        while (true) {
-            final S s = this.pipe.next();
-            final LoopBundle<S> loopBundle = new LoopBundle<S>(s, this.getPath(), this.getLoops());
-            if (whileFunction.compute(loopBundle)) {
-                this.expando.add(loopBundle);
+    public LoopPipe(final PipeFunction<LoopBundle<S>, Boolean> whileFunction, final PipeFunction<?, Pipe<S, S>> pipeFunction) {
+        this(whileFunction, pipeFunction, null);
+    }
+
+    public void setStarts(final Iterator<S> starts) {
+        this.pipes.get(0).setStarts(starts);
+    }
+
+    public S processNextStart() {
+        short done = 1;
+        while (done != 3) {
+            if (done == 2)
+                done = 3;
+            if (!this.endQueue.isEmpty()) {
+                this.currentStep = this.stepQueue.remove();
+                return this.endQueue.remove();
             } else {
-                return s;
+                for (int i = 0; i < this.pipes.size(); i++) {
+                    final Pipeline<S, S> pipe = pipes.get(i);
+                    if (pipe.hasNext()) {
+                        ((ExpandablePipe<S>) pipes.get(i + 1).getPipes().get(0)).add(pipe.next());
+                        done = 1;
+                    }
+                }
             }
+            if (done == 1)
+                done = 2;
         }
-    }
-
-    public List<Pipe> getPipes() {
-        return (List) Arrays.asList(pipe);
-    }
-
-    public void setStarts(final Iterator<S> iterator) {
-        this.expando = new ExpandableLoopBundleIterator<S>(iterator);
-        this.pipe.setStarts(this.expando);
-    }
-
-    public String toString() {
-        return PipeHelper.makePipeString(this, this.pipe);
-    }
-
-    public int getLoops() {
-        return this.expando.getCurrentLoops() + 1;
+        throw new NoSuchElementException();
     }
 
     public List getPath() {
-        final List path = new ArrayList();
-        final List currentPath = this.expando.getCurrentPath();
-        if (null != currentPath)
-            path.addAll(currentPath);
-        path.addAll(this.pipe.getPath());
+        return this.getPathAtPipe(this.currentStep, this.currentEnd);
+    }
+
+    protected void createInternalPipeline() {
+        final Pipeline<S, S> pipeline = new Pipeline<S, S>(new ExpandablePipe<S>(), new WhileFunctionTestPipe(this.pipes.size() + 1), this.pipeFunction.compute(null));
+        pipeline.setStarts(new EmptyIterator<S>());
+        this.pipes.add(pipeline);
+    }
+
+    protected List getPathAtPipe(final int step, final S s) {
+        final List path = new LinkedList();
+        for (int i = 0; i < step - 1; i++) {
+            final List temp = pipes.get(i).getPath();
+            temp.remove(null);
+            path.addAll(temp.subList(0, temp.size() - 1));
+        }
+        path.add(s);
         return path;
     }
 
-    public void reset() {
-        this.expando.clear();
-        this.pipe.reset();
-        super.reset();
-    }
 
-    public static class LoopBundle<T> {
+    private class WhileFunctionTestPipe extends AbstractPipe<S, S> {
+        private final int step;
 
-        private final List path;
-        private final T t;
-        private final int loops;
-
-        protected LoopBundle(final T t, final List path, final int loops) {
-            this.t = t;
-            this.path = path;
-            // remove the join object
-            this.path.remove(this.path.size() - 1);
-            this.loops = loops;
+        public WhileFunctionTestPipe(final int step) {
+            this.step = step;
         }
 
-        public List getPath() {
-            return this.path;
-        }
+        public S processNextStart() {
+            while (true) {
+                final S s = this.starts.next();
+                if (whileFunction.compute(new LoopBundle<S>(s, step))) {
+                    if (pipes.size() <= step) {
+                        createInternalPipeline();
+                    }
+                    if (emitFunction != null && emitFunction.compute(new LoopBundle<S>(s, step))) {
+                        endQueue.add(s);
+                        stepQueue.add(step);
+                    }
 
-        public int getLoops() {
-            return this.loops;
-        }
-
-        public T getObject() {
-            return this.t;
-        }
-    }
-
-    private class ExpandableLoopBundleIterator<T> implements Iterator<T> {
-
-        private final Queue<LoopBundle<T>> queue = new LinkedList<LoopBundle<T>>();
-        private final Iterator<T> iterator;
-        private LoopBundle<T> current;
-        private int totalResets = -1;
-
-        public ExpandableLoopBundleIterator(final Iterator<T> iterator) {
-            this.iterator = iterator;
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
-        public T next() {
-            if (this.queue.isEmpty()) {
-                this.current = null;
-                if (!this.iterator.hasNext()) {
-                    this.incrTotalResets();
+                    return s;
+                } else {
+                    if (emitFunction != null && emitFunction.compute(new LoopBundle<S>(s, step))) {
+                        endQueue.add(s);
+                        stepQueue.add(step);
+                    } else {
+                        endQueue.add(s);
+                        stepQueue.add(step);
+                    }
                 }
-                return iterator.next();
-            } else {
-                this.current = this.queue.remove();
-                return this.current.getObject();
             }
         }
 
-        public boolean hasNext() {
-            if (this.queue.isEmpty() && !this.iterator.hasNext()) {
-                this.incrTotalResets();
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        public void add(final LoopBundle<T> loopBundle) {
-            this.queue.add(loopBundle);
-        }
-
-        public List getCurrentPath() {
-            if (null == this.current)
-                return null;
-            else
-                return this.current.getPath();
-
-        }
-
-        /*public int getCurrentLoops() {
-            if (null == this.current)
-                return 1;
-            else
-                return this.current.getLoops();
-        }*/
-
-        public int getCurrentLoops() {
-            if (null != this.current) {
-                return this.current.getLoops();
-            } else {
-                if (this.totalResets == -1)
-                    return 1;
-                else
-                    return totalResets;
-            }
-        }
-
-        private void incrTotalResets() {
-            if (totalResets == -1)
-                totalResets = 0;
-            this.totalResets++;
-        }
-
-        public void clear() {
-            this.totalResets = -1;
-            this.current = null;
-            this.queue.clear();
-        }
     }
-
 }

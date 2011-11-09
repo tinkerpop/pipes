@@ -8,6 +8,7 @@ import com.tinkerpop.pipes.branch.ExhaustMergePipe;
 import com.tinkerpop.pipes.branch.FairMergePipe;
 import com.tinkerpop.pipes.branch.IfThenElsePipe;
 import com.tinkerpop.pipes.branch.LoopPipe;
+import com.tinkerpop.pipes.branch.util.LoopBundle;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
 import com.tinkerpop.pipes.filter.BackFilterPipe;
 import com.tinkerpop.pipes.filter.CyclicPathFilterPipe;
@@ -100,16 +101,12 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipelin
         return this.add(new IfThenElsePipe(ifFunction, thenFunction, elseFunction));
     }
 
-    public PipesPipeline<S, E> loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction));
+    public PipesPipeline<S, S> loop(final PipeFunction<LoopBundle<S>, Boolean> whileFunction, final PipeFunction<?, Pipe<S, S>> pipeFunction) {
+        return this.add(new LoopPipe<S>(whileFunction, pipeFunction));
     }
 
-    public PipesPipeline<S, E> loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
-    }
-
-    public PipesPipeline<S, E> loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction) {
-        return this.add(new LoopPipe(pipe, whileFunction));
+    public PipesPipeline<S, S> loop(final PipeFunction<LoopBundle<S>, Boolean> whileFunction, final PipeFunction<?, Pipe<S, S>> pipeFunction, final PipeFunction<LoopBundle<S>, Boolean> emitFunction) {
+        return this.add(new LoopPipe<S>(whileFunction, pipeFunction, emitFunction));
     }
 
     ////////////////////
@@ -332,6 +329,11 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipelin
         final List<E> list = new ArrayList<E>();
         PipeHelper.fillCollection(this, list);
         return list;
+    }
+
+    public Collection<E> fill(final Collection<E> collection) {
+        PipeHelper.fillCollection(this, collection);
+        return collection;
     }
 
 }

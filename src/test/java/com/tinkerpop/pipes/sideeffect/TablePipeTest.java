@@ -2,7 +2,6 @@ package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.util.PipesPipeline;
 import com.tinkerpop.pipes.util.Table;
 import junit.framework.TestCase;
@@ -64,7 +63,7 @@ public class TablePipeTest extends TestCase {
         assertEquals(t.getRowCount(), 2);
     }
 
-    public void testTablePipeWithLoop() {
+    /*public void testTablePipeWithLoop() {
         Table t = new Table();
 
         new PipesPipeline("a").as("1").step(new StringCharPipe()).loop(1, new PipeFunction<LoopPipe.LoopBundle, Boolean>() {
@@ -84,7 +83,7 @@ public class TablePipeTest extends TestCase {
         assertEquals(t.get(3, 1), "aaaa");
         assertEquals(t.getColumnCount(), 2);
         assertEquals(t.getRowCount(), 4);
-    }
+    }*/
 
     public void testTableFunctions() {
 

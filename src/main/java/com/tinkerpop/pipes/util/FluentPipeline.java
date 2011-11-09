@@ -2,6 +2,7 @@ package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.branch.util.LoopBundle;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
 import java.util.Collection;
@@ -77,32 +78,10 @@ public interface FluentPipeline<S, E> {
      */
     public FluentPipeline<S, ?> ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction);
 
-    /**
-     * Add a LoopPipe to the end of the Pipeline.
-     *
-     * @param numberedStep  the number of steps previous to loop back to
-     * @param whileFunction the "while()" whileFunction of the LoopPipe
-     * @return the extended Pipeline
-     */
-    public FluentPipeline<S, E> loop(final int numberedStep, final PipeFunction<?, Boolean> whileFunction);
+    public FluentPipeline<S, S> loop(final PipeFunction<LoopBundle<S>, Boolean> whileFunction, final PipeFunction<?, Pipe<S, S>> pipeFunction);
 
-    /**
-     * Add a LoopPipe ot the end of the Pipeline.
-     *
-     * @param namedStep     the name of the step previous to loop back to
-     * @param whileFunction the "while()" function of the LoopPipe
-     * @return the extended Pipeline
-     */
-    public FluentPipeline<S, E> loop(final String namedStep, final PipeFunction<?, Boolean> whileFunction);
+    public FluentPipeline<S, S> loop(final PipeFunction<LoopBundle<S>, Boolean> whileFunction, final PipeFunction<?, Pipe<S, S>> pipeFunction, final PipeFunction<LoopBundle<S>, Boolean> emitFunction);
 
-    /**
-     * Add a LoopPipe ot the end of the Pipeline.
-     *
-     * @param pipe          the internal pipe of the LoopPipe
-     * @param whileFunction the "while()" function of the LoopPipe
-     * @return the extended Pipeline
-     */
-    public FluentPipeline<S, E> loop(final Pipe pipe, final PipeFunction<?, Boolean> whileFunction);
 
     ////////////////////
     /// FILTER PIPES ///
@@ -507,5 +486,13 @@ public interface FluentPipeline<S, E> {
      * @return a list of all the objects
      */
     public List<E> toList();
+
+    /**
+     * Fill the provided collection with the objects in the pipeline.
+     *
+     * @param collection the collection to fill
+     * @return the collection filled
+     */
+    public Collection<E> fill(final Collection<E> collection);
 
 }
