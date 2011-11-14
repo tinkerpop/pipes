@@ -63,7 +63,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
                 for (int i = 0; i < this.pipes.size(); i++) {
                     final Pipeline<S, S> pipe = pipes.get(i);
                     if (pipe.hasNext()) {
-                        ((WhileFunctionTestPipe) pipes.get(i + 1).getPipes().get(0)).add(pipe.next());
+                        ((WhileFunctionTestPipe) pipes.get(i + 1).get(0)).add(pipe.next());
                         done = 1;
                     }
                 }
@@ -150,5 +150,8 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
             }
         }
 
+        public void forceNext() {
+            this.queue.add(this.starts.next());
+        }
     }
 }
