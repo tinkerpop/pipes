@@ -2,7 +2,7 @@ package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.branch.util.LoopBundle;
+import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
 import java.util.Collection;
@@ -78,9 +78,18 @@ public interface FluentPipeline<S, E> {
      */
     public FluentPipeline<S, ?> ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction);
 
-    public FluentPipeline<S, S> loop(final PipeFunction<LoopBundle<S>, Boolean> whileFunction, final PipeFunction<?, Pipe<S, S>> pipeFunction);
 
-    public FluentPipeline<S, S> loop(final PipeFunction<LoopBundle<S>, Boolean> whileFunction, final PipeFunction<?, Pipe<S, S>> pipeFunction, final PipeFunction<LoopBundle<S>, Boolean> emitFunction);
+    public FluentPipeline<S, S> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction);
+
+    public FluentPipeline<S, S> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction);
+
+    public FluentPipeline<S, S> loop(final Pipe pipe, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction);
+
+    public FluentPipeline<S, S> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> emitFunction);
+
+    public FluentPipeline<S, S> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> emitFunction);
+
+    public FluentPipeline<S, S> loop(final Pipe pipe, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> emitFunction);
 
 
     ////////////////////
