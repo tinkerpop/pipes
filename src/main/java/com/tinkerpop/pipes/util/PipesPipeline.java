@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipeline<S, E> {
+public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPipeline<S, E> {
 
     public PipesPipeline() {
         super();
@@ -68,7 +68,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipelin
         return this.add(new FunctionPipe(function));
     }
 
-    public <T> PipesPipeline<S, T> step(final Pipe<?, T> pipe) {
+    public <T> PipesPipeline<S, T> step(final Pipe<E, T> pipe) {
         return this.add(pipe);
     }
 
@@ -96,31 +96,31 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipelin
         return this.add(new FairMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
     }
 
-    public PipesPipeline<S, ?> ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction) {
+    public PipesPipeline<S, ?> ifThenElse(final PipeFunction<E, Boolean> ifFunction, final PipeFunction<E, ?> thenFunction, final PipeFunction<E, ?> elseFunction) {
         return this.add(new IfThenElsePipe(ifFunction, thenFunction, elseFunction));
     }
 
-    public PipesPipeline<S, S> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction) {
+    public PipesPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction));
     }
 
-    public PipesPipeline<S, S> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction) {
+    public PipesPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
     }
 
-    public PipesPipeline<S, S> loop(final Pipe pipe, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction) {
+    public PipesPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
         return this.add(new LoopPipe(pipe, whileFunction));
     }
 
-    public PipesPipeline<S, S> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> emitFunction) {
+    public PipesPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction, emitFunction));
     }
 
-    public PipesPipeline<S, S> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> emitFunction) {
+    public PipesPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction, emitFunction));
     }
 
-    public PipesPipeline<S, S> loop(final Pipe pipe, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> emitFunction) {
+    public PipesPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(pipe, whileFunction, emitFunction));
     }
 
@@ -128,7 +128,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipelin
     /// FILTER PIPES ///
     ////////////////////
 
-    public PipesPipeline<S, E> and(final Pipe<?, Boolean>... pipes) {
+    public PipesPipeline<S, E> and(final Pipe<E, ?>... pipes) {
         return this.add(new AndFilterPipe(pipes));
     }
 
@@ -140,7 +140,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipelin
         return this.add(new BackFilterPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
-    public PipesPipeline<S, ?> back(final Pipe pipe) {
+    public PipesPipeline<S, E> back(final Pipe<E, ?> pipe) {
         return this.add(new BackFilterPipe(pipe));
     }
 
@@ -152,7 +152,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipelin
         return this.add(new ExceptFilterPipe(collection));
     }
 
-    public PipesPipeline<S, E> filter(final PipeFunction<?, Boolean> filterFunction) {
+    public PipesPipeline<S, E> filter(final PipeFunction<E, Boolean> filterFunction) {
         return this.add(new FilterFunctionPipe(filterFunction));
     }
 
@@ -160,7 +160,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipelin
         return this.add(new ObjectFilterPipe(object, filter));
     }
 
-    public PipesPipeline<S, E> or(final Pipe<S, Boolean>... pipes) {
+    public PipesPipeline<S, E> or(final Pipe<E, ?>... pipes) {
         return this.add(new OrFilterPipe(pipes));
     }
 
@@ -208,7 +208,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements FluentPipelin
         return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
-    public PipesPipeline<S, ?> optional(final Pipe pipe) {
+    public PipesPipeline<S, E> optional(final Pipe<E, ?> pipe) {
         return this.add(new OptionalPipe(pipe));
     }
 
