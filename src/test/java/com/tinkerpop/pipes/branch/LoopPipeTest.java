@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,6 +38,20 @@ public class LoopPipeTest extends TestCase {
         }
         assertEquals(counter, 3);
     }
+
+    public void testEmitFunctionality() {
+        Pipe<String, String> pipe = new LoopPipe(new RemoveCharPipe(), new LoopPipeFunction(), new TrueEmitFunction());
+        pipe.setStarts(Arrays.asList("aaaaaa", "bbbb", "c"));
+        List<String> results = Arrays.asList("aaaaa", "aaaa", "bbb", "bb", "", "");
+        int counter = 0;
+        while (pipe.hasNext()) {
+            String string = pipe.next();
+            assertTrue(results.contains(string));
+            counter++;
+        }
+        assertEquals(counter, results.size());
+    }
+
 
     public void testPipeNoElements() {
         Pipe<String, String> pipe = new LoopPipe(new RemoveCharPipe(), new LoopPipeFunction());
@@ -70,7 +85,6 @@ public class LoopPipeTest extends TestCase {
         assertTrue(PipeHelper.areEqual(pipe1, pipe2));
     }
 
-
     private class LoopPipeFunction implements PipeFunction<LoopPipe.LoopBundle, Boolean> {
         public Boolean compute(LoopPipe.LoopBundle argument) {
             return (argument.getLoops() < 3);
@@ -91,6 +105,12 @@ public class LoopPipeTest extends TestCase {
     private class AddOnePipe extends AbstractPipe<Integer, Integer> {
         public Integer processNextStart() {
             return this.starts.next() + 1;
+        }
+    }
+
+    private class TrueEmitFunction implements PipeFunction<LoopPipe.LoopBundle, Boolean> {
+        public Boolean compute(LoopPipe.LoopBundle argument) {
+            return true;
         }
     }
 

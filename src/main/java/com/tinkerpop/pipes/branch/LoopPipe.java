@@ -46,15 +46,13 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
             final LoopBundle<S> loopBundle = new LoopBundle<S>(s, this.getPath(), this.getLoops());
             if (whileFunction.compute(loopBundle)) {
                 this.expando.add(loopBundle);
-                if (null != emitFunction && emitFunction.compute(loopBundle)) {
+                if (null != emitFunction && emitFunction.compute(loopBundle))
                     return s;
-                }
             } else {
-                if (null != emitFunction && emitFunction.compute(loopBundle)) {
+                if (null != emitFunction && emitFunction.compute(loopBundle))
                     return s;
-                } else {
+                else
                     return s;
-                }
             }
         }
     }
