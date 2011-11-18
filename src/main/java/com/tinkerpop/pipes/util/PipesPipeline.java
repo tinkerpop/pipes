@@ -236,7 +236,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new GroupCountPipe());
     }
 
-    public PipesPipeline<S, E> sideEffect(final PipeFunction sideEffectFunction) {
+    public PipesPipeline<S, E> sideEffect(final PipeFunction<E,?> sideEffectFunction) {
         return this.add(new SideEffectFunctionPipe(sideEffectFunction));
     }
 

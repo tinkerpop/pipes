@@ -322,7 +322,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param sideEffectFunction the function of the pipe
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> sideEffect(final PipeFunction sideEffectFunction);
+    public PipesFluentPipeline<S, E> sideEffect(final PipeFunction<E,?> sideEffectFunction);
 
     /**
      * Add a TablePipe to the end of the Pipeline.
