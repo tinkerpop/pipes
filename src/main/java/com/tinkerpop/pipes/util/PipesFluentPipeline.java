@@ -210,7 +210,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param aggregate the collection to aggregate results into
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> aggregate(final Collection aggregate);
+    public PipesFluentPipeline<S, E> aggregate(final Collection<E> aggregate);
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
@@ -219,7 +219,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction aggregateFunction);
+    public PipesFluentPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction<E, ?> aggregateFunction);
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
@@ -236,7 +236,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> aggregate(final PipeFunction aggregateFunction);
+    public PipesFluentPipeline<S, E> aggregate(final PipeFunction<E, ?> aggregateFunction);
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
@@ -322,7 +322,42 @@ public interface PipesFluentPipeline<S, E> {
      * @param sideEffectFunction the function of the pipe
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> sideEffect(final PipeFunction<E,?> sideEffectFunction);
+    public PipesFluentPipeline<S, E> sideEffect(final PipeFunction<E, ?> sideEffectFunction);
+
+    /**
+     * Add a StorePipe to the end of the Pipeline.
+     *
+     * @param storage the collection to store results into
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> store(final Collection<E> storage);
+
+
+    /**
+     * Add a StorePipe to the end of the Pipeline.
+     *
+     * @param storage         the collection to store results into
+     * @param storageFunction the function to run over each object prior to insertion into the storage collection
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> store(final Collection storage, final PipeFunction<E,?> storageFunction);
+
+    /**
+     * Add an StorePipe to the end of the Pipeline.
+     * An ArrayList storage collection is provided.
+     *
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> store();
+
+    /**
+     * Add a StorePipe to the end of the Pipeline.
+     * An ArrayList storage collection is provided.
+     *
+     * @param storageFunction the function to run over each object prior to insertion into the storage collection
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> store(final PipeFunction<E, ?> storageFunction);
 
     /**
      * Add a TablePipe to the end of the Pipeline.

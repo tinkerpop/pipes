@@ -23,8 +23,9 @@ h3. Version 0.9 (NOT OFFICIALLY RELEASED YET)
 
 * Removed all "Blueprints":http://blueprints.tinkerpop.com graph related dependencies
 * Renamed @UniquePathFilterPipe@ to @CyclicPathFilterPipe@
-* Renamed numerous methods in @FluentPipeline@ to make DSL construction more concise
-* Updated @LoopPipe@ to support emit functionality
+* Renamed and removed numerous methods in @FluentPipeline@ to make DSL construction more concise
+* Updated @LoopPipe@ to support emit functionality via @PipeFunction@
+* Added @StorePipe@ to lazily save objects to provided collection
 
 ==<hr/>==
 

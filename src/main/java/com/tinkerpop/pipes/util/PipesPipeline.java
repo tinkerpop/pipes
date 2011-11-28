@@ -26,6 +26,7 @@ import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
 import com.tinkerpop.pipes.sideeffect.OptionalPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
+import com.tinkerpop.pipes.sideeffect.StorePipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
@@ -184,7 +185,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     /// SIDE-EFFECT PIPES ///
     /////////////////////////
 
-    public PipesPipeline<S, E> aggregate(final Collection aggregate) {
+    public PipesPipeline<S, E> aggregate(final Collection<E> aggregate) {
         return this.add(new AggregatePipe(aggregate));
     }
 
@@ -236,8 +237,24 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new GroupCountPipe());
     }
 
-    public PipesPipeline<S, E> sideEffect(final PipeFunction<E,?> sideEffectFunction) {
+    public PipesPipeline<S, E> sideEffect(final PipeFunction<E, ?> sideEffectFunction) {
         return this.add(new SideEffectFunctionPipe(sideEffectFunction));
+    }
+
+    public PipesPipeline<S, E> store(final Collection<E> storage) {
+        return this.add(new StorePipe<E>(storage));
+    }
+
+    public PipesPipeline<S, E> store(final Collection storage, final PipeFunction<E,?> storageFunction) {
+        return this.add(new StorePipe<E>(storage, storageFunction));
+    }
+
+    public PipesFluentPipeline<S, E> store(final PipeFunction<E, ?> storageFunction) {
+        return this.store(new ArrayList(), storageFunction);
+    }
+
+    public PipesPipeline<S, E> store() {
+        return this.store(new ArrayList<E>());
     }
 
     public PipesPipeline<S, E> table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
