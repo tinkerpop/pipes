@@ -393,6 +393,14 @@ public interface PipesFluentPipeline<S, E> {
      */
     public PipesFluentPipeline<S, E> table();
 
+    /**
+     * Add a TablePipe to the end of the Pipeline.
+     *
+     * @param columnFunctions the post-processing function for each column
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> table(final PipeFunction... columnFunctions);
+
     ///////////////////////
     /// TRANSFORM PIPES ///
     ///////////////////////

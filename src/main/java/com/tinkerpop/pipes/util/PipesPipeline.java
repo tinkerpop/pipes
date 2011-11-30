@@ -245,7 +245,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new StorePipe<E>(storage));
     }
 
-    public PipesPipeline<S, E> store(final Collection storage, final PipeFunction<E,?> storageFunction) {
+    public PipesPipeline<S, E> store(final Collection storage, final PipeFunction<E, ?> storageFunction) {
         return this.add(new StorePipe<E>(storage, storageFunction));
     }
 
@@ -263,6 +263,10 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
 
     public PipesPipeline<S, E> table(final Table table, final PipeFunction... columnFunctions) {
         return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this), columnFunctions));
+    }
+
+    public PipesPipeline<S, E> table(final PipeFunction... columnFunctions) {
+        return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
     public PipesPipeline<S, E> table(final Table table) {
@@ -323,7 +327,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new SideEffectCapPipe((SideEffectPipe) FluentUtility.removePreviousPipes(this, 1).get(0)));
     }
 
-    public <T> PipesPipeline<S, T> transform(final PipeFunction<E,T> function) {
+    public <T> PipesPipeline<S, T> transform(final PipeFunction<E, T> function) {
         return this.add(new TransformFunctionPipe(function));
     }
 
