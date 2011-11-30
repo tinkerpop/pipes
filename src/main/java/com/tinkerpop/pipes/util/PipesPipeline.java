@@ -323,7 +323,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new SideEffectCapPipe((SideEffectPipe) FluentUtility.removePreviousPipes(this, 1).get(0)));
     }
 
-    public PipesPipeline<S, ?> transform(final PipeFunction function) {
+    public <T> PipesPipeline<S, T> transform(final PipeFunction<E,T> function) {
         return this.add(new TransformFunctionPipe(function));
     }
 
@@ -338,34 +338,4 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     public PipesPipeline<S, E> start(final Object object) {
         return this.add(new StartPipe(object));
     }
-
-    ///////////////////////
-    /// UTILITY METHODS ///
-    ///////////////////////
-
-    public long count() {
-        return PipeHelper.counter(this);
-    }
-
-    public void iterate() {
-        PipeHelper.iterate(this);
-    }
-
-    public List<E> next(final int number) {
-        final List<E> list = new ArrayList<E>(number);
-        PipeHelper.fillCollection(this, list, number);
-        return list;
-    }
-
-    public List<E> toList() {
-        final List<E> list = new ArrayList<E>();
-        PipeHelper.fillCollection(this, list);
-        return list;
-    }
-
-    public Collection<E> fill(final Collection<E> collection) {
-        PipeHelper.fillCollection(this, collection);
-        return collection;
-    }
-
 }

@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.Pipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * A Pipeline is a linear composite of Pipes.
  * Pipeline takes a List of Pipes and joins them according to their order as specified by their location in the List.
  * It is important to ensure that the provided ordered Pipes can connect together.
- * That is, that the output of the n-1 Pipe is the same as the input to n Pipe.
+ * That is, that the output type of the n-1 Pipe is the same as the input type of the n Pipe.
  * Once all provided Pipes are composed, a Pipeline can be treated like any other Pipe.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -164,5 +165,30 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
 
     public boolean equals(final Object object) {
         return (object instanceof Pipeline) && PipeHelper.areEqual(this, (Pipeline) object);
+    }
+
+    public long count() {
+        return PipeHelper.counter(this);
+    }
+
+    public void iterate() {
+        PipeHelper.iterate(this);
+    }
+
+    public List<E> next(final int number) {
+        final List<E> list = new ArrayList<E>(number);
+        PipeHelper.fillCollection(this, list, number);
+        return list;
+    }
+
+    public List<E> toList() {
+        final List<E> list = new ArrayList<E>();
+        PipeHelper.fillCollection(this, list);
+        return list;
+    }
+
+    public Collection<E> fill(final Collection<E> collection) {
+        PipeHelper.fillCollection(this, collection);
+        return collection;
     }
 }

@@ -340,7 +340,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param storageFunction the function to run over each object prior to insertion into the storage collection
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> store(final Collection storage, final PipeFunction<E,?> storageFunction);
+    public PipesFluentPipeline<S, E> store(final Collection storage, final PipeFunction<E, ?> storageFunction);
 
     /**
      * Add an StorePipe to the end of the Pipeline.
@@ -476,7 +476,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param function the transformation function of the pipe
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, ?> transform(final PipeFunction function);
+    public <T> PipesFluentPipeline<S, T> transform(final PipeFunction<E, T> function);
 
     //////////////////////
     /// UTILITY PIPES ///
