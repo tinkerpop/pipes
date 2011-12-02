@@ -11,8 +11,6 @@ import java.util.Collection;
  */
 public class AbstractPipeTest extends TestCase {
 
-    private static final int TOTAL_RUNS = 25;
-
     public void testIterable() {
         Collection<String> names = Arrays.asList("marko", "josh", "peter");
         Pipe<String, String> pipe = new IdentityPipe<String>();

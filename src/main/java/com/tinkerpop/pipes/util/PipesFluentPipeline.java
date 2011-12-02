@@ -78,18 +78,13 @@ public interface PipesFluentPipeline<S, E> {
      */
     public PipesFluentPipeline<S, ?> ifThenElse(final PipeFunction<E, Boolean> ifFunction, final PipeFunction<E, ?> thenFunction, final PipeFunction<E, ?> elseFunction);
 
-
     public PipesFluentPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction);
 
     public PipesFluentPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction);
 
-    public PipesFluentPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction);
-
     public PipesFluentPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction);
 
     public PipesFluentPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction);
-
-    public PipesFluentPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction);
 
 
     ////////////////////
@@ -119,14 +114,6 @@ public interface PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, ?> back(final String namedStep);
-
-    /**
-     * Add a BackFilterPipe to the end of the Pipeline.
-     *
-     * @param pipe the internal pipe of the BackFilterPipe
-     * @return the extended Pipeline
-     */
-    public PipesFluentPipeline<S, E> back(final Pipe<E, ?> pipe);
 
     /**
      * Add a DuplicateFilterPipe to the end of the Pipeline.
@@ -206,6 +193,14 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
+     * An ArrayList aggregate is provided.
+     *
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> aggregate();
+
+    /**
+     * Add an AggregatePipe to the end of the Pipeline.
      *
      * @param aggregate the collection to aggregate results into
      * @return the extended Pipeline
@@ -220,14 +215,6 @@ public interface PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction<E, ?> aggregateFunction);
-
-    /**
-     * Add an AggregatePipe to the end of the Pipeline.
-     * An ArrayList aggregate is provided.
-     *
-     * @return the extended Pipeline
-     */
-    public PipesFluentPipeline<S, E> aggregate();
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
@@ -253,14 +240,6 @@ public interface PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, ?> optional(final String namedStep);
-
-    /**
-     * Add an OptionalPipe to the end of the Pipeline.
-     *
-     * @param pipe the internal pipe of the OptionalPipe
-     * @return the extended Pipeline
-     */
-    public PipesFluentPipeline<S, E> optional(final Pipe<E, ?> pipe);
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
@@ -505,7 +484,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param object the object that serves as the start of the pipeline (iterator/iterable are unfolded)
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> start(final Object object);
+    public PipesFluentPipeline<S, S> start(final S object);
 
     ///////////////////////
     /// UTILITY METHODS ///

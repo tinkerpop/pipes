@@ -109,20 +109,12 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
     }
 
-    public PipesPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
-        return this.add(new LoopPipe(pipe, whileFunction));
-    }
-
     public PipesPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction, emitFunction));
     }
 
     public PipesPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction, emitFunction));
-    }
-
-    public PipesPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
-        return this.add(new LoopPipe(pipe, whileFunction, emitFunction));
     }
 
     ////////////////////
@@ -139,10 +131,6 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
 
     public PipesPipeline<S, ?> back(final String namedStep) {
         return this.add(new BackFilterPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
-    }
-
-    public PipesPipeline<S, E> back(final Pipe<E, ?> pipe) {
-        return this.add(new BackFilterPipe(pipe));
     }
 
     public PipesPipeline<S, E> dedup() {
@@ -185,19 +173,19 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     /// SIDE-EFFECT PIPES ///
     /////////////////////////
 
-    public PipesPipeline<S, E> aggregate(final Collection<E> aggregate) {
-        return this.add(new AggregatePipe(aggregate));
-    }
-
-    public PipesPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction aggregateFunction) {
-        return this.add(new AggregatePipe(aggregate, aggregateFunction));
-    }
-
     public PipesPipeline<S, E> aggregate() {
         return this.aggregate(new ArrayList());
     }
 
-    public PipesPipeline<S, E> aggregate(final PipeFunction aggregateFunction) {
+    public PipesPipeline<S, E> aggregate(final Collection<E> aggregate) {
+        return this.add(new AggregatePipe(aggregate));
+    }
+
+    public PipesPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction<E, ?> aggregateFunction) {
+        return this.add(new AggregatePipe(aggregate, aggregateFunction));
+    }
+
+    public PipesPipeline<S, E> aggregate(final PipeFunction<E, ?> aggregateFunction) {
         return this.aggregate(new ArrayList(), aggregateFunction);
     }
 
@@ -207,10 +195,6 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
 
     public PipesPipeline<S, ?> optional(final String namedStep) {
         return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
-    }
-
-    public PipesPipeline<S, E> optional(final Pipe<E, ?> pipe) {
-        return this.add(new OptionalPipe(pipe));
     }
 
     public PipesPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
@@ -292,7 +276,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> _() {
-        return this.add(new IdentityPipe());
+        return this.add(new IdentityPipe<E>());
     }
 
     public PipesPipeline<S, E> memoize(final String namedStep) {
@@ -339,7 +323,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new AsPipe(name, FluentUtility.removePreviousPipes(this, 1).get(0)));
     }
 
-    public PipesPipeline<S, E> start(final Object object) {
-        return this.add(new StartPipe(object));
+    public PipesPipeline<S, S> start(final S object) {
+        return this.add(new StartPipe<S>(object));
     }
 }

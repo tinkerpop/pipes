@@ -14,12 +14,11 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * LoopPipe takes a Boolean-based PipeFunction.
- * For each object of the LoopPipe, the PipeFunction is called.
- * The first parameter of the PipeFunction is a LoopBundle object which is the object plus some metadata.
- * The PipeFunction returns a Boolean.
- * The Boolean determines whether the object should be put back at the start of the LoopPipe or not.
- * In essence, the semantics of the PipeFunction is "while."
+ * LoopPipe takes one or two Boolean-based PipeFunctions.
+ * For each object of the LoopPipe, the "while" PipeFunction is called.
+ * The input of the while PipeFunction is a LoopBundle object which is the object plus some metadata.
+ * The boolean of the while PipeFunction determines whether the object should be put back at the start of the LoopPipe or not.
+ * The "emit" PipeFunction determines whether the current object should be emitted or not.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
