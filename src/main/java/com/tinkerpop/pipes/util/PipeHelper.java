@@ -203,5 +203,9 @@ public class PipeHelper {
         }
     }
 
+    private PipeHelper() {
+
+    }
+
 
 }
