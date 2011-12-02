@@ -6,7 +6,8 @@ import java.util.NoSuchElementException;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class EmptyIterator<T> implements Iterator<T> {
+public enum EmptyIterator implements Iterator<Object> {
+    INSTANCE;
 
     public void remove() {
         throw new UnsupportedOperationException();
@@ -16,7 +17,7 @@ public class EmptyIterator<T> implements Iterator<T> {
         return false;
     }
 
-    public T next() {
+    public Object next() {
         throw new NoSuchElementException();
     }
 }

@@ -32,6 +32,10 @@ public class PipeHelper {
         }
     }
 
+    public static <T> Iterator<T> emptyIterator() {
+        return (Iterator<T>) EmptyIterator.INSTANCE;
+    }
+
     /**
      * Drain an iterator into a collection. Useful for storing the results of a Pipe into a collection.
      * Note that the try/catch model is not "acceptable Java," but is more efficient given the architecture of AbstractPipe.
