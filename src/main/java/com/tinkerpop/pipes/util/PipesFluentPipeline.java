@@ -392,6 +392,12 @@ public interface PipesFluentPipeline<S, E> {
      */
     public PipesFluentPipeline<S, List<?>> gather();
 
+    /**
+     * Add a GatherPipe to the end of the Pipeline.
+     *
+     * @param function a transformation to apply to the gathered list
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, ?> gather(final PipeFunction<List, ?> function);
 
     /**
