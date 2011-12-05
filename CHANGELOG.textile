@@ -28,6 +28,7 @@ h3. Version 0.9 (Sink -- NOT OFFICIALLY RELEASED YET)
 * Renamed and removed numerous methods in @FluentPipeline@ to make DSL construction more concise
 * Updated @LoopPipe@ to support emit functionality via @PipeFunction@
 * Added @StorePipe@ to lazily save objects to provided collection
+* Added function support to @DeduplicateFilterPipe@
 
 ==<hr/>==
 

@@ -123,12 +123,20 @@ public interface PipesFluentPipeline<S, E> {
     public PipesFluentPipeline<S, E> dedup();
 
     /**
+     * Add a DuplicateFilterPipe to the end of the Pipeline.
+     *
+     * @param dedupFunction a function to call on the object to yield the object to dedup on
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> dedup(PipeFunction<E, ?> dedupFunction);
+
+    /**
      * Add an ExceptFilterPipe to the end of the Pipeline.
      *
      * @param collection the collection except from the stream
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> except(final Collection collection);
+    public PipesFluentPipeline<S, E> except(final Collection<E> collection);
 
     /**
      * Add an FilterFunctionPipe to the end of the Pipeline.
@@ -145,7 +153,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param filter the filter of the pipe
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> objectFilter(final Object object, final FilterPipe.Filter filter);
+    public PipesFluentPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter);
 
     /**
      * Add an OrFilterPipe to the end the Pipeline.
@@ -178,7 +186,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param collection the collection to retain
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> retain(final Collection collection);
+    public PipesFluentPipeline<S, E> retain(final Collection<E> collection);
 
     /**
      * Add a CyclicPathFilterPipe to the end of the Pipeline.

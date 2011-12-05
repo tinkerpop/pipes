@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.PipeFunction;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -29,6 +30,30 @@ public class DuplicateFilterPipeTest extends TestCase {
         assertEquals(counter2, 1);
     }
 
+    public void testDedupFunction() {
+        List<String> starts = Arrays.asList("marko", "josh", "peter", "marko", "marko");
+        Pipe<String, String> pipe = new DuplicateFilterPipe<String>(new PipeFunction<String, Object>() {
+            @Override
+            public Object compute(String argument) {
+                return argument.length();
+            }
+        });
+        pipe.setStarts(starts.iterator());
+        int counter = 0;
+        int counter2 = 0;
+        while (pipe.hasNext()) {
+            String next = pipe.next();
+            assertTrue(next.equals("josh") || next.equals("marko"));
+            if (next.equals("marko") || next.equals("peter"))
+                counter2++;
+            counter++;
+        }
+        assertEquals(counter, 2);
+        assertEquals(counter2, 1);
+
+
+    }
+
     public void testReset() {
         List<String> starts = Arrays.asList("marko", "marko", "peter", "marko", "josh");
         Pipe<String, String> pipe = new DuplicateFilterPipe<String>();
@@ -41,4 +66,5 @@ public class DuplicateFilterPipeTest extends TestCase {
         assertEquals(pipe.next(), "josh");
         assertFalse(pipe.hasNext());
     }
+
 }

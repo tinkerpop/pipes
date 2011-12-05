@@ -2,6 +2,7 @@ package com.tinkerpop.pipes.filter;
 
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.HashSet;
 
@@ -15,13 +16,31 @@ import java.util.HashSet;
  */
 public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final HashSet<S> historySet = new HashSet<S>();
+    private final HashSet historySet = new HashSet();
+    private final PipeFunction<S, ?> function;
+
+    public DuplicateFilterPipe() {
+        this.function = null;
+    }
+
+    public DuplicateFilterPipe(final PipeFunction<S, ?> function) {
+        this.function = function;
+    }
+
 
     protected S processNextStart() {
         while (true) {
             final S s = this.starts.next();
-            if (!this.historySet.contains(s)) {
-                this.historySet.add(s);
+
+            Object t;
+            if (null != this.function) {
+                t = this.function.compute(s);
+            } else {
+                t = s;
+            }
+
+            if (!this.historySet.contains(t)) {
+                this.historySet.add(t);
                 return s;
             }
         }

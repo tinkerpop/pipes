@@ -122,7 +122,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     ////////////////////
 
     public PipesPipeline<S, E> and(final Pipe<E, ?>... pipes) {
-        return this.add(new AndFilterPipe(pipes));
+        return this.add(new AndFilterPipe<E>(pipes));
     }
 
     public PipesPipeline<S, ?> back(final int numberedStep) {
@@ -134,39 +134,43 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> dedup() {
-        return this.add(new DuplicateFilterPipe());
+        return this.add(new DuplicateFilterPipe<E>());
     }
 
-    public PipesPipeline<S, E> except(final Collection collection) {
-        return this.add(new ExceptFilterPipe(collection));
+    public PipesPipeline<S, E> dedup(final PipeFunction<E, ?> dedupFunction) {
+        return this.add(new DuplicateFilterPipe<E>(dedupFunction));
+    }
+
+    public PipesPipeline<S, E> except(final Collection<E> collection) {
+        return this.add(new ExceptFilterPipe<E>(collection));
     }
 
     public PipesPipeline<S, E> filter(final PipeFunction<E, Boolean> filterFunction) {
-        return this.add(new FilterFunctionPipe(filterFunction));
+        return this.add(new FilterFunctionPipe<E>(filterFunction));
     }
 
-    public PipesPipeline<S, E> objectFilter(final Object object, final FilterPipe.Filter filter) {
-        return this.add(new ObjectFilterPipe(object, filter));
+    public PipesPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter) {
+        return this.add(new ObjectFilterPipe<E>(object, filter));
     }
 
     public PipesPipeline<S, E> or(final Pipe<E, ?>... pipes) {
-        return this.add(new OrFilterPipe(pipes));
+        return this.add(new OrFilterPipe<E>(pipes));
     }
 
     public PipesPipeline<S, E> random(final Double bias) {
-        return this.add(new RandomFilterPipe(bias));
+        return this.add(new RandomFilterPipe<E>(bias));
     }
 
     public PipesPipeline<S, E> range(final int low, final int high) {
-        return this.add(new RangeFilterPipe(low, high));
+        return this.add(new RangeFilterPipe<E>(low, high));
     }
 
-    public PipesPipeline<S, E> retain(final Collection collection) {
-        return this.add(new RetainFilterPipe(collection));
+    public PipesPipeline<S, E> retain(final Collection<E> collection) {
+        return this.add(new RetainFilterPipe<E>(collection));
     }
 
     public PipesPipeline<S, E> simplePath() {
-        return this.add(new CyclicPathFilterPipe());
+        return this.add(new CyclicPathFilterPipe<E>());
     }
 
     /////////////////////////
@@ -174,15 +178,15 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     /////////////////////////
 
     public PipesPipeline<S, E> aggregate() {
-        return this.aggregate(new ArrayList());
+        return this.aggregate(new ArrayList<E>());
     }
 
     public PipesPipeline<S, E> aggregate(final Collection<E> aggregate) {
-        return this.add(new AggregatePipe(aggregate));
+        return this.add(new AggregatePipe<E>(aggregate));
     }
 
     public PipesPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction<E, ?> aggregateFunction) {
-        return this.add(new AggregatePipe(aggregate, aggregateFunction));
+        return this.add(new AggregatePipe<E>(aggregate, aggregateFunction));
     }
 
     public PipesPipeline<S, E> aggregate(final PipeFunction<E, ?> aggregateFunction) {
