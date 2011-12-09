@@ -34,6 +34,12 @@
         </contributor>
     </contributors>
     <inceptionYear>2010</inceptionYear>
+    <licenses>
+        <license>
+            <name>BSD 3-Clause</name>
+            <url>http://www.opensource.org/licenses/BSD-3-Clause</url>
+        </license>
+    </licenses>
     <scm>
         <connection>scm:git:git@github.com:tinkerpop/pipes.git</connection>
         <developerConnection>scm:git:git@github.com:tinkerpop/pipes.git</developerConnection>
