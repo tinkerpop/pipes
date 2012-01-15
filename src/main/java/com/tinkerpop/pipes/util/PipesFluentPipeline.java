@@ -209,7 +209,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param filter the filter of the pipe
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> discard(final E object, final FilterPipe.Filter filter);
+    public PipesFluentPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter);
 
     /**
      * Add an OrFilterPipe to the end the Pipeline.
@@ -264,7 +264,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
-     * An ArrayList aggregate is provided.
+     * The objects prior to aggregate are greedily collected into an ArrayList.
      *
      * @return the extended Pipeline
      */
@@ -272,6 +272,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
+     * The objects prior to aggregate are greedily collected into the provided collection.
      *
      * @param aggregate the collection to aggregate results into
      * @return the extended Pipeline
@@ -280,6 +281,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
+     * The results of the function evaluated on the objects prior to the aggregate are greedily collected into the provided collection.
      *
      * @param aggregate         the collection to aggregate results into
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
@@ -289,7 +291,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an AggregatePipe to the end of the Pipeline.
-     * An ArrayList aggregate is provided.
+     * The results of the function evaluated on the objects prior to the aggregate are greedily collected into an ArrayList.
      *
      * @param aggregateFunction the function to run over each object prior to insertion into the aggregate
      * @return the extended Pipeline
@@ -298,6 +300,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
+     * The section of pipeline back to the numbered step is evaluated.
      *
      * @param numberedStep the number of steps previous to optional back to
      * @return the extended Pipeline
@@ -306,6 +309,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
+     * The section of pipeline back to the named step is evaluated.
      *
      * @param namedStep the name of the step previous to optional back to
      * @return the extended Pipeline
@@ -314,6 +318,9 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
+     * A map is maintained of counts.
+     * The map keys are determined by the function on the incoming object.
+     * The map values are determined by the function on the previous value.
      *
      * @param map           a provided count map
      * @param keyFunction   the key function to determine map key
@@ -324,6 +331,9 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
+     * map is maintained of counts.
+     * The map keys are determined by the function on the incoming object.
+     * The map values are determined by the function on the previous value.
      *
      * @param keyFunction   the key function to determine map key
      * @param valueFunction the value function to determine map value
@@ -334,6 +344,9 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
+     * A map is maintained of counts.
+     * The map keys are determined by the function on the incoming object.
+     * The map values are 1 plus the previous value for that key.
      *
      * @param map         a provided count map
      * @param keyFunction the key function to determine map key
@@ -343,6 +356,9 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
+     * A map is maintained of counts.
+     * The map keys are determined by the function on the incoming object.
+     * The map values are 1 plus the previous value for that key.
      *
      * @param keyFunction the key function to determine map key
      * @return the extended Pipeline
@@ -352,6 +368,9 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a GroupCountPipe to the end of the Pipeline.
+     * A map is maintained of counts.
+     * The map keys are the incoming objects.
+     * The map values are 1 plus the previous value for that key.
      *
      * @param map a provided count map
      * @return the extended Pipeline
@@ -360,6 +379,9 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a GroupCountPipe to the end of the Pipeline.
+     * A map is maintained of counts.
+     * The map keys are the incoming objects.
+     * The map values are 1 plus the previous value for that key.
      *
      * @return the extended Pipeline
      */
@@ -368,6 +390,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a SideEffectFunctionPipe to the end of the Pipeline.
+     * The provided function is evaluated and the incoming object is the outgoing object.
      *
      * @param sideEffectFunction the function of the pipe
      * @return the extended Pipeline
@@ -376,6 +399,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a StorePipe to the end of the Pipeline.
+     * Lazily store the incoming objects into the provided collection.
      *
      * @param storage the collection to store results into
      * @return the extended Pipeline
@@ -385,6 +409,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a StorePipe to the end of the Pipeline.
+     * Lazily store the object returned by the function over the incoming object into the provided collection.
      *
      * @param storage         the collection to store results into
      * @param storageFunction the function to run over each object prior to insertion into the storage collection
@@ -394,7 +419,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an StorePipe to the end of the Pipeline.
-     * An ArrayList storage collection is provided.
+     * An ArrayList storage collection is provided and filled lazily with incoming objects.
      *
      * @return the extended Pipeline
      */
@@ -402,7 +427,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a StorePipe to the end of the Pipeline.
-     * An ArrayList storage collection is provided.
+     * An ArrayList storage collection is provided and filled lazily with the return of the function evaluated over the incoming objects.
      *
      * @param storageFunction the function to run over each object prior to insertion into the storage collection
      * @return the extended Pipeline

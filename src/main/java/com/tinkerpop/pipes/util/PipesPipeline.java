@@ -150,7 +150,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new FilterFunctionPipe<E>(filterFunction));
     }
 
-    public PipesPipeline<S, E> discard(final E object, final FilterPipe.Filter filter) {
+    public PipesPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter) {
         return this.add(new ObjectFilterPipe<E>(object, filter));
     }
 
