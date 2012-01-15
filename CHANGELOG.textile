@@ -21,6 +21,10 @@ h3. Version 1.0 (Pipes -- NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Added @SelectPipe@ to select the objects of named steps from a pipeline
+* Renamed @objectFilter@ to @discard@ in @PipesPipeline@
+* Heavily reworked @PipesFluentPipeline@ JavaDoc to make it a single point of reference
+
 ==<hr/>==
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-sink-pipe.png!

@@ -34,6 +34,7 @@ import com.tinkerpop.pipes.transform.MemoizePipe;
 import com.tinkerpop.pipes.transform.PathFunctionPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
+import com.tinkerpop.pipes.transform.SelectPipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 
@@ -43,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * PipesPipeline allows for the creation of a Pipeline using the fluent-pattern (http://en.wikipedia.org/wiki/Fluent_interface ).
+ * PipesPipeline allows for the creation of a Pipeline using the fluent-pattern (http://en.wikipedia.org/wiki/Fluent_interface).
  * Each Pipe in Pipes maintains a fluent method in PipesPipeline.
  * Numerous method overloadings are provided in order to accommodate the various ways in which one logically thinks of a pipeline structure.
  *
@@ -149,7 +150,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new FilterFunctionPipe<E>(filterFunction));
     }
 
-    public PipesPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter) {
+    public PipesPipeline<S, E> discard(final E object, final FilterPipe.Filter filter) {
         return this.add(new ObjectFilterPipe<E>(object, filter));
     }
 
@@ -270,7 +271,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     ///////////////////////
 
 
-    public PipesPipeline<S, List<?>> gather() {
+    public PipesPipeline<S, List> gather() {
         return this.add(new GatherPipe());
     }
 
@@ -299,12 +300,24 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), map));
     }
 
-    public PipesPipeline<S, List<?>> path(final PipeFunction... pathFunctions) {
+    public PipesPipeline<S, List> path(final PipeFunction... pathFunctions) {
         if (pathFunctions.length == 0)
             this.addPipe(new PathPipe());
         else
             this.addPipe(new PathFunctionPipe(pathFunctions));
-        return (PipesPipeline<S, List<?>>) this;
+        return (PipesPipeline<S, List>) this;
+    }
+
+    public PipesPipeline<S, List> select(final Collection<String> stepNames, final PipeFunction... columnFunctions) {
+        return this.add(new SelectPipe(stepNames, FluentUtility.getAsPipes(this), columnFunctions));
+    }
+
+    public PipesPipeline<S, List> select(final PipeFunction... columnFunctions) {
+        return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this), columnFunctions));
+    }
+
+    public PipesPipeline<S, List> select() {
+        return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this)));
     }
 
     public PipesPipeline<S, ?> scatter() {

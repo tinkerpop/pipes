@@ -14,8 +14,8 @@ public class MemoizePipeTest extends TestCase {
 
     public void testPipeEquality() {
         assertEquals(
-                new PipesPipeline().start(Arrays.asList("a", "b", "c"))._().objectFilter("x", FilterPipe.Filter.NOT_EQUAL).memoize(1)._(),
-                new PipesPipeline().start(Arrays.asList("a", "b", "c"))._().objectFilter("x", FilterPipe.Filter.NOT_EQUAL)._());
+                new PipesPipeline().start(Arrays.asList("a", "b", "c"))._().discard("x", FilterPipe.Filter.NOT_EQUAL).memoize(1)._(),
+                new PipesPipeline().start(Arrays.asList("a", "b", "c"))._().discard("x", FilterPipe.Filter.NOT_EQUAL)._());
     }
 
     /*public void testBasicMemoization() {

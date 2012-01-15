@@ -16,12 +16,21 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a FunctionPipe to the end of the pipeline.
+     * The provide provided PipeFunction emits whatever is defined by the function.
+     * This serves as an arbitrary step computation.
      *
      * @param function the function of the FunctionPipe
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, ?> step(final PipeFunction function);
 
+    /**
+     * Add an arbitrary Pipe to the end of the pipeline.
+     *
+     * @param pipe The provided pipe.
+     * @param <T>  the object type emitted by the provided pipe.
+     * @return the extended Pipeline
+     */
     public <T> PipesFluentPipeline<S, T> step(final Pipe<E, T> pipe);
 
     ////////////////////
@@ -30,6 +39,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a CopySplitPipe to the end of the pipeline.
+     * The incoming objects are copied to the provided pipes.
+     * This "split-pipe" is used in conjunction with some type of "merge-pipe."
      *
      * @param pipes the internal pipes of the CopySplitPipe
      * @return the extended Pipeline
@@ -38,6 +49,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an ExhaustMergePipe to the end of the pipeline.
+     * The provided pipes' emitted objects are merged where the first pipe's objects are exhausted, then the second, etc.
      *
      * @param pipes the internal pipes ExhaustMergePipe
      * @return the extended Pipeline
@@ -47,6 +59,7 @@ public interface PipesFluentPipeline<S, E> {
     /**
      * Add an ExhaustMergePipe to the end of the pipeline.
      * The one-step previous MetaPipe in the pipeline's pipes are used as the internal pipes.
+     * The pipes' emitted objects are merged where the first pipe's objects are exhausted, then the second, etc.
      *
      * @return the extended Pipeline
      */
@@ -54,6 +67,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a FairMergePipe to the end of the pipeline.
+     * The provided pipes' emitted objects are merged in a round robin fashion.
      *
      * @param pipes the internal pipes of the FairMergePipe
      * @return the extended Pipeline
@@ -63,6 +77,7 @@ public interface PipesFluentPipeline<S, E> {
     /**
      * Add a FairMergePipe to the end of the Pipeline.
      * The one-step previous MetaPipe in the pipeline's pipes are used as the internal pipes.
+     * The pipes' emitted objects are merged in a round robin fashion.
      *
      * @return the extended Pipeline
      */
@@ -70,6 +85,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an IfThenElsePipe to the end of the Pipeline.
+     * If the ifFunction is true, then the results of the thenFunction are emitted.
+     * If the ifFunction is true, then the results of the elseFunction are emitted.
      *
      * @param ifFunction   the function denoting the "if" part of the pipe
      * @param thenFunction the function denoting the "then" part of the pipe
@@ -78,12 +95,42 @@ public interface PipesFluentPipeline<S, E> {
      */
     public PipesFluentPipeline<S, ?> ifThenElse(final PipeFunction<E, Boolean> ifFunction, final PipeFunction<E, ?> thenFunction, final PipeFunction<E, ?> elseFunction);
 
+    /**
+     * Add a LoopPipe to the end of the Pipeline.
+     *
+     * @param numberedStep  the number of steps to loop back to
+     * @param whileFunction whether or not to continue looping on the current object
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction);
 
+    /**
+     * Add a LoopPipe to the end of the Pipeline.
+     *
+     * @param namedStep     the name of the step to loop back to
+     * @param whileFunction whether or not to continue looping on the current object
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction);
 
+    /**
+     * Add a LoopPipe to the end of the Pipeline.
+     *
+     * @param numberedStep  the number of steps to loop back to
+     * @param whileFunction whether or not to continue looping on the current object
+     * @param emitFunction  whether or not to emit the current object (irrespective of looping)
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction);
 
+    /**
+     * Add a LoopPipe to the end of the Pipeline.
+     *
+     * @param namedStep     the number of steps to loop back to
+     * @param whileFunction whether or not to continue looping on the current object
+     * @param emitFunction  whether or not to emit the current object (irrespective of looping)
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction);
 
 
@@ -93,6 +140,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an AndFilterPipe to the end the Pipeline.
+     * If the internal pipes all yield objects, then the object is not filtered.
+     * The provided pipes are provided the object as their starts.
      *
      * @param pipes the internal pipes of the AndFilterPipe
      * @return the extended Pipeline
@@ -101,6 +150,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a BackFilterPipe to the end of the Pipeline.
+     * The object that was seen numberedSteps ago is emitted.
      *
      * @param numberedStep the number of steps previous to back up to
      * @return the extended Pipeline
@@ -109,6 +159,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a BackFilterPipe to the end of the Pipeline.
+     * The object that was seen namedSteps ago is emitted.
      *
      * @param namedStep the name of the step previous to back up to
      * @return the extended Pipeline
@@ -117,6 +168,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a DuplicateFilterPipe to the end of the Pipeline.
+     * Will only emit the object if it has not been seen before.
      *
      * @return the extended Pipeline
      */
@@ -124,14 +176,16 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a DuplicateFilterPipe to the end of the Pipeline.
+     * Will only emit the object if the object generated by its function hasn't been seen before.
      *
      * @param dedupFunction a function to call on the object to yield the object to dedup on
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> dedup(PipeFunction<E, ?> dedupFunction);
+    public PipesFluentPipeline<S, E> dedup(final PipeFunction<E, ?> dedupFunction);
 
     /**
      * Add an ExceptFilterPipe to the end of the Pipeline.
+     * Will only emit the object if it is not in the provided collection.
      *
      * @param collection the collection except from the stream
      * @return the extended Pipeline
@@ -140,6 +194,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an FilterFunctionPipe to the end of the Pipeline.
+     * The serves are an arbitrary filter where the filter criteria is provided by the filterFunction.
      *
      * @param filterFunction the filter function of the pipe
      * @return the extended Pipeline
@@ -148,15 +203,18 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an ObjectFilterPipe to the end of the Pipeline.
+     * Removes the provide object from the pipeline.
      *
      * @param object the object to filter on
      * @param filter the filter of the pipe
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter);
+    public PipesFluentPipeline<S, E> discard(final E object, final FilterPipe.Filter filter);
 
     /**
      * Add an OrFilterPipe to the end the Pipeline.
+     * Will only emit the object if one or more of the provides pipes yields an object.
+     * The provided pipes are provided the object as their starts.
      *
      * @param pipes the internal pipes of the OrFilterPipe
      * @return the extended Pipeline
@@ -165,6 +223,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a RandomFilterPipe to the end of the Pipeline.
+     * A biased coin toss determines if the object is emitted or not.
      *
      * @param bias the bias of the random coin
      * @return the extended Pipeline
@@ -173,6 +232,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a RageFilterPipe to the end of the Pipeline.
+     * Analogous to a high/low index lookup.
      *
      * @param low  the low end of the range
      * @param high the high end of the range
@@ -182,6 +242,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a RetainFilterPipe to the end of the Pipeline.
+     * Will emit the object only if it is in the provided collection.
      *
      * @param collection the collection to retain
      * @return the extended Pipeline
@@ -190,6 +251,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a CyclicPathFilterPipe to the end of the Pipeline.
+     * If the object's path is repeating (looping), then the object is filtered.
+     * Thus, what is emitted are those objects whose history is composed of unique objects.
      *
      * @return the extended Pipeline
      */
@@ -398,7 +461,7 @@ public interface PipesFluentPipeline<S, E> {
      *
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, List<?>> gather();
+    public PipesFluentPipeline<S, List> gather();
 
     /**
      * Add a GatherPipe to the end of the Pipeline.
@@ -455,7 +518,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param pathFunctions the path function of the PathFunctionPipe
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, List<?>> path(final PipeFunction... pathFunctions);
+    public PipesFluentPipeline<S, List> path(final PipeFunction... pathFunctions);
 
     /**
      * Add a ScatterPipe to the end of the Pipeline.
@@ -463,6 +526,13 @@ public interface PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, ?> scatter();
+
+
+    public PipesFluentPipeline<S, List> select(final Collection<String> stepNames, final PipeFunction... columnFunctions);
+
+    public PipesFluentPipeline<S, List> select(final PipeFunction... columnFunctions);
+
+    public PipesFluentPipeline<S, List> select();
 
     /**
      * Add a SideEffectCapPipe to the end of the Pipeline.
