@@ -48,9 +48,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
                 if (null != emitFunction && emitFunction.compute(loopBundle))
                     return s;
             } else {
-                if (null != emitFunction && emitFunction.compute(loopBundle))
-                    return s;
-                else
+                if (emitFunction == null || emitFunction.compute(loopBundle))
                     return s;
             }
         }
