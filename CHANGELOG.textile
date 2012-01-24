@@ -23,6 +23,7 @@ h3. Version 1.0 (Pipes -- NOT OFFICIALLY RELEASED YET)
 
 * Added @SelectPipe@ to select the objects of named steps from a pipeline
 * Heavily reworked @PipesFluentPipeline@ JavaDoc to make it a single point of reference
+* Updated @LoopPipe@ semantics such that if there is an emit function, then the final object in a while isn't returned
 
 ==<hr/>==
 
