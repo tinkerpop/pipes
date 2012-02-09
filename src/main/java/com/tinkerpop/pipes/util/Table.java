@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class Table extends ArrayList<Table.Row> {
+public class Table extends ArrayList<Row> {
 
     private List<String> columnNames;
     private int tableWidth = -1;
@@ -19,7 +19,8 @@ public class Table extends ArrayList<Table.Row> {
     }
 
     public Table(final String... columnNames) {
-        this.columnNames = Arrays.asList(columnNames);
+        this();
+        this.columnNames.addAll(Arrays.asList(columnNames));
         this.tableWidth = columnNames.length;
     }
 
@@ -47,7 +48,7 @@ public class Table extends ArrayList<Table.Row> {
                 throw new RuntimeException("Table width is " + this.tableWidth + " and row width is " + row.size());
             }
         }
-        this.add(new Row(row));
+        this.add(new Row(row, this.getColumnNames()));
     }
 
     public void addRow(final Object... row) {
@@ -58,7 +59,8 @@ public class Table extends ArrayList<Table.Row> {
         if (tableWidth != -1 && columnNames.length != tableWidth) {
             throw new RuntimeException("Table width is " + this.tableWidth + " and there are " + columnNames.length + " column names");
         }
-        this.columnNames = Arrays.asList(columnNames);
+        this.columnNames.clear();
+        this.columnNames.addAll(Arrays.asList(columnNames));
         this.tableWidth = this.columnNames.size();
     }
 
@@ -102,37 +104,5 @@ public class Table extends ArrayList<Table.Row> {
         super.clear();
         this.tableWidth = -1;
         this.columnNames = new ArrayList<String>();
-    }
-
-    public class Row extends ArrayList {
-
-        public Row(final List row) {
-            super(row);
-        }
-
-        public String toString() {
-
-            final StringBuffer buffer = new StringBuffer("[");
-            for (int i = 0; i < this.size(); i++) {
-                if (columnNames.size() > 0) {
-                    buffer.append(columnNames.get(i));
-                    buffer.append(":");
-                }
-                buffer.append(this.get(i));
-                if (i < this.size() - 1)
-                    buffer.append(", ");
-            }
-            buffer.append("]");
-            return buffer.toString();
-
-        }
-
-        public Object getColumn(final String columnName) {
-            return this.get(columnNames.indexOf(columnName));
-        }
-
-        public Object getColumn(final int column) {
-            return this.get(column);
-        }
     }
 }

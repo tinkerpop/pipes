@@ -11,6 +11,8 @@ Pipes: A Data Flow Framework using Process Graphs
 
 ==<hr/>==
 
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-pipes.png!
+
 h3. Version 1.0 (Pipes -- NOT OFFICIALLY RELEASED YET)
 
 ```xml
@@ -22,6 +24,7 @@ h3. Version 1.0 (Pipes -- NOT OFFICIALLY RELEASED YET)
 ```
 
 * Added @SelectPipe@ to select the objects of named steps from a pipeline
+* Separated @Row@ from @Table@ so it can be reused by other pipes (e.g. @SelectPipe@)
 * Heavily reworked @PipesFluentPipeline@ JavaDoc to make it a single point of reference
 * Updated @LoopPipe@ semantics such that if there is an emit function, then the final object in a while isn't returned
 

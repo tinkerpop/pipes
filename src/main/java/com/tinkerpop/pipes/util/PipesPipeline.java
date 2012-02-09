@@ -308,15 +308,15 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return (PipesPipeline<S, List>) this;
     }
 
-    public PipesPipeline<S, List> select(final Collection<String> stepNames, final PipeFunction... columnFunctions) {
+    public PipesPipeline<S, Row> select(final Collection<String> stepNames, final PipeFunction... columnFunctions) {
         return this.add(new SelectPipe(stepNames, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
-    public PipesPipeline<S, List> select(final PipeFunction... columnFunctions) {
+    public PipesPipeline<S, Row> select(final PipeFunction... columnFunctions) {
         return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
-    public PipesPipeline<S, List> select() {
+    public PipesPipeline<S, Row> select() {
         return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this)));
     }
 

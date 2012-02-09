@@ -309,7 +309,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an OptionalPipe to the end of the Pipeline.
-     * The section of pipeline back to the named step is evaluated.
+     * The section of pipeline back to the partition step is evaluated.
      *
      * @param namedStep the name of the step previous to optional back to
      * @return the extended Pipeline
@@ -438,7 +438,7 @@ public interface PipesFluentPipeline<S, E> {
      * Add a TablePipe to the end of the Pipeline.
      *
      * @param table           the table to fill
-     * @param stepNames       the named steps to include in the filling
+     * @param stepNames       the partition steps to include in the filling
      * @param columnFunctions the post-processing function for each column
      * @return the extended Pipeline
      */
@@ -553,11 +553,11 @@ public interface PipesFluentPipeline<S, E> {
     public PipesFluentPipeline<S, ?> scatter();
 
 
-    public PipesFluentPipeline<S, List> select(final Collection<String> stepNames, final PipeFunction... columnFunctions);
+    public PipesFluentPipeline<S, Row> select(final Collection<String> stepNames, final PipeFunction... columnFunctions);
 
-    public PipesFluentPipeline<S, List> select(final PipeFunction... columnFunctions);
+    public PipesFluentPipeline<S, Row> select(final PipeFunction... columnFunctions);
 
-    public PipesFluentPipeline<S, List> select();
+    public PipesFluentPipeline<S, Row> select();
 
     /**
      * Add a SideEffectCapPipe to the end of the Pipeline.

@@ -51,7 +51,7 @@ public class FluentUtility {
     }
 
     /**
-     * A utility method to remove all the pipes back some named step and return them as a list.
+     * A utility method to remove all the pipes back some partition step and return them as a list.
      *
      * @param namedStep the name of the step previous to remove from the pipeline
      * @return the removed pipes
