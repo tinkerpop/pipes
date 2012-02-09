@@ -8,7 +8,6 @@ import com.tinkerpop.pipes.util.Row;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -22,7 +21,7 @@ public class SelectPipeTest extends TestCase {
             counter++;
             Row list = pipe.next();
             assertEquals(list.size(), 2);
-            assertEquals(((String)list.getColumn("a")).length(), counter);
+            assertEquals(((String) list.getColumn("a")).length(), counter);
             assertEquals(list.getColumn("b"), counter);
             assertEquals(((String) list.get(0)).length(), counter);
             assertEquals(list.get(1), counter);

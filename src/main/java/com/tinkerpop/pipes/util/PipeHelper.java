@@ -159,7 +159,7 @@ public class PipeHelper {
         if (arguments.length > 0) {
             result = result + "(";
             for (final Object arg : arguments) {
-                result = result + arg.toString() + ",";
+                result = result + arg + ",";
             }
             result = result.substring(0, result.length() - 1) + ")";
         }
