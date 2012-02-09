@@ -1,4 +1,4 @@
-package com.tinkerpop.pipes.util;
+package com.tinkerpop.pipes.util.structures;
 
 import com.tinkerpop.pipes.PipeFunction;
 

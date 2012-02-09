@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.util.EmptyIterator;
+import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 
 import java.util.Iterator;
 

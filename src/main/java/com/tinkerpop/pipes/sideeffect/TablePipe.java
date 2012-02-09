@@ -3,7 +3,7 @@ package com.tinkerpop.pipes.sideeffect;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.AsPipe;
-import com.tinkerpop.pipes.util.Table;
+import com.tinkerpop.pipes.util.structures.Table;
 
 import java.util.ArrayList;
 import java.util.Collection;

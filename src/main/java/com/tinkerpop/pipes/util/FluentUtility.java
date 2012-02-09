@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.iterators.SingleIterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;

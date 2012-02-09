@@ -1,4 +1,4 @@
-package com.tinkerpop.pipes.util;
+package com.tinkerpop.pipes.util.iterators;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

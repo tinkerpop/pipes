@@ -4,6 +4,9 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.util.structures.Pair;
+import com.tinkerpop.pipes.util.structures.Row;
+import com.tinkerpop.pipes.util.structures.Table;
 
 import java.util.Collection;
 import java.util.List;
@@ -327,7 +330,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param valueFunction the value function to determine map value
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction);
+    public PipesFluentPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction);
 
     /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
@@ -339,7 +342,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param valueFunction the value function to determine map value
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> groupCount(final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction);
+    public PipesFluentPipeline<S, E> groupCount(final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction);
 
 
     /**

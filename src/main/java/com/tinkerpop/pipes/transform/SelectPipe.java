@@ -3,7 +3,7 @@ package com.tinkerpop.pipes.transform;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.AsPipe;
-import com.tinkerpop.pipes.util.Row;
+import com.tinkerpop.pipes.util.structures.Row;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -2,6 +2,7 @@ package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.structures.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,23 +17,23 @@ import java.util.Map;
 public class GroupCountFunctionPipe<S, K> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<K, Number>> {
 
     private Map<K, Number> countMap;
-    private final PipeFunction<Number, Number> valueFunction;
+    private final PipeFunction<Pair<S, Number>, Number> valueFunction;
     private final PipeFunction<S, K> keyFunction;
 
-    public GroupCountFunctionPipe(final Map<K, Number> countMap, final PipeFunction<S, K> keyFunction, final PipeFunction<Number, Number> valueFunction) {
+    public GroupCountFunctionPipe(final Map<K, Number> countMap, final PipeFunction<S, K> keyFunction, final PipeFunction<Pair<S, Number>, Number> valueFunction) {
         this.countMap = countMap;
         this.valueFunction = valueFunction;
         this.keyFunction = keyFunction;
     }
 
-    public GroupCountFunctionPipe(final PipeFunction<S, K> keyFunction, final PipeFunction<Number, Number> valueFunction) {
+    public GroupCountFunctionPipe(final PipeFunction<S, K> keyFunction, final PipeFunction<Pair<S, Number>, Number> valueFunction) {
         this(new HashMap<K, Number>(), keyFunction, valueFunction);
     }
 
     protected S processNextStart() {
         final S s = this.starts.next();
         final K key = this.getKey(s);
-        this.countMap.put(key, this.getValue(key));
+        this.countMap.put(key, this.getValue(s, key));
         return s;
     }
 
@@ -58,7 +59,7 @@ public class GroupCountFunctionPipe<S, K> extends AbstractPipe<S, S> implements 
     }
 
     //TODO: Fix java.lang.Number issue.
-    private Number getValue(final K key) {
+    private Number getValue(final S start, final K key) {
         Number number = this.countMap.get(key);
         if (null == number) {
             number = 0l;
@@ -66,7 +67,7 @@ public class GroupCountFunctionPipe<S, K> extends AbstractPipe<S, S> implements 
         if (null == valueFunction) {
             return 1l + number.longValue();
         } else {
-            return this.valueFunction.compute(number);
+            return this.valueFunction.compute(new Pair<S, Number>(start, number));
         }
 
     }

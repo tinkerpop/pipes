@@ -37,6 +37,9 @@ import com.tinkerpop.pipes.transform.ScatterPipe;
 import com.tinkerpop.pipes.transform.SelectPipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
+import com.tinkerpop.pipes.util.structures.Pair;
+import com.tinkerpop.pipes.util.structures.Row;
+import com.tinkerpop.pipes.util.structures.Table;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -202,11 +205,11 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
-    public PipesPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
+    public PipesPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction) {
         return this.add(new GroupCountFunctionPipe(map, keyFunction, valueFunction));
     }
 
-    public PipesPipeline<S, E> groupCount(final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
+    public PipesPipeline<S, E> groupCount(final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction) {
         return this.add(new GroupCountFunctionPipe(keyFunction, valueFunction));
     }
 

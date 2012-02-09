@@ -5,7 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.transform.HasNextPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.SingleIterator;
+import com.tinkerpop.pipes.util.iterators.SingleIterator;
 
 import java.util.ArrayList;
 import java.util.List;

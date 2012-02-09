@@ -1,4 +1,4 @@
-package com.tinkerpop.pipes.util;
+package com.tinkerpop.pipes.util.structures;
 
 import java.util.ArrayList;
 import java.util.List;

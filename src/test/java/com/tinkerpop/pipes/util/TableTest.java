@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.util;
 
+import com.tinkerpop.pipes.util.structures.Table;
 import junit.framework.TestCase;
 
 /**

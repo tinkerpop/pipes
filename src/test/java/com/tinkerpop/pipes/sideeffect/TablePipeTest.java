@@ -3,7 +3,7 @@ package com.tinkerpop.pipes.sideeffect;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.PipesPipeline;
-import com.tinkerpop.pipes.util.Table;
+import com.tinkerpop.pipes.util.structures.Table;
 import junit.framework.TestCase;
 
 import java.util.Arrays;

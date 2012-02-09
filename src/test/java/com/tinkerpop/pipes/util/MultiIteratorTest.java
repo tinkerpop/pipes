@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.util;
 
+import com.tinkerpop.pipes.util.iterators.MultiIterator;
 import junit.framework.TestCase;
 
 import java.util.Arrays;

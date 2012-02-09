@@ -4,7 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.Pipeline;
 import com.tinkerpop.pipes.util.PipesPipeline;
-import com.tinkerpop.pipes.util.Row;
+import com.tinkerpop.pipes.util.structures.Row;
 import junit.framework.TestCase;
 
 import java.util.Arrays;

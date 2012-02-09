@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.TimingTest;
+import com.tinkerpop.pipes.util.iterators.SingleIterator;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
