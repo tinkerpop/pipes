@@ -3,7 +3,6 @@ package com.tinkerpop.pipes.util;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.LoopPipe;
-import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
@@ -100,6 +99,9 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a LoopPipe to the end of the Pipeline.
+     * Looping is useful for repeating a section of a pipeline.
+     * The provided whileFunction determines when to drop out of the loop.
+     * The whileFunction is provided a LoopBundle object which contains the object in loop along with other useful metadata.
      *
      * @param numberedStep  the number of steps to loop back to
      * @param whileFunction whether or not to continue looping on the current object
@@ -109,6 +111,9 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a LoopPipe to the end of the Pipeline.
+     * Looping is useful for repeating a section of a pipeline.
+     * The provided whileFunction determines when to drop out of the loop.
+     * The whileFunction is provided a LoopBundle object which contains the object in loop along with other useful metadata.
      *
      * @param namedStep     the name of the step to loop back to
      * @param whileFunction whether or not to continue looping on the current object
@@ -118,6 +123,10 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a LoopPipe to the end of the Pipeline.
+     * Looping is useful for repeating a section of a pipeline.
+     * The provided whileFunction determines when to drop out of the loop.
+     * The provided emitFunction can be used to emit objects that are still going through a loop.
+     * The whileFunction and emitFunctions are provided a LoopBundle object which contains the object in loop along with other useful metadata.
      *
      * @param numberedStep  the number of steps to loop back to
      * @param whileFunction whether or not to continue looping on the current object
@@ -128,6 +137,10 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a LoopPipe to the end of the Pipeline.
+     * Looping is useful for repeating a section of a pipeline.
+     * The provided whileFunction determines when to drop out of the loop.
+     * The provided emitFunction can be used to emit objects that are still going through a loop.
+     * The whileFunction and emitFunctions are provided a LoopBundle object which contains the object in loop along with other useful metadata.
      *
      * @param namedStep     the number of steps to loop back to
      * @param whileFunction whether or not to continue looping on the current object
@@ -203,16 +216,6 @@ public interface PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, E> filter(final PipeFunction<E, Boolean> filterFunction);
-
-    /**
-     * Add an ObjectFilterPipe to the end of the Pipeline.
-     * Removes the provide object from the pipeline.
-     *
-     * @param object the object to filter on
-     * @param filter the filter of the pipe
-     * @return the extended Pipeline
-     */
-    public PipesFluentPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter);
 
     /**
      * Add an OrFilterPipe to the end the Pipeline.
@@ -323,7 +326,7 @@ public interface PipesFluentPipeline<S, E> {
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
      * A map is maintained of counts.
      * The map keys are determined by the function on the incoming object.
-     * The map values are determined by the function on the previous value.
+     * The map values are determined by the function on the incoming object (getA()) and the previous value (getB()).
      *
      * @param map           a provided count map
      * @param keyFunction   the key function to determine map key
@@ -336,7 +339,7 @@ public interface PipesFluentPipeline<S, E> {
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
      * map is maintained of counts.
      * The map keys are determined by the function on the incoming object.
-     * The map values are determined by the function on the previous value.
+     * The map values are determined by the function on the incoming object (getA()) and the previous value (getB()).
      *
      * @param keyFunction   the key function to determine map key
      * @param valueFunction the value function to determine map value
@@ -439,6 +442,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a TablePipe to the end of the Pipeline.
+     * This step is used for grabbing previously seen objects the pipeline as identified by as-steps.
      *
      * @param table           the table to fill
      * @param stepNames       the partition steps to include in the filling
@@ -449,6 +453,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a TablePipe to the end of the Pipeline.
+     * This step is used for grabbing previously seen objects the pipeline as identified by as-steps.
      *
      * @param table           the table to fill
      * @param columnFunctions the post-processing function for each column
@@ -458,6 +463,16 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a TablePipe to the end of the Pipeline.
+     * This step is used for grabbing previously seen objects the pipeline as identified by as-steps.
+     *
+     * @param columnFunctions the post-processing function for each column
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> table(final PipeFunction... columnFunctions);
+
+    /**
+     * Add a TablePipe to the end of the Pipeline.
+     * This step is used for grabbing previously seen objects the pipeline as identified by as-steps.
      *
      * @param table the table to fill
      * @return the extended Pipeline
@@ -466,18 +481,12 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a TablePipe to the end of the Pipeline.
+     * This step is used for grabbing previously seen objects the pipeline as identified by as-steps.
      *
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, E> table();
 
-    /**
-     * Add a TablePipe to the end of the Pipeline.
-     *
-     * @param columnFunctions the post-processing function for each column
-     * @return the extended Pipeline
-     */
-    public PipesFluentPipeline<S, E> table(final PipeFunction... columnFunctions);
 
     ///////////////////////
     /// TRANSFORM PIPES ///
@@ -486,6 +495,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a GatherPipe to the end of the Pipeline.
+     * All the objects previous to this step are aggregated in a greedy fashion and emitted as a List.
      *
      * @return the extended Pipeline
      */
@@ -493,6 +503,10 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a GatherPipe to the end of the Pipeline.
+     * All the objects previous to this step are aggregated in a greedy fashion into a List.
+     * The provided function is applied to the aggregate and the results of the function are emitted.
+     * Typically, the output of the function is a pruned List.
+     * This is good for selective breadth-first searching.
      *
      * @param function a transformation to apply to the gathered list
      * @return the extended Pipeline
@@ -501,6 +515,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an IdentityPipe to the end of the Pipeline.
+     * Useful in various situations where a step is needed without processing.
+     * For example, useful when two as-steps are needed in a row.
      *
      * @return the extended Pipeline
      */
@@ -508,6 +524,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
+     * This step will hold a Map of the objects that have entered into its pipeline section.
+     * If an input is seen twice, then the map stored output is emitted instead of recomputing the pipeline section.
      *
      * @param namedStep the name of the step previous to memoize to
      * @return the extended Pipeline
@@ -516,6 +534,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
+     * This step will hold a Map of the objects that have entered into its pipeline section.
+     * If an input is seen twice, then the map stored output is emitted instead of recomputing the pipeline section.
      *
      * @param numberedStep the number of the step previous to memoize to
      * @return the extended Pipeline
@@ -524,6 +544,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
+     * This step will hold a Map of the objects that have entered into its pipeline section.
+     * If an input is seen twice, then the map stored output is emitted instead of recomputing the pipeline section.
      *
      * @param namedStep the name of the step previous to memoize to
      * @param map       the memoization map
@@ -533,6 +555,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a MemoizePipe to the end of the Pipeline.
+     * This step will hold a Map of the objects that have entered into its pipeline section.
+     * If an input is seen twice, then the map stored output is emitted instead of recomputing the pipeline section.
      *
      * @param numberedStep the number of the step previous to memoize to
      * @param map          the memoization map
@@ -542,6 +566,8 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a PathPipe or PathFunctionPipe to the end of the Pipeline.
+     * This will emit the path that has been seen thus far.
+     * If path functions are provided, then they are evaluated in a round robin fashion on the objects of the path.
      *
      * @param pathFunctions the path function of the PathFunctionPipe
      * @return the extended Pipeline
@@ -550,20 +576,48 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a ScatterPipe to the end of the Pipeline.
+     * Any inputted iterator or iterable is unrolled and the iterator/iterable's objects are emitted one at a time.
      *
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, ?> scatter();
 
-
+    /**
+     * Add a SelectPipe to the end of the Pipeline.
+     * The objects of the named steps (via as) previous in the pipeline are emitted as a Row object.
+     * A Row object extends ArrayList and simply provides named columns and some helper methods.
+     * If column functions are provided, then they are evaluated in a round robin fashion on the objects of the Row.
+     *
+     * @param stepNames       the name of the steps in the expression to retrieve the objects from
+     * @param columnFunctions the functions to apply to the column objects prior to filling the Row
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, Row> select(final Collection<String> stepNames, final PipeFunction... columnFunctions);
 
+    /**
+     * Add a SelectPipe to the end of the Pipeline.
+     * The objects of the named steps (via as) previous in the pipeline are emitted as a Row object.
+     * A Row object extends ArrayList and simply provides named columns and some helper methods.
+     * If column functions are provided, then they are evaluated in a round robin fashion on the objects of the Row.
+     *
+     * @param columnFunctions the functions to apply to the column objects prior to filling the Row
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, Row> select(final PipeFunction... columnFunctions);
 
+    /**
+     * Add a SelectPipe to the end of the Pipeline.
+     * The objects of the named steps (via as) previous in the pipeline are emitted as a Row object.
+     * A Row object extends ArrayList and simply provides named columns and some helper methods.
+     *
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, Row> select();
 
     /**
      * Add a SideEffectCapPipe to the end of the Pipeline.
+     * When the previous step in the pipeline is implements SideEffectPipe, then it has a method called getSideEffect().
+     * The cap step will greedily iterate the pipeline and then, when its empty, emit the side effect of the previous pipe.
      *
      * @return the extended Pipeline
      */
@@ -571,6 +625,7 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add a TransformFunctionPipe to the end of the Pipeline.
+     * Given an input, the provided function is computed on the input and the output of that function is emitted.
      *
      * @param function the transformation function of the pipe
      * @return the extended Pipeline
@@ -582,7 +637,8 @@ public interface PipesFluentPipeline<S, E> {
     //////////////////////
 
     /**
-     * Wrap the previous step in an AsPipe
+     * Wrap the previous step in an AsPipe.
+     * Useful for naming steps and is used in conjunction with various other steps including: loop, select, back, table, etc.
      *
      * @param name the name of the AsPipe
      * @return the extended Pipeline
@@ -592,6 +648,7 @@ public interface PipesFluentPipeline<S, E> {
     /**
      * Add a StartPipe to the end of the pipeline.
      * Though, in practice, a StartPipe is usually the beginning.
+     * Moreover, the constructor of the Pipeline will internally use StartPipe.
      *
      * @param object the object that serves as the start of the pipeline (iterator/iterable are unfolded)
      * @return the extended Pipeline

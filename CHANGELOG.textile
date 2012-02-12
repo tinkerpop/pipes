@@ -29,6 +29,7 @@ h3. Version 1.0 (Pipes -- NOT OFFICIALLY RELEASED YET)
 * Updated @LoopPipe@ semantics such that if there is an emit function, then the final object in a while isn't returned
 * Updated @GroupCountFunctionPipe@ semantics such that the value-function gets a @Pair@ containing incoming object and last value for that object
 * Reorganized the @com.tinkerpop.pipes.util@ package
+* Removed the @objectFilter@ step from @PipeFluentPipeline@ as @retain@ and @except@ can be used instead
 
 ==<hr/>==
 

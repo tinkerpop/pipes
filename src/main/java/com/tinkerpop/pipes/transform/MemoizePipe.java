@@ -2,9 +2,9 @@ package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
+import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
 
 import java.util.Arrays;

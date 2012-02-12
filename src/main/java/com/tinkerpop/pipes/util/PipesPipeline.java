@@ -14,8 +14,6 @@ import com.tinkerpop.pipes.filter.CyclicPathFilterPipe;
 import com.tinkerpop.pipes.filter.DuplicateFilterPipe;
 import com.tinkerpop.pipes.filter.ExceptFilterPipe;
 import com.tinkerpop.pipes.filter.FilterFunctionPipe;
-import com.tinkerpop.pipes.filter.FilterPipe;
-import com.tinkerpop.pipes.filter.ObjectFilterPipe;
 import com.tinkerpop.pipes.filter.OrFilterPipe;
 import com.tinkerpop.pipes.filter.RandomFilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
@@ -151,10 +149,6 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
 
     public PipesPipeline<S, E> filter(final PipeFunction<E, Boolean> filterFunction) {
         return this.add(new FilterFunctionPipe<E>(filterFunction));
-    }
-
-    public PipesPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter) {
-        return this.add(new ObjectFilterPipe<E>(object, filter));
     }
 
     public PipesPipeline<S, E> or(final Pipe<E, ?>... pipes) {

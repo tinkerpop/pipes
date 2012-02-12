@@ -15,7 +15,7 @@ public class GroupCountFunctionPipeTest extends TestCase {
 
     public void testPipeBasic() {
         List<Integer> names = Arrays.asList(1, 2, 2, 3, 3, 3);
-        SideEffectPipe<Integer, Map<Integer, Number>> pipe = new GroupCountFunctionPipe<Integer, Integer>(new PipeFunction<Integer,Integer>() {
+        SideEffectPipe<Integer, Map<Integer, Number>> pipe = new GroupCountFunctionPipe<Integer, Integer>(new PipeFunction<Integer, Integer>() {
             public Integer compute(Integer integer) {
                 return integer;
             }
@@ -23,7 +23,8 @@ public class GroupCountFunctionPipeTest extends TestCase {
             public Number compute(Pair<Integer, Number> argument) {
                 return argument.getA() + argument.getB().intValue();
             }
-        });
+        }
+        );
         pipe.setStarts(names);
         assertTrue(pipe.hasNext());
         int counter = 0;
