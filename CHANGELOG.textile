@@ -30,6 +30,8 @@ h3. Version 1.0 (Pipes -- NOT OFFICIALLY RELEASED YET)
 * Updated @GroupCountFunctionPipe@ semantics such that the value-function gets a @Pair@ containing incoming object and last value for that object
 * Reorganized the @com.tinkerpop.pipes.util@ package
 * Removed the @objectFilter@ step from @PipeFluentPipeline@ as @retain@ and @except@ can be used instead
+* @EmptyIterator@ is now a singleton
+* Added @GroupB
 
 ==<hr/>==
 

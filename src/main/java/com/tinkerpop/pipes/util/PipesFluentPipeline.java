@@ -323,6 +323,29 @@ public interface PipesFluentPipeline<S, E> {
     public PipesFluentPipeline<S, ?> optional(final String namedStep);
 
     /**
+     * Add a GroupByPipe to the end of the Pipeline.
+     * Group the objects inputted objects according to a key generated from the object and a value generated from the object.
+     * The grouping map has values that are Lists.
+     *
+     * @param map           the map to store the grouping in
+     * @param keyFunction   the function that generates the key from the object
+     * @param valueFunction the function that generates the value from the function
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> groupBy(final Map<?, List<?>> map, final PipeFunction keyFunction, final PipeFunction valueFunction);
+
+    /**
+     * Add a GroupByPipe to the end of the Pipeline.
+     * Group the objects inputted objects according to a key generated from the object and a value generated from the object.
+     * The grouping map has values that are Lists.
+     *
+     * @param keyFunction   the function that generates the key from the object
+     * @param valueFunction the function that generates the value from the function
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction);
+
+    /**
      * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
      * A map is maintained of counts.
      * The map keys are determined by the function on the incoming object.
