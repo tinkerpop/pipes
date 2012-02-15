@@ -31,7 +31,7 @@ h3. Version 1.0 (Pipes -- NOT OFFICIALLY RELEASED YET)
 * Reorganized the @com.tinkerpop.pipes.util@ package
 * Removed the @objectFilter@ step from @PipeFluentPipeline@ as @retain@ and @except@ can be used instead
 * @EmptyIterator@ is now a singleton
-* Added @GroupB
+* Added @GroupByPipe@ which groups values under a provided key
 
 ==<hr/>==
 
