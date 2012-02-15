@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.util.iterators.EmptyIterator;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Iterator;
 
@@ -13,7 +13,7 @@ import java.util.Iterator;
  */
 public class ScatterPipe<S, E> extends AbstractPipe<S, E> {
 
-    private Iterator<E> tempIterator = new EmptyIterator<E>();
+    private Iterator<E> tempIterator = PipeHelper.emptyIterator();
 
     public E processNextStart() {
         while (true) {
@@ -32,7 +32,7 @@ public class ScatterPipe<S, E> extends AbstractPipe<S, E> {
     }
 
     public void reset() {
-        this.tempIterator = new EmptyIterator<E>();
+        this.tempIterator = PipeHelper.emptyIterator();
         super.reset();
     }
 }

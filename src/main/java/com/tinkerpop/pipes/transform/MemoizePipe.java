@@ -4,7 +4,6 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
 
 import java.util.Arrays;
@@ -21,7 +20,7 @@ public class MemoizePipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
 
     protected Pipe<S, E> pipe;
     protected Map<S, List<E>> map;
-    protected Iterator<E> currentIterator = new EmptyIterator<E>();
+    protected Iterator<E> currentIterator = PipeHelper.emptyIterator();
 
     public MemoizePipe(final Pipe<S, E> pipe) {
         this(pipe, new HashMap<S, List<E>>());
@@ -59,7 +58,7 @@ public class MemoizePipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
     }
 
     public void reset() {
-        this.currentIterator = new EmptyIterator<E>();
+        this.currentIterator = PipeHelper.emptyIterator();
         try {
             this.map = this.map.getClass().getConstructor().newInstance();
         } catch (Exception e) {

@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.util;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -15,6 +16,10 @@ import java.util.NoSuchElementException;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class PipeHelper {
+
+    private PipeHelper() {
+
+    }
 
     /**
      * This will iterate all the objects out of the iterator.
@@ -201,6 +206,10 @@ public class PipeHelper {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+    }
+
+    public static <T> Iterator<T> emptyIterator() {
+        return (Iterator<T>) EmptyIterator.INSTANCE;
     }
 
 
