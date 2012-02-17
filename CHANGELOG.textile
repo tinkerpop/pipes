@@ -1,14 +1,6 @@
 Pipes: A Data Flow Framework using Process Graphs 
 "http://pipes.tinkerpop.com":http://pipes.tinkerpop.com
 
-```xml
-<repository>
-  <id>tinkerpop-repository</id>
-  <name>TinkerPop Maven2 Repository</name>
-  <url>http://tinkerpop.com/maven2</url>
-</repository>
-```
-
 ==<hr/>==
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-pipes.png!

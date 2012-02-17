@@ -209,6 +209,10 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new GroupByPipe(keyFunction, valueFunction));
     }
 
+    public PipesPipeline<S, E> groupBy(final Map reduceMap, final PipeFunction keyFunction, final PipeFunction valueFunction, final PipeFunction reduceFunction) {
+        return this.add(new GroupByReducePipe(reduceMap, keyFunction, valueFunction, reduceFunction));
+    }
+
     public PipesPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction, final PipeFunction reduceFunction) {
         return this.add(new GroupByReducePipe(keyFunction, valueFunction, reduceFunction));
     }

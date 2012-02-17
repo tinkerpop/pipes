@@ -16,15 +16,22 @@ import java.util.Map;
 public class GroupByReducePipe<S, K, V, V2> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<K, V2>> {
 
     private Map<K, Iterator<V>> byMap = new HashMap<K, Iterator<V>>();
-    private Map<K, V2> reduceMap = new HashMap<K, V2>();
+
     private final PipeFunction<S, K> keyFunction;
     private final PipeFunction<S, V> valueFunction;
     private final PipeFunction<Iterator<V>, V2> reduceFunction;
+    private Map<K, V2> reduceMap;
 
     public GroupByReducePipe(final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction, final PipeFunction<Iterator<V>, V2> reduceFunction) {
+        this(new HashMap<K, V2>(), keyFunction, valueFunction, reduceFunction);
+    }
+
+    public GroupByReducePipe(final Map<K, V2> reduceMap, final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction, final PipeFunction<Iterator<V>, V2> reduceFunction) {
+        this.reduceMap = reduceMap;
         this.keyFunction = keyFunction;
         this.valueFunction = valueFunction;
         this.reduceFunction = reduceFunction;
+
     }
 
     protected S processNextStart() {
