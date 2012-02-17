@@ -1,11 +1,13 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.iterators.ExpandableMultiIterator;
+import com.tinkerpop.pipes.util.iterators.SingleIterator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -13,13 +15,13 @@ import java.util.Map;
  */
 public class GroupByReducePipe<S, K, V, V2> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<K, V2>> {
 
-    private Map<K, List<V>> byMap = new HashMap<K, List<V>>();
+    private Map<K, Iterator<V>> byMap = new HashMap<K, Iterator<V>>();
     private Map<K, V2> reduceMap = new HashMap<K, V2>();
     private final PipeFunction<S, K> keyFunction;
     private final PipeFunction<S, V> valueFunction;
-    private final PipeFunction<List<V>, V2> reduceFunction;
+    private final PipeFunction<Iterator<V>, V2> reduceFunction;
 
-    public GroupByReducePipe(final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction, final PipeFunction<List<V>, V2> reduceFunction) {
+    public GroupByReducePipe(final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction, final PipeFunction<Iterator<V>, V2> reduceFunction) {
         this.keyFunction = keyFunction;
         this.valueFunction = valueFunction;
         this.reduceFunction = reduceFunction;
@@ -30,23 +32,31 @@ public class GroupByReducePipe<S, K, V, V2> extends AbstractPipe<S, S> implement
         final K key = this.getKey(s);
         final V value = this.getValue(s);
 
-        List<V> list = this.byMap.get(key);
-        if (null == list) {
-            list = new ArrayList<V>();
-            list.add(value);
-            this.byMap.put(key, list);
+        ExpandableMultiIterator<V> values = (ExpandableMultiIterator<V>) this.byMap.get(key);
+        if (null == values) {
+            values = new ExpandableMultiIterator<V>();
+            this.addValue(value, values);
+            this.byMap.put(key, values);
         } else {
-            list.add(value);
+            this.addValue(value, values);
         }
 
         if (!this.starts.hasNext()) {
-            for (final Map.Entry<K, List<V>> entry : byMap.entrySet()) {
+            for (final Map.Entry<K, Iterator<V>> entry : byMap.entrySet()) {
                 this.reduceMap.put(entry.getKey(), reduceFunction.compute(entry.getValue()));
             }
             this.byMap.clear();
         }
 
         return s;
+    }
+
+    public void addValue(final V value, final ExpandableMultiIterator values) {
+        if (value instanceof Pipe) {
+            values.addIterator((Pipe) value);
+        } else {
+            values.addIterator(new SingleIterator<V>(value));
+        }
     }
 
     public Map<K, V2> getSideEffect() {
@@ -70,7 +80,7 @@ public class GroupByReducePipe<S, K, V, V2> extends AbstractPipe<S, S> implement
     }
 
     public void reset() {
-        this.byMap = new HashMap<K, List<V>>();
+        this.byMap = new HashMap<K, Iterator<V>>();
         this.reduceMap = new HashMap<K, V2>();
         super.reset();
     }

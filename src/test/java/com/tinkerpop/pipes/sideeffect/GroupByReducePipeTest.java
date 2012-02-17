@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.PipeFunction;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +22,11 @@ public class GroupByReducePipeTest extends TestCase {
             public Integer compute(String argument) {
                 return argument.length();
             }
-        }, new PipeFunction<List<Integer>, Integer>() {
-            public Integer compute(List<Integer> args) {
+        }, new PipeFunction<Iterator<Integer>, Integer>() {
+            public Integer compute(Iterator<Integer> args) {
                 int sum = 0;
-                for (Integer a : args) {
-                    sum = sum + a;
+                while (args.hasNext()) {
+                    sum = sum + args.next();
                 }
                 return sum;
             }

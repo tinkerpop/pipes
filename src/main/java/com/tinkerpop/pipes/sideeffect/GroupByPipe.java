@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ import java.util.Map;
  */
 public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<K, List<V>>> {
 
-    private Map<K, List<V>> byMap;
-    private final PipeFunction<S, K> keyFunction;
-    private final PipeFunction<S, V> valueFunction;
+    protected Map<K, List<V>> byMap;
+    protected final PipeFunction<S, K> keyFunction;
+    protected final PipeFunction<S, V> valueFunction;
 
     public GroupByPipe(final Map<K, List<V>> byMap, final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction) {
         this.byMap = byMap;
@@ -35,10 +36,10 @@ public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffe
         List<V> list = this.byMap.get(key);
         if (null == list) {
             list = new ArrayList<V>();
-            list.add(value);
+            this.addValue(value, list);
             this.byMap.put(key, list);
         } else {
-            list.add(value);
+            this.addValue(value, list);
         }
 
         return s;
@@ -46,6 +47,16 @@ public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffe
 
     public Map<K, List<V>> getSideEffect() {
         return this.byMap;
+    }
+
+    public void addValue(final V value, final List values) {
+        if (value instanceof Pipe) {
+            for (final Object o : ((Pipe) value)) {
+                values.add(o);
+            }
+        } else {
+            values.add(value);
+        }
     }
 
     private K getKey(final S start) {

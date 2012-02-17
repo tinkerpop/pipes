@@ -20,6 +20,10 @@ public class ExpandableIterator<T> implements Iterator<T> {
         this.iterator = iterator;
     }
 
+    public ExpandableIterator() {
+        this.iterator = (Iterator<T>) EmptyIterator.INSTANCE;
+    }
+
     public void remove() {
         throw new UnsupportedOperationException();
     }
