@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * ScatterPipe will unroll any iterator/iterable that is inputted into it.
@@ -25,6 +26,8 @@ public class ScatterPipe<S, E> extends AbstractPipe<S, E> {
                     this.tempIterator = (Iterator<E>) object;
                 else if (object instanceof Iterable)
                     this.tempIterator = ((Iterable<E>) object).iterator();
+                else if (object instanceof Map)
+                    this.tempIterator = (Iterator<E>) ((Map) object).entrySet().iterator();
                 else
                     return (E) object;
             }

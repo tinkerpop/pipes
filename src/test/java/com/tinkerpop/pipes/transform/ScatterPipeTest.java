@@ -4,6 +4,8 @@ import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -29,6 +31,23 @@ public class ScatterPipeTest extends TestCase {
         assertEquals(1, scatter.next());
         assertEquals(2, scatter.next());
         assertEquals(3, scatter.next());
+    }
+
+    public void testMapEntrySetScatter() {
+        Pipe<Map,Map.Entry> scatter = new ScatterPipe<Map,Map.Entry>();
+        Map map = new HashMap();
+        map.put("marko", 1);
+        map.put("peter", 2);
+        int counter = 0;
+        scatter.setStarts(Arrays.asList(map,map));
+        while(scatter.hasNext()) {
+            counter++;
+            Map.Entry entry = scatter.next();
+            assertTrue(entry.getKey().equals("marko") || entry.getKey().equals("peter"));
+            assertTrue(entry.getValue().equals(1) || entry.getValue().equals(2));
+            
+        }
+        assertEquals(counter,4);
     }
 }
 

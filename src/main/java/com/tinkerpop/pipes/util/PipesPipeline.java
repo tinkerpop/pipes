@@ -20,6 +20,7 @@ import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
 import com.tinkerpop.pipes.sideeffect.AggregatePipe;
 import com.tinkerpop.pipes.sideeffect.GroupByPipe;
+import com.tinkerpop.pipes.sideeffect.GroupByReducePipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
 import com.tinkerpop.pipes.sideeffect.OptionalPipe;
@@ -206,6 +207,10 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
 
     public PipesPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction) {
         return this.add(new GroupByPipe(keyFunction, valueFunction));
+    }
+
+    public PipesPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction, final PipeFunction reduceFunction) {
+        return this.add(new GroupByReducePipe(keyFunction, valueFunction, reduceFunction));
     }
 
     public PipesPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction) {
