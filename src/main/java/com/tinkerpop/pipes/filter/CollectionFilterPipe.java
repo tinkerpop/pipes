@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Collection;
 
@@ -44,6 +45,6 @@ public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> impleme
     }
 
     public String toString() {
-        return super.toString() + "(" + this.filter + ")";
+        return PipeHelper.makePipeString(this, this.filter);
     }
 }

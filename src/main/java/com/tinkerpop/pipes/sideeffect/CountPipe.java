@@ -23,10 +23,6 @@ public class CountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
         return this.counter;
     }
 
-    public String toString() {
-        return PipeHelper.makePipeString(this, this.counter);
-    }
-
     public void reset() {
         this.counter = 0l;
         super.reset();

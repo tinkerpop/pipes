@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.transform;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.AsPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.structures.Row;
 
 import java.util.ArrayList;
@@ -24,9 +25,11 @@ public class SelectPipe<S> extends AbstractPipe<S, Row> {
     private int currentFunction;
     private final List<AsPipe> asPipes = new ArrayList<AsPipe>();
     private final List<String> columnNames;
+    private final Collection<String> stepNames;
 
     public SelectPipe(final Collection<String> stepNames, final List<AsPipe> allPreviousAsPipes, final PipeFunction... stepFunctions) {
         this.stepFunctions = stepFunctions;
+        this.stepNames = stepNames;
 
         if (this.doFunctions = this.stepFunctions.length > 0)
             currentFunction = 0;
@@ -34,7 +37,7 @@ public class SelectPipe<S> extends AbstractPipe<S, Row> {
         final List<String> tempNames = new ArrayList<String>();
         for (final AsPipe asPipe : allPreviousAsPipes) {
             final String columnName = asPipe.getName();
-            if (null == stepNames || stepNames.contains(columnName)) {
+            if (null == this.stepNames || this.stepNames.contains(columnName)) {
                 tempNames.add(columnName);
                 this.asPipes.add(asPipe);
             }
@@ -68,6 +71,13 @@ public class SelectPipe<S> extends AbstractPipe<S, Row> {
     public void reset() {
         this.currentFunction = 0;
         super.reset();
+    }
+
+    public String toString() {
+        if (null == this.stepNames)
+            return PipeHelper.makePipeString(this);
+        else
+            return PipeHelper.makePipeString(this, this.stepNames.toArray());
     }
 
 }

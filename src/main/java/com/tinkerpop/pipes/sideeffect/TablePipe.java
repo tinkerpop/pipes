@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.sideeffect;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.AsPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.structures.Table;
 
 import java.util.ArrayList;
@@ -18,11 +19,13 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
     private final PipeFunction[] columnFunctions;
     private int currentFunction;
     private final List<AsPipe> asPipes = new ArrayList<AsPipe>();
+    private final Collection<String> stepNames;
     private final boolean doFunctions;
 
     public TablePipe(final Table table, final Collection<String> stepNames, final List<AsPipe> allPreviousAsPipes, final PipeFunction... columnFunctions) {
         this.table = table;
         this.columnFunctions = columnFunctions;
+        this.stepNames = stepNames;
 
         if (this.doFunctions = this.columnFunctions.length > 0)
             currentFunction = 0;
@@ -30,7 +33,7 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
         final List<String> tempNames = new ArrayList<String>();
         for (final AsPipe asPipe : allPreviousAsPipes) {
             final String columnName = asPipe.getName();
-            if (null == stepNames || stepNames.contains(columnName)) {
+            if (null == this.stepNames || this.stepNames.contains(columnName)) {
                 tempNames.add(columnName);
                 this.asPipes.add(asPipe);
             }
@@ -64,4 +67,12 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
         this.currentFunction = 0;
         super.reset();
     }
+
+    public String toString() {
+        if (null == this.stepNames)
+            return PipeHelper.makePipeString(this);
+        else
+            return PipeHelper.makePipeString(this, this.stepNames.toArray());
+    }
+
 }
