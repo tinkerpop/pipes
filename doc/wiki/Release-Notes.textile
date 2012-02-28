@@ -1,7 +1,4 @@
-Pipes: A Data Flow Framework using Process Graphs 
-"http://pipes.tinkerpop.com":http://pipes.tinkerpop.com
-
-==<hr/>==
+h2. Pipes 1.X
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-pipes.png!
 
@@ -27,8 +24,7 @@ h3. Version 1.0 (Pipes -- February 28, 2012)
 * Added @GroupByPipe@ which groups values under a provided key
 * Added @GroupByReducePipe@ which groups reduced values under a provided key
 
-
-==<hr/>==
+h2. Pipes 0.X
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-sink-pipe.png!
 
@@ -41,6 +37,8 @@ h3. Version 0.9 (Sink -- December 7, 2011)
   <version>0.9</version>
 </dependency>
 ```
+
+Pipes 0.9 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.9/api/
 
 * Removed all "Blueprints":http://blueprints.tinkerpop.com graph related dependencies
 * Renamed @UniquePathFilterPipe@ to @CyclicPathFilterPipe@
@@ -63,6 +61,8 @@ h3. Version 0.8 (Cleaner -- September 18, 2011)
 </dependency>
 ```
 
+Pipes 0.8 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.8/api/
+
 * @SideEffectPipe@ now has signature of @<S,T>@ instead of @<S,E,T>@
 * @GroupCountFunctionPipe@ has signature of @<S,K>@ to denote the key of its @Map<K,Number>@ side-effect
 * Removed @ComparisonFilterPipe@ as it is confusing and now @PipeHelper@ has comparison support
@@ -82,7 +82,7 @@ h3. Version 0.8 (Cleaner -- September 18, 2011)
 ** Renamed @XXXClosurePipe@ to @XXXFunctionPipe@
 * Fixed performance issue in @RangeFilterPipe@ and provided @long@ ranges
 
- ==<hr/>==
+==<hr/>==
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-pvc-pipe.png!
 
@@ -96,15 +96,17 @@ h3. Version 0.7 (PVC -- August 1, 2011)
 </dependency>
 ```
 
+Pipes 0.7 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.7/api/
+
 * Added support for @Vertex.getOutEdges(String...)@ and @Vertex.getInEdges(String...)@
 * Updated @AggregatorPipe@ to be fully @SideEffectPipe@ compliant and to respect @getPath()@
-* Added @PipeClosure@ to support function-based pipes
+* Added @PipeClosure@ to support closure-based pipes
 * Migrated all the "Gremlin":http://gremlin.tinkerpop.com specific pipes to Pipes
 * Refactored package names to align with pipe semantics
 * Flipped the meaning of @Filter@, where @true@ means pass, and @false@ means filter
 * Added @AggregatorPipe@ @PipeClosure@ to process object prior to insertion into the aggregate collection
 * Added temporary fix for @AggregatorPipe@/@LoopPipe@ phenomena
-* @IfThenElsePipe@ now requires an @elseFunction@
+* @IfThenElsePipe@ now requires an @elseClosure@
 
 ==<hr/>==
 
@@ -119,6 +121,8 @@ h3. Version 0.6 (Toilet -- June 15, 2011)
   <version>0.6</version>
 </dependency>
 ```
+
+Pipes 0.6 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.6/api/
 
 * @RangeFilterPipe@ max value is now inclusive
 * Added @OptionalPipe@ which is like @BackFilterPipe@, but non-filtering.
@@ -138,12 +142,14 @@ h3. Version 0.5 (Drain -- May 8, 2011)
 </dependency>
 ```
 
+Pipes 0.5 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.5/api/
+
 * Added @OutPipe@, @InPipe@, and @BothPipe@ to allow for vertex-vertex hoping
 * Removed @VertexEdgeLabelFilterPipe@ as it is now covered by more efficient pipes
 * Added the @MetaPipe@ interface to allow pipes to acknowledge pipe wrapping
 * Added @CopySplitPipe@, @ExhaustMergePipe@, and @FairMergePipe@
 * Optimized @PropertyPipe@ and @UniquePathFilterPipe@
-* Added support for Pipe.reset() and thus, pipe reuse
+* Added support for @Pipe.reset()@ and thus, pipe reuse
 
 ==<hr/>==
 
@@ -158,6 +164,8 @@ h3. Version 0.4 (Spigot -- April 4, 2011)
   <version>0.4</version>
 </dependency>
 ```
+
+Pipes 0.4 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.4/api/
 
 * Added @StartPipe@ to aid in creating an @Object@-to-@Pipe@ converter
 * Removed @VertexEdge@ and @EdgeVertex@ pipes for more low-level/faster pipes.
@@ -177,6 +185,8 @@ h3. Version 0.3.1 (Mario -- March 2, 2011)
 </dependency>
 ```
 
+Pipes 0.3.1 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.3.1/api/
+
 * Added @VertexEdgeLabelFilterPipe@ to reflect Blueprints @Vertex@ API update
 * Added @UniquePathFilterPipe@ to filter paths that have visited the same object twice
 
@@ -189,6 +199,8 @@ h3. Version 0.3 (Mario -- January 22, 2011)
   <version>0.3</version>
 </dependency>
 ```
+
+Pipes 0.3 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.3/api/
 
 * Added a general @toString()@ model to articulate pipe construction
 * Redesigned path-model to where @enablePaths()@ no longer required
@@ -212,6 +224,8 @@ h3. Version 0.2 (Clogged -- December 14, 2010)
   <version>0.2</version>
 </dependency>
 ```
+
+Pipes 0.2 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.2/api/
 
 * Added path functionality to get the path pipe traversed
 ** Added @PathSequence@ path utility
@@ -244,4 +258,6 @@ h3. Version 0.1 (Leaky -- September 22, 2010)
 </dependency>
 ```
 
-* Initial release as the core engine for Gremlin 0.5
+Pipes 0.1 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.1/api/
+
+* Initial release as the core engine for "Gremlin":http://gremlin.tinkerpop.com 0.5
