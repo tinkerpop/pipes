@@ -564,7 +564,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param function a transformation to apply to the gathered list
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, ?> gather(final PipeFunction<List, ?> function);
+    public PipesFluentPipeline<S, List> gather(final PipeFunction<List, List> function);
 
     /**
      * Add an IdentityPipe to the end of the Pipeline.

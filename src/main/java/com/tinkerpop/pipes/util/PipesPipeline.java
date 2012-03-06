@@ -290,9 +290,8 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new GatherPipe());
     }
 
-    public PipesPipeline<S, ?> gather(PipeFunction<List, ?> function) {
-        this.addPipe(new GatherPipe());
-        return this.add(new TransformFunctionPipe(function));
+    public PipesPipeline<S, List> gather(PipeFunction<List, List> function) {
+        return this.add(new GatherPipe(function));
     }
 
     public PipesPipeline<S, E> _() {
