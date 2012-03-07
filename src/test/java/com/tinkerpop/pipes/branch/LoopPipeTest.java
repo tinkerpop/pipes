@@ -2,8 +2,6 @@ package com.tinkerpop.pipes.branch;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.sideeffect.AggregatePipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
@@ -11,9 +9,7 @@ import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -21,7 +17,7 @@ import java.util.Set;
 public class LoopPipeTest extends TestCase {
 
     public void testPipeBasic() {
-        Pipe<String, String> pipe = new LoopPipe(new RemoveCharPipe(), new LoopPipeFunction());
+        Pipe<String, String> pipe = new LoopPipe(new RemoveCharPipe(), LoopPipe.createLoopsFunction(3));
         pipe.setStarts(Arrays.asList("aaaaaa", "bbbb", "c"));
         int counter = 0;
         while (pipe.hasNext()) {
@@ -40,7 +36,7 @@ public class LoopPipeTest extends TestCase {
     }
 
     public void testEmitFunctionality() {
-        Pipe<String, String> pipe = new LoopPipe(new RemoveCharPipe(), new LoopPipeFunction(), new TrueEmitFunction());
+        Pipe<String, String> pipe = new LoopPipe(new RemoveCharPipe(), LoopPipe.createLoopsFunction(3), LoopPipe.createTrueFunction());
         pipe.setStarts(Arrays.asList("aaaaaa", "bbbb", "c"));
         List<String> results = Arrays.asList("aaaaa", "aaaa", "bbb", "bb", "", "");
         int counter = 0;
@@ -54,7 +50,7 @@ public class LoopPipeTest extends TestCase {
 
 
     public void testPipeNoElements() {
-        Pipe<String, String> pipe = new LoopPipe(new RemoveCharPipe(), new LoopPipeFunction());
+        Pipe<String, String> pipe = new LoopPipe(new RemoveCharPipe(), LoopPipe.createLoopsFunction(3));
         pipe.setStarts(new ArrayList<String>());
         int counter = 0;
         while (pipe.hasNext()) {
@@ -65,30 +61,12 @@ public class LoopPipeTest extends TestCase {
     }
 
     public void testUnrolledLoopEquality() {
-        Pipe pipe1 = new Pipeline(new IdentityPipe(), new LoopPipe(new AddOnePipe(), new LoopPipeFunction()));
+        Pipe pipe1 = new Pipeline(new IdentityPipe(), new LoopPipe(new AddOnePipe(), LoopPipe.createLoopsFunction(3)));
         pipe1.setStarts(Arrays.asList(1, 2, 3));
         Pipe pipe2 = new Pipeline(new IdentityPipe(), new AddOnePipe(), new AddOnePipe());
         pipe2.setStarts(Arrays.asList(1, 2, 3));
 
         assertTrue(PipeHelper.areEqual(pipe1, pipe2));
-    }
-
-    public void testAggregatePipeEquality() {
-        Set<String> x1 = new HashSet<String>();
-        Pipe pipe1 = new Pipeline(new LoopPipe(new Pipeline(new AddOnePipe(), new AggregatePipe(x1)), new LoopPipeFunction()));
-        pipe1.setStarts(Arrays.asList(1, 2, 3, 4, 5));
-
-        Set<String> x2 = new HashSet<String>();
-        Pipe pipe2 = new Pipeline(new AddOnePipe(), new AggregatePipe(x2), new AddOnePipe(), new AggregatePipe(x2));
-        pipe2.setStarts(Arrays.asList(1, 2, 3, 4, 5));
-
-        assertTrue(PipeHelper.areEqual(pipe1, pipe2));
-    }
-
-    private class LoopPipeFunction implements PipeFunction<LoopPipe.LoopBundle, Boolean> {
-        public Boolean compute(LoopPipe.LoopBundle argument) {
-            return (argument.getLoops() < 3);
-        }
     }
 
     private class RemoveCharPipe extends AbstractPipe<String, String> {
@@ -105,12 +83,6 @@ public class LoopPipeTest extends TestCase {
     private class AddOnePipe extends AbstractPipe<Integer, Integer> {
         public Integer processNextStart() {
             return this.starts.next() + 1;
-        }
-    }
-
-    private class TrueEmitFunction implements PipeFunction<LoopPipe.LoopBundle, Boolean> {
-        public Boolean compute(LoopPipe.LoopBundle argument) {
-            return true;
         }
     }
 

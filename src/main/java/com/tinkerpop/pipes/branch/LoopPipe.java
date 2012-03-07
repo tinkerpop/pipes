@@ -193,4 +193,20 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         }
     }
 
+
+    public static PipeFunction<Object, Boolean> createTrueFunction() {
+        return new PipeFunction<Object, Boolean>() {
+            public Boolean compute(final Object object) {
+                return Boolean.TRUE;
+            }
+        };
+    }
+
+    public static PipeFunction<LoopBundle, Boolean> createLoopsFunction(final int loops) {
+        return new PipeFunction<LoopBundle, Boolean>() {
+            public Boolean compute(final LoopBundle loopBundle) {
+                return loopBundle.getLoops() < loops;
+            }
+        };
+    }
 }

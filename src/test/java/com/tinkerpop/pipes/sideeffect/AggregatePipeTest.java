@@ -4,6 +4,7 @@ package com.tinkerpop.pipes.sideeffect;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.filter.ExceptFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
@@ -21,9 +22,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 /**
- * @author: Marko A. Rodriguez (http://markorodriguez.com)
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class AggregatePipeTest extends TestCase {
 
@@ -225,6 +227,24 @@ public class AggregatePipeTest extends TestCase {
         pipeA.setStarts(list);
         pipeB.setStarts(list);
         assertTrue(PipeHelper.areEqual(pipeA, pipeB));
+    }
+
+    public void testAggregateLoopingEquality() {
+        Set<String> x1 = new HashSet<String>();
+        Pipe pipe1 = new Pipeline(new LoopPipe(new Pipeline(new AddOnePipe(), new AggregatePipe(x1)), LoopPipe.createLoopsFunction(3)));
+        pipe1.setStarts(Arrays.asList(1, 2, 3, 4, 5));
+
+        Set<String> x2 = new HashSet<String>();
+        Pipe pipe2 = new Pipeline(new AddOnePipe(), new AggregatePipe(x2), new AddOnePipe(), new AggregatePipe(x2));
+        pipe2.setStarts(Arrays.asList(1, 2, 3, 4, 5));
+
+        assertTrue(PipeHelper.areEqual(pipe1, pipe2));
+    }
+
+    private class AddOnePipe extends AbstractPipe<Integer, Integer> {
+        public Integer processNextStart() {
+            return this.starts.next() + 1;
+        }
     }
 
     private class AddCharPipe extends AbstractPipe<String, String> {
