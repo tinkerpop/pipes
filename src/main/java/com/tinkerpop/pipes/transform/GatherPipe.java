@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
  */
 public class GatherPipe<S> extends AbstractPipe<S, List<S>> {
 
-    private List<List> collectionPaths = new LinkedList<List>();
+    private List<List> listPaths = new LinkedList<List>();
     private PipeFunction<List<S>, List<S>> postFilterFunction = null;
 
     public GatherPipe() {
@@ -25,42 +25,32 @@ public class GatherPipe<S> extends AbstractPipe<S, List<S>> {
         this.postFilterFunction = postFilterFunction;
     }
 
-    protected List getPathToHere() {
-        return this.collectionPaths;
+    public List getPath() {
+        return this.listPaths;
     }
 
-    /*public List getPath() {
-        final List pathElements = new ArrayList(getPathToHere());
-        final int size = pathElements.size();
-        // do not repeat filters as they dup the object
-        if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
-            pathElements.add(this.currentEnd);
-        }
-        return pathElements;
-    }*/
-
     protected List<S> processNextStart() {
-        final List<S> collection = new LinkedList<S>();
-        this.collectionPaths = new LinkedList<List>();
+        final List<S> list = new LinkedList<S>();
+        this.listPaths = new LinkedList<List>();
         if (!this.starts.hasNext()) {
             throw new NoSuchElementException();
         } else {
             while (this.starts.hasNext()) {
                 final S s = this.starts.next();
-                collection.add(s);
-                this.collectionPaths.add(super.getPathToHere());
+                list.add(s);
+                this.listPaths.add(this.getPathToHere());
             }
         }
         if (null != this.postFilterFunction) {
-            return this.postFilterFunction.compute(collection);
+            return this.postFilterFunction.compute(list);
         } else {
-            return collection;
+            return list;
         }
     }
 
 
     public void reset() {
-        this.collectionPaths = new LinkedList<List>();
+        this.listPaths = new LinkedList<List>();
         super.reset();
     }
 }

@@ -1,7 +1,6 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.util.PipeHelper;
 
 
 /**

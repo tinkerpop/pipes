@@ -62,14 +62,17 @@ public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPi
                 else {
                     this.currentObjectQueue.clear();
                     this.currentPathQueue.clear();
-                    while (this.starts.hasNext()) {
-                        final S s = this.starts.next();
-                        if (this.preAggregateFunction != null)
-                            this.aggregate.add(this.preAggregateFunction.compute(s));
-                        else
-                            this.aggregate.add(s);
-                        this.currentObjectQueue.add(s);
-                        this.currentPathQueue.add(super.getPathToHere());
+                    try {
+                        while (true) {
+                            final S s = this.starts.next();
+                            if (this.preAggregateFunction != null)
+                                this.aggregate.add(this.preAggregateFunction.compute(s));
+                            else
+                                this.aggregate.add(s);
+                            this.currentObjectQueue.add(s);
+                            this.currentPathQueue.add(super.getPathToHere());
+                        }
+                    } catch (final NoSuchElementException e) {
                     }
                 }
             } else {
