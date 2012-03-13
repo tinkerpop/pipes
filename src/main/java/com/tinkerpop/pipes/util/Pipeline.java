@@ -23,6 +23,7 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
     protected Pipe<?, E> endPipe;
     protected List<Pipe> pipes;
     protected Iterator<S> starts;
+    protected boolean pathEnabled = false;
 
     public Pipeline() {
         this.pipes = new ArrayList<Pipe>();
@@ -56,9 +57,10 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
      * @param pipes the ordered list of pipes to chain together into a pipeline
      */
     protected void setPipes(final List<Pipe> pipes) {
+        final int pipelineLength = pipes.size();
         this.startPipe = (Pipe<S, ?>) pipes.get(0);
-        this.endPipe = (Pipe<?, E>) pipes.get(pipes.size() - 1);
-        for (int i = 1; i < pipes.size(); i++) {
+        this.endPipe = (Pipe<?, E>) pipes.get(pipelineLength - 1);
+        for (int i = 1; i < pipelineLength; i++) {
             pipes.get(i).setStarts((Iterator) pipes.get(i - 1));
         }
     }
@@ -117,8 +119,16 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
         return this.endPipe.next();
     }
 
-    public List getPath() {
-        return this.endPipe.getPath();
+    public List getCurrentPath() {
+        if (this.pathEnabled)
+            return this.endPipe.getCurrentPath();
+        else
+            throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
+    }
+
+    public void enablePath(final boolean enable) {
+        this.pathEnabled = enable;
+        this.endPipe.enablePath(enable);
     }
 
     /**

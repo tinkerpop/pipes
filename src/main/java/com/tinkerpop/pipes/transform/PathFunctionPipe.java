@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 /**
  * PathFunctionPipe is analogous to PathPipe, except that for each path emitted, a function is applied to the objects of that path.
  * The path functions are applied in a round robin fashion. As such, the number of functions need not equal the number of objects in the path.
+ * This pipe requires that path calculations be enabled. As such, when the start is set, enablePath(true) is invoked.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -25,12 +26,13 @@ public class PathFunctionPipe<S> extends AbstractPipe<S, List> {
 
     public void setStarts(final Iterator<S> starts) {
         this.starts = starts;
+        this.enablePath(true);
     }
 
     public List processNextStart() {
         if (this.starts instanceof Pipe) {
             this.starts.next();
-            final List path = ((Pipe) this.starts).getPath();
+            final List path = ((Pipe) this.starts).getCurrentPath();
             final List closedPath = new LinkedList();
             int nextFunction = 0;
             for (Object object : path) {

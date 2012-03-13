@@ -1,7 +1,7 @@
-package com.tinkerpop.pipes.sideeffect;
+package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.transform.SideEffectCapPipe;
+import com.tinkerpop.pipes.sideeffect.CountPipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;

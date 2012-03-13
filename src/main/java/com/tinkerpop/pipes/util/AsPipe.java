@@ -28,7 +28,7 @@ public class AsPipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
     }
 
     protected List getPathToHere() {
-        return this.pipe.getPath();
+        return this.pipe.getCurrentPath();
     }
 
     public E getCurrentEnd() {

@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.util.iterators.HistoryIterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -28,6 +29,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     private E nextEnd;
     protected E currentEnd;
     private boolean available = false;
+    protected boolean pathEnabled = false;
 
     public void setStarts(final Pipe<?, S> starts) {
         this.starts = starts;
@@ -53,14 +55,18 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         this.available = false;
     }
 
-    public List getPath() {
-        final List pathElements = getPathToHere();
-        final int size = pathElements.size();
-        // do not repeat filters as they dup the object
-        if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
-            pathElements.add(this.currentEnd);
+    public List getCurrentPath() {
+        if (this.pathEnabled) {
+            final List pathElements = getPathToHere();
+            final int size = pathElements.size();
+            // do not repeat filters as they dup the object
+            if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
+                pathElements.add(this.currentEnd);
+            }
+            return pathElements;
+        } else {
+            throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
         }
-        return pathElements;
     }
 
     public void remove() {
@@ -89,6 +95,12 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         }
     }
 
+    public void enablePath(final boolean enable) {
+        this.pathEnabled = enable;
+        if (this.starts instanceof Pipe)
+            ((Pipe) this.starts).enablePath(enable);
+    }
+
     /**
      * The iterator method of Iterable is not faithful to the Java semantics of iterator().
      * This method simply returns the pipe itself (which is an iterator) and thus, is useful only for foreach iteration.
@@ -107,13 +119,13 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     protected List getPathToHere() {
         if (this.starts instanceof Pipe) {
-            return ((Pipe) this.starts).getPath();
+            return ((Pipe) this.starts).getCurrentPath();
         } else if (this.starts instanceof HistoryIterator) {
             final List list = new ArrayList();
-            list.add(((HistoryIterator) starts).getLast());
+            list.add(((HistoryIterator) this.starts).getLast());
             return list;
         } else {
-            return new ArrayList();
+            return new LinkedList();
         }
     }
 

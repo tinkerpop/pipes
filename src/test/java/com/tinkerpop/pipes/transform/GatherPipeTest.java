@@ -19,14 +19,50 @@ public class GatherPipeTest extends TestCase {
 
     public void testPipeBasic() {
         Pipe<String, List<String>> pipe = new GatherPipe<String>();
+        pipe.enablePath(true);
         pipe.setStarts(Arrays.asList("marko", "josh", "peter"));
         List list = pipe.next();
         assertEquals(list.size(), 3);
         assertEquals(list.get(0), "marko");
         assertEquals(list.get(1), "josh");
         assertEquals(list.get(2), "peter");
+        List path = pipe.getCurrentPath();
+        assertEquals(path.size(), 3);
+        //System.out.println(path);
         assertFalse(pipe.hasNext());
     }
+
+    public void testPipeTestBasicPath() {
+        Pipe<String, String> pipeA = new RemoveCharPipe();
+        Pipe<String, List<String>> pipeB = new GatherPipe<String>();
+        Pipeline<String, List<String>> pipeline = new Pipeline<String, List<String>>(pipeA, pipeB);
+        pipeline.setStarts(Arrays.asList("marko", "josh", "peter"));
+        List list = pipeline.next();
+        assertEquals(list.size(), 3);
+        assertEquals(list.get(0), "mark");
+        assertEquals(list.get(1), "jos");
+        assertEquals(list.get(2), "pete");
+        //System.out.println(pipeline.getCurrentPath());
+        assertFalse(pipeline.hasNext());
+    }
+
+    public void testPipeTestBasicPath2() {
+        Pipe<String, String> pipeA = new RemoveCharPipe();
+        Pipe<String, List<String>> pipeB = new GatherPipe<String>();
+        Pipe<List<String>, String> pipeC = new ScatterPipe<List<String>, String>();
+        Pipeline<String, String> pipeline = new Pipeline<String, String>(pipeA, pipeB, pipeC);
+        pipeline.setStarts(Arrays.asList("marko", "josh", "peter"));
+        int counter = 0;
+        while (pipeline.hasNext()) {
+            String string = pipeline.next();
+            assertTrue(string.equals("mark") || string.equals("jos") || string.equals("pete"));
+            counter++;
+            //System.out.println(pipeline.getCurrentPath());
+        }
+        assertEquals(counter, 3);
+        assertFalse(pipeline.hasNext());
+    }
+
 
     public void testGatherFunction() {
         Pipe<String, Integer> pipeA = new NumCharPipe();
@@ -39,7 +75,7 @@ public class GatherPipeTest extends TestCase {
         for (Integer i : list) {
             assertTrue(i > 4);
         }
-        //System.out.println(pipeline.getPath());
+        //System.out.println(pipeline.getCurrentPath());
         assertFalse(pipeline.hasNext());
     }
 
@@ -56,7 +92,7 @@ public class GatherPipeTest extends TestCase {
             else
                 throw new RuntimeException("An unexpected String came through the pipeline.");
 
-            System.out.println(pipeline.getPath());
+            //System.out.println(pipeline.getCurrentPath());
         }
     }
 

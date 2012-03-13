@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,24 +14,54 @@ import java.util.Map;
 public class ScatterPipeTest extends TestCase {
 
     public void testPipeBasic() {
-        Pipe scatter = new ScatterPipe();
-        scatter.setStarts(Arrays.asList(Arrays.asList(1, 2, 3)));
+        Pipe pipe = new ScatterPipe();
+        pipe.enablePath(true);
+        pipe.setStarts(Arrays.asList(Arrays.asList(1, 2, 3)));
         int counter = 0;
-        while (scatter.hasNext()) {
-            Object object = scatter.next();
+        while (pipe.hasNext()) {
+            Object object = pipe.next();
             assertTrue(object.equals(1) || object.equals(2) || object.equals(3));
+            List path = pipe.getCurrentPath();
+            assertEquals(path.get(path.size() - 1), object);
+            assertEquals(((List) path.get(0)).get(0), 1);
+            assertEquals(((List) path.get(0)).get(1), 2);
+            assertEquals(((List) path.get(0)).get(2), 3);
             counter++;
+
         }
         assertEquals(counter, 3);
 
-        scatter.setStarts(Arrays.asList(Arrays.asList(1, 2, 3)));
-        scatter.reset();
-        assertEquals(1, scatter.next());
-        scatter.setStarts(Arrays.asList(Arrays.asList(1, 2, 3)));
-        scatter.reset();
-        assertEquals(1, scatter.next());
-        assertEquals(2, scatter.next());
-        assertEquals(3, scatter.next());
+        pipe.setStarts(Arrays.asList(Arrays.asList(1, 2, 3)));
+        pipe.reset();
+        assertEquals(1, pipe.next());
+        pipe.setStarts(Arrays.asList(Arrays.asList(1, 2, 3)));
+        pipe.reset();
+        assertEquals(1, pipe.next());
+        assertEquals(2, pipe.next());
+        assertEquals(3, pipe.next());
+    }
+
+    public void testScatterPaths() {
+        ScatterPipe pipe = new ScatterPipe();
+        pipe.enablePath(true);
+        pipe.setStarts(Arrays.asList(Arrays.asList("a", "b", "c"), Arrays.asList(1, 2, 3)));
+        int counter = 0;
+        while (pipe.hasNext()) {
+            Object object = pipe.next();
+            List path = pipe.getCurrentPath();
+            assertEquals(path.get(path.size() - 1), object);
+            if (counter > 2) {
+                assertEquals(((List) path.get(0)).get(0), 1);
+                assertEquals(((List) path.get(0)).get(1), 2);
+                assertEquals(((List) path.get(0)).get(2), 3);
+            } else {
+                assertEquals(((List) path.get(0)).get(0), "a");
+                assertEquals(((List) path.get(0)).get(1), "b");
+                assertEquals(((List) path.get(0)).get(2), "c");
+            }
+            counter++;
+        }
+        assertEquals(counter, 6);
     }
 
     public void testMapEntrySetScatter() {

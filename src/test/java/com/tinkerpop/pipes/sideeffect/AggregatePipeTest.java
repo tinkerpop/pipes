@@ -183,13 +183,14 @@ public class AggregatePipeTest extends TestCase {
 
     public void testAggregatorPath() {
         List<String> list = Arrays.asList("marko", "a.", "rodriguez");
-        Pipe<String, String> pipe = new Pipeline<String, String>(new AddCharPipe(), new AggregatePipe<String>(new ArrayList<String>()), new AddCharPipe());
-        pipe.setStarts(list);
+        Pipe<String, String> pipeline = new Pipeline<String, String>(new AddCharPipe(), new AggregatePipe<String>(new ArrayList<String>()), new AddCharPipe());
+        pipeline.enablePath(true);
+        pipeline.setStarts(list);
         int counter = 0;
-        while (pipe.hasNext()) {
-            String string = pipe.next();
+        while (pipeline.hasNext()) {
+            String string = pipeline.next();
             if (counter == 0) {
-                List path = pipe.getPath();
+                List path = pipeline.getCurrentPath();
                 assertEquals(path.size(), 3);
                 assertEquals(path.get(0), string.substring(0, string.length() - 2));
                 assertEquals(path.get(1), string.substring(0, string.length() - 1));
@@ -198,7 +199,7 @@ public class AggregatePipeTest extends TestCase {
             } else if (counter == 1) {
                 assertEquals(string, "a...");
             } else if (counter == 2) {
-                List path = pipe.getPath();
+                List path = pipeline.getCurrentPath();
                 assertEquals(path.size(), 3);
                 assertEquals(path.get(0), string.substring(0, string.length() - 2));
                 assertEquals(path.get(1), string.substring(0, string.length() - 1));

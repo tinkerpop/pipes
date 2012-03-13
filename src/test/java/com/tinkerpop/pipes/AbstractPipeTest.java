@@ -70,7 +70,7 @@ public class AbstractPipeTest extends TestCase {
         pipe1.setStarts(Arrays.asList(marko).iterator());
 
         for (String name : pipe3) {
-            List path = pipe3.getPath();
+            List path = pipe3.getCurrentPath();
             assertEquals(path.get(0), marko);
             assertEquals(path.get(1).getClass(), TinkerEdge.class);
             assertEquals(path.get(2).getClass(), TinkerVertex.class);
@@ -91,7 +91,7 @@ public class AbstractPipeTest extends TestCase {
                 assertFalse(true);
             }
             //System.out.println(name);
-            //System.out.println(pipeline.getPath());
+            //System.out.println(pipeline.getCurrentPath());
         }
     } */
 

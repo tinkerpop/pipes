@@ -29,10 +29,9 @@ public class OptionalPipe<S> extends AbstractPipe<S, S> implements SideEffectPip
     public S processNextStart() {
         final S s = this.starts.next();
         this.pipe.setStarts(new SingleIterator<S>(s));
-
         try {
             while (true) {
-                pipe.next();
+                this.pipe.next();
             }
         } catch (final NoSuchElementException e) {
         }
@@ -40,7 +39,7 @@ public class OptionalPipe<S> extends AbstractPipe<S, S> implements SideEffectPip
     }
 
     /**
-     * The side effect is the behavior of the internal pipe, not a gettable data structure.
+     * The side effect is the behavior of the internal pipe which is not a gettable data structure.
      *
      * @return will return null
      */

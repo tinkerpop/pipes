@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.LinkedList;
@@ -8,25 +9,30 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * GatherPipe emits all the elements up to this step as a LinkedList.
+ * GatherPipe emits all the objects up to this step as a LinkedList.
+ * This pipe is useful for doing breadth-first traversal where a List of all the current steps objects are gathered up.
+ * This gathered up List can then be filtered by the provided postFilterFunction and thus, a selective branch breadth-first traversal can be enacted.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class GatherPipe<S> extends AbstractPipe<S, List<S>> {
 
     private List<List> listPaths = new LinkedList<List>();
-    private PipeFunction<List<S>, List<S>> postFilterFunction = null;
+    private final PipeFunction<List<S>, List<S>> postFilterFunction;
 
     public GatherPipe() {
-
+        this(null);
     }
 
     public GatherPipe(final PipeFunction<List<S>, List<S>> postFilterFunction) {
         this.postFilterFunction = postFilterFunction;
     }
 
-    public List getPath() {
-        return this.listPaths;
+    public List getCurrentPath() {
+        if (pathEnabled)
+            return new LinkedList(this.listPaths);
+        else
+            throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
     }
 
     protected List<S> processNextStart() {
@@ -38,19 +44,37 @@ public class GatherPipe<S> extends AbstractPipe<S, List<S>> {
             while (this.starts.hasNext()) {
                 final S s = this.starts.next();
                 list.add(s);
-                this.listPaths.add(this.getPathToHere());
+                if (this.pathEnabled)
+                    this.listPaths.add(super.getPathToHere());
             }
         }
-        if (null != this.postFilterFunction) {
-            return this.postFilterFunction.compute(list);
+
+        if (this.pathEnabled) {
+            if (null != this.postFilterFunction) {
+                return addList(this.postFilterFunction.compute(list));
+            } else {
+                return addList(list);
+            }
         } else {
-            return list;
+            if (null != this.postFilterFunction) {
+                return this.postFilterFunction.compute(list);
+            } else {
+                return list;
+            }
         }
     }
-
 
     public void reset() {
         this.listPaths = new LinkedList<List>();
         super.reset();
     }
+
+    private List addList(final List list) {
+        for (final List l : this.listPaths) {
+            l.add(list);
+        }
+        return list;
+    }
+
+
 }

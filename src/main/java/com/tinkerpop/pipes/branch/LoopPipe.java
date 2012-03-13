@@ -42,7 +42,11 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
     protected S processNextStart() {
         while (true) {
             final S s = this.pipe.next();
-            final LoopBundle<S> loopBundle = new LoopBundle<S>(s, this.getPath(), this.getLoops());
+            final LoopBundle<S> loopBundle;
+            if (this.pathEnabled)
+                loopBundle = new LoopBundle<S>(s, this.getCurrentPath(), this.getLoops());
+            else
+                loopBundle = new LoopBundle<S>(s, null, this.getLoops());
             if (whileFunction.compute(loopBundle)) {
                 this.expando.add(loopBundle);
                 if (null != emitFunction && emitFunction.compute(loopBundle))
@@ -63,6 +67,11 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         this.pipe.setStarts(this.expando);
     }
 
+    public void enablePath(final boolean enable) {
+        super.enablePath(enable);
+        this.pipe.enablePath(enable);
+    }
+
     public String toString() {
         return PipeHelper.makePipeString(this, this.pipe);
     }
@@ -71,13 +80,17 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         return this.expando.getCurrentLoops() + 1;
     }
 
-    public List getPath() {
-        final List path = new ArrayList();
-        final List currentPath = this.expando.getCurrentPath();
-        if (null != currentPath)
-            path.addAll(currentPath);
-        path.addAll(this.pipe.getPath());
-        return path;
+    public List getCurrentPath() {
+        if (this.pathEnabled) {
+            final List path = new ArrayList();
+            final List currentPath = this.expando.getCurrentPath();
+            if (null != currentPath)
+                path.addAll(currentPath);
+            path.addAll(this.pipe.getCurrentPath());
+            return path;
+        } else {
+            throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
+        }
     }
 
     public void reset() {
@@ -95,8 +108,10 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         protected LoopBundle(final T t, final List path, final int loops) {
             this.t = t;
             this.path = path;
-            // remove the join object
-            this.path.remove(this.path.size() - 1);
+            if (null != path) {
+                // remove the join object
+                this.path.remove(this.path.size() - 1);
+            }
             this.loops = loops;
         }
 
@@ -159,7 +174,6 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
                 return null;
             else
                 return this.current.getPath();
-
         }
 
         /*public int getCurrentLoops() {

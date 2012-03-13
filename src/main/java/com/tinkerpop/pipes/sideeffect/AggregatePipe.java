@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.ArrayList;
@@ -40,18 +41,18 @@ public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPi
         this.preAggregateFunction = preAggregateFunction;
     }
 
-    protected List getPathToHere() {
-        return this.currentPath;
-    }
-
-    public List getPath() {
-        final List pathElements = new ArrayList(getPathToHere());
-        final int size = pathElements.size();
-        // do not repeat filters as they dup the object
-        if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
-            pathElements.add(this.currentEnd);
+    public List getCurrentPath() {
+        if (this.pathEnabled) {
+            final List pathElements = new ArrayList(this.currentPath);
+            final int size = pathElements.size();
+            // do not repeat filters as they dup the object
+            if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
+                pathElements.add(this.currentEnd);
+            }
+            return pathElements;
+        } else {
+            throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
         }
-        return pathElements;
     }
 
     protected S processNextStart() {
@@ -62,6 +63,7 @@ public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPi
                 else {
                     this.currentObjectQueue.clear();
                     this.currentPathQueue.clear();
+
                     try {
                         while (true) {
                             final S s = this.starts.next();
@@ -70,13 +72,15 @@ public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPi
                             else
                                 this.aggregate.add(s);
                             this.currentObjectQueue.add(s);
-                            this.currentPathQueue.add(super.getPathToHere());
+                            if (this.pathEnabled)
+                                this.currentPathQueue.add(this.getPathToHere());
                         }
                     } catch (final NoSuchElementException e) {
                     }
                 }
             } else {
-                this.currentPath = currentPathQueue.remove();
+                if (this.pathEnabled)
+                    this.currentPath = currentPathQueue.remove();
                 return this.currentObjectQueue.remove();
             }
         }

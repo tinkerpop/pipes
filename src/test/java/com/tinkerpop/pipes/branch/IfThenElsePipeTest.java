@@ -31,11 +31,12 @@ public class IfThenElsePipeTest extends TestCase {
         List results = Arrays.asList(0, "hehe", 5, 4, 0, "hehe", 0, "hehe");
         List path1 = Arrays.asList("marko", "marko", "povel", "pete", "josh", "josh", "stephen", "stephen");
         Pipe<String, Integer> pipe = new IfThenElsePipe<String, Integer>(new IfPipeFunction(), new ThenPipeFunction(), new ElsePipeFunction());
+        pipe.enablePath(true);
         pipe.setStarts(names);
         int counter = 0;
         while (pipe.hasNext()) {
             assertEquals(pipe.next(), results.get(counter));
-            List path = pipe.getPath();
+            List path = pipe.getCurrentPath();
             assertEquals(path.get(0), path1.get(counter));
             assertEquals(path.get(1), results.get(counter));
             assertEquals(path.size(), 2);

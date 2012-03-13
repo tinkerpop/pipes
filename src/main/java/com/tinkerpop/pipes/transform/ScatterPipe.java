@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * ScatterPipe will unroll any iterator/iterable that is inputted into it.
- * This will only occur for one level deep. It will not unroll an iterator within an iterator, etc.
+ * ScatterPipe will unroll any iterator/iterable/map that is provided to it.
+ * This will only occur for one level deep. In other words, it will not unroll an iterator within an iterator.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

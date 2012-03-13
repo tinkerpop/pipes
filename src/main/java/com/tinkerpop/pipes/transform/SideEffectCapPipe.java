@@ -45,10 +45,14 @@ public class SideEffectCapPipe<S, T> extends AbstractPipe<S, T> implements MetaP
         }
     }
 
-    public List getPath() {
-        final List list = this.pipeToCap.getPath();
-        list.add(this.currentEnd);
-        return list;
+    public List getCurrentPath() {
+        if (this.pathEnabled) {
+            final List list = this.pipeToCap.getCurrentPath();
+            list.add(this.currentEnd);
+            return list;
+        } else {
+            throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
+        }
     }
 
     public String toString() {
