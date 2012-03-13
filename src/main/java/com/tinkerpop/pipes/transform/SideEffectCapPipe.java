@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;

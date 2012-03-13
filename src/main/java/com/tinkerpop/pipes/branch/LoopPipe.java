@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.branch;
 
-import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;

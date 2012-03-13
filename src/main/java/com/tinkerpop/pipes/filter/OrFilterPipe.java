@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.transform.HasNextPipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
