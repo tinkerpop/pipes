@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.branch;
 
-import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FairMergePipe<E> extends AbstractPipe<E, E> implements MetaPipe {
+public class FairMergePipe<E> extends AbstractMetaPipe<E, E> implements MetaPipe {
 
     private final List<Pipe> pipes;
     int current = 0;

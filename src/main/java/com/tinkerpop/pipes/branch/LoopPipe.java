@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.branch;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
@@ -22,7 +23,7 @@ import java.util.Queue;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
+public class LoopPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
 
     private final PipeFunction<LoopBundle<S>, Boolean> whileFunction;
     private final PipeFunction<LoopBundle<S>, Boolean> emitFunction;
@@ -65,11 +66,6 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
     public void setStarts(final Iterator<S> iterator) {
         this.expando = new ExpandableLoopBundleIterator<S>(iterator);
         this.pipe.setStarts(this.expando);
-    }
-
-    public void enablePath(final boolean enable) {
-        super.enablePath(enable);
-        this.pipe.enablePath(enable);
     }
 
     public String toString() {

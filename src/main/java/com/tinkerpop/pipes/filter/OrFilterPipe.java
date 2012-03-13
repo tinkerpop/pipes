@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.filter;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.transform.HasNextPipe;
+import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
@@ -16,7 +17,7 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class OrFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S>, MetaPipe {
+public class OrFilterPipe<S> extends AbstractMetaPipe<S, S> implements FilterPipe<S>, MetaPipe {
 
     private final List<Pipe<S, Boolean>> pipes = new ArrayList<Pipe<S, Boolean>>();
 

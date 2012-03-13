@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @author Darrick Wiebe (http://ofallpossibleworlds.wordpress.com)
  */
-public class HasNextPipe<S> extends AbstractPipe<S, Boolean> implements MetaPipe {
+public class HasNextPipe<S> extends AbstractMetaPipe<S, Boolean> implements MetaPipe {
 
     private Pipe<S, ?> pipe;
 

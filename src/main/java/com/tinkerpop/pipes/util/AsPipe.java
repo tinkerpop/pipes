@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.util;
 
-import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AsPipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
+public class AsPipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPipe {
 
     private final String name;
     private final Pipe<S, E> pipe;

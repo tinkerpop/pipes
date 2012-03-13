@@ -2,6 +2,7 @@ package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
@@ -18,7 +19,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class OptionalPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Object>, MetaPipe {
+public class OptionalPipe<S> extends AbstractMetaPipe<S, S> implements SideEffectPipe<S, Object>, MetaPipe {
 
     private final Pipe<S, ?> pipe;
 

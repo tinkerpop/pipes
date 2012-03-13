@@ -2,6 +2,7 @@ package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
@@ -16,7 +17,7 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class MemoizePipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
+public class MemoizePipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPipe {
 
     protected Pipe<S, E> pipe;
     protected Map<S, List<E>> map;

@@ -47,9 +47,9 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public void reset() {
-        if (this.starts instanceof Pipe) {
+        if (this.starts instanceof Pipe)
             ((Pipe) this.starts).reset();
-        }
+
         this.nextEnd = null;
         this.currentEnd = null;
         this.available = false;
