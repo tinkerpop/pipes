@@ -18,6 +18,7 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 * @GatherPipe@ no longer locks on looping and is semantically sound for depth-first traversing
 * Added @Pipe.enablePath(boolean)@ method to support the turning on/off of path calculations
 * Renamed @Pipe.getPath()@ to @Pipe.getCurrentPath()@
+* @SideEffectCapPipe@ moved to the @transform@ package as it was wrongly organized in the @sideeffect@ package
 
 h2. Pipes 0.X
 
