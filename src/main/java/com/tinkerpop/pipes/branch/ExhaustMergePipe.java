@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.branch;
 
-import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
@@ -36,8 +35,8 @@ public class ExhaustMergePipe<S> extends AbstractMetaPipe<S, S> implements MetaP
             if (pipe.hasNext()) {
                 return (S) pipe.next();
             } else {
-                this.current++;
-                if (this.current % this.total == 0) {
+                this.current = (this.current + 1) % this.total;
+                if (this.current == 0) {
                     throw new NoSuchElementException();
                 }
             }
