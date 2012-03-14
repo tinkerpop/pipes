@@ -32,8 +32,8 @@ public class TreeTest extends TestCase {
         tree.put("marko", new Tree<String>(Tree.createTree("a", new Tree<String>("a1", "a2")), Tree.createTree("b", new Tree<String>("b1", "b2", "b3"))));
         tree.put("josh", new Tree<String>("1", "2"));
 
-        assertEquals(tree.getLeafBranches().size(), 7);
-        for (Tree<String> t : tree.getLeafBranches()) {
+        assertEquals(tree.getLeafTrees().size(), 7);
+        for (Tree<String> t : tree.getLeafTrees()) {
             assertEquals(t.keySet().size(), 1);
             final String key = t.keySet().iterator().next();
             assertTrue(Arrays.asList("a1", "a2", "b1", "b2", "b3", "1", "2").contains(key));

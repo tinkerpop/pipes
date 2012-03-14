@@ -31,7 +31,7 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
     }
 
 
-    public List<Tree<T>> getBranchesAtDepth(final int depth) {
+    public List<Tree<T>> getTreesAtDepth(final int depth) {
         final List<Tree<T>> branches = new LinkedList<Tree<T>>();
         List<Tree<T>> currentDepth = Arrays.asList(this);
         for (int i = 0; i < depth; i++) {
@@ -50,13 +50,13 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
 
     public List<T> getObjectsAtDepth(final int depth) {
         final List<T> list = new LinkedList<T>();
-        for (final Tree<T> t : this.getBranchesAtDepth(depth)) {
+        for (final Tree<T> t : this.getTreesAtDepth(depth)) {
             list.addAll(t.keySet());
         }
         return list;
     }
 
-    public List<Tree<T>> getLeafBranches() {
+    public List<Tree<T>> getLeafTrees() {
         final List<Tree<T>> leaves = new LinkedList<Tree<T>>();
         List<Tree<T>> currentDepth = Arrays.asList(this);
         boolean allLeaves = false;
@@ -81,7 +81,7 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
 
     public List<T> getLeafObjects() {
         final List<T> leaves = new LinkedList<T>();
-        for (final Tree<T> t : this.getLeafBranches()) {
+        for (final Tree<T> t : this.getLeafTrees()) {
             leaves.addAll(t.keySet());
         }
         return leaves;
