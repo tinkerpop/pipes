@@ -28,6 +28,7 @@ import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.sideeffect.StorePipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
+import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
@@ -238,11 +239,11 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> groupCount() {
-        return this.add(new GroupCountPipe());
+        return this.add(new GroupCountPipe<E>());
     }
 
     public PipesPipeline<S, E> sideEffect(final PipeFunction<E, ?> sideEffectFunction) {
-        return this.add(new SideEffectFunctionPipe(sideEffectFunction));
+        return this.add(new SideEffectFunctionPipe<E>(sideEffectFunction));
     }
 
     public PipesPipeline<S, E> store(final Collection<E> storage) {
@@ -262,23 +263,31 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(table, stepNames, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new TablePipe<E>(table, stepNames, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
     public PipesPipeline<S, E> table(final Table table, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new TablePipe<E>(table, null, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
     public PipesPipeline<S, E> table(final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new TablePipe<E>(new Table(), null, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
     public PipesPipeline<S, E> table(final Table table) {
-        return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this)));
+        return this.add(new TablePipe<E>(table, null, FluentUtility.getAsPipes(this)));
     }
 
     public PipesPipeline<S, E> table() {
-        return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this)));
+        return this.add(new TablePipe<E>(new Table(), null, FluentUtility.getAsPipes(this)));
+    }
+
+    public PipesPipeline<S, E> tree(final Map tree, final PipeFunction... branchFunctions) {
+        return this.add(new TreePipe<E>(tree, branchFunctions));
+    }
+
+    public PipesPipeline<S, E> tree(final PipeFunction... branchFunctions) {
+        return this.add(new TreePipe<E>(branchFunctions));
     }
 
     ///////////////////////

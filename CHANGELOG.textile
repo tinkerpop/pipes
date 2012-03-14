@@ -20,6 +20,7 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 * Renamed @Pipe.getPath()@ to @Pipe.getCurrentPath()@
 * @SideEffectCapPipe@ moved to the @transform@ package as it was wrongly organized in the @sideeffect@ package
 * Fixed an indexing issues in @ExhaustMergePipe@ that made itself apparent when two split/merges happened in the same pipeline
+* Added @TreePipe@ to return a tree representation of the traversal
 
 h2. Pipes 0.X
 
