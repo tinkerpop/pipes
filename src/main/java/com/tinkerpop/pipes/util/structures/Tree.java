@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.util.structures;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
     }
 
 
-    public List<Tree<T>> getBranches(final int depth) {
+    public List<Tree<T>> getBranchesAtDepth(final int depth) {
         final List<Tree<T>> branches = new LinkedList<Tree<T>>();
         List<Tree<T>> currentDepth = Arrays.asList(this);
         for (int i = 0; i < depth; i++) {
@@ -47,12 +48,49 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
         return branches;
     }
 
-    public List<T> getObjects(final int depth) {
+    public List<T> getObjectsAtDepth(final int depth) {
         final List<T> list = new LinkedList<T>();
-        for (final Tree<T> t : this.getBranches(depth)) {
+        for (final Tree<T> t : this.getBranchesAtDepth(depth)) {
             list.addAll(t.keySet());
         }
         return list;
+    }
+
+    public List<Tree<T>> getLeafBranches() {
+        final List<Tree<T>> leaves = new LinkedList<Tree<T>>();
+        List<Tree<T>> currentDepth = Arrays.asList(this);
+        boolean allLeaves = false;
+        while (!allLeaves) {
+            allLeaves = true;
+            final List<Tree<T>> temp = new LinkedList<Tree<T>>();
+            for (final Tree<T> t : currentDepth) {
+                if (t.isLeaf()) {
+                    for (Map.Entry<T, Tree<T>> t2 : t.entrySet()) {
+                        leaves.add(new Tree<T>(t2));
+                    }
+                } else {
+                    allLeaves = false;
+                    temp.addAll(t.values());
+                }
+            }
+            currentDepth = temp;
+
+        }
+        return leaves;
+    }
+
+    public List<T> getLeafObjects() {
+        final List<T> leaves = new LinkedList<T>();
+        for (final Tree<T> t : this.getLeafBranches()) {
+            leaves.addAll(t.keySet());
+        }
+        return leaves;
+    }
+
+    public boolean isLeaf() {
+        Collection<Tree<T>> values = this.values();
+        return values.iterator().next().isEmpty();
+
     }
 
     public static <T> Map.Entry<T, Tree<T>> createTree(T key, Tree<T> tree) {
