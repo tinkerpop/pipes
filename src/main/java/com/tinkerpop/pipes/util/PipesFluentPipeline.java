@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
+import com.tinkerpop.pipes.util.structures.Tree;
 
 import java.util.Collection;
 import java.util.List;
@@ -548,7 +549,7 @@ public interface PipesFluentPipeline<S, E> {
      * @param branchFunctions functions to apply to each path object in a round robin fashion
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, E> tree(final Map tree, final PipeFunction... branchFunctions);
+    public PipesFluentPipeline<S, E> tree(final Tree tree, final PipeFunction... branchFunctions);
 
 
     /**

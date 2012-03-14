@@ -3,9 +3,9 @@ package com.tinkerpop.pipes.sideeffect;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.structures.Tree;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class TreePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map> {
 
-    Map tree = new HashMap();
+    Tree<Object> tree = new Tree<Object>();
     final List<PipeFunction> branchFunctions;
     int currentFunction = 0;
 
@@ -27,7 +27,7 @@ public class TreePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S,
             this.branchFunctions = Arrays.asList(branchFunctions);
     }
 
-    public TreePipe(final Map tree, final PipeFunction... branchFunctions) {
+    public TreePipe(final Tree tree, final PipeFunction... branchFunctions) {
         this(branchFunctions);
         this.tree = tree;
     }
@@ -41,7 +41,7 @@ public class TreePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S,
     public S processNextStart() {
         final S s = this.starts.next();
         final List path = ((Pipe) this.starts).getCurrentPath();
-        Map depth = this.tree;
+        Tree<Object> depth = this.tree;
         for (int i = 0; i < path.size(); i++) {
             Object object = path.get(i);
             if (null != this.branchFunctions) {
@@ -50,9 +50,9 @@ public class TreePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S,
             }
 
             if (!depth.containsKey(object))
-                depth.put(object, new HashMap());
+                depth.put(object, new Tree());
 
-            depth = (Map) depth.get(object);
+            depth = depth.get(object);
         }
         return s;
     }
@@ -62,7 +62,7 @@ public class TreePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S,
     }
 
     public void reset() {
-        this.tree = new HashMap();
+        this.tree = new Tree<Object>();
         this.currentFunction = 0;
         super.reset();
     }

@@ -29,11 +29,11 @@ public class TreePipeTest extends TestCase {
         assertEquals(map.size(), 2);
         assertTrue(map.get("marko") instanceof Map);
         assertTrue(map.get("josh") instanceof Map);
-        assertEquals(((Map)map.get("marko")).size(), 1);
-        assertEquals(((Map)map.get("josh")).size(), 1);
-        assertTrue(((Map)map.get("marko")).containsKey(5));
-        assertTrue(((Map)map.get("josh")).containsKey(4));
-        
+        assertEquals(((Map) map.get("marko")).size(), 1);
+        assertEquals(((Map) map.get("josh")).size(), 1);
+        assertTrue(((Map) map.get("marko")).containsKey(5));
+        assertTrue(((Map) map.get("josh")).containsKey(4));
+
     }
 
     private class StringLengthPipe extends AbstractPipe<String, Integer> {

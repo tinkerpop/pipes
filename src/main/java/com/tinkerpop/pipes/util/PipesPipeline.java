@@ -41,6 +41,7 @@ import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
+import com.tinkerpop.pipes.util.structures.Tree;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -282,7 +283,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new TablePipe<E>(new Table(), null, FluentUtility.getAsPipes(this)));
     }
 
-    public PipesPipeline<S, E> tree(final Map tree, final PipeFunction... branchFunctions) {
+    public PipesPipeline<S, E> tree(final Tree tree, final PipeFunction... branchFunctions) {
         return this.add(new TreePipe<E>(tree, branchFunctions));
     }
 
