@@ -32,7 +32,6 @@ import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
-import com.tinkerpop.pipes.transform.PathFunctionPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
 import com.tinkerpop.pipes.transform.SelectPipe;
@@ -325,11 +324,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, List> path(final PipeFunction... pathFunctions) {
-        if (pathFunctions.length == 0)
-            this.addPipe(new PathPipe());
-        else
-            this.addPipe(new PathFunctionPipe(pathFunctions));
-        return (PipesPipeline<S, List>) this;
+        return this.add(new PathPipe<Object>(pathFunctions));
     }
 
     public PipesPipeline<S, Row> select(final Collection<String> stepNames, final PipeFunction... columnFunctions) {

@@ -639,11 +639,11 @@ public interface PipesFluentPipeline<S, E> {
     public PipesFluentPipeline<S, E> memoize(final int numberedStep, final Map map);
 
     /**
-     * Add a PathPipe or PathFunctionPipe to the end of the Pipeline.
+     * Add a PathPipe or PathPipe to the end of the Pipeline.
      * This will emit the path that has been seen thus far.
      * If path functions are provided, then they are evaluated in a round robin fashion on the objects of the path.
      *
-     * @param pathFunctions the path function of the PathFunctionPipe
+     * @param pathFunctions the path function of the PathPipe
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, List> path(final PipeFunction... pathFunctions);
