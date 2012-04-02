@@ -16,14 +16,14 @@ import java.util.List;
 public class CyclicPathFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     public void setStarts(Iterator<S> starts) {
-        this.starts = starts;
+        super.setStarts(starts);
         this.enablePath(true);
     }
 
     public S processNextStart() {
         while (true) {
             final S s = this.starts.next();
-            if (this.starts instanceof Pipe) {
+            if (this.startsIsAPipe) {
                 final List path = ((Pipe) this.starts).getCurrentPath();
                 if (path.size() == new HashSet(path).size()) {
                     return s;

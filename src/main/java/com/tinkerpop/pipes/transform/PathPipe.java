@@ -25,28 +25,27 @@ public class PathPipe<S> extends AbstractPipe<S, List> {
         if (pathFunctions.length == 0) {
             this.pathFunctions = null;
         } else {
-
             this.pathFunctions = pathFunctions;
         }
     }
 
     public void setStarts(final Iterator<S> starts) {
-        this.starts = starts;
+        super.setStarts(starts);
         this.enablePath(true);
     }
 
     public List processNextStart() {
-        if (this.starts instanceof Pipe) {
+        if (this.startsIsAPipe) {
             this.starts.next();
             final List path = ((Pipe) this.starts).getCurrentPath();
-            if (null == pathFunctions) {
+            if (null == this.pathFunctions) {
                 return path;
             } else {
                 final List closedPath = new LinkedList();
                 int nextFunction = 0;
-                for (Object object : path) {
-                    closedPath.add(pathFunctions[nextFunction].compute(object));
-                    nextFunction = (nextFunction + 1) % pathFunctions.length;
+                for (final Object object : path) {
+                    closedPath.add(this.pathFunctions[nextFunction].compute(object));
+                    nextFunction = (nextFunction + 1) % this.pathFunctions.length;
                 }
                 return closedPath;
             }

@@ -34,7 +34,7 @@ public class TreePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S,
 
 
     public void setStarts(Iterator<S> starts) {
-        this.starts = starts;
+        super.setStarts(starts);
         this.enablePath(true);
     }
 

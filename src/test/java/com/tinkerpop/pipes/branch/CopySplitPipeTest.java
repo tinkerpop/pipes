@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.ObjectFilterPipe;
+import com.tinkerpop.pipes.transform.PathPipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -89,6 +90,26 @@ public class CopySplitPipeTest extends TestCase {
         assertEquals(list.get(2), "1c");
         assertEquals(list.get(3), "2c");
     }
+
+    /*public void testWithPath() {
+        Pipe<String, String> pipe1 = new AppendCharPipe("a");
+        Pipe<String, String> pipe2 = new AppendCharPipe("b");
+        Pipe<String, String> pipe3 = new AppendCharPipe("c");
+
+        CopySplitPipe<String> copySplitPipe = new CopySplitPipe<String>(pipe1, pipe2, pipe3);
+        ExhaustMergePipe<String> exhaustMergePipe = new ExhaustMergePipe<String>(copySplitPipe.getPipes());
+        PathPipe<String> pathPipe = new PathPipe<String>();
+        pathPipe.setStarts(exhaustMergePipe);
+        copySplitPipe.setStarts(Arrays.asList("1", "2"));
+        int counter = 0;
+        List<List> list = new ArrayList<List>();
+        while (pathPipe.hasNext()) {
+            counter++;
+            list.add(pathPipe.getCurrentPath());
+        }
+        assertEquals(list.size(), 6);
+        assertEquals(counter, 6);
+    }*/
 
 
     private class AppendCharPipe extends AbstractPipe<String, String> {

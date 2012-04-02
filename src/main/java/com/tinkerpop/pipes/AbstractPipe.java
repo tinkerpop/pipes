@@ -30,16 +30,23 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     protected E currentEnd;
     private boolean available = false;
     protected boolean pathEnabled = false;
+    protected boolean startsIsAPipe = false;
+    protected boolean startsIsAHistoryIterator = false;
 
     public void setStarts(final Pipe<?, S> starts) {
-        this.starts = starts;
+        this.setStarts(starts.iterator());
     }
 
     public void setStarts(final Iterator<S> starts) {
-        if (starts instanceof Pipe)
+        if (starts instanceof Pipe) {
             this.starts = starts;
-        else
+            this.startsIsAPipe = true;
+            this.startsIsAHistoryIterator = false;
+        } else {
             this.starts = new HistoryIterator<S>(starts);
+            this.startsIsAHistoryIterator = true;
+            this.startsIsAPipe = false;
+        }
     }
 
     public void setStarts(final Iterable<S> starts) {
@@ -47,7 +54,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     }
 
     public void reset() {
-        if (this.starts instanceof Pipe)
+        if (this.startsIsAPipe)
             ((Pipe) this.starts).reset();
 
         this.nextEnd = null;
@@ -97,7 +104,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     public void enablePath(final boolean enable) {
         this.pathEnabled = enable;
-        if (this.starts instanceof Pipe)
+        if (this.startsIsAPipe)
             ((Pipe) this.starts).enablePath(enable);
     }
 
@@ -118,9 +125,9 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     protected abstract E processNextStart() throws NoSuchElementException;
 
     protected List getPathToHere() {
-        if (this.starts instanceof Pipe) {
+        if (this.startsIsAPipe) {
             return ((Pipe) this.starts).getCurrentPath();
-        } else if (this.starts instanceof HistoryIterator) {
+        } else if (this.startsIsAHistoryIterator) {
             final List list = new ArrayList();
             list.add(((HistoryIterator) this.starts).getLast());
             return list;
