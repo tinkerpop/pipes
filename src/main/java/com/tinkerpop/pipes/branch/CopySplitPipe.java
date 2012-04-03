@@ -40,13 +40,13 @@ public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
 
         List tempPath = null;
         if (this.pathEnabled)
-            tempPath = this.getCurrentPath();
+            tempPath = new LinkedList(this.getCurrentPath());
 
         for (final Pipeline pipeline : this.pipes) {
             final CopyExpandablePipe<S> temp = (CopyExpandablePipe<S>) pipeline.get(0);
             temp.add(s);
             if (this.pathEnabled)
-                temp.addCurrentPath(new LinkedList(tempPath));
+                temp.addCurrentPath(tempPath);
         }
         return s;
     }
@@ -72,9 +72,11 @@ public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
         return PipeHelper.makePipeString(this, this.pipes);
     }
 
-    private class CopyExpandablePipe<S> extends AbstractPipe<S, S> {
+    private static class CopyExpandablePipe<S> extends AbstractPipe<S, S> {
 
-        protected Queue<S> queue = new LinkedList<S>();
+        private static final Object TOKEN = new Object();
+
+        protected Queue<Object> queue = new LinkedList<Object>();
         protected Queue<List> paths = new LinkedList<List>();
 
         private CopySplitPipe<S> parentPipe;
@@ -88,15 +90,24 @@ public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
                 if (this.queue.isEmpty()) {
                     this.parentPipe.processNextStart();
                 } else {
-                    return this.queue.remove();
+                    if (pathEnabled) {
+                        final Object x = this.queue.remove();
+                        if (x == TOKEN) {
+                            this.paths.remove();
+                        } else {
+                            return (S) x;
+                        }
+                    } else {
+                        return (S) this.queue.remove();
+                    }
                 }
             }
         }
 
         public List getCurrentPath() {
-            if (this.pathEnabled)
-                return this.paths.remove();
-            else
+            if (this.pathEnabled) {
+                return new LinkedList(this.paths.peek());
+            } else
                 throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
         }
 
@@ -104,8 +115,10 @@ public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
             this.paths.add(path);
         }
 
-        public void add(S s) {
+        public void add(final S s) {
             this.queue.add(s);
+            if (this.pathEnabled)
+                this.queue.add(TOKEN);
         }
 
         public void reset() {
