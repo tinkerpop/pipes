@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -29,6 +30,11 @@ public class ExhaustMergePipe<S> extends AbstractMetaPipe<S, S> implements MetaP
         this(Arrays.asList(pipes));
     }
 
+    @Override
+    public void setStarts(final Iterator<S> iterator) {
+
+    }
+
     public S processNextStart() {
         while (true) {
             final Pipe pipe = this.pipes.get(this.current);
@@ -43,11 +49,11 @@ public class ExhaustMergePipe<S> extends AbstractMetaPipe<S, S> implements MetaP
         }
     }
 
-    public void reset() {
-        for (final Pipe pipe : this.pipes) {
-            pipe.reset();
-        }
-        super.reset();
+    public List getCurrentPath() {
+        if (this.pathEnabled)
+            return this.pipes.get(this.current).getCurrentPath();
+        else
+            throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
     }
 
     public List<Pipe> getPipes() {

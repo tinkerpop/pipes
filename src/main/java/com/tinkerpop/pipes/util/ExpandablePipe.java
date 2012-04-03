@@ -22,4 +22,9 @@ public class ExpandablePipe<S> extends AbstractPipe<S, S> {
     public void add(S s) {
         this.queue.add(s);
     }
+
+    public void reset() {
+        this.queue.clear();
+        super.reset();
+    }
 }

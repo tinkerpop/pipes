@@ -91,7 +91,7 @@ public class CopySplitPipeTest extends TestCase {
         assertEquals(list.get(3), "2c");
     }
 
-    /*public void testWithPath() {
+    public void testWithExhaustMergePath() {
         Pipe<String, String> pipe1 = new AppendCharPipe("a");
         Pipe<String, String> pipe2 = new AppendCharPipe("b");
         Pipe<String, String> pipe3 = new AppendCharPipe("c");
@@ -104,12 +104,80 @@ public class CopySplitPipeTest extends TestCase {
         int counter = 0;
         List<List> list = new ArrayList<List>();
         while (pathPipe.hasNext()) {
+            List path = pathPipe.next();
+            list.add(path);
+            //System.out.println(path);
+            if (counter == 0) {
+                assertEquals(path.get(0), "1");
+                assertEquals(path.get(1), "1a");
+            } else if (counter == 1) {
+                assertEquals(path.get(0), "2");
+                assertEquals(path.get(1), "2a");
+            } else if (counter == 2) {
+                assertEquals(path.get(0), "1");
+                assertEquals(path.get(1), "1b");
+            } else if (counter == 3) {
+                assertEquals(path.get(0), "2");
+                assertEquals(path.get(1), "2b");
+            } else if (counter == 4) {
+                assertEquals(path.get(0), "1");
+                assertEquals(path.get(1), "1c");
+            } else if (counter == 5) {
+                assertEquals(path.get(0), "2");
+                assertEquals(path.get(1), "2c");
+            } else {
+                assertFalse(true);
+            }
             counter++;
-            list.add(pathPipe.getCurrentPath());
+
         }
         assertEquals(list.size(), 6);
         assertEquals(counter, 6);
-    }*/
+    }
+
+    public void testWithFairMergePath() {
+        Pipe<String, String> pipe1 = new AppendCharPipe("a");
+        Pipe<String, String> pipe2 = new AppendCharPipe("b");
+        Pipe<String, String> pipe3 = new AppendCharPipe("c");
+
+        CopySplitPipe<String> copySplitPipe = new CopySplitPipe<String>(pipe1, pipe2, pipe3);
+        FairMergePipe<String> fairMergePipe = new FairMergePipe<String>(copySplitPipe.getPipes());
+        PathPipe<String> pathPipe = new PathPipe<String>();
+        pathPipe.setStarts(fairMergePipe);
+        copySplitPipe.setStarts(Arrays.asList("1", "2"));
+        int counter = 0;
+        List<List> list = new ArrayList<List>();
+        while (pathPipe.hasNext()) {
+            List path = pathPipe.next();
+            list.add(path);
+            //System.out.println(path);
+            if (counter == 0) {
+                assertEquals(path.get(0), "1");
+                assertEquals(path.get(1), "1a");
+            } else if (counter == 1) {
+                assertEquals(path.get(0), "1");
+                assertEquals(path.get(1), "1b");
+            } else if (counter == 2) {
+                assertEquals(path.get(0), "1");
+                assertEquals(path.get(1), "1c");
+            } else if (counter == 3) {
+                assertEquals(path.get(0), "2");
+                assertEquals(path.get(1), "2a");
+            } else if (counter == 4) {
+                assertEquals(path.get(0), "2");
+                assertEquals(path.get(1), "2b");
+            } else if (counter == 5) {
+                assertEquals(path.get(0), "2");
+                assertEquals(path.get(1), "2c");
+            } else {
+                assertFalse(true);
+            }
+            counter++;
+
+        }
+        assertEquals(list.size(), 6);
+        assertEquals(counter, 6);
+    }
 
 
     private class AppendCharPipe extends AbstractPipe<String, String> {

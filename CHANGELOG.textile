@@ -14,7 +14,7 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* The @gather@-step in @PipesPipeline@ has the transformation step internal to it and thus, not two pipes when PipeFunction provided
+* The @gather@-step in @PipesPipeline@ has the transformation step internal to it and thus, not two pipes when @PipeFunction@ provided
 * @GatherPipe@ no longer locks on looping and is semantically sound for depth-first traversing
 * Added @Pipe.enablePath(boolean)@ method to support the turning on/off of path calculations (efficiency reasons)
 * Renamed @Pipe.getPath()@ to @Pipe.getCurrentPath()@
@@ -22,6 +22,8 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 * Fixed an indexing issue in @ExhaustMergePipe@ that made itself apparent when two split/merges happened in the same pipeline
 * Added @Tree@ and @TreePipe@ to return a tree representation of a traversal
 * Merged @PathPipe@ and @PathFunctionPipe@ into one class called @PathPipe@
+* Added @AbstractMetaPipe@ to encapsulate reused behavior in all @MetaPipe@ implementations
+* The @CopySplitPipe@, @FairMergePipe@, and @ExhaustMergePipe@ all have functioning path calculations
 
 h2. Pipes 0.X
 

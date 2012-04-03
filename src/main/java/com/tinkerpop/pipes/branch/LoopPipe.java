@@ -90,7 +90,6 @@ public class LoopPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
 
     public void reset() {
         this.expando.clear();
-        this.pipe.reset();
         super.reset();
     }
 

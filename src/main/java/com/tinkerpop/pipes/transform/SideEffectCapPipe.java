@@ -64,7 +64,6 @@ public class SideEffectCapPipe<S, T> extends AbstractMetaPipe<S, T> implements M
     }
 
     public void reset() {
-        this.pipeToCap.reset();
         this.alive = true;
         super.reset();
     }

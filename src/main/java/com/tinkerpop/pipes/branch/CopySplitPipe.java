@@ -5,8 +5,8 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
+import com.tinkerpop.pipes.util.Pipeline;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,16 +20,14 @@ import java.util.Queue;
  */
 public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
 
-    private final List<Pipe> pipes;
-    private final List<CopyExpandablePipe<S>> pipeStarts = new ArrayList<CopyExpandablePipe<S>>();
+    private final List<Pipeline> pipes = new LinkedList<Pipeline>();
 
     public CopySplitPipe(final List<Pipe> pipes) {
-        this.pipes = pipes;
-        for (final Pipe pipe : this.pipes) {
-            CopyExpandablePipe<S> expandable = new CopyExpandablePipe<S>();
-            expandable.setStarts(this);
-            pipe.setStarts(expandable.iterator());
-            this.pipeStarts.add(expandable);
+        for (final Pipe pipe : pipes) {
+            final Pipeline<S, ?> pipeline = new Pipeline<S, Object>();
+            pipeline.addPipe(new CopyExpandablePipe<S>(this));
+            pipeline.addPipe(pipe);
+            this.pipes.add(pipeline);
         }
     }
 
@@ -39,42 +37,86 @@ public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
 
     public S processNextStart() {
         final S s = this.starts.next();
-        for (final CopyExpandablePipe expandable : this.pipeStarts) {
-            expandable.add(s);
+
+        List tempPath = null;
+        if (this.pathEnabled)
+            tempPath = this.getCurrentPath();
+
+        for (final Pipeline pipeline : this.pipes) {
+            final CopyExpandablePipe<S> temp = (CopyExpandablePipe<S>) pipeline.get(0);
+            temp.add(s);
+            if (this.pathEnabled)
+                temp.addCurrentPath(new LinkedList(tempPath));
         }
         return s;
     }
 
-    public List<Pipe> getPipes() {
-        return this.pipes;
+    public List getCurrentPath() {
+        final List path = super.getCurrentPath();
+        path.remove(path.size() - 1);
+        return path;
     }
 
-    public void reset() {
-        for (final Pipe pipe : this.pipes) {
-            pipe.reset();
-        }
-        super.reset();
+    public List<Pipe> getPipes() {
+        return (List) this.pipes;
+    }
+
+    public void enablePath(final boolean enable) {
+        this.pathEnabled = enable;
+        if (this.starts instanceof Pipe)
+            ((Pipe) this.starts).enablePath(enable);
+    }
+
+
+    public String toString() {
+        return PipeHelper.makePipeString(this, this.pipes);
     }
 
     private class CopyExpandablePipe<S> extends AbstractPipe<S, S> {
-        private final Queue<S> queue = new LinkedList<S>();
+
+        protected Queue<S> queue = new LinkedList<S>();
+        protected Queue<List> paths = new LinkedList<List>();
+
+        private CopySplitPipe<S> parentPipe;
+
+        public CopyExpandablePipe(final CopySplitPipe<S> parentPipe) {
+            this.parentPipe = parentPipe;
+        }
 
         public S processNextStart() {
             while (true) {
                 if (this.queue.isEmpty()) {
-                    this.starts.next();
+                    this.parentPipe.processNextStart();
                 } else {
                     return this.queue.remove();
                 }
             }
         }
 
+        public List getCurrentPath() {
+            if (this.pathEnabled)
+                return this.paths.remove();
+            else
+                throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
+        }
+
+        public void addCurrentPath(final List path) {
+            this.paths.add(path);
+        }
+
         public void add(S s) {
             this.queue.add(s);
         }
+
+        public void reset() {
+            this.queue.clear();
+            super.reset();
+        }
+
+        public void enablePath(final boolean enablePath) {
+            this.parentPipe.enablePath(enablePath);
+            super.enablePath(enablePath);
+        }
     }
 
-    public String toString() {
-        return PipeHelper.makePipeString(this, this.pipes);
-    }
 }

@@ -35,7 +35,7 @@ public class PathPipe<S> extends AbstractPipe<S, List> {
     }
 
     public List processNextStart() {
-        if (this.startsIsAPipe) {
+        if (this.starts instanceof Pipe) {
             this.starts.next();
             final List path = ((Pipe) this.starts).getCurrentPath();
             if (null == this.pathFunctions) {

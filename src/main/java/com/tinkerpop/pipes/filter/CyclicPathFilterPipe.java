@@ -23,7 +23,7 @@ public class CyclicPathFilterPipe<S> extends AbstractPipe<S, S> implements Filte
     public S processNextStart() {
         while (true) {
             final S s = this.starts.next();
-            if (this.startsIsAPipe) {
+            if (this.starts instanceof Pipe) {
                 final List path = ((Pipe) this.starts).getCurrentPath();
                 if (path.size() == new HashSet(path).size()) {
                     return s;

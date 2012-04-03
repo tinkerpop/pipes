@@ -15,4 +15,11 @@ public abstract class AbstractMetaPipe<S, E> extends AbstractPipe<S, E> implemen
         super.enablePath(enable);
 
     }
+
+    public void reset() {
+        for (final Pipe pipe : this.getPipes()) {
+            pipe.reset();
+        }
+        super.reset();
+    }
 }

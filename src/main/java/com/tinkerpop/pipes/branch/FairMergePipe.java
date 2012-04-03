@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,7 +15,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FairMergePipe<E> extends AbstractMetaPipe<E, E> implements MetaPipe {
+public class FairMergePipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
 
     private final List<Pipe> pipes;
     int current = 0;
@@ -29,15 +30,20 @@ public class FairMergePipe<E> extends AbstractMetaPipe<E, E> implements MetaPipe
         this(Arrays.asList(pipes));
     }
 
-    public E processNextStart() {
+    @Override
+    public void setStarts(final Iterator<S> iterator) {
+
+    }
+
+    public S processNextStart() {
         int counter = 0;
         while (true) {
             counter++;
             final Pipe currentPipe = this.pipes.get(this.current);
             if (currentPipe.hasNext()) {
-                final E e = (E) currentPipe.next();
+                final S s = (S) currentPipe.next();
                 this.current = (this.current + 1) % this.total;
-                return e;
+                return s;
             } else if (counter == this.total) {
                 throw new NoSuchElementException();
             } else {
@@ -46,13 +52,15 @@ public class FairMergePipe<E> extends AbstractMetaPipe<E, E> implements MetaPipe
         }
     }
 
-    public void reset() {
-        for (final Pipe pipe : this.pipes) {
-            pipe.reset();
-        }
-        super.reset();
+    public List getCurrentPath() {
+        if (this.pathEnabled) {
+            int tempCurrent = this.current - 1;
+            if (tempCurrent < 0)
+                tempCurrent = this.total - 1;
+            return this.pipes.get(tempCurrent).getCurrentPath();
+        } else
+            throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
     }
-
 
     public List<Pipe> getPipes() {
         return this.pipes;
