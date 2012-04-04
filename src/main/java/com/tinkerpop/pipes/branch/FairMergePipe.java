@@ -34,13 +34,7 @@ public class FairMergePipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
                 this.current = (this.current + 1) % this.total;
                 return s;
             } else if (counter == this.total) {
-                boolean quit = true;
-                for (Pipe pipe : this.pipes) {
-                    if (pipe.hasNext())
-                        quit = false;
-                }
-                if (quit)
-                    throw new NoSuchElementException();
+                throw new NoSuchElementException();
             } else {
                 this.current = (this.current + 1) % this.total;
             }

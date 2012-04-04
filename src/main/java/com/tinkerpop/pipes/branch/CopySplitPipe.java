@@ -26,7 +26,7 @@ public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
         for (final Pipe pipe : pipes) {
             if (pipe instanceof Pipeline) {
                 ((Pipeline) pipe).addPipe(0, new CopyExpandablePipe<S>(this));
-                this.pipes.add((Pipeline)pipe);
+                this.pipes.add((Pipeline) pipe);
             } else {
                 final Pipeline<S, ?> pipeline = new Pipeline<S, Object>();
                 pipeline.addPipe(new CopyExpandablePipe<S>(this));
