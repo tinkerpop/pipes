@@ -4,7 +4,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.iterators.ExpandableIterator;
+import com.tinkerpop.pipes.util.iterators.SingleExpandableIterator;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class MemoizePipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPip
     protected Pipe<S, E> pipe;
     protected Map<S, List<E>> map;
     protected Iterator<E> currentIterator = PipeHelper.emptyIterator();
-    protected ExpandableIterator<S> expando = new ExpandableIterator<S>();
+    protected final SingleExpandableIterator<S> expando = new SingleExpandableIterator<S>();
 
     public MemoizePipe(final Pipe<S, E> pipe) {
         this(pipe, new HashMap<S, List<E>>());
