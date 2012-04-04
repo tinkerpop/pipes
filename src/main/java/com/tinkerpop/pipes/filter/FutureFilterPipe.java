@@ -4,7 +4,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.iterators.SingleIterator;
+import com.tinkerpop.pipes.util.iterators.ExpandableIterator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,16 +17,19 @@ import java.util.List;
 public class FutureFilterPipe<S> extends AbstractMetaPipe<S, S> implements FilterPipe<S>, MetaPipe {
 
     private final Pipe<S, ?> pipe;
+    private final ExpandableIterator<S> expando = new ExpandableIterator<S>();
 
     public FutureFilterPipe(final Pipe<S, ?> pipe) {
         this.pipe = pipe;
+        this.pipe.setStarts(this.expando);
+
     }
 
     public S processNextStart() {
         while (true) {
             final S s = this.starts.next();
             this.pipe.reset();
-            this.pipe.setStarts(new SingleIterator<S>(s));
+            this.expando.add(s);
             if (this.pipe.hasNext()) {
                 return s;
             }

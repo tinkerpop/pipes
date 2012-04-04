@@ -4,7 +4,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.iterators.SingleIterator;
+import com.tinkerpop.pipes.util.iterators.ExpandableIterator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.List;
 public class HasNextPipe<S> extends AbstractMetaPipe<S, Boolean> implements MetaPipe {
 
     private Pipe<S, ?> pipe;
+    private ExpandableIterator<S> expando = new ExpandableIterator<S>();
 
     /**
      * Initialize this pipe to apply its conditions to the given pipe.
@@ -25,12 +26,13 @@ public class HasNextPipe<S> extends AbstractMetaPipe<S, Boolean> implements Meta
      */
     public HasNextPipe(final Pipe<S, ?> pipe) {
         this.pipe = pipe;
+        this.pipe.setStarts(this.expando);
     }
 
     public Boolean processNextStart() {
         final S s = this.starts.next();
         this.pipe.reset();
-        this.pipe.setStarts(new SingleIterator<S>(s));
+        this.expando.add(s);
         return this.pipe.hasNext();
 
     }

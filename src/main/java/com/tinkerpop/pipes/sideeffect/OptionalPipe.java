@@ -4,7 +4,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.iterators.SingleIterator;
+import com.tinkerpop.pipes.util.iterators.ExpandableIterator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,14 +21,16 @@ import java.util.NoSuchElementException;
 public class OptionalPipe<S> extends AbstractMetaPipe<S, S> implements SideEffectPipe<S, Object>, MetaPipe {
 
     private final Pipe<S, ?> pipe;
+    private final ExpandableIterator<S> expando = new ExpandableIterator<S>();
 
     public OptionalPipe(final Pipe<S, ?> pipe) {
         this.pipe = pipe;
+        this.pipe.setStarts(this.expando);
     }
 
     public S processNextStart() {
         final S s = this.starts.next();
-        this.pipe.setStarts(new SingleIterator<S>(s));
+        this.expando.add(s);
         try {
             while (true) {
                 this.pipe.next();

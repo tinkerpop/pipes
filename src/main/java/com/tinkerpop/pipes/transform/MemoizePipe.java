@@ -4,7 +4,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.iterators.SingleIterator;
+import com.tinkerpop.pipes.util.iterators.ExpandableIterator;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,6 +21,7 @@ public class MemoizePipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPip
     protected Pipe<S, E> pipe;
     protected Map<S, List<E>> map;
     protected Iterator<E> currentIterator = PipeHelper.emptyIterator();
+    protected ExpandableIterator<S> expando = new ExpandableIterator<S>();
 
     public MemoizePipe(final Pipe<S, E> pipe) {
         this(pipe, new HashMap<S, List<E>>());
@@ -28,6 +29,7 @@ public class MemoizePipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPip
 
     public MemoizePipe(final Pipe<S, E> pipe, final Map<S, List<E>> map) {
         this.pipe = pipe;
+        this.pipe.setStarts(this.expando);
         this.map = map;
     }
 
@@ -45,7 +47,7 @@ public class MemoizePipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPip
         if (this.map.containsKey(s)) {
             this.currentIterator = this.map.get(s).iterator();
         } else {
-            this.pipe.setStarts(new SingleIterator<S>(s));
+            this.expando.add(s);
             final List<E> results = new LinkedList<E>();
             PipeHelper.fillCollection(this.pipe, results);
             this.map.put(s, results);
