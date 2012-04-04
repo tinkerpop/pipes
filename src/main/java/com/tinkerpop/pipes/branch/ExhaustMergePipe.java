@@ -26,15 +26,6 @@ public class ExhaustMergePipe<S> extends AbstractMetaPipe<S, S> implements MetaP
         this.total = pipes.size();
     }
 
-    public ExhaustMergePipe(final Pipe... pipes) {
-        this(Arrays.asList(pipes));
-    }
-
-    @Override
-    public void setStarts(final Iterator<S> iterator) {
-
-    }
-
     public S processNextStart() {
         while (true) {
             final Pipe pipe = this.pipes.get(this.current);

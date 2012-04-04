@@ -77,6 +77,19 @@ public class FluentUtility {
         return previousPipes;
     }
 
+    public static Pipe getPreviousPipe(final Pipeline pipeline) {
+        return pipeline.get(pipeline.size() - 1);
+    }
+
+    public static List<Pipe> getPreviousPipes(final Pipeline pipeline, final int numberedStep) {
+        final List<Pipe> previousPipes = new ArrayList<Pipe>();
+        int pipelineSize = pipeline.size();
+        for (int i = 0; i < numberedStep; i++) {
+            previousPipes.add(pipeline.get(pipelineSize - i + 1));
+        }
+        return previousPipes;
+    }
+
     public static void setStarts(final Pipeline pipeline, final Object starts) {
         if (starts instanceof Iterator) {
             pipeline.setStarts((Iterator) starts);

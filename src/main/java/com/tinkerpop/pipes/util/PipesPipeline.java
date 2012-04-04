@@ -86,20 +86,12 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new CopySplitPipe(pipes));
     }
 
-    public PipesPipeline<S, ?> exhaustMerge(final Pipe... pipes) {
-        return this.add(new ExhaustMergePipe(pipes));
-    }
-
     public PipesPipeline<S, ?> exhaustMerge() {
-        return this.add(new ExhaustMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
-    }
-
-    public PipesPipeline<S, ?> fairMerge(final Pipe... pipes) {
-        return this.add(new FairMergePipe(pipes));
+        return this.add(new ExhaustMergePipe((((MetaPipe) FluentUtility.getPreviousPipe(this)).getPipes())));
     }
 
     public PipesPipeline<S, ?> fairMerge() {
-        return this.add(new FairMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
+        return this.add(new FairMergePipe((((MetaPipe) FluentUtility.getPreviousPipe(this)).getPipes())));
     }
 
     public PipesPipeline<S, ?> ifThenElse(final PipeFunction<E, Boolean> ifFunction, final PipeFunction<E, ?> thenFunction, final PipeFunction<E, ?> elseFunction) {

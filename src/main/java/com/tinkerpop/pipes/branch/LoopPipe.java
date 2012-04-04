@@ -59,7 +59,7 @@ public class LoopPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
     }
 
     public List<Pipe> getPipes() {
-        return (List) Arrays.asList(pipe);
+        return (List) Arrays.asList(this.pipe);
     }
 
     public void setStarts(final Iterator<S> iterator) {

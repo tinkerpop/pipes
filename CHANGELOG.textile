@@ -24,6 +24,7 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 * Merged @PathPipe@ and @PathFunctionPipe@ into one class called @PathPipe@
 * Added @AbstractMetaPipe@ to encapsulate reused behavior in all @MetaPipe@ implementations
 * The @CopySplitPipe@, @FairMergePipe@, and @ExhaustMergePipe@ all have functioning path calculations
+* Removed unused extra methods for merging in @PipesFluentPipeline@ interface (and updated respective implementations)
 
 h2. Pipes 0.X
 

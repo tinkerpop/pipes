@@ -52,30 +52,12 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an ExhaustMergePipe to the end of the pipeline.
-     * The provided pipes' emitted objects are merged where the first pipe's objects are exhausted, then the second, etc.
-     *
-     * @param pipes the internal pipes ExhaustMergePipe
-     * @return the extended Pipeline
-     */
-    public PipesFluentPipeline<S, ?> exhaustMerge(final Pipe<E, ?>... pipes);
-
-    /**
-     * Add an ExhaustMergePipe to the end of the pipeline.
      * The one-step previous MetaPipe in the pipeline's pipes are used as the internal pipes.
      * The pipes' emitted objects are merged where the first pipe's objects are exhausted, then the second, etc.
      *
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, ?> exhaustMerge();
-
-    /**
-     * Add a FairMergePipe to the end of the pipeline.
-     * The provided pipes' emitted objects are merged in a round robin fashion.
-     *
-     * @param pipes the internal pipes of the FairMergePipe
-     * @return the extended Pipeline
-     */
-    public PipesFluentPipeline<S, ?> fairMerge(final Pipe<E, ?>... pipes);
 
     /**
      * Add a FairMergePipe to the end of the Pipeline.

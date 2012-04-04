@@ -66,21 +66,17 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
     /**
-     * Useful for constructing the pipeline chain without making use of the constructor.
-     *
-     * @param pipes the ordered array of pipes to chain together into a pipeline
-     */
-    protected void setPipes(final Pipe... pipes) {
-        this.setPipes(Arrays.asList(pipes));
-    }
-
-    /**
      * Adds a new pipe to the end of the pipeline and then reconstructs the pipeline chain.
      *
      * @param pipe the new pipe to add to the pipeline
      */
     public void addPipe(final Pipe pipe) {
         this.pipes.add(pipe);
+        this.setPipes(this.pipes);
+    }
+
+    public void addPipe(final int location, final Pipe pipe) {
+        this.pipes.add(location, pipe);
         this.setPipes(this.pipes);
     }
 

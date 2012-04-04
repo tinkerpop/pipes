@@ -24,10 +24,15 @@ public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
 
     public CopySplitPipe(final List<Pipe> pipes) {
         for (final Pipe pipe : pipes) {
-            final Pipeline<S, ?> pipeline = new Pipeline<S, Object>();
-            pipeline.addPipe(new CopyExpandablePipe<S>(this));
-            pipeline.addPipe(pipe);
-            this.pipes.add(pipeline);
+            if (pipe instanceof Pipeline) {
+                ((Pipeline) pipe).addPipe(0, new CopyExpandablePipe<S>(this));
+                this.pipes.add((Pipeline)pipe);
+            } else {
+                final Pipeline<S, ?> pipeline = new Pipeline<S, Object>();
+                pipeline.addPipe(new CopyExpandablePipe<S>(this));
+                pipeline.addPipe(pipe);
+                this.pipes.add(pipeline);
+            }
         }
     }
 
