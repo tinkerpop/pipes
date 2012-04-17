@@ -71,7 +71,7 @@ public interface PipesFluentPipeline<S, E> {
     /**
      * Add an IfThenElsePipe to the end of the Pipeline.
      * If the ifFunction is true, then the results of the thenFunction are emitted.
-     * If the ifFunction is true, then the results of the elseFunction are emitted.
+     * If the ifFunction is false, then the results of the elseFunction are emitted.
      *
      * @param ifFunction   the function denoting the "if" part of the pipe
      * @param thenFunction the function denoting the "then" part of the pipe

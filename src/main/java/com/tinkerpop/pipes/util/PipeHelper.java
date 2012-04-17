@@ -134,11 +134,11 @@ public class PipeHelper {
             case GREATER_THAN:
                 if (null == leftObject || rightObject == null)
                     return false;
-                return ((Comparable) leftObject).compareTo(rightObject) == 1;
+                return ((Comparable) leftObject).compareTo(rightObject) >= 1;
             case LESS_THAN:
                 if (null == leftObject || rightObject == null)
                     return false;
-                return ((Comparable) leftObject).compareTo(rightObject) == -1;
+                return ((Comparable) leftObject).compareTo(rightObject) <= -1;
             case GREATER_THAN_EQUAL:
                 if (null == leftObject || rightObject == null)
                     return false;
