@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -214,7 +213,7 @@ public class AggregatePipeTest extends TestCase {
 
     public void testEqualityToGatherWithCap() {
         List<String> list = Arrays.asList("marko", "a.", "rodriguez");
-        Pipe<String, List<String>> pipeA = new SideEffectCapPipe<String, List<String>>(new AggregatePipe(new LinkedList<String>()));
+        Pipe<String, List<String>> pipeA = new SideEffectCapPipe<String, List<String>>(new AggregatePipe(new ArrayList<String>()));
         Pipe<String, List<String>> pipeB = new GatherPipe<String>();
         pipeA.setStarts(list);
         pipeB.setStarts(list);

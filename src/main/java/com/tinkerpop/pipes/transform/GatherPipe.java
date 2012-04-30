@@ -4,7 +4,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
  */
 public class GatherPipe<S> extends AbstractPipe<S, List<S>> {
 
-    private List<List> listPaths = new LinkedList<List>();
+    private List<List> listPaths = new ArrayList<List>();
     private final PipeFunction<List<S>, List<S>> postFilterFunction;
 
     public GatherPipe() {
@@ -30,14 +30,14 @@ public class GatherPipe<S> extends AbstractPipe<S, List<S>> {
 
     public List getCurrentPath() {
         if (pathEnabled)
-            return new LinkedList(this.listPaths);
+            return new ArrayList(this.listPaths);
         else
             throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
     }
 
     protected List<S> processNextStart() {
-        final List<S> list = new LinkedList<S>();
-        this.listPaths = new LinkedList<List>();
+        final List<S> list = new ArrayList<S>();
+        this.listPaths = new ArrayList<List>();
         if (!this.starts.hasNext()) {
             throw new NoSuchElementException();
         } else {
@@ -65,7 +65,7 @@ public class GatherPipe<S> extends AbstractPipe<S, List<S>> {
     }
 
     public void reset() {
-        this.listPaths = new LinkedList<List>();
+        this.listPaths = new ArrayList<List>();
         super.reset();
     }
 

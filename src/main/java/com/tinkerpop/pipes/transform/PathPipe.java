@@ -4,8 +4,8 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -41,7 +41,7 @@ public class PathPipe<S> extends AbstractPipe<S, List> {
             if (null == this.pathFunctions) {
                 return path;
             } else {
-                final List closedPath = new LinkedList();
+                final List closedPath = new ArrayList();
                 int nextFunction = 0;
                 for (final Object object : path) {
                     closedPath.add(this.pathFunctions[nextFunction].compute(object));

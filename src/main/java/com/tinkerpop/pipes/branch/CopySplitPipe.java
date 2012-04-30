@@ -7,6 +7,7 @@ import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.Queue;
  */
 public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
 
-    private final List<Pipeline> pipes = new LinkedList<Pipeline>();
+    private final List<Pipeline> pipes = new ArrayList<Pipeline>();
 
     public CopySplitPipe(final List<Pipe> pipes) {
         for (final Pipe pipe : pipes) {
@@ -45,7 +46,7 @@ public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
 
         List tempPath = null;
         if (this.pathEnabled)
-            tempPath = new LinkedList(this.getCurrentPath());
+            tempPath = new ArrayList(this.getCurrentPath());
 
         for (final Pipeline pipeline : this.pipes) {
             final CopyExpandablePipe<S> temp = (CopyExpandablePipe<S>) pipeline.get(0);
@@ -111,7 +112,7 @@ public class CopySplitPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
 
         public List getCurrentPath() {
             if (this.pathEnabled) {
-                return new LinkedList(this.paths.peek());
+                return new ArrayList(this.paths.peek());
             } else
                 throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
         }

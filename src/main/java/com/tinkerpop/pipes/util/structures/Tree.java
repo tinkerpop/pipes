@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.util.structures;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,13 +33,13 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
 
 
     public List<Tree<T>> getTreesAtDepth(final int depth) {
-        final List<Tree<T>> branches = new LinkedList<Tree<T>>();
+        final List<Tree<T>> branches = new ArrayList<Tree<T>>();
         List<Tree<T>> currentDepth = Arrays.asList(this);
         for (int i = 0; i < depth; i++) {
             if (i == depth - 1) {
                 return currentDepth;
             } else {
-                final List<Tree<T>> temp = new LinkedList<Tree<T>>();
+                final List<Tree<T>> temp = new ArrayList<Tree<T>>();
                 for (final Tree<T> t : currentDepth) {
                     temp.addAll(t.values());
                 }
@@ -49,7 +50,7 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
     }
 
     public List<T> getObjectsAtDepth(final int depth) {
-        final List<T> list = new LinkedList<T>();
+        final List<T> list = new ArrayList<T>();
         for (final Tree<T> t : this.getTreesAtDepth(depth)) {
             list.addAll(t.keySet());
         }
@@ -57,7 +58,7 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
     }
 
     public List<Tree<T>> getLeafTrees() {
-        final List<Tree<T>> leaves = new LinkedList<Tree<T>>();
+        final List<Tree<T>> leaves = new ArrayList<Tree<T>>();
         List<Tree<T>> currentDepth = Arrays.asList(this);
         boolean allLeaves = false;
         while (!allLeaves) {
@@ -80,7 +81,7 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
     }
 
     public List<T> getLeafObjects() {
-        final List<T> leaves = new LinkedList<T>();
+        final List<T> leaves = new ArrayList<T>();
         for (final Tree<T> t : this.getLeafTrees()) {
             leaves.addAll(t.keySet());
         }

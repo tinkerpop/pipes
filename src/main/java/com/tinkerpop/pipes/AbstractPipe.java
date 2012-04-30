@@ -5,7 +5,6 @@ import com.tinkerpop.pipes.util.iterators.HistoryIterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -126,7 +125,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
             list.add(((HistoryIterator) this.starts).getLast());
             return list;
         } else {
-            return new LinkedList();
+            return new ArrayList();
         }
     }
 

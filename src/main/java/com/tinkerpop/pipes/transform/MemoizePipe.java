@@ -6,10 +6,10 @@ import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.iterators.SingleExpandableIterator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +48,7 @@ public class MemoizePipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPip
             this.currentIterator = this.map.get(s).iterator();
         } else {
             this.expando.add(s);
-            final List<E> results = new LinkedList<E>();
+            final List<E> results = new ArrayList<E>();
             PipeHelper.fillCollection(this.pipe, results);
             this.map.put(s, results);
             this.currentIterator = results.iterator();
