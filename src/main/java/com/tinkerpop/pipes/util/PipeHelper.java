@@ -6,8 +6,10 @@ import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -70,6 +72,18 @@ public class PipeHelper {
             }
         } catch (final NoSuchElementException e) {
         }
+    }
+
+    public static <T> List<T> makeList(final Iterator<T> iterator) {
+        final List<T> list = new ArrayList(50);
+        try {
+            while (true) {
+                list.add(iterator.next());
+            }
+        } catch (final NoSuchElementException e) {
+
+        }
+        return list;
     }
 
     /**

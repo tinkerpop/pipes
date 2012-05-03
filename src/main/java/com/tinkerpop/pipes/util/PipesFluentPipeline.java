@@ -620,6 +620,11 @@ public interface PipesFluentPipeline<S, E> {
      */
     public PipesFluentPipeline<S, E> memoize(final int numberedStep, final Map map);
 
+
+    public PipesFluentPipeline<S, E> order();
+
+    public PipesFluentPipeline<S, E> order(final PipeFunction<Pair<E, E>, Integer> compareFunction);
+
     /**
      * Add a PathPipe or PathPipe to the end of the Pipeline.
      * This will emit the path that has been seen thus far.

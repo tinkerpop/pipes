@@ -25,6 +25,7 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 * Added @AbstractMetaPipe@ to encapsulate reused behavior in all @MetaPipe@ implementations
 * The @CopySplitPipe@, @FairMergePipe@, and @ExhaustMergePipe@ all have functioning path calculations
 * Removed unused extra methods for merging in @PipesFluentPipeline@ interface (and updated respective implementations)
+* Added @OrderPipe@ to do inline sorting of objects in a stream
 
 h2. Pipes 0.X
 
