@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
+ * OrderPipe supports in-stream sorting of objects.
+ * If no provided sorting function is provide, then a default sort order is assumed. Moreover, the object S is assumed to be comparable.
+ * If a sorting function is provided, then sort is determined by the comparison done by the function.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class OrderPipe<S> extends AbstractPipe<S, S> {
