@@ -363,4 +363,9 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     public PipesPipeline<S, S> start(final S object) {
         return this.add(new StartPipe<S>(object));
     }
+
+    public PipesFluentPipeline<S, E> enablePath() {
+        this.enablePath(true);
+        return this;
+    }
 }

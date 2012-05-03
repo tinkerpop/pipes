@@ -620,9 +620,21 @@ public interface PipesFluentPipeline<S, E> {
      */
     public PipesFluentPipeline<S, E> memoize(final int numberedStep, final Map map);
 
-
+    /**
+     * Add an OrderPipe to the end of the Pipeline.
+     * This step will sort the objects in the stream in a default Comparable order.
+     *
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, E> order();
 
+    /**
+     * Add an OrderPipe to the end of the Pipeline.
+     * This step will sort the objects in the stream according to a comparator defined in the provided function.
+     *
+     * @param compareFunction a comparator function of two objects of type E
+     * @return the extended Pipeline
+     */
     public PipesFluentPipeline<S, E> order(final PipeFunction<Pair<E, E>, Integer> compareFunction);
 
     /**
@@ -755,5 +767,7 @@ public interface PipesFluentPipeline<S, E> {
      * @return the collection filled
      */
     public Collection<E> fill(final Collection<E> collection);
+    
+    public PipesFluentPipeline<S,E> enablePath();
 
 }
