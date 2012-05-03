@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class OrderPipe<S extends Comparable> extends AbstractPipe<S, S> {
+public class OrderPipe<S> extends AbstractPipe<S, S> {
 
     private final LinkedList<ObjectBundle<S>> objects = new LinkedList<ObjectBundle<S>>();
     private List currentPath;
@@ -74,7 +74,7 @@ public class OrderPipe<S extends Comparable> extends AbstractPipe<S, S> {
     }
 
 
-    private class ObjectBundle<S extends Comparable> implements Comparable<ObjectBundle<S>> {
+    private class ObjectBundle<S> implements Comparable<ObjectBundle<S>> {
 
         public final S object;
         public final List path;
@@ -85,7 +85,7 @@ public class OrderPipe<S extends Comparable> extends AbstractPipe<S, S> {
         }
 
         public int compareTo(final ObjectBundle bundle) {
-            return this.object.compareTo(bundle.object);
+            return ((Comparable) this.object).compareTo(bundle.object);
         }
     }
 
