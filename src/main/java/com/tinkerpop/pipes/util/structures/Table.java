@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * A Table is a collection of rows with various table-style access methods.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class Table extends ArrayList<Row> {

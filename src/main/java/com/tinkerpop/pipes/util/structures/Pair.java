@@ -1,6 +1,8 @@
 package com.tinkerpop.pipes.util.structures;
 
 /**
+ * A pair of objects.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class Pair<A, B> {

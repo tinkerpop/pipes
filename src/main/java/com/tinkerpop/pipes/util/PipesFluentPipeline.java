@@ -767,7 +767,7 @@ public interface PipesFluentPipeline<S, E> {
      * @return the collection filled
      */
     public Collection<E> fill(final Collection<E> collection);
-    
-    public PipesFluentPipeline<S,E> enablePath();
+
+    public PipesFluentPipeline<S, E> enablePath();
 
 }

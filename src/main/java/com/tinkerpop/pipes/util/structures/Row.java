@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * A row with column names and table-style access patterns.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class Row<T> extends ArrayList<T> {

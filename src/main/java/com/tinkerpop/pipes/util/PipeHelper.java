@@ -74,6 +74,13 @@ public class PipeHelper {
         }
     }
 
+    /**
+     * Drains the iterator into a list that is returned by the method.
+     *
+     * @param iterator the iterator to drain into the list
+     * @param <T>      the object type of the iterator
+     * @return a list filled with the objects of the iterator
+     */
     public static <T> List<T> makeList(final Iterator<T> iterator) {
         final List<T> list = new ArrayList(50);
         try {

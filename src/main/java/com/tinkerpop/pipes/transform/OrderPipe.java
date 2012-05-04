@@ -3,62 +3,94 @@ package com.tinkerpop.pipes.transform;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.structures.ArrayQueue;
 import com.tinkerpop.pipes.util.structures.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * OrderPipe supports in-stream sorting of objects.
- * If no provided sorting function is provide, then a default sort order is assumed. Moreover, the object S is assumed to be comparable.
- * If a sorting function is provided, then sort is determined by the comparison done by the function.
+ * If no provided sorting function is provided, then a default sort order is assumed.
+ * Moreover, when no sorting function is provided, the object S is assumed to be comparable.
+ * If a sorting function is provided, then sort is determined by the comparison computed by the function.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class OrderPipe<S> extends AbstractPipe<S, S> {
 
-    private final LinkedList<ObjectBundle<S>> objects = new LinkedList<ObjectBundle<S>>();
+    private final ArrayQueue<ObjectBundle<S>> bundles = new ArrayQueue<ObjectBundle<S>>();
+    private final ArrayQueue<S> objects = new ArrayQueue<S>();
+    private Comparator<ObjectBundle<S>> bundledComparator;
+    private Comparator<S> objectComparator;
+
     private List currentPath;
-    private final Comparator<ObjectBundle<S>> comparator;
 
     public OrderPipe(final PipeFunction<Pair<S, S>, Integer> compareFunction) {
-        this.comparator = new PipeFunctionComparator(compareFunction);
+        this.objectComparator = new PipeFunctionComparator(compareFunction);
+        this.bundledComparator = new PipeFunctionBundleComparator(compareFunction);
     }
 
     public OrderPipe() {
-        this.comparator = null;
+        this.objectComparator = null;
+        this.bundledComparator = null;
+    }
+
+    public void enablePath(boolean enablePath) {
+        if (enablePath)
+            this.objectComparator = null;
+        else
+            this.bundledComparator = null;
+        super.enablePath(enablePath);
     }
 
     public S processNextStart() {
         while (true) {
-            if (this.objects.isEmpty()) {
-                if (!this.starts.hasNext())
-                    throw new NoSuchElementException();
-                else {
-                    this.objects.clear();
-                    try {
-                        while (true) {
-                            final S s = this.starts.next();
-                            if (this.pathEnabled)
-                                this.objects.add(new ObjectBundle<S>(s, this.getPathToHere()));
-                            else
-                                this.objects.add(new ObjectBundle<S>(s, null));
+            if (this.pathEnabled) {
+                if (this.bundles.isEmpty()) {
+                    if (!this.starts.hasNext())
+                        throw new NoSuchElementException();
+                    else {
+                        this.bundles.clear();
+                        try {
+                            while (true) {
+                                this.bundles.add(new ObjectBundle<S>(this.starts.next(), this.getPathToHere()));
+                            }
+                        } catch (final NoSuchElementException e) {
                         }
-                    } catch (final NoSuchElementException e) {
+                        if (null != this.objectComparator)
+                            Collections.sort(this.bundles, this.bundledComparator);
+                        else
+                            Collections.sort(this.bundles);
                     }
-                    if (null != this.comparator)
-                        Collections.sort(this.objects, this.comparator);
-                    else
-                        Collections.sort(this.objects);
+                } else {
+                    final ObjectBundle<S> object = this.bundles.remove();
+                    this.currentPath = object.path;
+                    return object.object;
                 }
             } else {
-                final ObjectBundle<S> object = this.objects.remove();
-                this.currentPath = object.path;
-                return object.object;
+                if (this.objects.isEmpty()) {
+                    if (!this.starts.hasNext())
+                        throw new NoSuchElementException();
+                    else {
+                        this.objects.clear();
+                        try {
+                            while (true) {
+                                this.objects.add(this.starts.next());
+                            }
+                        } catch (final NoSuchElementException e) {
+                        }
+                        if (null != this.objectComparator)
+                            Collections.sort(this.objects, this.objectComparator);
+                        else
+                            Collections.sort((List<Comparable>) this.objects);
+                    }
+                } else {
+                    return this.objects.remove();
+                }
             }
         }
     }
@@ -93,7 +125,20 @@ public class OrderPipe<S> extends AbstractPipe<S, S> {
         }
     }
 
-    private class PipeFunctionComparator implements Comparator<ObjectBundle<S>> {
+    private class PipeFunctionBundleComparator implements Comparator<ObjectBundle<S>> {
+
+        private final PipeFunction<Pair<S, S>, Integer> pipeFunction;
+
+        public PipeFunctionBundleComparator(final PipeFunction<Pair<S, S>, Integer> pipeFunction) {
+            this.pipeFunction = pipeFunction;
+        }
+
+        public int compare(final ObjectBundle<S> a, final ObjectBundle<S> b) {
+            return this.pipeFunction.compute(new Pair<S, S>(a.object, b.object));
+        }
+    }
+
+    private class PipeFunctionComparator implements Comparator<S> {
 
         private final PipeFunction<Pair<S, S>, Integer> pipeFunction;
 
@@ -101,8 +146,8 @@ public class OrderPipe<S> extends AbstractPipe<S, S> {
             this.pipeFunction = pipeFunction;
         }
 
-        public int compare(final ObjectBundle<S> a, final ObjectBundle<S> b) {
-            return this.pipeFunction.compute(new Pair<S, S>(a.object, b.object));
+        public int compare(final S a, final S b) {
+            return this.pipeFunction.compute(new Pair<S, S>(a, b));
         }
     }
 }

@@ -3,10 +3,10 @@ package com.tinkerpop.pipes.sideeffect;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.structures.ArrayQueue;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -21,8 +21,8 @@ import java.util.Queue;
 public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Collection> {
 
     private Collection aggregate;
-    private Queue<S> currentObjectQueue = new LinkedList<S>();
-    private Queue<List> currentPathQueue = new LinkedList<List>();
+    private Queue<S> currentObjectQueue = new ArrayQueue<S>();
+    private Queue<List> currentPathQueue = new ArrayQueue<List>();
     private List currentPath;
     private PipeFunction<S, ?> preAggregateFunction = null;
 

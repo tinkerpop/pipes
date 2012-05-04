@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * GatherPipe emits all the objects up to this step as a LinkedList.
+ * GatherPipe emits all the objects up to this step as an ArrayList.
  * This pipe is useful for doing breadth-first traversal where a List of all the current steps objects are gathered up.
  * This gathered up List can then be filtered by the provided postFilterFunction and thus, a selective branch breadth-first traversal can be enacted.
  *

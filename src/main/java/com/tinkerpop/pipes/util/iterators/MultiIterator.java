@@ -18,7 +18,6 @@ public class MultiIterator<T> implements Iterator<T> {
 
     public MultiIterator(final Iterator<T>... iterators) {
         this(Arrays.asList(iterators));
-
     }
 
     public MultiIterator(final List<Iterator<T>> iterators) {
@@ -56,6 +55,4 @@ public class MultiIterator<T> implements Iterator<T> {
             }
         }
     }
-
-
 }

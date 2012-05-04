@@ -68,6 +68,20 @@ public class OrderPipeTest extends TestCase {
         assertEquals(list.size(), 4);
     }
 
+    public void testPipeWithPath() {
+        Pipeline pipeline = new PipesPipeline(Arrays.asList(6, 2, 4)).step(new IncrPipe()).order().path();
+        List<List<Integer>> list = pipeline.toList();
+        assertEquals(list.size(), 3);
+        //System.out.println(list);
+        assertEquals(((List) list.get(0)).get(0), new Integer(2));
+        assertEquals(((List) list.get(1)).get(0), new Integer(4));
+        assertEquals(((List) list.get(2)).get(0), new Integer(6));
+
+        assertEquals(((List) list.get(0)).get(1), new Integer(3));
+        assertEquals(((List) list.get(1)).get(1), new Integer(5));
+        assertEquals(((List) list.get(2)).get(1), new Integer(7));
+    }
+
     private class IncrPipe extends AbstractPipe<Integer, Integer> {
         public Integer processNextStart() {
             return this.starts.next() + 1;

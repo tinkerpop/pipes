@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * A Tree can be seen as an embedded Map object with various tree-like access methods.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class Tree<T> extends HashMap<T, Tree<T>> {
@@ -63,7 +64,7 @@ public class Tree<T> extends HashMap<T, Tree<T>> {
         boolean allLeaves = false;
         while (!allLeaves) {
             allLeaves = true;
-            final List<Tree<T>> temp = new LinkedList<Tree<T>>();
+            final List<Tree<T>> temp = new ArrayList<Tree<T>>();
             for (final Tree<T> t : currentDepth) {
                 if (t.isLeaf()) {
                     for (Map.Entry<T, Tree<T>> t2 : t.entrySet()) {
