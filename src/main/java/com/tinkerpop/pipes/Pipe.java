@@ -39,7 +39,7 @@ public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
     /**
      * Calculating paths can be an expensive operation for some pipes.
      * This method is used to activate or deactivate the calculation of paths.
-     * The default state of a newly constructed by should have its path calculations disabled.
+     * The default state of a newly constructed pipe should have its path calculations disabled.
      * An implementation of this method should be recursive whereby the starts (if a Pipe) should have this method called on it.
      *
      * @param enable enable path calculations
