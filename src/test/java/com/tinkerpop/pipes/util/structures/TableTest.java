@@ -1,6 +1,9 @@
 package com.tinkerpop.pipes.util.structures;
 
+import com.tinkerpop.pipes.PipeFunction;
 import junit.framework.TestCase;
+
+import java.util.Comparator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -119,5 +122,108 @@ public class TableTest extends TestCase {
         } catch (RuntimeException e) {
             assertTrue(true);
         }
+    }
+
+    public void testUniqueMethods() {
+
+        Table table = new Table("name", "age");
+        table.addRow("marko", 32);
+        table.addRow("marko", 32);
+        table.addRow("jen", 28);
+        assertEquals(table.size(), 3);
+        Table temp = table.unique();
+        assertEquals(temp.size(), 2);
+        assertEquals(table.size(), 3);
+
+        temp = table.unique(new Comparator<Row>() {
+            @Override
+            public int compare(Row a, Row b) {
+                return -1;
+            }
+        });
+        assertEquals(temp.size(), 3);
+        assertEquals(table.size(), 3);
+
+
+    }
+
+    public void testSortMethods() {
+        Table table = new Table("name", "age");
+        table.addRow("adam", 3);
+        table.addRow("bobby", 2);
+        table.addRow("cabby", 1);
+        assertEquals(table.size(), 3);
+        assertEquals(table.get(0, 0), "adam");
+        assertEquals(table.get(1, 0), "bobby");
+        assertEquals(table.get(2, 0), "cabby");
+
+        Table temp = table.sort();
+        assertEquals(temp.size(), 3);
+        assertEquals(temp.get(0, 0), "adam");
+        assertEquals(temp.get(1, 0), "bobby");
+        assertEquals(temp.get(2, 0), "cabby");
+
+        temp = table.sort(new Comparator<Row>() {
+            public int compare(Row a, Row b) {
+                return ((Comparable) a.get(1)).compareTo(b.get(1));
+            }
+        });
+        assertEquals(temp.size(), 3);
+        assertEquals(temp.get(2, 0), "adam");
+        assertEquals(temp.get(1, 0), "bobby");
+        assertEquals(temp.get(0, 0), "cabby");
+
+        assertEquals(table.size(), 3);
+        assertEquals(table.get(0, 0), "adam");
+        assertEquals(table.get(1, 0), "bobby");
+        assertEquals(table.get(2, 0), "cabby");
+
+    }
+
+    public void testApplyMethod() {
+        Table table = new Table("name", "location");
+        table.addRow("marko", "santa fe");
+        table.addRow("matthias", "san francisco");
+        table.addRow("bobby", "chicago");
+
+        Table temp = table.apply(new PipeFunction<String, Integer>() {
+            public Integer compute(String string) {
+                return string.length();
+            }
+        });
+        assertEquals(temp.get(0, 0), 5);
+        assertEquals(temp.get(0, 1), 8);
+        assertEquals(temp.get(1, 0), 8);
+        assertEquals(temp.get(1, 1), 13);
+        assertEquals(temp.get(2, 0), 5);
+        assertEquals(temp.get(2, 1), 7);
+
+        assertEquals(table.get(0, 0), "marko");
+        assertEquals(table.get(0, 1), "santa fe");
+        assertEquals(table.get(1, 0), "matthias");
+        assertEquals(table.get(1, 1), "san francisco");
+        assertEquals(table.get(2, 0), "bobby");
+        assertEquals(table.get(2, 1), "chicago");
+
+        temp = table.apply(new PipeFunction<String, Integer>() {
+                    public Integer compute(String string) {
+                        return string.length();
+                    }
+                },
+                new PipeFunction<String, String>() {
+                    public String compute(String string) {
+                        return string.substring(0, 1);
+                    }
+                }
+        );
+
+        assertEquals(temp.get(0, 0), 5);
+        assertEquals(temp.get(0, 1), "s");
+        assertEquals(temp.get(1, 0), 8);
+        assertEquals(temp.get(1, 1), "s");
+        assertEquals(temp.get(2, 0), 5);
+        assertEquals(temp.get(2, 1), "c");
+
+
     }
 }
