@@ -29,6 +29,7 @@ import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.sideeffect.StorePipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.sideeffect.TreePipe;
+import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
@@ -292,8 +293,8 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new GatherPipe());
     }
 
-    public PipesPipeline<S, List> gather(PipeFunction<List, List> function) {
-        return this.add(new GatherPipe(function));
+    public PipesPipeline<S, ?> gather(PipeFunction<List, ?> function) {
+        return this.add(new GatherFunctionPipe(function));
     }
 
     public PipesPipeline<S, E> _() {

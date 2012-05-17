@@ -63,22 +63,6 @@ public class GatherPipeTest extends TestCase {
         assertFalse(pipeline.hasNext());
     }
 
-
-    public void testGatherFunction() {
-        Pipe<String, Integer> pipeA = new NumCharPipe();
-        Pipe<Integer, List<Integer>> pipeB = new GatherPipe<Integer>(new GreaterThanFunction());
-        Pipeline<String, List<Integer>> pipeline = new Pipeline<String, List<Integer>>(pipeA, pipeB);
-        pipeline.setStarts(Arrays.asList("marko", "josh", "peter", "stephen"));
-
-        assertTrue(pipeline.hasNext());
-        List<Integer> list = pipeline.next();
-        for (Integer i : list) {
-            assertTrue(i > 4);
-        }
-        //System.out.println(pipeline.getCurrentPath());
-        assertFalse(pipeline.hasNext());
-    }
-
     public void testGatherLooping() {
         PipesPipeline pipeline = new PipesPipeline(Arrays.asList("marko", "josh", "peter")).add(new RemoveCharPipe()).gather().scatter().loop(3, LoopPipe.createLoopsFunction(3));
         while (pipeline.hasNext()) {
@@ -96,12 +80,6 @@ public class GatherPipeTest extends TestCase {
         }
     }
 
-    private class NumCharPipe extends AbstractPipe<String, Integer> {
-        public Integer processNextStart() {
-            return this.starts.next().length();
-        }
-    }
-
     private class RemoveCharPipe extends AbstractPipe<String, String> {
         public String processNextStart() {
             while (true) {
@@ -112,17 +90,4 @@ public class GatherPipeTest extends TestCase {
             }
         }
     }
-
-    private class GreaterThanFunction implements PipeFunction<List<Integer>, List<Integer>> {
-        public List<Integer> compute(List<Integer> list) {
-            List<Integer> temp = new ArrayList<Integer>();
-            for (Integer i : list) {
-                if (i > 4) {
-                    temp.add(i);
-                }
-            }
-            return temp;
-        }
-    }
-
 }
