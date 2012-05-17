@@ -14,8 +14,8 @@ h3. Version 2.0.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* The @gather@-step in @PipesPipeline@ has the transformation step internal to it and thus, not two pipes when @PipeFunction@ provided
 * @GatherPipe@ no longer locks on looping and is semantically sound for depth-first traversing
+* Added @GatherFunctionPipe@ for user provided function to transform the gathered list
 * Added @Pipe.enablePath(boolean)@ method to support the turning on/off of path calculations (efficiency reasons)
 * Renamed @Pipe.getPath()@ to @Pipe.getCurrentPath()@
 * @SideEffectCapPipe@ moved to the @transform@ package as it was wrongly organized in the @sideeffect@ package
@@ -26,6 +26,7 @@ h3. Version 2.0.0 (NOT OFFICIALLY RELEASED YET)
 * The @CopySplitPipe@, @FairMergePipe@, and @ExhaustMergePipe@ all have functioning path calculations
 * Removed unused extra methods for merging in @PipesFluentPipeline@ interface (and updated respective implementations)
 * Added @OrderPipe@ to do inline sorting of objects in a stream
+* Added numerous help methods to the @Table@ data structure
 
 h2. Pipes 0.x
 
