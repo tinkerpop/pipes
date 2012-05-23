@@ -30,6 +30,8 @@ h3. Version 2.0.0 (May 23, 2012)
 * Added @OrderPipe@ to do inline sorting of objects in a stream
 * Added numerous help methods to the @Table@ data structure
 
+==<hr/>==
+
 h2. Pipes 0.x
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-pipes.png!
