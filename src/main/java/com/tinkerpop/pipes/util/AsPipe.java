@@ -1,10 +1,13 @@
 package com.tinkerpop.pipes.util;
 
+import com.tinkerpop.pipes.EmittingPipe;
 import com.tinkerpop.pipes.Pipe;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Vector;
 
 /**
  * An AsPipe wraps a Pipe and provides it a name and 'peak back' access to the last emitted end.
@@ -15,7 +18,8 @@ public class AsPipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPipe {
 
     private final String name;
     private final Pipe<S, E> pipe;
-
+    public List<SortPipe> referencedSortPipe = new Vector<SortPipe>();
+    
     public AsPipe(final String name, final Pipe<S, E> pipe) {
         this.pipe = pipe;
         this.name = name;
@@ -23,7 +27,7 @@ public class AsPipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPipe {
 
     public void setStarts(final Iterator<S> starts) {
         this.pipe.setStarts(starts);
-        this.starts = starts;
+        this.starts = (EmittingPipe<S>) starts;
     }
 
     protected List getPathToHere() {
@@ -39,7 +43,12 @@ public class AsPipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPipe {
     }
 
     public E processNextStart() {
-        return this.pipe.next();
+    	for (SortPipe aReferencedSortPipe : referencedSortPipe) {
+    		if (aReferencedSortPipe.isCollectingNewElements()) {
+    			throw new NoSuchElementException();
+    		}
+    	}
+    	return this.pipe.next();
     }
 
     public List<Pipe> getPipes() {

@@ -2,13 +2,15 @@ package com.tinkerpop.pipes.util.iterators;
 
 import java.util.Iterator;
 
+import com.tinkerpop.pipes.EmittingPipe;
+
 /**
  * HistoryIterator wraps an iterator. It will behave like the wrapped iterator.
  * However, it will remember what was last next()ed object out of the iterator via getLast().
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class HistoryIterator<T> implements Iterator<T> {
+public class HistoryIterator<T> implements EmittingPipe<T> {
 
     private final Iterator<T> iterator;
     private T last;
@@ -33,4 +35,14 @@ public class HistoryIterator<T> implements Iterator<T> {
     public void remove() {
         throw new UnsupportedOperationException();
     }
+    
+	@Override
+	public Iterator<T> iterator() {
+		return iterator;
+	}
+	
+	@Override
+	public void finishIteration() {
+	}
+	
 }

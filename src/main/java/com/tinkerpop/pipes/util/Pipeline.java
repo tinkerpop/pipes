@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * A Pipeline is a linear composite of Pipes.
@@ -41,6 +42,10 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
 
+    public void finishIteration() {	
+    	endPipe.finishIteration();
+    } 
+    
     /**
      * Constructs a pipeline from the provided pipes. The ordered array determines how the pipes will be chained together.
      * When the pipes are chained together, the start of pipe n is the end of pipe n-1.
@@ -102,7 +107,11 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
      * @return true if an object can be next()'d out of the pipeline
      */
     public boolean hasNext() {
-        return this.endPipe.hasNext();
+        boolean result = this.endPipe.hasNext();
+        if (!result) {
+    		finishIteration();        	
+        }
+        return result;
     }
 
     /**
@@ -112,7 +121,12 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
      * @return the next emitted object
      */
     public E next() {
-        return this.endPipe.next();
+    	try {
+    	return this.endPipe.next();
+    	} catch (NoSuchElementException exp) {
+    		finishIteration();        	
+    		throw exp;    		
+    	}
     }
 
     public List getCurrentPath() {

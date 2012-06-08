@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.util.iterators.HistoryIterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,7 +25,7 @@ import java.util.NoSuchElementException;
  */
 public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
-    protected Iterator<S> starts;
+    protected EmittingPipe<S> starts;
     private E nextEnd;
     protected E currentEnd;
     private boolean available = false;
@@ -32,7 +33,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
 
     public void setStarts(final Iterator<S> starts) {
         if (starts instanceof Pipe) {
-            this.starts = starts;
+            this.starts = (EmittingPipe<S>) starts;
         } else {
             this.starts = new HistoryIterator<S>(starts);
         }
@@ -46,10 +47,16 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         this.setStarts(starts.iterator());
     }
 
-    public void reset() {
-        if (this.starts instanceof Pipe)
-            ((Pipe) this.starts).reset();
 
+    public void finishIteration() {	
+    	starts.finishIteration();
+    }
+    
+
+    public void reset() {
+        if (this.starts instanceof Pipe) {
+            ((Pipe) this.starts).reset();
+        }
         this.nextEnd = null;
         this.currentEnd = null;
         this.available = false;
@@ -73,6 +80,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
         throw new UnsupportedOperationException();
     }
 
+    
     public E next() {
         if (this.available) {
             this.available = false;
@@ -91,7 +99,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
                 return (this.available = true);
             } catch (final NoSuchElementException e) {
                 return (this.available = false);
-            }
+			}
         }
     }
 
@@ -125,7 +133,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
             list.add(((HistoryIterator) this.starts).getLast());
             return list;
         } else {
-            return new ArrayList();
+            return new LinkedList();
         }
     }
 
