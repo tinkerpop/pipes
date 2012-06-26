@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.AsPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.NoSuchElementException;
@@ -18,6 +19,16 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
     private final long high;
     private int counter = -1;
 
+    
+    private AsPipe scopePipe;
+    private Object lastReferenceElement;
+    
+    public RangeFilterPipe(final long low, final long high, AsPipe anAsPipe) {
+    	this(low, high);
+    	scopePipe = anAsPipe;
+    }
+    
+    
     public RangeFilterPipe(final long low, final long high) {
         this.low = low;
         this.high = high;
@@ -30,11 +41,17 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
         while (true) {
             final S s = this.starts.next();
             this.counter++;
+            if (lastReferenceElement != scopePipe.getCurrentEnd()) {
+            	counter = 0;
+            	lastReferenceElement = scopePipe.getCurrentEnd();
+            }
             if ((this.low == -1 || this.counter >= this.low) && (this.high == -1 || this.counter <= this.high)) {
                 return s;
             }
             if (this.high != -1 && this.counter > this.high) {
-                throw new NoSuchElementException();
+                if (scopePipe == null) {
+                	throw new NoSuchElementException();
+                }
             }
         }
     }
