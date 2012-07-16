@@ -16,6 +16,9 @@ h3. Version 2.1.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Added Travis continuous integration support
+* Added getters for getting the high and low end ranges of a @RangeFilterPipe@
+
 ==<hr/>==
 
 h3. Version 2.0.0 (May 23, 2012)
