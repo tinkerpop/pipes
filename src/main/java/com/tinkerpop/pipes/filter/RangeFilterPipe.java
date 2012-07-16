@@ -47,4 +47,12 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
         this.counter = -1;
         super.reset();
     }
+
+    public long getHighRange() {
+        return this.high;
+    }
+
+    public long getLowRange() {
+        return this.low;
+    }
 }
