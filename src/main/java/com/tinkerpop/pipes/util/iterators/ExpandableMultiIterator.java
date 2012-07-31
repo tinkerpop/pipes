@@ -3,7 +3,8 @@ package com.tinkerpop.pipes.util.iterators;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
+
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -43,7 +44,7 @@ public class ExpandableMultiIterator<T> implements Iterator<T> {
                 if (this.iterators.hasNext()) {
                     this.currentIterator = this.iterators.next();
                 } else {
-                    throw new NoSuchElementException();
+                    throw FastNoSuchElementException.instance();
                 }
             }
         }

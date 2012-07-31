@@ -1,7 +1,8 @@
 package com.tinkerpop.pipes.util.iterators;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * SingleIterator is an iterator that only contains one object of type T.
@@ -32,7 +33,7 @@ public class SingleIterator<T> implements Iterator<T> {
             this.alive = false;
             return this.t;
         } else {
-            throw new NoSuchElementException();
+            throw FastNoSuchElementException.instance();
         }
     }
 }

@@ -1,8 +1,9 @@
 package com.tinkerpop.pipes.util.structures;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Queue;
+
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * A Queue implementation that does not remove items when "drained," but instead, simply makes use of a counter.
@@ -16,7 +17,7 @@ public class ArrayQueue<T> extends ArrayList<T> implements Queue<T> {
 
     public T remove() {
         if (this.current >= this.size())
-            throw new NoSuchElementException();
+            throw FastNoSuchElementException.instance();
         else
             return this.get(this.current++);
     }
@@ -46,7 +47,7 @@ public class ArrayQueue<T> extends ArrayList<T> implements Queue<T> {
 
     public T element() {
         if (this.current >= this.size())
-            throw new NoSuchElementException();
+            throw FastNoSuchElementException.instance();
         else
             return peek();
     }

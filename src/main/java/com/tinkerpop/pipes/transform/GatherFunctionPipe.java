@@ -1,13 +1,13 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.PipeFunction;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
+
+import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * GatherFunctionPipe emits all the objects up to this step as an ArrayList.
@@ -36,7 +36,7 @@ public class GatherFunctionPipe<S, E> extends AbstractPipe<S, E> {
         final List<S> list = new ArrayList<S>();
         this.listPaths = new ArrayList<List>();
         if (!this.starts.hasNext()) {
-            throw new NoSuchElementException();
+            throw FastNoSuchElementException.instance();
         } else {
             while (this.starts.hasNext()) {
                 final S s = this.starts.next();
