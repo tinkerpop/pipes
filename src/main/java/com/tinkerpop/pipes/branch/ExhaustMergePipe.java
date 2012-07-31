@@ -1,12 +1,12 @@
 package com.tinkerpop.pipes.branch;
 
+import java.util.List;
+
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-
-import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * ExhaustiveMergePipe will drain its first internal pipe, then its second, so on until all internal pipes are drained.
@@ -32,7 +32,7 @@ public class ExhaustMergePipe<S> extends AbstractMetaPipe<S, S> implements MetaP
             } else {
                 this.current = (this.current + 1) % this.total;
                 if (this.current == 0) {
-                    throw new NoSuchElementException();
+                    throw FastNoSuchElementException.instance();
                 }
             }
         }

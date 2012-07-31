@@ -3,7 +3,8 @@ package com.tinkerpop.pipes.util.iterators;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
+
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * MultiIterator takes multiple iterators in its constructor and makes them behave like a single iterator.
@@ -38,7 +39,7 @@ public class MultiIterator<T> implements Iterator<T> {
                 if (this.iterators.hasNext()) {
                     this.currentIterator = this.iterators.next();
                 } else {
-                    throw new NoSuchElementException();
+                    throw FastNoSuchElementException.instance();
                 }
             }
         }

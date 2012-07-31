@@ -1,12 +1,12 @@
 package com.tinkerpop.pipes.branch;
 
+import java.util.List;
+
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-
-import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * FairMergePipe will, in a round robin fashion, emit the the objects of its internal pipes.
@@ -34,7 +34,7 @@ public class FairMergePipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe
                 this.current = (this.current + 1) % this.total;
                 return s;
             } else if (counter == this.total) {
-                throw new NoSuchElementException();
+                throw FastNoSuchElementException.instance();
             } else {
                 this.current = (this.current + 1) % this.total;
             }

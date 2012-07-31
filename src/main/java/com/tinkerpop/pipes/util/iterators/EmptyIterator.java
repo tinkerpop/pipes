@@ -1,7 +1,8 @@
 package com.tinkerpop.pipes.util.iterators;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -18,6 +19,6 @@ public enum EmptyIterator implements Iterator<Object> {
     }
 
     public Object next() {
-        throw new NoSuchElementException();
+        throw FastNoSuchElementException.instance();
     }
 }

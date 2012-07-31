@@ -1,8 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
-
-import java.util.NoSuchElementException;
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * @author Darrick Wiebe (http://ofallpossibleworlds.wordpress.com)
@@ -27,7 +26,7 @@ public class HasCountPipe<S> extends AbstractPipe<S, Boolean> {
 
     public Boolean processNextStart() {
         if (this.finished) {
-            throw new NoSuchElementException();
+            throw FastNoSuchElementException.instance();
         }
         this.finished = true;
         if (this.minimum == -1 && this.maximum == -1)
