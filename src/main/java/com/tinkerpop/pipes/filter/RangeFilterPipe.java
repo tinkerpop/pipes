@@ -1,9 +1,8 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.PipeHelper;
-
-import java.util.NoSuchElementException;
 
 /**
  * The RangeFilterPipe will only allow a sequential subset of its incoming objects to be emitted to its output.
@@ -34,7 +33,7 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
                 return s;
             }
             if (this.high != -1 && this.counter > this.high) {
-                throw new NoSuchElementException();
+                throw FastNoSuchElementException.instance();
             }
         }
     }

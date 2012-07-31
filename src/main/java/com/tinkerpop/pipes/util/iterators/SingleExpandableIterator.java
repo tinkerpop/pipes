@@ -1,7 +1,8 @@
 package com.tinkerpop.pipes.util.iterators;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * SingleExpandableIterator can have an object added to it. However, it only stores one object.
@@ -41,7 +42,7 @@ public class SingleExpandableIterator<T> implements Iterator<T> {
             this.alive = false;
             return this.t;
         } else {
-            throw new NoSuchElementException();
+            throw FastNoSuchElementException.instance();
         }
     }
 }
