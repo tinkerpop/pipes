@@ -62,7 +62,7 @@ public class OrderPipe<S> extends AbstractPipe<S, S> {
                             }
                         } catch (final NoSuchElementException e) {
                         }
-                        if (null != this.objectComparator)
+                        if (null != this.bundledComparator)
                             Collections.sort(this.bundles, this.bundledComparator);
                         else
                             Collections.sort(this.bundles);
