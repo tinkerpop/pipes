@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class CyclicPathFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
+    private HashSet set = new HashSet();
+
     public void setStarts(Iterator<S> starts) {
         super.setStarts(starts);
         this.enablePath(true);
@@ -25,7 +27,9 @@ public class CyclicPathFilterPipe<S> extends AbstractPipe<S, S> implements Filte
             final S s = this.starts.next();
             if (this.starts instanceof Pipe) {
                 final List path = ((Pipe) this.starts).getCurrentPath();
-                if (path.size() == new HashSet(path).size()) {
+                this.set.clear();
+                this.set.addAll(path);
+                if (path.size() == this.set.size()) {
                     return s;
                 }
             } else {
