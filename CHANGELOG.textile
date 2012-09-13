@@ -17,6 +17,7 @@ h3. Version 2.2.0 (NOT OFFICIALLY RELEASED YET)
 ```
 
 * Fixed a comparator bug in @OrderPipe@
+* Garbage collector optimized @CycliePathFilterPipe@ to avoid newing a set each iteration
 
 ==<hr/>==
 
