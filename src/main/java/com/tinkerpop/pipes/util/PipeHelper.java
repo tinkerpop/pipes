@@ -173,6 +173,39 @@ public class PipeHelper {
         }
     }
 
+
+    /*public static boolean compareObjectCollections(final FilterPipe.Filter filter, final Object leftObject, final Collection rightObjects) {
+        switch (filter) {
+            case EQUAL:
+                return rightObjects.contains(leftObject);
+            case NOT_EQUAL:
+                return !rightObjects.contains(leftObject);
+            case GREATER_THAN:
+                for (final Object value : rightObjects) {
+                    if (((Comparable) leftObject).compareTo(value) >= 1)
+                        return true;
+                }
+            case LESS_THAN:
+                for (final Object value : rightObjects) {
+                    if (((Comparable) leftObject).compareTo(value) <= -1)
+                        return true;
+                }
+            case GREATER_THAN_EQUAL:
+                for (final Object value : rightObjects) {
+                    if (((Comparable) leftObject).compareTo(value) >= 0)
+                        return true;
+                }
+            case LESS_THAN_EQUAL:
+                for (final Object value : rightObjects) {
+                    if (((Comparable) leftObject).compareTo(value) <= 0)
+                        return true;
+                }
+            default:
+                throw new IllegalArgumentException("Invalid state as no valid filter was provided");
+        }
+    }*/
+
+
     /**
      * Generate a String representation of a pipe given the pipe and some arguments of the pipe.
      *

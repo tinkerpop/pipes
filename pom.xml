@@ -79,7 +79,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2-beta-4</version>
+                <version>2.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -89,9 +89,9 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <attach>false</attach>
                     <descriptors>
                         <descriptor>src/assembly/distribution.xml</descriptor>
-                        <!--<descriptor>src/assembly/standalone.xml</descriptor>-->
                     </descriptors>
                     <finalName>${project.artifactId}-${project.version}</finalName>
                     <outputDirectory>target</outputDirectory>
