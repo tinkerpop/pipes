@@ -13,7 +13,7 @@ import java.util.List;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @author Darrick Wiebe (http://ofallpossibleworlds.wordpress.com)
  */
-public class HasNextPipe<S> extends AbstractMetaPipe<S, Boolean> implements MetaPipe {
+public class HasNextPipe<S> extends AbstractMetaPipe<S, Boolean> implements MetaPipe, TransformPipe {
 
     private Pipe<S, ?> pipe;
     private final SingleExpandableIterator<S> expando = new SingleExpandableIterator<S>();

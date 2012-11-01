@@ -18,7 +18,7 @@ import com.tinkerpop.pipes.util.PipeHelper;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SideEffectCapPipe<S, T> extends AbstractMetaPipe<S, T> implements MetaPipe {
+public class SideEffectCapPipe<S, T> extends AbstractMetaPipe<S, T> implements MetaPipe, TransformPipe {
 
     private final SideEffectPipe<S, T> pipeToCap;
     private boolean alive = true;

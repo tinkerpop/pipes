@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.transform;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.TestCase;
 
@@ -66,8 +67,37 @@ public class PathPipeTest extends TestCase {
         assertEquals(counter, 3);
     }
 
-    public void testTrue() {
-        assertTrue(true);
+    public void testPathSelfLoop() {
+
+        Pipe a = new TransformFunctionPipe(new PipeFunction<String, String>() {
+            public String compute(String s) {
+                return s;
+            }
+        });
+        Pipe b = new IdentityPipe();
+        Pipe c = new PathPipe();
+
+        Pipe<String, List<String>> p = new Pipeline<String, List<String>>(a, b, c);
+        p.setStarts(Arrays.asList("a", "b", "c"));
+        while (p.hasNext()) {
+            assertEquals(p.next().size(), 2);
+        }
+    }
+
+    public void testPathSelfLoopLoop() {
+        Pipe a = new TransformFunctionPipe(new PipeFunction<String, String>() {
+            public String compute(String s) {
+                return s;
+            }
+        });
+        Pipe b = new IdentityPipe();
+        Pipe c = new PathPipe();
+
+        Pipe<String, List<String>> p = new Pipeline<String, List<String>>(new LoopPipe(a,LoopPipe.createLoopsFunction(4)), b, c);
+        p.setStarts(Arrays.asList("a", "b", "c"));
+        while (p.hasNext()) {
+            assertEquals(p.next().size(), 4);
+        }    
     }
 
     private class StringLengthPipe extends AbstractPipe<String, Integer> {

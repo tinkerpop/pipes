@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ScatterPipe<S, E> extends AbstractPipe<S, E> {
+public class ScatterPipe<S, E> extends AbstractPipe<S, E> implements TransformPipe {
 
     private Iterator<E> tempIterator = PipeHelper.emptyIterator();
 

@@ -1,17 +1,17 @@
 package com.tinkerpop.pipes.transform;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
-
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.structures.ArrayQueue;
 import com.tinkerpop.pipes.util.structures.Pair;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * OrderPipe supports in-stream sorting of objects.
@@ -21,7 +21,7 @@ import com.tinkerpop.pipes.util.structures.Pair;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class OrderPipe<S> extends AbstractPipe<S, S> {
+public class OrderPipe<S> extends AbstractPipe<S, S> implements TransformPipe {
 
     private final ArrayQueue<ObjectBundle<S>> bundles = new ArrayQueue<ObjectBundle<S>>();
     private final ArrayQueue<S> objects = new ArrayQueue<S>();

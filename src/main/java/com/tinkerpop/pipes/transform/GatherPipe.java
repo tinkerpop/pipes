@@ -13,7 +13,7 @@ import com.tinkerpop.pipes.util.FastNoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GatherPipe<S> extends AbstractPipe<S, List<S>> {
+public class GatherPipe<S> extends AbstractPipe<S, List<S>> implements TransformPipe {
 
     private List<List> listPaths = new ArrayList<List>();
 

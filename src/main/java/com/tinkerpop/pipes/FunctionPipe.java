@@ -1,5 +1,7 @@
 package com.tinkerpop.pipes;
 
+import com.tinkerpop.pipes.transform.TransformPipe;
+
 /**
  * FunctionPipe is a generic pipe where the pipe's computation is determined by the provided PipeFunction.
  * Note that the PipeFunction.compute() takes the this.starts of the FunctionPipe.

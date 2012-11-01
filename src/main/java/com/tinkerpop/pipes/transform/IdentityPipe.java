@@ -15,7 +15,7 @@ import com.tinkerpop.pipes.AbstractPipe;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IdentityPipe<S> extends AbstractPipe<S, S> {
+public class IdentityPipe<S> extends AbstractPipe<S, S> {  // does not implement TransformPipe
     protected S processNextStart() {
         return this.starts.next();
     }
