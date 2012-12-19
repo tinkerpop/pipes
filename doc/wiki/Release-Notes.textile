@@ -6,6 +6,22 @@ h2. Pipes 2.y.z
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-2.png!
 
+h3. Version 2.2.0 (December 19, 2012)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>2.2.0</version>
+</dependency>
+```
+
+* Fixed a comparator bug in @OrderPipe@
+* Garbage collector optimized @CycliePathFilterPipe@ to avoid newing a set each iteration
+* Added @TransformPipe@ interface to denote a transform operation so path joins are ignored
+
+==<hr/>==
+
 h3. Version 2.1.0 (August 4, 2012)
 
 ```xml

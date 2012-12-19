@@ -6,15 +6,16 @@ There are numerous Pipe classes that come with the main Pipes distribution. Once
 
 Please join the Gremlin users group at "http://groups.google.com/group/gremlin-users":http://groups.google.com/group/gremlin-users for all "TinkerPop":http://tinkerpop.com related discussions.
 
-Pipes JavaDoc: "2.1.0":http://tinkerpop.com/docs/javadocs/pipes/2.1.0/
-Older JavaDocs (2.x): "2.0.0":http://tinkerpop.com/docs/javadocs/pipes/2.0.0/
+Pipes JavaDoc: "2.2.0":http://tinkerpop.com/docs/javadocs/pipes/2.2.0/
+Older JavaDocs (2.x): "2.0.0":http://tinkerpop.com/docs/javadocs/pipes/2.0.0/ - "2.1.0":http://tinkerpop.com/docs/javadocs/pipes/2.1.0/
 Older JavaDocs (1.x): "1.0":http://tinkerpop.com/maven2/com/tinkerpop/pipes/1.0/api/ - "0.9":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.9/api/ -  "0.8":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.8/api/ - "0.7":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.7/api/ - "0.6":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.6/api/ - "0.5":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.5/api/ - "0.4":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.4/api/ - "0.3":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.3/api/ - "0.2":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.2/api/ - "0.1":http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.1/api/ 
+For previous wikidocs, use the following URL schema: "http://tinkerpop.com/docs/wikidocs/pipes/${version}/Home.html":http://tinkerpop.com/docs/wikidocs/pipes/${version}/Home.html
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>pipes</artifactId>
-  <version>2.0.0</version>
+  <version>2.2.0</version>
 </dependency>
 ```
 
