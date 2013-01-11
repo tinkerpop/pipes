@@ -37,6 +37,7 @@ import com.tinkerpop.pipes.transform.OrderPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
 import com.tinkerpop.pipes.transform.SelectPipe;
+import com.tinkerpop.pipes.transform.ShufflePipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
@@ -343,6 +344,10 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
 
     public PipesPipeline<S, ?> scatter() {
         return this.add(new ScatterPipe());
+    }
+
+    public PipesPipeline<S, List> shuffle() {
+        return this.add(new ShufflePipe());
     }
 
     public PipesPipeline<S, ?> cap() {

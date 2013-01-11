@@ -6,6 +6,18 @@ h2. Pipes 2.y.z
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-2.png!
 
+h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>pipes</artifactId>
+  <version>2.3.0-SNAPSHOT</version>
+</dependency>
+```
+
+* Added @ShufflePipe@ to gather up all objects then randomize their output.
+
 h3. Version 2.2.0 (December 19, 2012)
 
 ```xml
