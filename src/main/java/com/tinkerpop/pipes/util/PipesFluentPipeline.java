@@ -688,6 +688,15 @@ public interface PipesFluentPipeline<S, E> {
     public PipesFluentPipeline<S, Row> select();
 
     /**
+     * Add a ShufflePipe to the end of the Pipeline.
+     * All the objects previous to this step are aggregated in a greedy fashion, their order randomized and emitted
+     * as a List.
+     *
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, List> shuffle();
+
+    /**
      * Add a SideEffectCapPipe to the end of the Pipeline.
      * When the previous step in the pipeline is implements SideEffectPipe, then it has a method called getSideEffect().
      * The cap step will greedily iterate the pipeline and then, when its empty, emit the side effect of the previous pipe.
