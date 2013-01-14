@@ -7,6 +7,7 @@ import com.tinkerpop.pipes.util.Pipeline;
 import com.tinkerpop.pipes.util.PipesPipeline;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,37 +20,35 @@ import java.util.List;
 public class ShufflePipeTest extends TestCase {
 
     public void testPipeBasic() {
-        Pipe<String, List<String>> pipe = new ShufflePipe<String>();
+        Pipe<String, String> pipe = new ShufflePipe<String>();
         pipe.enablePath(true);
         pipe.setStarts(Arrays.asList("marko", "josh", "peter"));
-        List list = pipe.next();
+        List list = new ArrayList();
+        while (pipe.hasNext()) { list.add(pipe.next()); }
         assertEquals(list.size(), 3);
         assertTrue(list.contains("marko"));
         assertTrue(list.contains("peter"));
         assertTrue(list.contains("josh"));
-        List path = pipe.getCurrentPath();
-        assertEquals(path.size(), 3);
-        //System.out.println(path);
         assertFalse(pipe.hasNext());
     }
 
     public void testPipeTestBasicPath() {
         Pipe<String, String> pipeA = new RemoveCharPipe();
-        Pipe<String, List<String>> pipeB = new ShufflePipe<String>();
+        Pipe<String, String> pipeB = new ShufflePipe<String>();
         Pipeline<String, List<String>> pipeline = new Pipeline<String, List<String>>(pipeA, pipeB);
         pipeline.setStarts(Arrays.asList("marko", "josh", "peter"));
-        List list = pipeline.next();
+        List list = new ArrayList();
+        while (pipeline.hasNext()) { list.add(pipeline.next()); }
         assertEquals(list.size(), 3);
         assertTrue(list.contains("mark"));
         assertTrue(list.contains("pete"));
         assertTrue(list.contains("jos"));
-        //System.out.println(pipeline.getCurrentPath());
         assertFalse(pipeline.hasNext());
     }
 
     public void testPipeTestBasicPath2() {
         Pipe<String, String> pipeA = new RemoveCharPipe();
-        Pipe<String, List<String>> pipeB = new ShufflePipe<String>();
+        Pipe<String, String> pipeB = new ShufflePipe<String>();
         Pipe<List<String>, String> pipeC = new ScatterPipe<List<String>, String>();
         Pipeline<String, String> pipeline = new Pipeline<String, String>(pipeA, pipeB, pipeC);
         pipeline.setStarts(Arrays.asList("marko", "josh", "peter"));
@@ -58,7 +57,6 @@ public class ShufflePipeTest extends TestCase {
             String string = pipeline.next();
             assertTrue(string.equals("mark") || string.equals("jos") || string.equals("pete"));
             counter++;
-            //System.out.println(pipeline.getCurrentPath());
         }
         assertEquals(counter, 3);
         assertFalse(pipeline.hasNext());
@@ -76,8 +74,6 @@ public class ShufflePipeTest extends TestCase {
                 assertEquals(s, "pet");
             else
                 throw new RuntimeException("An unexpected String came through the pipeline.");
-
-            //System.out.println(pipeline.getCurrentPath());
         }
     }
 
