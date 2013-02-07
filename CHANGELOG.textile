@@ -16,7 +16,9 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Added @ShufflePipe@ to gather up all objects then randomize their output.
+* Added @TransformPipe.Order@ enums for ordering specifications in @OrderPipe@ and @MapOrderPipe@
+* Added @MapOrderPipe@ to sort a map given a @PipeFunction@ and then emit map keys
+* Added @ShufflePipe@ to gather up all objects then randomize their output
 
 h3. Version 2.2.0 (December 19, 2012)
 

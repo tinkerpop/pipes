@@ -3,43 +3,10 @@ package com.tinkerpop.pipes.util;
 import com.tinkerpop.pipes.FunctionPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.branch.CopySplitPipe;
-import com.tinkerpop.pipes.branch.ExhaustMergePipe;
-import com.tinkerpop.pipes.branch.FairMergePipe;
-import com.tinkerpop.pipes.branch.IfThenElsePipe;
-import com.tinkerpop.pipes.branch.LoopPipe;
-import com.tinkerpop.pipes.filter.AndFilterPipe;
-import com.tinkerpop.pipes.filter.BackFilterPipe;
-import com.tinkerpop.pipes.filter.CyclicPathFilterPipe;
-import com.tinkerpop.pipes.filter.DuplicateFilterPipe;
-import com.tinkerpop.pipes.filter.ExceptFilterPipe;
-import com.tinkerpop.pipes.filter.FilterFunctionPipe;
-import com.tinkerpop.pipes.filter.OrFilterPipe;
-import com.tinkerpop.pipes.filter.RandomFilterPipe;
-import com.tinkerpop.pipes.filter.RangeFilterPipe;
-import com.tinkerpop.pipes.filter.RetainFilterPipe;
-import com.tinkerpop.pipes.sideeffect.AggregatePipe;
-import com.tinkerpop.pipes.sideeffect.GroupByPipe;
-import com.tinkerpop.pipes.sideeffect.GroupByReducePipe;
-import com.tinkerpop.pipes.sideeffect.GroupCountFunctionPipe;
-import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
-import com.tinkerpop.pipes.sideeffect.OptionalPipe;
-import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
-import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
-import com.tinkerpop.pipes.sideeffect.StorePipe;
-import com.tinkerpop.pipes.sideeffect.TablePipe;
-import com.tinkerpop.pipes.sideeffect.TreePipe;
-import com.tinkerpop.pipes.transform.GatherFunctionPipe;
-import com.tinkerpop.pipes.transform.GatherPipe;
-import com.tinkerpop.pipes.transform.IdentityPipe;
-import com.tinkerpop.pipes.transform.MemoizePipe;
-import com.tinkerpop.pipes.transform.OrderPipe;
-import com.tinkerpop.pipes.transform.PathPipe;
-import com.tinkerpop.pipes.transform.ScatterPipe;
-import com.tinkerpop.pipes.transform.SelectPipe;
-import com.tinkerpop.pipes.transform.ShufflePipe;
-import com.tinkerpop.pipes.transform.SideEffectCapPipe;
-import com.tinkerpop.pipes.transform.TransformFunctionPipe;
+import com.tinkerpop.pipes.branch.*;
+import com.tinkerpop.pipes.filter.*;
+import com.tinkerpop.pipes.sideeffect.*;
+import com.tinkerpop.pipes.transform.*;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
@@ -322,6 +289,10 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new OrderPipe());
     }
 
+    public PipesPipeline<S, E> order(TransformPipe.Order order) {
+        return this.add(new OrderPipe(order));
+    }
+
     public PipesPipeline<S, E> order(final PipeFunction<Pair<E, E>, Integer> compareFunction) {
         return this.add(new OrderPipe(compareFunction));
     }
@@ -352,6 +323,14 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
 
     public PipesPipeline<S, ?> cap() {
         return this.add(new SideEffectCapPipe((SideEffectPipe) FluentUtility.removePreviousPipes(this, 1).get(0)));
+    }
+
+    public PipesPipeline<S, ?> mapOrder(final TransformPipe.Order order) {
+        return this.add(new MapOrderPipe<Object>(order));
+    }
+
+    public PipesPipeline<S, ?> mapOrder(final PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction) {
+        return this.add(new MapOrderPipe(compareFunction));
     }
 
     public <T> PipesPipeline<S, T> transform(final PipeFunction<E, T> function) {

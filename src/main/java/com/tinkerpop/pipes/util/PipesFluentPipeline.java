@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.util;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.LoopPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
@@ -630,6 +631,15 @@ public interface PipesFluentPipeline<S, E> {
 
     /**
      * Add an OrderPipe to the end of the Pipeline.
+     * This step will sort the objects in the stream in a default Comparable order.
+     *
+     * @param order if the stream is composed of comparable objects, then increment or decrement can be specified
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> order(TransformPipe.Order order);
+
+    /**
+     * Add an OrderPipe to the end of the Pipeline.
      * This step will sort the objects in the stream according to a comparator defined in the provided function.
      *
      * @param compareFunction a comparator function of two objects of type E
@@ -704,6 +714,24 @@ public interface PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, ?> cap();
+
+    /**
+     * Add a MapOrderPipe to the end of the Pipeline
+     * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
+     *
+     * @param order if the values implement Comparable, then a increment or decrement sort is usable
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, ?> mapOrder(TransformPipe.Order order);
+
+    /**
+     * Add a MapOrderPipe to the end of the Pipeline
+     * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
+     *
+     * @param compareFunction a function to compare to map entries
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, ?> mapOrder(PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction);
 
     /**
      * Add a TransformFunctionPipe to the end of the Pipeline.

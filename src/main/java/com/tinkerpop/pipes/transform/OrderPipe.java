@@ -7,11 +7,7 @@ import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.structures.ArrayQueue;
 import com.tinkerpop.pipes.util.structures.Pair;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * OrderPipe supports in-stream sorting of objects.
@@ -36,8 +32,17 @@ public class OrderPipe<S> extends AbstractPipe<S, S> implements TransformPipe {
     }
 
     public OrderPipe() {
-        this.objectComparator = null;
-        this.bundledComparator = null;
+        this(Order.INCR);
+    }
+
+    public OrderPipe(final Order order) {
+        if (order.equals(Order.INCR)) {
+            this.objectComparator = new PipeFunctionComparator(new IncrementFunction());
+            this.bundledComparator = new PipeFunctionBundleComparator(new IncrementFunction());
+        } else {
+            this.objectComparator = new PipeFunctionComparator(new DecrementFunction());
+            this.bundledComparator = new PipeFunctionBundleComparator(new DecrementFunction());
+        }
     }
 
     public void enablePath(boolean enablePath) {
@@ -100,8 +105,10 @@ public class OrderPipe<S> extends AbstractPipe<S, S> implements TransformPipe {
         if (this.pathEnabled) {
             final List pathElements = new ArrayList(this.currentPath);
             final int size = pathElements.size();
-            // do not repeat filters as they dup the object
-            if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
+            if (this instanceof TransformPipe) {
+                pathElements.add(this.currentEnd);
+            } else if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
+                // do not repeat filters or side-effects as they dup the object
                 pathElements.add(this.currentEnd);
             }
             return pathElements;
@@ -149,6 +156,18 @@ public class OrderPipe<S> extends AbstractPipe<S, S> implements TransformPipe {
 
         public int compare(final S a, final S b) {
             return this.pipeFunction.compute(new Pair<S, S>(a, b));
+        }
+    }
+
+    private class IncrementFunction implements PipeFunction<Pair<S, S>, Integer> {
+        public Integer compute(Pair<S, S> pair) {
+            return ((Comparable) pair.getA()).compareTo(pair.getB());
+        }
+    }
+
+    private class DecrementFunction implements PipeFunction<Pair<S, S>, Integer> {
+        public Integer compute(Pair<S, S> pair) {
+            return ((Comparable) pair.getB()).compareTo(pair.getA());
         }
     }
 }
