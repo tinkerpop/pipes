@@ -6,7 +6,12 @@ import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * LoopPipe takes one or two Boolean-based PipeFunctions.

@@ -6,7 +6,11 @@ import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * PipeHelper provides a collection of static methods that are useful when dealing with Pipes.

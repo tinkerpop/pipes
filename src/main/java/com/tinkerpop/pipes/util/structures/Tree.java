@@ -1,6 +1,11 @@
 package com.tinkerpop.pipes.util.structures;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A Tree can be seen as an embedded Map object with various tree-like access methods.

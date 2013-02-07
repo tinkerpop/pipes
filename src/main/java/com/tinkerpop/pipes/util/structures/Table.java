@@ -2,7 +2,13 @@ package com.tinkerpop.pipes.util.structures;
 
 import com.tinkerpop.pipes.PipeFunction;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * A Table is a collection of rows with various table-style access methods.
