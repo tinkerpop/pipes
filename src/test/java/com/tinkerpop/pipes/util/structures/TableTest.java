@@ -206,10 +206,10 @@ public class TableTest extends TestCase {
         assertEquals(table.get(2, 1), "chicago");
 
         temp = table.apply(new PipeFunction<String, Integer>() {
-                    public Integer compute(String string) {
-                        return string.length();
-                    }
-                },
+                               public Integer compute(String string) {
+                                   return string.length();
+                               }
+                           },
                 new PipeFunction<String, String>() {
                     public String compute(String string) {
                         return string.substring(0, 1);

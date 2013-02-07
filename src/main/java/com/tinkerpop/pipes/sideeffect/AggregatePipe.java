@@ -1,16 +1,12 @@
 package com.tinkerpop.pipes.sideeffect;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Queue;
-
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.structures.ArrayQueue;
+
+import java.util.*;
 
 /**
  * The AggregatePipe produces a side effect that is the provided Collection filled with the contents of all the objects that have passed through it.

@@ -93,11 +93,11 @@ public class PathPipeTest extends TestCase {
         Pipe b = new IdentityPipe();
         Pipe c = new PathPipe();
 
-        Pipe<String, List<String>> p = new Pipeline<String, List<String>>(new LoopPipe(a,LoopPipe.createLoopsFunction(4)), b, c);
+        Pipe<String, List<String>> p = new Pipeline<String, List<String>>(new LoopPipe(a, LoopPipe.createLoopsFunction(4)), b, c);
         p.setStarts(Arrays.asList("a", "b", "c"));
         while (p.hasNext()) {
             assertEquals(p.next().size(), 4);
-        }    
+        }
     }
 
     private class StringLengthPipe extends AbstractPipe<String, Integer> {

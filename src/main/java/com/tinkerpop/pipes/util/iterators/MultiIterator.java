@@ -1,10 +1,10 @@
 package com.tinkerpop.pipes.util.iterators;
 
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * MultiIterator takes multiple iterators in its constructor and makes them behave like a single iterator.

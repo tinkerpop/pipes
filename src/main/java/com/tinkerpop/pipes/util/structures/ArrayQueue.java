@@ -1,9 +1,9 @@
 package com.tinkerpop.pipes.util.structures;
 
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
+
 import java.util.ArrayList;
 import java.util.Queue;
-
-import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * A Queue implementation that does not remove items when "drained," but instead, simply makes use of a counter.

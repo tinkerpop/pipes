@@ -1,10 +1,10 @@
 package com.tinkerpop.pipes.util.iterators;
 
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import com.tinkerpop.pipes.util.FastNoSuchElementException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

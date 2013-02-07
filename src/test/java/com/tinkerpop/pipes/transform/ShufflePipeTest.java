@@ -24,7 +24,9 @@ public class ShufflePipeTest extends TestCase {
         pipe.enablePath(true);
         pipe.setStarts(Arrays.asList("marko", "josh", "peter"));
         List list = new ArrayList();
-        while (pipe.hasNext()) { list.add(pipe.next()); }
+        while (pipe.hasNext()) {
+            list.add(pipe.next());
+        }
         assertEquals(list.size(), 3);
         assertTrue(list.contains("marko"));
         assertTrue(list.contains("peter"));
@@ -38,7 +40,9 @@ public class ShufflePipeTest extends TestCase {
         Pipeline<String, List<String>> pipeline = new Pipeline<String, List<String>>(pipeA, pipeB);
         pipeline.setStarts(Arrays.asList("marko", "josh", "peter"));
         List list = new ArrayList();
-        while (pipeline.hasNext()) { list.add(pipeline.next()); }
+        while (pipeline.hasNext()) {
+            list.add(pipeline.next());
+        }
         assertEquals(list.size(), 3);
         assertTrue(list.contains("mark"));
         assertTrue(list.contains("pete"));

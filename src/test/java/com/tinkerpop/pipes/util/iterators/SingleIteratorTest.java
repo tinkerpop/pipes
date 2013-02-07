@@ -1,9 +1,6 @@
 package com.tinkerpop.pipes.util.iterators;
 
 import com.tinkerpop.pipes.TimingTest;
-import com.tinkerpop.pipes.filter.BackFilterPipe;
-import com.tinkerpop.pipes.filter.FilterPipe;
-import com.tinkerpop.pipes.transform.IdentityPipe;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -56,13 +53,13 @@ public class SingleIteratorTest extends TimingTest {
 
         this.stopWatch();
         for (int i = 0; i < numberToDo; i++) {
-           SingleIterator<String> iterator = new SingleIterator<String>("marko");
-           iterator.next();
-			try {
-				iterator.next();
-			} catch (NoSuchElementException e) {
-				// Ignore
-			}
+            SingleIterator<String> iterator = new SingleIterator<String>("marko");
+            iterator.next();
+            try {
+                iterator.next();
+            } catch (NoSuchElementException e) {
+                // Ignore
+            }
         }
         printPerformance("SingleIterator for single object", numberToDo, "iterators constructed and next()'d twice to cause NoSuchElementException", this.stopWatch());
     }

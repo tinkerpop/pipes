@@ -2,11 +2,7 @@ package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.Pipe;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * A Pipeline is a linear composite of Pipes.

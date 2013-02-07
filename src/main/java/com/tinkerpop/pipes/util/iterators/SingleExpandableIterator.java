@@ -1,8 +1,8 @@
 package com.tinkerpop.pipes.util.iterators;
 
-import java.util.Iterator;
-
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
+
+import java.util.Iterator;
 
 /**
  * SingleExpandableIterator can have an object added to it. However, it only stores one object.

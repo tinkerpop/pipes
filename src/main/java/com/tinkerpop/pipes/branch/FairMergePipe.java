@@ -1,12 +1,12 @@
 package com.tinkerpop.pipes.branch;
 
-import java.util.List;
-
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
+
+import java.util.List;
 
 /**
  * FairMergePipe will, in a round robin fashion, emit the the objects of its internal pipes.

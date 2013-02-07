@@ -1,11 +1,11 @@
 package com.tinkerpop.pipes.transform;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GatherPipe emits all the objects up to this step as an ArrayList.

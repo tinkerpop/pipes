@@ -102,15 +102,15 @@ public class TablePipeTest extends TestCase {
         assertEquals(t.getRowCount(), 4);
 
         t = t.apply(new PipeFunction<String, Integer>() {
-                    public Integer compute(String a) {
-                        return a.length();
-                    }
-                }, new PipeFunction<String, String>() {
-            public String compute(String a) {
-                return a + a;
+                        public Integer compute(String a) {
+                            return a.length();
+                        }
+                    }, new PipeFunction<String, String>() {
+                        public String compute(String a) {
+                            return a + a;
 
-            }
-        }
+                        }
+                    }
         );
 
         assertEquals(t.get(0, 0), 1);
@@ -134,10 +134,10 @@ public class TablePipeTest extends TestCase {
                     }
 
                 }, new PipeFunction<Integer, Integer>() {
-            public Integer compute(Integer a) {
-                return a + 10;
-            }
-        }
+                    public Integer compute(Integer a) {
+                        return a + 10;
+                    }
+                }
         ).iterate();
 
         assertEquals(t.get(0, "1"), "a!");

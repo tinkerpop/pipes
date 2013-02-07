@@ -1,12 +1,12 @@
 package com.tinkerpop.pipes.branch;
 
-import java.util.List;
-
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
+
+import java.util.List;
 
 /**
  * ExhaustiveMergePipe will drain its first internal pipe, then its second, so on until all internal pipes are drained.
