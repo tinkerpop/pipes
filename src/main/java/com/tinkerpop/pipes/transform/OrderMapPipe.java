@@ -13,16 +13,16 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class MapOrderPipe<S> extends AbstractPipe<Map<S, ?>, S> {
+public class OrderMapPipe<S> extends AbstractPipe<Map<S, ?>, S> {
 
     private Pipe pipe = new StartPipe(EmptyIterator.INSTANCE);
     private final PipeFunction<Pair<Map.Entry<S, ?>, Map.Entry<S, ?>>, Integer> compareFunction;
 
-    public MapOrderPipe(final PipeFunction<Pair<Map.Entry<S, ?>, Map.Entry<S, ?>>, Integer> compareFunction) {
+    public OrderMapPipe(final PipeFunction<Pair<Map.Entry<S, ?>, Map.Entry<S, ?>>, Integer> compareFunction) {
         this.compareFunction = compareFunction;
     }
 
-    public MapOrderPipe(final TransformPipe.Order order) {
+    public OrderMapPipe(final TransformPipe.Order order) {
         this.compareFunction = order.equals(OrderPipe.Order.DECR) ? new IncrementFunction() : new DecrementFunction();
     }
 

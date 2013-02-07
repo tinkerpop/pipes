@@ -32,7 +32,7 @@ import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
-import com.tinkerpop.pipes.transform.MapOrderPipe;
+import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
 import com.tinkerpop.pipes.transform.OrderPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
@@ -360,12 +360,12 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new SideEffectCapPipe((SideEffectPipe) FluentUtility.removePreviousPipes(this, 1).get(0)));
     }
 
-    public PipesPipeline<S, ?> mapOrder(final TransformPipe.Order order) {
-        return this.add(new MapOrderPipe<Object>(order));
+    public PipesPipeline<S, ?> orderMap(final TransformPipe.Order order) {
+        return this.add(new OrderMapPipe<Object>(order));
     }
 
-    public PipesPipeline<S, ?> mapOrder(final PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction) {
-        return this.add(new MapOrderPipe(compareFunction));
+    public PipesPipeline<S, ?> orderMap(final PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction) {
+        return this.add(new OrderMapPipe(compareFunction));
     }
 
     public <T> PipesPipeline<S, T> transform(final PipeFunction<E, T> function) {

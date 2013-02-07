@@ -716,22 +716,22 @@ public interface PipesFluentPipeline<S, E> {
     public PipesFluentPipeline<S, ?> cap();
 
     /**
-     * Add a MapOrderPipe to the end of the Pipeline
+     * Add a OrderMapPipe to the end of the Pipeline
      * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
      *
      * @param order if the values implement Comparable, then a increment or decrement sort is usable
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, ?> mapOrder(TransformPipe.Order order);
+    public PipesFluentPipeline<S, ?> orderMap(TransformPipe.Order order);
 
     /**
-     * Add a MapOrderPipe to the end of the Pipeline
+     * Add a OrderMapPipe to the end of the Pipeline
      * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
      *
      * @param compareFunction a function to compare to map entries
      * @return the extended Pipeline
      */
-    public PipesFluentPipeline<S, ?> mapOrder(PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction);
+    public PipesFluentPipeline<S, ?> orderMap(PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction);
 
     /**
      * Add a TransformFunctionPipe to the end of the Pipeline.

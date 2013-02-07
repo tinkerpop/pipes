@@ -12,10 +12,10 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class MapOrderPipeTest extends TestCase {
+public class OrderMapPipeTest extends TestCase {
 
     public void testPipeBasicIncrement() {
-        Pipe pipe = new MapOrderPipe<String>(TransformPipe.Order.INCR);
+        Pipe pipe = new OrderMapPipe<String>(TransformPipe.Order.INCR);
         Map map = new HashMap();
         map.put("c", 3);
         map.put("a", 10);
@@ -30,7 +30,7 @@ public class MapOrderPipeTest extends TestCase {
     }
 
     public void testPipeBasicDescrement() {
-        Pipe pipe = new MapOrderPipe<String>(TransformPipe.Order.DECR);
+        Pipe pipe = new OrderMapPipe<String>(TransformPipe.Order.DECR);
         Map map = new HashMap();
         map.put("c", 3);
         map.put("a", 10);
