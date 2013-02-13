@@ -50,4 +50,8 @@ public class Row<T> extends ArrayList<T> {
     public T getColumn(final int column) {
         return this.get(column);
     }
+
+    public List<String> getColumnNames() {
+      return this.columnNames;
+    }
 }
