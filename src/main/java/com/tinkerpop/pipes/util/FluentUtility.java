@@ -31,6 +31,21 @@ public class FluentUtility {
     }
 
     /**
+     * Get an AsPipe by name in the respective MetaPipe.
+     *
+     * @param metaPipe  the MetaPipe containing the AsPipe
+     * @param namedStep the name of the AsPipe
+     * @return the AsPipe with provided name
+     */
+    public static AsPipe getAsPipe(final MetaPipe metaPipe, final String namedStep) {
+        for (final AsPipe asPipe : FluentUtility.getAsPipes(metaPipe)) {
+            if (asPipe.getName().equals(namedStep))
+                return asPipe;
+        }
+        throw new RuntimeException("No AsPipe with provided name: " + namedStep);
+    }
+
+    /**
      * A utility method to remove all the pipes back some number of steps and return them as a list.
      *
      * @param numberedStep the number of steps back to remove from the pipeline
@@ -77,6 +92,12 @@ public class FluentUtility {
         return previousPipes;
     }
 
+    /**
+     * Get the last pipe in the Pipeline
+     *
+     * @param pipeline the Pipeline
+     * @return the last pipe in the Pipeline
+     */
     public static Pipe getPreviousPipe(final Pipeline pipeline) {
         return pipeline.get(pipeline.size() - 1);
     }
