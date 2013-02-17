@@ -12,9 +12,15 @@ public interface SideEffectPipe<S, T> extends Pipe<S, S> {
 
     public T getSideEffect();
 
+    /**
+     * Specifies that the SideEffect is ready after each Pipe.next()
+     */
     public interface LazySideEffectPipe<S, T> extends SideEffectPipe<S, T> {
     }
 
+    /**
+     * Specifies that the SideEffect is ready after Pipe.iterate()
+     */
     public interface GreedySideEffectPipe<S, T> extends SideEffectPipe<S, T> {
     }
 
