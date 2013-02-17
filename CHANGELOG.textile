@@ -16,6 +16,8 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Added sub-interfaces of @LazySideEffectPipe@ and @GreedySideEffectPipe@ to specify when sideeffect is ready
+* Made @Row.getColumnNames()@ public
 * Better support for indexing @AsPipes@ within a @MetaPipe@ in @FluentUtility@
 * Added @TransformPipe.Order@ enums for ordering specifications in @OrderPipe@ and @OrderMapPipe@
 * Added @OrderMapPipe@ to sort a map given a @PipeFunction@ and then emit map keys

@@ -32,17 +32,22 @@ public class SideEffectCapPipe<S, T> extends AbstractMetaPipe<S, T> implements M
     }
 
     protected T processNextStart() {
-        if (this.alive) {
-            try {
-                while (true) {
-                    this.pipeToCap.next();
-                }
-            } catch (final NoSuchElementException e) {
-            }
-            this.alive = false;
+        if (this.pipeToCap instanceof SideEffectPipe.LazySideEffectPipe) {
+            this.pipeToCap.next();
             return this.pipeToCap.getSideEffect();
         } else {
-            throw FastNoSuchElementException.instance();
+            if (this.alive) {
+                try {
+                    while (true) {
+                        this.pipeToCap.next();
+                    }
+                } catch (final NoSuchElementException e) {
+                }
+                this.alive = false;
+                return this.pipeToCap.getSideEffect();
+            } else {
+                throw FastNoSuchElementException.instance();
+            }
         }
     }
 
@@ -61,7 +66,7 @@ public class SideEffectCapPipe<S, T> extends AbstractMetaPipe<S, T> implements M
     }
 
     public List<Pipe> getPipes() {
-        return Arrays.asList((Pipe) pipeToCap);
+        return Arrays.asList((Pipe) this.pipeToCap);
     }
 
     public void reset() {

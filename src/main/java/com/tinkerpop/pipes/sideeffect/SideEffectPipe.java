@@ -11,4 +11,11 @@ import com.tinkerpop.pipes.Pipe;
 public interface SideEffectPipe<S, T> extends Pipe<S, S> {
 
     public T getSideEffect();
+
+    public interface LazySideEffectPipe<S, T> extends SideEffectPipe<S, T> {
+    }
+
+    public interface GreedySideEffectPipe<S, T> extends SideEffectPipe<S, T> {
+    }
+
 }
