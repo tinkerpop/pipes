@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 /**
  * The SideEffectCapPipe will yield an E that is the side effect of the provided SideEffectPipe.
  * This is useful for when the side effect of a Pipe is desired in a computational stream.
+ * Note that LazySideEffectPipes are handled differently from GreedySideEffectPipes.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
