@@ -32,8 +32,8 @@ import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
-import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
+import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.OrderPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
@@ -42,6 +42,7 @@ import com.tinkerpop.pipes.transform.ShufflePipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
+import com.tinkerpop.pipes.util.structures.AsMap;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
@@ -60,6 +61,8 @@ import java.util.Map;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPipeline<S, E> {
+
+    private final AsMap asMap = new AsMap(this);
 
     public PipesPipeline() {
         super();
@@ -100,23 +103,23 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, ?> ifThenElse(final PipeFunction<E, Boolean> ifFunction, final PipeFunction<E, ?> thenFunction, final PipeFunction<E, ?> elseFunction) {
-        return this.add(new IfThenElsePipe(ifFunction, thenFunction, elseFunction));
+        return this.add(new IfThenElsePipe(FluentUtility.prepareFunction(this.asMap, ifFunction), FluentUtility.prepareFunction(this.asMap, thenFunction), FluentUtility.prepareFunction(this.asMap, elseFunction)));
     }
 
     public PipesPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction));
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction)));
     }
 
     public PipesPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction)));
     }
 
     public PipesPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction, emitFunction));
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction), FluentUtility.prepareFunction(this.asMap, emitFunction)));
     }
 
     public PipesPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction, emitFunction));
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction), FluentUtility.prepareFunction(this.asMap, emitFunction)));
     }
 
     ////////////////////
@@ -140,7 +143,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> dedup(final PipeFunction<E, ?> dedupFunction) {
-        return this.add(new DuplicateFilterPipe<E>(dedupFunction));
+        return this.add(new DuplicateFilterPipe<E>(FluentUtility.prepareFunction(this.asMap, dedupFunction)));
     }
 
     public PipesPipeline<S, E> except(final Collection<E> collection) {
@@ -148,7 +151,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> filter(final PipeFunction<E, Boolean> filterFunction) {
-        return this.add(new FilterFunctionPipe<E>(filterFunction));
+        return this.add(new FilterFunctionPipe<E>(FluentUtility.prepareFunction(this.asMap, filterFunction)));
     }
 
     public PipesPipeline<S, E> or(final Pipe<E, ?>... pipes) {
@@ -184,11 +187,11 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction<E, ?> aggregateFunction) {
-        return this.add(new AggregatePipe<E>(aggregate, aggregateFunction));
+        return this.add(new AggregatePipe<E>(aggregate, FluentUtility.prepareFunction(this.asMap, aggregateFunction)));
     }
 
     public PipesPipeline<S, E> aggregate(final PipeFunction<E, ?> aggregateFunction) {
-        return this.aggregate(new ArrayList(), aggregateFunction);
+        return this.aggregate(new ArrayList(), FluentUtility.prepareFunction(this.asMap, aggregateFunction));
     }
 
     public PipesPipeline<S, ?> optional(final int numberedStep) {
@@ -200,35 +203,35 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> groupBy(final Map<?, List<?>> map, final PipeFunction keyFunction, final PipeFunction valueFunction) {
-        return this.add(new GroupByPipe(map, keyFunction, valueFunction));
+        return this.add(new GroupByPipe(map, FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction)));
     }
 
     public PipesPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction) {
-        return this.add(new GroupByPipe(keyFunction, valueFunction));
+        return this.add(new GroupByPipe(FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction)));
     }
 
     public PipesPipeline<S, E> groupBy(final Map reduceMap, final PipeFunction keyFunction, final PipeFunction valueFunction, final PipeFunction reduceFunction) {
-        return this.add(new GroupByReducePipe(reduceMap, keyFunction, valueFunction, reduceFunction));
+        return this.add(new GroupByReducePipe(reduceMap, FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction), FluentUtility.prepareFunction(this.asMap, reduceFunction)));
     }
 
     public PipesPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction, final PipeFunction reduceFunction) {
-        return this.add(new GroupByReducePipe(keyFunction, valueFunction, reduceFunction));
+        return this.add(new GroupByReducePipe(FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction), FluentUtility.prepareFunction(this.asMap, reduceFunction)));
     }
 
     public PipesPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction) {
-        return this.add(new GroupCountFunctionPipe(map, keyFunction, valueFunction));
+        return this.add(new GroupCountFunctionPipe(map, FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction)));
     }
 
     public PipesPipeline<S, E> groupCount(final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction) {
-        return this.add(new GroupCountFunctionPipe(keyFunction, valueFunction));
+        return this.add(new GroupCountFunctionPipe(FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction)));
     }
 
     public PipesPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction) {
-        return this.add(new GroupCountFunctionPipe(map, keyFunction, null));
+        return this.add(new GroupCountFunctionPipe(map, FluentUtility.prepareFunction(this.asMap, keyFunction), null));
     }
 
     public PipesPipeline<S, E> groupCount(final PipeFunction keyFunction) {
-        return this.add(new GroupCountFunctionPipe(keyFunction, null));
+        return this.add(new GroupCountFunctionPipe(FluentUtility.prepareFunction(this.asMap, keyFunction), null));
     }
 
     public PipesPipeline<S, E> groupCount(final Map<?, Number> map) {
@@ -240,7 +243,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> sideEffect(final PipeFunction<E, ?> sideEffectFunction) {
-        return this.add(new SideEffectFunctionPipe<E>(sideEffectFunction));
+        return this.add(new SideEffectFunctionPipe<E>(FluentUtility.prepareFunction(this.asMap, sideEffectFunction)));
     }
 
     public PipesPipeline<S, E> store(final Collection<E> storage) {
@@ -248,11 +251,11 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> store(final Collection storage, final PipeFunction<E, ?> storageFunction) {
-        return this.add(new StorePipe<E>(storage, storageFunction));
+        return this.add(new StorePipe<E>(storage, FluentUtility.prepareFunction(this.asMap, storageFunction)));
     }
 
     public PipesFluentPipeline<S, E> store(final PipeFunction<E, ?> storageFunction) {
-        return this.store(new ArrayList(), storageFunction);
+        return this.store(new ArrayList(), FluentUtility.prepareFunction(this.asMap, storageFunction));
     }
 
     public PipesPipeline<S, E> store() {
@@ -260,15 +263,15 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe<E>(table, stepNames, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new TablePipe<E>(table, stepNames, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     public PipesPipeline<S, E> table(final Table table, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe<E>(table, null, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new TablePipe<E>(table, null, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     public PipesPipeline<S, E> table(final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe<E>(new Table(), null, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new TablePipe<E>(new Table(), null, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     public PipesPipeline<S, E> table(final Table table) {
@@ -280,11 +283,11 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> tree(final Tree tree, final PipeFunction... branchFunctions) {
-        return this.add(new TreePipe<E>(tree, branchFunctions));
+        return this.add(new TreePipe<E>(tree, FluentUtility.prepareFunctions(this.asMap, branchFunctions)));
     }
 
     public PipesPipeline<S, E> tree(final PipeFunction... branchFunctions) {
-        return this.add(new TreePipe<E>(branchFunctions));
+        return this.add(new TreePipe<E>(FluentUtility.prepareFunctions(this.asMap, branchFunctions)));
     }
 
     ///////////////////////
@@ -297,7 +300,7 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, ?> gather(PipeFunction<List, ?> function) {
-        return this.add(new GatherFunctionPipe(function));
+        return this.add(new GatherFunctionPipe(FluentUtility.prepareFunction(this.asMap, function)));
     }
 
     public PipesPipeline<S, E> _() {
@@ -329,19 +332,19 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, E> order(final PipeFunction<Pair<E, E>, Integer> compareFunction) {
-        return this.add(new OrderPipe(compareFunction));
+        return this.add(new OrderPipe(FluentUtility.prepareFunction(this.asMap, compareFunction)));
     }
 
     public PipesPipeline<S, List> path(final PipeFunction... pathFunctions) {
-        return this.add(new PathPipe<Object>(pathFunctions));
+        return this.add(new PathPipe<Object>(FluentUtility.prepareFunctions(this.asMap, pathFunctions)));
     }
 
     public PipesPipeline<S, Row> select(final Collection<String> stepNames, final PipeFunction... columnFunctions) {
-        return this.add(new SelectPipe(stepNames, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new SelectPipe(stepNames, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     public PipesPipeline<S, Row> select(final PipeFunction... columnFunctions) {
-        return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     public PipesPipeline<S, Row> select() {
@@ -365,11 +368,11 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     }
 
     public PipesPipeline<S, ?> orderMap(final PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction) {
-        return this.add(new OrderMapPipe(compareFunction));
+        return this.add(new OrderMapPipe(FluentUtility.prepareFunction(this.asMap, compareFunction)));
     }
 
     public <T> PipesPipeline<S, T> transform(final PipeFunction<E, T> function) {
-        return this.add(new TransformFunctionPipe(function));
+        return this.add(new TransformFunctionPipe(FluentUtility.prepareFunction(this.asMap, function)));
     }
 
     //////////////////////
@@ -377,7 +380,9 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
     //////////////////////
 
     public PipesPipeline<S, E> as(final String name) {
-        return this.add(new AsPipe(name, FluentUtility.removePreviousPipes(this, 1).get(0)));
+        final PipesPipeline<S, E> pipeline = this.add(new AsPipe(name, FluentUtility.removePreviousPipes(this, 1).get(0)));
+        this.asMap.refresh();
+        return pipeline;
     }
 
     public PipesPipeline<S, S> start(final S object) {

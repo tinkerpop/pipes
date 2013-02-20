@@ -1,7 +1,9 @@
 package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
+import com.tinkerpop.pipes.util.structures.AsMap;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -119,5 +121,17 @@ public class FluentUtility {
         } else {
             pipeline.setStarts(new SingleIterator(starts));
         }
+    }
+
+    public static PipeFunction prepareFunction(final AsMap asMap, final PipeFunction function) {
+        if (function instanceof PipesFunction) ((PipesFunction) function).setAsMap(asMap);
+        return function;
+    }
+
+    public static PipeFunction[] prepareFunctions(final AsMap asMap, final PipeFunction... functions) {
+        for (final PipeFunction function : functions) {
+            prepareFunction(asMap, function);
+        }
+        return functions;
     }
 }

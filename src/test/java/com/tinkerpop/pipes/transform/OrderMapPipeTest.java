@@ -50,7 +50,7 @@ public class OrderMapPipeTest extends TestCase {
         Pipe pipe = new OrderMapPipe<String>(new PipeFunction<Pair<Map.Entry<String, ?>, Map.Entry<String, ?>>, Integer>() {
             @Override
             public Integer compute(Pair<Map.Entry<String, ?>, Map.Entry<String, ?>> argument) {
-                return ((Comparable)argument.getB().getValue()).compareTo(argument.getA().getValue());
+                return ((Comparable) argument.getB().getValue()).compareTo(argument.getA().getValue());
             }
         });
         Map map = new HashMap();
@@ -70,7 +70,7 @@ public class OrderMapPipeTest extends TestCase {
         Pipe pipe = new OrderMapPipe<String>(new PipeFunction<Pair<Map.Entry<String, ?>, Map.Entry<String, ?>>, Integer>() {
             @Override
             public Integer compute(Pair<Map.Entry<String, ?>, Map.Entry<String, ?>> argument) {
-                return ((Comparable)argument.getB().getValue()).compareTo(argument.getA().getValue());
+                return ((Comparable) argument.getB().getValue()).compareTo(argument.getA().getValue());
             }
         });
         Map map = new HashMap();
