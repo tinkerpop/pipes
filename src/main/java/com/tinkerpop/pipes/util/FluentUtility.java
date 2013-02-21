@@ -124,7 +124,8 @@ public class FluentUtility {
     }
 
     public static PipeFunction prepareFunction(final AsMap asMap, final PipeFunction function) {
-        if (function instanceof PipesFunction) ((PipesFunction) function).setAsMap(asMap);
+        if (function instanceof PipesFunction)
+            ((PipesFunction) function).setAsMap(asMap);
         return function;
     }
 

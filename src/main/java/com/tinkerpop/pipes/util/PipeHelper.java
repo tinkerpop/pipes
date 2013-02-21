@@ -252,7 +252,7 @@ public class PipeHelper {
      * @param clazz         the class hosting the method
      * @param methodName    the string representation of the method
      * @param argumentTypes the classes of the arguments
-     * @return a PipeFunction based on the retrived compute method
+     * @return a PipeFunction based on the retrieved compute method
      */
     public static PipeFunction createPipeFunction(final Class clazz, final String methodName, final Class... argumentTypes) {
         try {

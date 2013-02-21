@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 /**
  * HistoryIterator wraps an iterator. It will behave like the wrapped iterator.
- * However, it will remember what was last next()ed object out of the iterator via getLast().
+ * However, it will remember what was last next()'ed object out of the iterator via getLast().
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

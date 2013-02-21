@@ -2,6 +2,9 @@ package com.tinkerpop.pipes.util;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Retrieve a singleton, fast {@link NoSuchElementException} without a stack trace.
+ */
 public class FastNoSuchElementException extends NoSuchElementException {
 
     private static final long serialVersionUID = 2303108654138257697L;

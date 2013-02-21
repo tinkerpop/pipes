@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * The current object at a named step in a PipesFluentPipeline can be accessed via AsMap.
+ * AsMap maintains an internal HashMap that maps a String name to an AsPipe.
+ * The AsPipe.getCurrentEnd() allows access to the last object to be emitted from the AsPipe.
+ * This is used in conjunction with PipesFunction to allow PipeFunctions to access objects.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class AsMap {
@@ -32,4 +37,5 @@ public class AsMap {
         else
             return asPipe.getCurrentEnd();
     }
+
 }

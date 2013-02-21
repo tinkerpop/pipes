@@ -28,7 +28,7 @@ public class Row<T> extends ArrayList<T> {
 
     public String toString() {
 
-        final StringBuffer buffer = new StringBuffer("[");
+        final StringBuilder buffer = new StringBuilder("[");
         for (int i = 0; i < this.size(); i++) {
             if (columnNames.size() > 0) {
                 buffer.append(columnNames.get(i));

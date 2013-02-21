@@ -805,6 +805,12 @@ public interface PipesFluentPipeline<S, E> {
      */
     public Collection<E> fill(final Collection<E> collection);
 
+    /**
+     * Enable path calculations in the pipeline.
+     * This is typically handled automatically and on rare occasions requires an explicit call.
+     *
+     * @return the path-enabled Pipeline
+     */
     public PipesFluentPipeline<S, E> enablePath();
 
 }
