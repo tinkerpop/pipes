@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.structures.AsMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -56,7 +57,10 @@ public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> impleme
     }
 
     public String toString() {
-        return PipeHelper.makePipeString(this, this.filter);
+        if (this.storedCollection instanceof DynamicList)
+            return PipeHelper.makePipeString(this, this.filter, ((DynamicList) this.storedCollection).toString());
+        else
+            return PipeHelper.makePipeString(this, this.filter);
     }
 
     private class DynamicList<S> extends ArrayList<S> {
@@ -71,7 +75,7 @@ public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> impleme
 
         @Override
         public boolean contains(final Object object) {
-            for (final String namedStep : namedSteps) {
+            for (final String namedStep : this.namedSteps) {
                 if (null == object) {
                     if (object == this.asMap.get(namedStep))
                         return true;
@@ -79,6 +83,11 @@ public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> impleme
                     return true;
             }
             return false;
+        }
+
+        @Override
+        public String toString() {
+            return Arrays.asList(this.namedSteps).toString();
         }
     }
 }
