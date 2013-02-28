@@ -1,6 +1,8 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.PipesFunction;
+import com.tinkerpop.pipes.util.PipesPipeline;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -49,5 +51,20 @@ public class ExceptFilterPipeTest extends TestCase {
             assertTrue(name.equals("peter") || name.equals("josh") || name.equals("marko") || name.equals("pavel"));
         }
         assertEquals(counter, 6);
+    }
+
+    public void testAsPipeExcept() {
+        List<String> list = new PipesPipeline<String, String>(Arrays.asList("1", "2", "3"))._().as("x").transform(new PipesFunction<String, String>() {
+            @Override
+            public String compute(String argument) {
+                if (argument.equals("1"))
+                    return "1";
+                else
+                    return argument + argument;
+            }
+        })._()._().except("x").toList();
+        assertEquals(list.size(), 2);
+        assertTrue(list.contains("22"));
+        assertTrue(list.contains("33"));
     }
 }

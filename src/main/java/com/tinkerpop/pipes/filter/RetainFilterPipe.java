@@ -1,5 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
+import com.tinkerpop.pipes.util.structures.AsMap;
+
 import java.util.Collection;
 
 /**
@@ -11,5 +13,9 @@ public class RetainFilterPipe<S> extends CollectionFilterPipe<S> {
 
     public RetainFilterPipe(final Collection<S> storedCollection) {
         super(storedCollection, Filter.EQUAL);
+    }
+
+    public RetainFilterPipe(final AsMap asMap, final String... namedSteps) {
+        super(Filter.EQUAL, asMap, namedSteps);
     }
 }

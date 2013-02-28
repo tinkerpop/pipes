@@ -16,6 +16,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* @ExceptFilterPipe@ and @RetainFilterPipe@ support @String[]@ of named steps to reference as collection
 * Added sub-interfaces of @LazySideEffectPipe@ and @GreedySideEffectPipe@ to specify when sideeffect is ready
 * Made @Row.getColumnNames()@ public
 * Better support for indexing @AsPipes@ within a @MetaPipe@ in @FluentUtility@

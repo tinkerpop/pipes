@@ -1,6 +1,8 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.PipesFunction;
+import com.tinkerpop.pipes.util.PipesPipeline;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -49,5 +51,19 @@ public class RetainFilterPipeTest extends TestCase {
             pipe1.next();
         }
         assertEquals(counter, 0);
+    }
+
+    public void testAsPipeRetain() {
+        List<String> list = new PipesPipeline<String, String>(Arrays.asList("1", "2", "3"))._().as("x").transform(new PipesFunction<String, String>() {
+            @Override
+            public String compute(String argument) {
+                if (argument.equals("1"))
+                    return "1";
+                else
+                    return argument + argument;
+            }
+        })._()._().retain("x").toList();
+        assertEquals(list.size(), 1);
+        assertTrue(list.contains("1"));
     }
 }

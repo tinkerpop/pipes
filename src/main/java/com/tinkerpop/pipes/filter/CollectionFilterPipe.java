@@ -2,7 +2,9 @@ package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
+import com.tinkerpop.pipes.util.structures.AsMap;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -18,6 +20,15 @@ public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> impleme
 
     public CollectionFilterPipe(final Collection<S> storedCollection, final FilterPipe.Filter filter) {
         this.storedCollection = storedCollection;
+        if (filter == Filter.NOT_EQUAL || filter == Filter.EQUAL) {
+            this.filter = filter;
+        } else {
+            throw new IllegalArgumentException("The only legal filters are equals and not equals");
+        }
+    }
+
+    public CollectionFilterPipe(final FilterPipe.Filter filter, final AsMap asMap, final String... namedSteps) {
+        this.storedCollection = new DynamicList<S>(asMap, namedSteps);
         if (filter == Filter.NOT_EQUAL || filter == Filter.EQUAL) {
             this.filter = filter;
         } else {
@@ -46,5 +57,28 @@ public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> impleme
 
     public String toString() {
         return PipeHelper.makePipeString(this, this.filter);
+    }
+
+    private class DynamicList<S> extends ArrayList<S> {
+
+        private final AsMap asMap;
+        private final String[] namedSteps;
+
+        public DynamicList(final AsMap asMap, final String... namedSteps) {
+            this.asMap = asMap;
+            this.namedSteps = namedSteps;
+        }
+
+        @Override
+        public boolean contains(final Object object) {
+            for (final String namedStep : namedSteps) {
+                if (null == object) {
+                    if (object == this.asMap.get(namedStep))
+                        return true;
+                } else if (object.equals(this.asMap.get(namedStep)))
+                    return true;
+            }
+            return false;
+        }
     }
 }

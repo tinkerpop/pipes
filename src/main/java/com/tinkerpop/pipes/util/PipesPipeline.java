@@ -150,6 +150,10 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         return this.add(new ExceptFilterPipe<E>(collection));
     }
 
+    public PipesPipeline<S, E> except(final String... namedSteps) {
+        return this.add(new ExceptFilterPipe<E>(this.asMap, namedSteps));
+    }
+
     public PipesPipeline<S, E> filter(final PipeFunction<E, Boolean> filterFunction) {
         return this.add(new FilterFunctionPipe<E>(FluentUtility.prepareFunction(this.asMap, filterFunction)));
     }
@@ -168,6 +172,10 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
 
     public PipesPipeline<S, E> retain(final Collection<E> collection) {
         return this.add(new RetainFilterPipe<E>(collection));
+    }
+
+    public PipesPipeline<S, E> retain(final String... namedSteps) {
+        return this.add(new RetainFilterPipe<E>(this.asMap, namedSteps));
     }
 
     public PipesPipeline<S, E> simplePath() {

@@ -193,6 +193,15 @@ public interface PipesFluentPipeline<S, E> {
     public PipesFluentPipeline<S, E> except(final Collection<E> collection);
 
     /**
+     * Add an ExceptFilterPipe to the end of the Pipeline.
+     * Will only emit the object if it is not equal to any of the objects contained at the named steps.
+     *
+     * @param namedSteps the named steps in the pipeline
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> except(final String... namedSteps);
+
+    /**
      * Add an FilterFunctionPipe to the end of the Pipeline.
      * The serves are an arbitrary filter where the filter criteria is provided by the filterFunction.
      *
@@ -238,6 +247,15 @@ public interface PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public PipesFluentPipeline<S, E> retain(final Collection<E> collection);
+
+    /**
+     * Add a RetainFilterPipe to the end of the Pipeline.
+     * Will only emit the object if it is equal to any of the objects contained at the named steps.
+     *
+     * @param namedSteps the named steps in the pipeline
+     * @return the extended Pipeline
+     */
+    public PipesFluentPipeline<S, E> retain(final String... namedSteps);
 
     /**
      * Add a CyclicPathFilterPipe to the end of the Pipeline.
