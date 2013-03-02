@@ -1,5 +1,7 @@
 package com.tinkerpop.pipes;
 
+import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.iterators.HistoryIterator;
@@ -59,12 +61,15 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
     public List getCurrentPath() {
         if (this.pathEnabled) {
             final List pathElements = getPathToHere();
-            final int size = pathElements.size();
             if (this instanceof TransformPipe) {
                 pathElements.add(this.currentEnd);
-            } else if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
-                // do not repeat filters or side-effects as they dup the object
-                pathElements.add(this.currentEnd);
+            } else if (!(this instanceof SideEffectPipe) && !(this instanceof FilterPipe)) {
+                final int size = pathElements.size();
+                if (size == 0 || pathElements.get(size - 1) != this.currentEnd) {
+                    // do not repeat filters or side-effects as they dup the object
+                    // this is for backwards compatibility to before TransformPipe interface
+                    pathElements.add(this.currentEnd);
+                }
             }
             return pathElements;
         } else {

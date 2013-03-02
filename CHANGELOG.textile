@@ -16,6 +16,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Minor speed improvement to path calculations
 * Moved @IdentityPipe@ to root package as it is not a @TransformPipe@
 * Added @<S,E>@ typing to @TransformPipe@ interface and updated respective pipe implementations
 * @ExceptFilterPipe@ and @RetainFilterPipe@ support @String[]@ of named steps to reference as collection
