@@ -8,7 +8,7 @@ import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.filter.ExceptFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
-import com.tinkerpop.pipes.transform.IdentityPipe;
+import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;

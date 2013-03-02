@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GatherPipe<S> extends AbstractPipe<S, List<S>> implements TransformPipe {
+public class GatherPipe<S> extends AbstractPipe<S, List<S>> implements TransformPipe<S, List<S>> {
 
     private List<List> listPaths = new ArrayList<List>();
 

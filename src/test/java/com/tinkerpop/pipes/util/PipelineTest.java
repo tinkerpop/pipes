@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.util;
 
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.transform.IdentityPipe;
+import com.tinkerpop.pipes.IdentityPipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;

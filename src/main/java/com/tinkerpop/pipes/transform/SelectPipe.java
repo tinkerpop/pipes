@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SelectPipe<S> extends AbstractPipe<S, Row> implements TransformPipe {
+public class SelectPipe<S> extends AbstractPipe<S, Row> implements TransformPipe<S,Row> {
 
     private final PipeFunction[] stepFunctions;
     private final boolean doFunctions;

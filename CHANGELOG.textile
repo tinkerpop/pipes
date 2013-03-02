@@ -16,6 +16,8 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Moved @IdentityPipe@ to root package as it is not a @TransformPipe@
+* Added @<S,E>@ typing to @TransformPipe@ interface and updated respective pipe implementations
 * @ExceptFilterPipe@ and @RetainFilterPipe@ support @String[]@ of named steps to reference as collection
 * Added sub-interfaces of @LazySideEffectPipe@ and @GreedySideEffectPipe@ to specify when sideeffect is ready
 * Made @Row.getColumnNames()@ public

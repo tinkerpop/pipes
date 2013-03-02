@@ -10,7 +10,7 @@ import com.tinkerpop.pipes.PipeFunction;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TransformFunctionPipe<S, E> extends AbstractPipe<S, E> implements TransformPipe {
+public class TransformFunctionPipe<S, E> extends AbstractPipe<S, E> implements TransformPipe<S, E> {
 
     private final PipeFunction<S, E> transformFunction;
 

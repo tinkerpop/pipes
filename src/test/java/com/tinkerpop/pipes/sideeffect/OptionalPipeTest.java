@@ -2,7 +2,7 @@ package com.tinkerpop.pipes.sideeffect;
 
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.ObjectFilterPipe;
-import com.tinkerpop.pipes.transform.IdentityPipe;
+import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.TestCase;
 

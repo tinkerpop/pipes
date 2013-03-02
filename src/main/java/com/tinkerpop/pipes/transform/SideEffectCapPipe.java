@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SideEffectCapPipe<S, T> extends AbstractMetaPipe<S, T> implements MetaPipe, TransformPipe {
+public class SideEffectCapPipe<S, T> extends AbstractMetaPipe<S, T> implements MetaPipe, TransformPipe<S,T> {
 
     private final SideEffectPipe<S, T> pipeToCap;
     private boolean alive = true;

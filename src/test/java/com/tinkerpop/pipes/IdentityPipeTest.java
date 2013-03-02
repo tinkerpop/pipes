@@ -1,5 +1,6 @@
-package com.tinkerpop.pipes.transform;
+package com.tinkerpop.pipes;
 
+import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 

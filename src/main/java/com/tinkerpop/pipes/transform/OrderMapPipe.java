@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class OrderMapPipe<S> extends AbstractPipe<Map<S, ?>, S> {
+public class OrderMapPipe<S> extends AbstractPipe<Map<S, ?>, S> implements TransformPipe<Map<S, ?>, S> {
 
     private Pipe pipe = new StartPipe(EmptyIterator.INSTANCE);
     private final PipeFunction<Pair<Map.Entry<S, ?>, Map.Entry<S, ?>>, Integer> compareFunction;

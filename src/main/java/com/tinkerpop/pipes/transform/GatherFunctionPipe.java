@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GatherFunctionPipe<S, E> extends AbstractPipe<S, E> implements TransformPipe {
+public class GatherFunctionPipe<S, E> extends AbstractPipe<S, E> implements TransformPipe<S, E> {
 
     private List<List> listPaths = new ArrayList<List>();
     private final PipeFunction<List<S>, E> postFilterFunction;

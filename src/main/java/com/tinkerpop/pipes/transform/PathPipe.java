@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PathPipe<S> extends AbstractPipe<S, List> implements TransformPipe {
+public class PathPipe<S> extends AbstractPipe<S, List> implements TransformPipe<S,List> {
 
     private final PipeFunction[] pathFunctions;
 

@@ -6,7 +6,7 @@ import com.tinkerpop.pipes.util.FastNoSuchElementException;
 /**
  * @author Darrick Wiebe (http://ofallpossibleworlds.wordpress.com)
  */
-public class HasCountPipe<S> extends AbstractPipe<S, Boolean> implements TransformPipe {
+public class HasCountPipe<S> extends AbstractPipe<S, Boolean> implements TransformPipe<S, Boolean> {
 
     private long minimum;
     private long maximum;

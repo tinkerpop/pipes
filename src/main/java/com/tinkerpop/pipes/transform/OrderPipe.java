@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class OrderPipe<S> extends AbstractPipe<S, S> implements TransformPipe {
+public class OrderPipe<S> extends AbstractPipe<S, S> implements TransformPipe<S,S> {
 
     private final ArrayQueue<ObjectBundle<S>> bundles = new ArrayQueue<ObjectBundle<S>>();
     private final ArrayQueue<S> objects = new ArrayQueue<S>();
