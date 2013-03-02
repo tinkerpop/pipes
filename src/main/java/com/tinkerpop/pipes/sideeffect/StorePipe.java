@@ -13,7 +13,7 @@ import java.util.Collection;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class StorePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Collection> {
+public class StorePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe.LazySideEffectPipe<S, Collection> {
 
     private Collection storage;
     private PipeFunction<S, ?> preStoreFunction = null;

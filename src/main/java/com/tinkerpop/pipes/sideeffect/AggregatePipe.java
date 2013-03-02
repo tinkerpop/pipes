@@ -19,7 +19,7 @@ import java.util.Queue;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Collection> {
+public class AggregatePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe.GreedySideEffectPipe<S, Collection> {
 
     private Collection aggregate;
     private Queue<S> currentObjectQueue = new ArrayQueue<S>();

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Table> {
+public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe.GreedySideEffectPipe<S, Table> {
 
     private Table table;
     private final PipeFunction[] columnFunctions;

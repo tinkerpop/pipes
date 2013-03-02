@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TreePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map> {
+public class TreePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe.GreedySideEffectPipe<S, Map> {
 
     Tree<Object> tree = new Tree<Object>();
     final List<PipeFunction> branchFunctions;

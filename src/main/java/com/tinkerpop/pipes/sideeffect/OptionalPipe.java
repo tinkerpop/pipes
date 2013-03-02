@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class OptionalPipe<S> extends AbstractMetaPipe<S, S> implements SideEffectPipe<S, Object>, MetaPipe {
+public class OptionalPipe<S> extends AbstractMetaPipe<S, S> implements SideEffectPipe.LazySideEffectPipe<S, Object>, MetaPipe {
 
     private final Pipe<S, ?> pipe;
     private final SingleExpandableIterator<S> expando = new SingleExpandableIterator<S>();

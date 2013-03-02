@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroupCountFunctionPipe<S, K> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<K, Number>> {
+public class GroupCountFunctionPipe<S, K> extends AbstractPipe<S, S> implements SideEffectPipe.GreedySideEffectPipe<S, Map<K, Number>> {
 
     private Map<K, Number> countMap;
     private final PipeFunction<Pair<S, Number>, Number> valueFunction;

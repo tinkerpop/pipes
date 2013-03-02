@@ -8,7 +8,7 @@ import com.tinkerpop.pipes.AbstractPipe;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class CountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, Long> {
+public class CountPipe<S> extends AbstractPipe<S, S> implements SideEffectPipe.GreedySideEffectPipe<S, Long> {
 
     private Long counter = 0l;
 

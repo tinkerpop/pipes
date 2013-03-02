@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<K, List<V>>> {
+public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffectPipe.GreedySideEffectPipe<S, Map<K, List<V>>> {
 
     protected Map<K, List<V>> byMap;
     protected final PipeFunction<S, K> keyFunction;

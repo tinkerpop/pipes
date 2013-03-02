@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroupByReducePipe<S, K, V, V2> extends AbstractPipe<S, S> implements SideEffectPipe<S, Map<K, V2>> {
+public class GroupByReducePipe<S, K, V, V2> extends AbstractPipe<S, S> implements SideEffectPipe.GreedySideEffectPipe<S, Map<K, V2>> {
 
     private Map<K, Iterator<V>> byMap = new HashMap<K, Iterator<V>>();
 
