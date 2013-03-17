@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class MemoizePipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPipe, TransformPipe<S,E> {
+public class MemoizePipe<S, E> extends AbstractMetaPipe<S, E> implements MetaPipe, TransformPipe<S, E> {
 
     protected Pipe<S, E> pipe;
     protected Map<S, List<E>> map;

@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Stephen Mallette (http://stephen.genoprime.com)
  */
-public class ShufflePipe<S> extends AbstractPipe<S, S> implements TransformPipe<S,S> {
+public class ShufflePipe<S> extends AbstractPipe<S, S> implements TransformPipe<S, S> {
     private Iterator<S> tempIterator = PipeHelper.emptyIterator();
 
     private List<List> listPaths = new ArrayList<List>();

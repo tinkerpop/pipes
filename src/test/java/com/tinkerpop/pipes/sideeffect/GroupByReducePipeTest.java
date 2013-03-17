@@ -6,7 +6,6 @@ import com.tinkerpop.pipes.branch.LoopPipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +23,11 @@ public class GroupByReducePipeTest extends TestCase {
             public Integer compute(String argument) {
                 return argument.length();
             }
-        }, new PipeFunction<Iterator<Integer>, Integer>() {
-            public Integer compute(Iterator<Integer> args) {
+        }, new PipeFunction<List<Integer>, Integer>() {
+            public Integer compute(List<Integer> args) {
                 int sum = 0;
-                while (args.hasNext()) {
-                    sum = sum + args.next();
+                for (int i : args) {
+                    sum = sum + i;
                 }
                 return sum;
             }
@@ -52,7 +51,7 @@ public class GroupByReducePipeTest extends TestCase {
     }
 
 
-    public void untestPipeWithLoopingSameTypeInMapAsReduce(){
+    public void testPipeWithLoopingSameTypeInMapAsReduce() {
         GroupByReducePipe<String, String, Integer, Integer> groupByReducePipe = new GroupByReducePipe<String, String, Integer, Integer>(new PipeFunction<String, String>() {
             public String compute(String argument) {
                 return argument.substring(0, 1);
@@ -61,11 +60,11 @@ public class GroupByReducePipeTest extends TestCase {
             public Integer compute(String argument) {
                 return argument.length();
             }
-        }, new PipeFunction<Iterator<Integer>, Integer>() {
-            public Integer compute(Iterator<Integer> args) {
+        }, new PipeFunction<List<Integer>, Integer>() {
+            public Integer compute(List<Integer> args) {
                 int sum = 0;
-                while (args.hasNext()) {
-                    sum = sum + args.next();
+                for (int i : args) {
+                    sum = sum + i;
                 }
                 return sum;
             }
@@ -90,7 +89,7 @@ public class GroupByReducePipeTest extends TestCase {
         assertEquals(27, map.get("j").intValue());
     }
 
-    public void untestPipeWithLoopingDifferentTypeInMapAsReduce(){
+    public void testPipeWithLoopingDifferentTypeInMapAsReduce() {
         GroupByReducePipe<String, String, String, Integer> groupByReducePipe = new GroupByReducePipe<String, String, String, Integer>(new PipeFunction<String, String>() {
             public String compute(String argument) {
                 return argument.substring(0, 1);
@@ -99,11 +98,11 @@ public class GroupByReducePipeTest extends TestCase {
             public String compute(String argument) {
                 return argument;
             }
-        }, new PipeFunction<Iterator<String>, Integer>() {
-            public Integer compute(Iterator<String> args) {
+        }, new PipeFunction<List<String>, Integer>() {
+            public Integer compute(List<String> args) {
                 int sum = 0;
-                while (args.hasNext()) {
-                    sum = sum + args.next().length();
+                for (String s : args) {
+                    sum = sum + s.length();
                 }
                 return sum;
             }

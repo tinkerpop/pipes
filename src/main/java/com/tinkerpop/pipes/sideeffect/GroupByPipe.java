@@ -3,6 +3,7 @@ package com.tinkerpop.pipes.sideeffect;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,43 +37,30 @@ public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffe
         List<V> list = this.byMap.get(key);
         if (null == list) {
             list = new ArrayList<V>();
-            this.addValue(value, list);
             this.byMap.put(key, list);
-        } else {
-            this.addValue(value, list);
         }
-
+        this.addValue(value, list);
         return s;
     }
 
-    public Map<K, List<V>> getSideEffect() {
+    public Map getSideEffect() {
         return this.byMap;
     }
 
     public void addValue(final V value, final List values) {
         if (value instanceof Pipe) {
-            for (final Object o : ((Pipe) value)) {
-                values.add(o);
-            }
+            PipeHelper.fillCollection((Pipe) value, values);
         } else {
             values.add(value);
         }
     }
 
-    private K getKey(final S start) {
-        if (null == keyFunction) {
-            return (K) start;
-        } else {
-            return keyFunction.compute(start);
-        }
+    protected K getKey(final S start) {
+        return (null == this.keyFunction) ? (K) start : this.keyFunction.compute(start);
     }
 
-    private V getValue(final S start) {
-        if (null == valueFunction) {
-            return (V) start;
-        } else {
-            return valueFunction.compute(start);
-        }
+    protected V getValue(final S start) {
+        return (null == this.valueFunction) ? (V) start : this.valueFunction.compute(start);
     }
 
     public void reset() {

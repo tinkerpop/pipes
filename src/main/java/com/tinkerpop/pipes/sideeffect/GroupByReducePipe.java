@@ -1,93 +1,44 @@
 package com.tinkerpop.pipes.sideeffect;
 
-import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.util.iterators.ExpandableMultiIterator;
-import com.tinkerpop.pipes.util.iterators.SingleIterator;
 
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroupByReducePipe<S, K, V, V2> extends AbstractPipe<S, S> implements SideEffectPipe.GreedySideEffectPipe<S, Map<K, V2>> {
+public class GroupByReducePipe<S, K, V, V2> extends GroupByPipe<S, K, V> {
 
-    private Map<K, Iterator<V>> byMap = new HashMap<K, Iterator<V>>();
-
-    private final PipeFunction<S, K> keyFunction;
-    private final PipeFunction<S, V> valueFunction;
-    private final PipeFunction<Iterator<V>, V2> reduceFunction;
     private Map<K, V2> reduceMap;
+    private final PipeFunction<List<V>, V2> reduceFunction;
 
-    public GroupByReducePipe(final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction, final PipeFunction<Iterator<V>, V2> reduceFunction) {
+    public GroupByReducePipe(final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction, final PipeFunction<List<V>, V2> reduceFunction) {
         this(new HashMap<K, V2>(), keyFunction, valueFunction, reduceFunction);
     }
 
-    public GroupByReducePipe(final Map<K, V2> reduceMap, final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction, final PipeFunction<Iterator<V>, V2> reduceFunction) {
+    public GroupByReducePipe(final Map<K, V2> reduceMap, final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction, final PipeFunction<List<V>, V2> reduceFunction) {
+        super(new HashMap<K, List<V>>(), keyFunction, valueFunction);
         this.reduceMap = reduceMap;
-        this.keyFunction = keyFunction;
-        this.valueFunction = valueFunction;
         this.reduceFunction = reduceFunction;
-
     }
 
     protected S processNextStart() {
-        final S s = this.starts.next();
-        final K key = this.getKey(s);
-        final V value = this.getValue(s);
-
-        ExpandableMultiIterator<V> values = (ExpandableMultiIterator<V>) this.byMap.get(key);
-        if (null == values) {
-            values = new ExpandableMultiIterator<V>();
-            this.addValue(value, values);
-            this.byMap.put(key, values);
-        } else {
-            this.addValue(value, values);
-        }
-
+        final S s = super.processNextStart();
         if (!this.starts.hasNext()) {
-            for (final Map.Entry<K, Iterator<V>> entry : byMap.entrySet()) {
-                this.reduceMap.put(entry.getKey(), reduceFunction.compute(entry.getValue()));
+            for (final Map.Entry<K, List<V>> entry : this.byMap.entrySet()) {
+                this.reduceMap.put(entry.getKey(), this.reduceFunction.compute(entry.getValue()));
             }
-            this.byMap.clear();
         }
-
         return s;
     }
 
-    public void addValue(final V value, final ExpandableMultiIterator values) {
-        if (value instanceof Pipe) {
-            values.addIterator((Pipe) value);
-        } else {
-            values.addIterator(new SingleIterator<V>(value));
-        }
-    }
-
-    public Map<K, V2> getSideEffect() {
+    public Map getSideEffect() {
         return this.reduceMap;
     }
 
-    private K getKey(final S start) {
-        if (null == keyFunction) {
-            return (K) start;
-        } else {
-            return keyFunction.compute(start);
-        }
-    }
-
-    private V getValue(final S start) {
-        if (null == valueFunction) {
-            return (V) start;
-        } else {
-            return valueFunction.compute(start);
-        }
-    }
-
     public void reset() {
-        this.byMap = new HashMap<K, Iterator<V>>();
         this.reduceMap = new HashMap<K, V2>();
         super.reset();
     }

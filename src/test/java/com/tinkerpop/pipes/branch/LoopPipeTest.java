@@ -1,8 +1,8 @@
 package com.tinkerpop.pipes.branch;
 
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.IdentityPipe;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.TestCase;

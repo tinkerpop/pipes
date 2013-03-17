@@ -1,7 +1,5 @@
 package com.tinkerpop.pipes;
 
-import com.tinkerpop.pipes.AbstractPipe;
-
 /**
  * The IdentityPipe is the most basic pipe.
  * It simply maps the input to the output without any processing.
