@@ -16,6 +16,8 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Breaking API change with @GroupByReducePipe@ -- @Iterator<V>@ is now @List<V>@
+* Fixed a bug in @GroupByReducePipe@ when @LoopPipe@ is used in conjunction
 * Minor speed improvement to path calculations
 * Moved @IdentityPipe@ to root package as it is not a @TransformPipe@
 * Added @<S,E>@ typing to @TransformPipe@ interface and updated respective pipe implementations
