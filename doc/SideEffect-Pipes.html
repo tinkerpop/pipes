@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>SideEffect Pipes</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Pipes</a></h3>
+  <h1>SideEffect Pipes</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/SideEffect-Pipes"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/SideEffect-Pipes"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src=" images/duck-plumber.jpg" alt="" /></p>
+<p>A side-effect based pipe will emit the incoming object unaltered. However, during that process, a computation is effected. This computation can be used to yield a computational side-effect.</p>
+<h2>Generic SideEffect Pipe</h2>
+<p>The generic side-effect pipe is <code>SideEffectFunctionPipe</code>. A <code>SideEffectFunctionPipe</code> takes a <code>PipeFunction</code> (see <a class="internal present" href="Pipe-Types.html">Pipe Types</a>) that computes on <code>S</code> and emits <code>S</code>. However, the provided <code>PipeFunction</code> provides a side-effect computation. An example <code>PipeFunction</code> is provided below:</p>
+<pre><code>public class CharTotalPipeFunction implements PipeFunction&lt;String, Integer&gt; {
+  
+  private final Integer count;
+  
+  public CharCountPipeFunction(Integer count) {
+    this.count = count;
+  }
+
+  public Object compute(String argument) {
+     this.count.getAndAdd(argument.length())
+     return null;
+  }
+}</code></pre>
+<p>When put in the context of a <code>SideEffectClosurePipe</code>, the code looks as follows:</p>
+<pre><code>int count = 0;
+Pipe&lt;String, String&gt; pipe = new SideEffectFunctionPipe&lt;String&gt;(new CharTotalPipeFunction(count));
+pipe.setStarts(Arrays.asList("tell", "me", "your", "name"));
+// the results of the iteration are: "tell", "me", "your", "name"
+assert count.get() == 14;</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 03:19:12</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

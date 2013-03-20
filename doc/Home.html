@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Home</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Pipes</a></h3>
+  <h1>Home</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Home"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Home"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src=" images/pipes-logo.png" height="149px" /></p>
+<p>Pipes is a <a href="http://en.wikipedia.org/wiki/Dataflow_programming">dataflow</a> framework using <a href="http://en.wikipedia.org/wiki/Kahn_process_networks">process graphs</a>. A process graph is composed of <code>Pipe</code> vertices connected by communication edges. A <code>Pipe</code> implements a simple computational step that can be composed with other <code>Pipe</code> objects to create a larger computation. Such data flow graphs allow for the splitting, merging, looping, and in general, the transformation of data from input to output.</p>
+<p>There are numerous Pipe classes that come with the main Pipes distribution. Once a good understanding of each Pipe accomplished, then using the framework is straightforward. In general, the best way to learn about all the Pipes provided is through the project JavaDoc.</p>
+<p>Please join the Gremlin users group at <a href="http://groups.google.com/group/gremlin-users">http://groups.google.com/group/gremlin-users</a> for all <a href="../../index.html">TinkerPop</a> related discussions.</p>
+<p>Pipes JavaDoc: <a href="http://tinkerpop.com/docs/javadocs/pipes/2.3.0/">2.3.0</a> &#x2013; <a href="http://tinkerpop.com/docs/javadocs/pipes/2.2.0/">2.2.0</a> &#x2013; <a href="http://tinkerpop.com/docs/javadocs/pipes/2.1.0/">2.1.0</a> &#x2013; <a href="http://tinkerpop.com/docs/javadocs/pipes/2.0.0/">2.0.0</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/1.0/api/">1.0</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.9/api/">0.9</a> &#x2013;  <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.8/api/">0.8</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.7/api/">0.7</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.6/api/">0.6</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.5/api/">0.5</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.4/api/">0.4</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.3/api/">0.3</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.2/api/">0.2</a> &#x2013; <a href="http://tinkerpop.com/maven2/com/tinkerpop/pipes/0.1/api/">0.1</a> <br />
+Pipes WikiDocs: <a href="http://tinkerpop.com/docs/wikidocs/pipes/2.3.0/Home.html">2.3.0</a> &#x2013; <a href="http://tinkerpop.com/docs/wikidocs/pipes/2.2.0/Home.html">2.2.0</a> &#x2013; <a href="http://tinkerpop.com/docs/wikidocs/pipes/2.1.0/Home.html">2.1.0</a> &#x2013; <a href="http://tinkerpop.com/docs/wikidocs/pipes/2.0.0/Home.html">2.0.0</a></p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;2.3.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<p>Non-Maven users can get the raw jars from Apache&#x2019;s <a href="http://search.maven.org/#browse%7C1398694123">Central Repository</a>.</p>
+<pre><code>Pipe&lt;String,Integer&gt; pipeline = new Pipeline&lt;String,Integer&gt;(
+  new RemoveCharacterPipe("o"), 
+  new CountCharactersPipe());
+pipeline.setStarts(Arrays.asList("marko","josh","peter"));
+for(Integer number : pipeline) {
+  System.out.println(number);
+}
+
+4
+3
+5</code></pre>
+<p><a href="http://markorodriguez.com/2011/08/03/on-the-nature-of-pipes/">On the Nature of Pipes</a> (<strong>Graphical Presentation of the Pipe Mechanics</strong>)</p>
+<hr /><ul><li>Basic Concepts
+	<ul><li><a class="internal present" href="Basic-Pipes.html">Basic Pipes</a></li>
+		<li><a class="internal present" href="Pipe-Types.html">Pipe Types</a>
+		<ul><li><a class="internal present" href="Transform-Pipes.html">Transform Pipes</a></li>
+			<li><a class="internal present" href="Filter-Pipes.html">Filter Pipes</a></li>
+			<li><a class="internal present" href="SideEffect-Pipes.html">SideEffect Pipes</a></li>
+		</ul></li>
+		<li>Pipe SubTypes
+		<ul><li><a class="internal present" href="MetaPipes.html">MetaPipes</a></li>
+			<li>Branch Pipes</li>
+		</ul></li>
+	</ul></li>
+	<li>Advanced Concepts
+	<ul><li><a class="internal present" href="Creating-a-Pipe.html">Creating a Pipe</a></li>
+		<li><a class="internal present" href="Transformation-Paths.html">Transformation Paths</a></li>
+	</ul></li>
+	<li>Conclusion
+	<ul><li><a class="internal present" href="Acknowledgments.html">Acknowledgments</a></li>
+		<li><a class="internal present" href="Release-Notes.html">Release Notes</a></li>
+	</ul></li>
+</ul><hr /><p class="footnote"><a href="#fnr1"><sup>1</sup></a> Pipes documentation is up to date with the current Pipes <a href="http://github.com/tinkerpop/pipes/tree/master">codebase</a>, not with the latest Pipes <a href="http://github.com/tinkerpop/pipes/downloads">release</a>.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 03:19:12</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

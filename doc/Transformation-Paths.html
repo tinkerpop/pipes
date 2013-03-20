@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Transformation Paths</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Pipes</a></h3>
+  <h1>Transformation Paths</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Transformation-Paths"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Transformation-Paths"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src=" images/plumber-2.png" /></p>
+<p>Pipes supports the notion of transformational paths (see <code>Pipe.getPath()</code>). It is possible to know how an object at the end a Pipe was transformed through all the stages of the Pipe.</p>
+<pre><code>Pipe&lt;Object, Object&gt; pipeline = new Pipeline&lt;Object,Object&gt;(...);
+pipeline.setStarts(new SingleIterator&lt;Object&gt;(o));
+while(pipeline.hasNext()) {
+  Object object = pipeline.next();
+  List&lt;Object&gt; path = pipeline.getPath();
+}</code></pre>
+<h2>Path Example</h2>
+<p>For example, assume a <code>Pipeline</code> with the following self-describing pipes: <code>NumCharsPipe</code>, <code>NumToWordPipe</code>, <code>NumCharsPipe</code>.</p>
+<pre><code>Pipeline&lt;String,Integer&gt; pipeline = new Pipeline(new NumCharsPipe(), new NumToWordPipe(), new NumCharsPipe());
+pipeline.setStarts(Arrays.asList("lady","in","red"));
+while(pipeline.hasNext()) {
+  pipeline.next();
+  System.out.println(pipeline.getPath());
+}</code></pre>
+<p>The <code>System.out</code> yields:</p>
+<pre><code>[lady, 4, four, 4]
+[in, 2, two, 3]
+[red, 3, three, 5]</code></pre>
+<p><strong><span class="caps">NOTE</span></strong>: See <code>PathPipe&lt;S&gt; implements Pipe&lt;S,List&gt;</code> for a pipe that takes in an object and emits the path thus far.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 03:19:12</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Creating a Pipe</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Pipes</a></h3>
+  <h1>Creating a Pipe</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Creating-a-Pipe"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Creating-a-Pipe"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src=" images/plumber-3.png" /></p>
+<p>The pipes that come prepackaged with Pipes are not sufficient for every use case. In many situations, it will be necessary to create a pipe that will solve a particular mapping from an input to an output. An easy way to accomplish this is via the respective <code>XXXFunctionPipe</code> and <code>PipeFunction</code> implementation. However, it is possible to write a specific pipe without using <code>XXXFunctionPipe</code>-based pipes.</p>
+<h2>Transform-Based Pipe with AbstractPipe</h2>
+<p>Pipes make it easy to create new pipes with the <code>AbstractPipe</code> class. In <code>AbstractPipe</code>, there is a single method that needs to be implemented: <code>AbstractPipe.processNextStart()</code>. The example below demonstrates the internals of a simple pipe that maps a string to the number of characters contained in that string.</p>
+<pre><code>public class WordLengthPipe extends AbstractPipe&lt;String, Integer&gt; implements TransformPipe&lt;String,Integer&gt; {
+  public Integer processNextStart() {
+    String start = this.starts.next();
+    return start.length();
+  }
+}</code></pre>
+<h2>Filter-Based Pipe with AbstractPipe</h2>
+<p>The general pattern for filter-based pipes is explained with an example.</p>
+<pre><code>public class WordFilterPipe extends AbstractPipe&lt;String,String&gt; implements FilterPipe&lt;String&gt; {
+  public String processNextStarts() {
+    while(true) {
+       String start = this.starts.next();
+       if(start.length() &gt; 4)
+          return start;
+    }
+  }
+}</code></pre>
+<p>A <code>FilterPipe</code> will usually make use of a <code>while(true)</code> loop that will continually pull in new objects. If the current object meets some criteria, it will be emitted, else, the <code>while(true)</code> will loop again and pull in a new object. There is no need to worry about handling <code>NoSuchElementExceptions</code>. If <code>this.starts.next()</code> throws a <code>NoSuchElementException</code> then this will be handled appropriately by <code>AbstractPipe</code>.</p>
+<h2>SideEffect-Based Pipe with AbstractPipe</h2>
+<p>Below is an example of a side-effect based pipe using <code>AbstractPipe</code>.</p>
+<pre><code>public class WordPrintPipe extends AbstractPipe&lt;String,String&gt; implements SideEffectPipe&lt;String,Object&gt; {
+  public String processNextStarts() {
+     String start = this.starts.next();
+     System.out.println(start);
+     return start; 
+  }
+
+  public Object getSideEffect() {
+     return null;
+  }
+}</code></pre>
+<p>Given that the side-effect is simply a <code>println</code> to the <code>System.out</code>, there is no <code>Object</code> side-effect that can be later retrieved. As such, the <code>SideEffectPipe.getSideEffect()</code> method simply returns <code>null</code>.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 03:19:12</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>
