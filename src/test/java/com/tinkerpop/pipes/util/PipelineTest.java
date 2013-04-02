@@ -24,6 +24,22 @@ public class PipelineTest extends TestCase {
         pipeline.reset();
         assertTrue(pipeline.hasNext());
         pipeline.reset();
-        assertFalse(pipeline.hasNext()); // Pipe has consumed and reset has thrown away both items.
+        assertFalse(pipeline.hasNext()); // Pipe has consumed and reset has
+                                         // thrown away both items.
+    }
+
+    public void testPipelineCast() {
+
+        Pipeline<String, String> pipeline = new Pipeline<String, String>(new IdentityPipe<String>());
+        pipeline.setStarts(Arrays.asList("marko", "peter"));
+        Pipeline<String, Integer> cast = pipeline.cast(Integer.class);
+        assertTrue(((Object) pipeline) == ((Object) cast));
+        try {
+            Integer next = cast.next();
+            fail("Value was actually a string");
+        } catch (ClassCastException e) {
+
+        }
+
     }
 }
