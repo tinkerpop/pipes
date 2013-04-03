@@ -830,5 +830,14 @@ public interface PipesFluentPipeline<S, E> {
      * @return the path-enabled Pipeline
      */
     public PipesFluentPipeline<S, E> enablePath();
+    
+    
+    /**
+     * Returns the current pipeline with a new end type.
+     * Useful if the end type of the pipeline cannot be implicitly derived. 
+     *
+     * @return returns the current pipeline with the new end type.
+     */
+    public <E> PipesFluentPipeline<S, E> cast(Class<E> end);
 
 }

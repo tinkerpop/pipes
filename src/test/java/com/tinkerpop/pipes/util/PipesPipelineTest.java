@@ -21,4 +21,11 @@ public class PipesPipelineTest extends TestCase {
             assertEquals((Integer) y.substring(0, y.length() - 1).length(), Integer.valueOf(y.substring(y.length() - 1)));
         }
     }
+
+    public void testCast() {
+        PipesPipeline<String, String> pipeline = new PipesPipeline<String, String>();
+        PipesPipeline<String, Integer> casted = pipeline.cast(Integer.class);
+        assertTrue((Object) pipeline == (Object) casted);
+    }
+
 }
