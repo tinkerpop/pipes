@@ -401,4 +401,14 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         this.enablePath(true);
         return this;
     }
+    
+    /**
+     * Returns the current pipeline with a new end type.
+     * Useful if the end type of the pipeline cannot be implicitly derived. 
+     *
+     * @return returns the current pipeline with the new end type.
+     */
+    public <E> PipesPipeline<S, E> cast(Class<E> end) {
+        return (PipesPipeline<S, E>) this;
+    }
 }
