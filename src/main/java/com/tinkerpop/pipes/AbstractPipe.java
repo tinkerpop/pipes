@@ -130,7 +130,7 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
             return ((Pipe) this.starts).getCurrentPath();
         } else if (this.starts instanceof HistoryIterator) {
             final List list = new ArrayList();
-            list.add(((HistoryIterator) this.starts).getLast());
+            list.addAll(((HistoryIterator) this.starts).getCurrentPath());
             return list;
         } else {
             return new ArrayList();

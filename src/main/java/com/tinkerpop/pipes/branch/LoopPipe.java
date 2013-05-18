@@ -5,9 +5,10 @@ import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.AbstractMetaPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
+import com.tinkerpop.pipes.util.iterators.PathIterator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,12 +78,7 @@ public class LoopPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
 
     public List getCurrentPath() {
         if (this.pathEnabled) {
-            final List path = new ArrayList();
-            final List currentPath = this.expando.getCurrentPath();
-            if (null != currentPath)
-                path.addAll(currentPath);
-            path.addAll(this.pipe.getCurrentPath());
-            return path;
+            return this.pipe.getCurrentPath();
         } else {
             throw new RuntimeException(Pipe.NO_PATH_MESSAGE);
         }
@@ -122,7 +118,7 @@ public class LoopPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
         }
     }
 
-    private class ExpandableLoopBundleIterator<T> implements Iterator<T> {
+    private class ExpandableLoopBundleIterator<T> implements PathIterator<T> {
 
         private final Queue<LoopBundle<T>> queue = new LinkedList<LoopBundle<T>>();
         private final Iterator<T> iterator;
@@ -165,7 +161,7 @@ public class LoopPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
 
         public List getCurrentPath() {
             if (null == this.current)
-                return null;
+                return Collections.emptyList();
             else
                 return this.current.getPath();
         }
