@@ -1,8 +1,8 @@
 package com.tinkerpop.pipes.util;
 
+import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 
 import java.lang.reflect.Method;
@@ -137,13 +137,13 @@ public class PipeHelper {
     /**
      * Useful for FilterPipes that need to compare two objects given a filter predicate.
      *
-     * @param filter      the filter predicate
+     * @param compare     the filter predicate
      * @param leftObject  the first object
      * @param rightObject the second object
      * @return whether the predicate holds over the two provided objects
      */
-    public static boolean compareObjects(final FilterPipe.Filter filter, final Object leftObject, final Object rightObject) {
-        switch (filter) {
+    public static boolean compareObjects(final Query.Compare compare, final Object leftObject, final Object rightObject) {
+        switch (compare) {
             case EQUAL:
                 if (null == leftObject)
                     return rightObject == null;
@@ -174,37 +174,78 @@ public class PipeHelper {
     }
 
 
-    /*public static boolean compareObjectCollections(final FilterPipe.Filter filter, final Object leftObject, final Collection rightObjects) {
-        switch (filter) {
+    public static boolean compareObjectArray(final Query.Compare compare, final Object leftObject, final Object... rightObjects) {
+        switch (compare) {
             case EQUAL:
-                return rightObjects.contains(leftObject);
+                if (null == leftObject) {
+                    for (final Object value : rightObjects) {
+                        if (value == null)
+                            return true;
+                    }
+                } else {
+                    for (final Object value : rightObjects) {
+                        if (leftObject.equals(value))
+                            return true;
+                    }
+                }
+                return false;
             case NOT_EQUAL:
-                return !rightObjects.contains(leftObject);
+                if (null == leftObject) {
+                    for (final Object value : rightObjects) {
+                        if (value != null)
+                            return true;
+                    }
+                } else {
+                    for (final Object value : rightObjects) {
+                        if (!leftObject.equals(value))
+                            return true;
+                    }
+                }
+                return false;
             case GREATER_THAN:
-                for (final Object value : rightObjects) {
-                    if (((Comparable) leftObject).compareTo(value) >= 1)
-                        return true;
+                if (null == leftObject)
+                    return false;
+                else {
+                    for (final Object value : rightObjects) {
+                        if (((Comparable) leftObject).compareTo((value)) >= 1)
+                            return true;
+                    }
                 }
+                return false;
             case LESS_THAN:
-                for (final Object value : rightObjects) {
-                    if (((Comparable) leftObject).compareTo(value) <= -1)
-                        return true;
+                if (null == leftObject)
+                    return false;
+                else {
+                    for (final Object value : rightObjects) {
+                        if (((Comparable) leftObject).compareTo((value)) <= -1)
+                            return true;
+                    }
                 }
+                return false;
             case GREATER_THAN_EQUAL:
-                for (final Object value : rightObjects) {
-                    if (((Comparable) leftObject).compareTo(value) >= 0)
-                        return true;
+                if (null == leftObject)
+                    return false;
+                else {
+                    for (final Object value : rightObjects) {
+                        if (((Comparable) leftObject).compareTo((value)) >= 0)
+                            return true;
+                    }
                 }
+                return false;
             case LESS_THAN_EQUAL:
-                for (final Object value : rightObjects) {
-                    if (((Comparable) leftObject).compareTo(value) <= 0)
-                        return true;
+                if (null == leftObject)
+                    return false;
+                else {
+                    for (final Object value : rightObjects) {
+                        if (((Comparable) leftObject).compareTo((value)) <= 0)
+                            return true;
+                    }
                 }
+                return false;
             default:
                 throw new IllegalArgumentException("Invalid state as no valid filter was provided");
         }
-    }*/
-
+    }
 
     /**
      * Generate a String representation of a pipe given the pipe and some arguments of the pipe.

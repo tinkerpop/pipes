@@ -1,8 +1,8 @@
 package com.tinkerpop.pipes.branch;
 
+import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.ObjectFilterPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import junit.framework.TestCase;
@@ -70,7 +70,7 @@ public class CopySplitPipeTest extends TestCase {
 
     public void testExhaustMergeFilter() {
 
-        Pipe<String, String> pipe1 = new ObjectFilterPipe<String>("x", FilterPipe.Filter.EQUAL);
+        Pipe<String, String> pipe1 = new ObjectFilterPipe<String>("x", Query.Compare.EQUAL);
         Pipe<String, String> pipe2 = new AppendCharPipe("b");
         Pipe<String, String> pipe3 = new AppendCharPipe("c");
 

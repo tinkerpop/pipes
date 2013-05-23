@@ -148,10 +148,10 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
     public Iterator<E> iterator() {
         return this;
     }
-    
+
     /**
      * Returns the current pipeline with a new end type.
-     * Useful if the end type of the pipeline cannot be implicitly derived. 
+     * Useful if the end type of the pipeline cannot be implicitly derived.
      *
      * @return returns the current pipeline with the new end type.
      */

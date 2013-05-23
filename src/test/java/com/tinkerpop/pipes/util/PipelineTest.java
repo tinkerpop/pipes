@@ -25,7 +25,7 @@ public class PipelineTest extends TestCase {
         assertTrue(pipeline.hasNext());
         pipeline.reset();
         assertFalse(pipeline.hasNext()); // Pipe has consumed and reset has
-                                         // thrown away both items.
+        // thrown away both items.
     }
 
     public void testPipelineCast() {

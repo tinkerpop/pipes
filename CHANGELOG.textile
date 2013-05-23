@@ -16,7 +16,10 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
-* Added @Pipeline.cast@ to allow pipeline end type to be reset.
+* Added @Pipeline.cast@ to allow pipeline end type to be reset
+* Added a dependency to Blueprints and now Pipes can reference graph constructs
+* Added all the graph-related pipes in Gremlin to Pipes
+* @FilterPipe.Filter@ no longer exists as now @Query.Compare@ should be used
 
 h3. Version 2.3.0 (March 20, 2013)
 
