@@ -1,8 +1,9 @@
 package com.tinkerpop.pipes.transform;
 
+import com.tinkerpop.blueprints.Compare;
+import com.tinkerpop.blueprints.CompareRelation;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
-import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
@@ -80,12 +81,12 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
     public static class HasContainer {
         public String key;
         public Object[] values;
-        public Query.Compare compare;
+        public Compare compare;
 
-        public HasContainer(final String key, final Query.Compare compare, final Object... values) {
+        public HasContainer(final String key, final CompareRelation compare, final Object... values) {
             this.key = key;
             this.values = values;
-            this.compare = compare;
+            this.compare = (Compare) compare;
         }
     }
 

@@ -2,7 +2,6 @@ package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Element;
-import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.VertexQuery;
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
@@ -76,10 +75,7 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
                     query = query.labels(this.labels);
                 if (null != this.hasContainers) {
                     for (final HasContainer hasContainer : this.hasContainers) {
-                        if (hasContainer.compare.equals(Query.Compare.EQUAL))
-                            query = query.has(hasContainer.key, hasContainer.values);
-                        else
-                            query = query.has(hasContainer.key, hasContainer.compare, (Comparable) hasContainer.values[0]); // todo?
+                        query = query.has(hasContainer.key, hasContainer.compare, hasContainer.values);
                     }
                 }
                 if (null != this.intervalContainers) {

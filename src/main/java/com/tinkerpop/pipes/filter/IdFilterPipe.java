@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.pipes.AbstractPipe;
@@ -13,9 +14,9 @@ import java.util.Arrays;
 public class IdFilterPipe extends AbstractPipe<Element, Element> implements FilterPipe<Element> {
 
     private final Object[] ids;
-    private final Query.Compare filter;
+    private final Compare filter;
 
-    public IdFilterPipe(final Query.Compare filter, final Object... ids) {
+    public IdFilterPipe(final Compare filter, final Object... ids) {
         this.ids = ids;
         this.filter = filter;
     }

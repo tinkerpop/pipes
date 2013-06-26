@@ -1,9 +1,9 @@
 package com.tinkerpop.pipes.filter;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
@@ -25,7 +25,7 @@ public class PropertyFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new VerticesEdgesPipe(Direction.OUT);
         Pipe<Edge, Vertex> pipe2 = new EdgesVerticesPipe(Direction.IN);
-        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", Query.Compare.EQUAL, "java");
+        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", Compare.EQUAL, "java");
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());
@@ -52,7 +52,7 @@ public class PropertyFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         Pipe<Vertex, Edge> pipe1 = new VerticesEdgesPipe(Direction.OUT);
         Pipe<Edge, Vertex> pipe2 = new EdgesVerticesPipe(Direction.IN);
-        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", Query.Compare.NOT_EQUAL, "java");
+        Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", Compare.NOT_EQUAL, "java");
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipeline.hasNext());

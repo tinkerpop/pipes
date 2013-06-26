@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.Query;
+import com.tinkerpop.blueprints.Compare;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -13,8 +13,8 @@ public class AndFilterPipeTest extends TestCase {
 
     public void testPipeBasic() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "povel", "marko");
-        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", Query.Compare.EQUAL);
-        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("marko", Query.Compare.EQUAL);
+        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", Compare.EQUAL);
+        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("marko", Compare.EQUAL);
         AndFilterPipe<String> andFilterPipe = new AndFilterPipe<String>(pipe1, pipe2);
         andFilterPipe.setStarts(names);
         int counter = 0;
@@ -27,8 +27,8 @@ public class AndFilterPipeTest extends TestCase {
 
     public void testPipeNoElements() {
         List<String> names = Arrays.asList();
-        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", Query.Compare.EQUAL);
-        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("povel", Query.Compare.EQUAL);
+        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", Compare.EQUAL);
+        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("povel", Compare.EQUAL);
         AndFilterPipe<String> andFilterPipe = new AndFilterPipe<String>(pipe1, pipe2);
         andFilterPipe.setStarts(names);
         int counter = 0;

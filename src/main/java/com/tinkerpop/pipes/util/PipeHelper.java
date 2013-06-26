@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.util;
 
-import com.tinkerpop.blueprints.Query;
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.iterators.EmptyIterator;
@@ -142,7 +142,7 @@ public class PipeHelper {
      * @param rightObject the second object
      * @return whether the predicate holds over the two provided objects
      */
-    public static boolean compareObjects(final Query.Compare compare, final Object leftObject, final Object rightObject) {
+    public static boolean compareObjects(final Compare compare, final Object leftObject, final Object rightObject) {
         switch (compare) {
             case EQUAL:
                 if (null == leftObject)
@@ -174,7 +174,7 @@ public class PipeHelper {
     }
 
 
-    public static boolean compareObjectArray(final Query.Compare compare, final Object leftObject, final Object... rightObjects) {
+    public static boolean compareObjectArray(final Compare compare, final Object leftObject, final Object... rightObjects) {
         switch (compare) {
             case EQUAL:
                 if (null == leftObject) {

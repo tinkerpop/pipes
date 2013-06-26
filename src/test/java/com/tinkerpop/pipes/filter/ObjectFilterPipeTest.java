@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.Query;
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
@@ -15,7 +15,7 @@ public class ObjectFilterPipeTest extends TestCase {
 
     public void testNullObjects() {
         List<String> starts = Arrays.asList("marko", "pavel", null);
-        Pipe<String, String> pipe = new ObjectFilterPipe<String>(null, Query.Compare.EQUAL);
+        Pipe<String, String> pipe = new ObjectFilterPipe<String>(null, Compare.EQUAL);
         pipe.setStarts(starts);
         int counter = 0;
         while (pipe.hasNext()) {
@@ -25,7 +25,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 1);
 
-        pipe = new ObjectFilterPipe<String>(null, Query.Compare.NOT_EQUAL);
+        pipe = new ObjectFilterPipe<String>(null, Compare.NOT_EQUAL);
         pipe.setStarts(starts);
         counter = 0;
         while (pipe.hasNext()) {
@@ -35,7 +35,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-        pipe = new ObjectFilterPipe<String>(null, Query.Compare.LESS_THAN_EQUAL);
+        pipe = new ObjectFilterPipe<String>(null, Compare.LESS_THAN_EQUAL);
         pipe.setStarts(starts);
         counter = 0;
         while (pipe.hasNext()) {
@@ -47,7 +47,7 @@ public class ObjectFilterPipeTest extends TestCase {
 
     public void testObjectFilter() {
         List<String> starts = Arrays.asList("marko", "josh", "peter");
-        Pipe<String, String> pipe = new ObjectFilterPipe<String>("marko", Query.Compare.NOT_EQUAL);
+        Pipe<String, String> pipe = new ObjectFilterPipe<String>("marko", Compare.NOT_EQUAL);
         pipe.setStarts(starts.iterator());
         assertTrue(pipe.hasNext());
         int counter = 0;
@@ -58,7 +58,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-        pipe = new ObjectFilterPipe<String>("marko", Query.Compare.EQUAL);
+        pipe = new ObjectFilterPipe<String>("marko", Compare.EQUAL);
         pipe.setStarts(starts.iterator());
         assertTrue(pipe.hasNext());
         counter = 0;
@@ -78,7 +78,7 @@ public class ObjectFilterPipeTest extends TestCase {
 
     public void testNumericComparisons() {
         List<Integer> starts = Arrays.asList(32, 1, 7);
-        Pipe<Integer, Integer> pipe = new ObjectFilterPipe<Integer>(6, Query.Compare.LESS_THAN_EQUAL);
+        Pipe<Integer, Integer> pipe = new ObjectFilterPipe<Integer>(6, Compare.LESS_THAN_EQUAL);
         pipe.setStarts(starts.iterator());
         assertTrue(pipe.hasNext());
         int counter = 0;
@@ -89,7 +89,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 1);
         //////
-        pipe = new ObjectFilterPipe<Integer>(8, Query.Compare.LESS_THAN);
+        pipe = new ObjectFilterPipe<Integer>(8, Compare.LESS_THAN);
         pipe.setStarts(starts.iterator());
         assertTrue(pipe.hasNext());
         counter = 0;
@@ -100,7 +100,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
         //////
-        pipe = new ObjectFilterPipe<Integer>(8, Query.Compare.GREATER_THAN_EQUAL);
+        pipe = new ObjectFilterPipe<Integer>(8, Compare.GREATER_THAN_EQUAL);
         pipe.setStarts(starts.iterator());
         assertTrue(pipe.hasNext());
         counter = 0;
@@ -111,7 +111,7 @@ public class ObjectFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 1);
         //////
-        pipe = new ObjectFilterPipe<Integer>(6, Query.Compare.GREATER_THAN);
+        pipe = new ObjectFilterPipe<Integer>(6, Compare.GREATER_THAN);
         pipe.setStarts(starts.iterator());
         assertTrue(pipe.hasNext());
         counter = 0;

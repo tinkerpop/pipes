@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.transform;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.GraphQuery;
@@ -34,10 +35,7 @@ public class GraphQueryPipe<E extends Element> extends QueryPipe<Graph, E> {
                 GraphQuery query = graph.query();
                 if (null != this.hasContainers) {
                     for (final HasContainer hasContainer : this.hasContainers) {
-                        if (hasContainer.compare.equals(Query.Compare.EQUAL))
-                            query = query.has(hasContainer.key, hasContainer.values);
-                        else
-                            query = query.has(hasContainer.key, hasContainer.compare, (Comparable) hasContainer.values[0]); // todo?
+                       query = query.has(hasContainer.key, hasContainer.compare, hasContainer.values);
                     }
                 }
                 if (null != this.intervalContainers) {

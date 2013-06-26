@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Element;
-import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
@@ -30,7 +30,7 @@ public class IntervalFilterPipe<T extends Element> extends AbstractPipe<T, T> im
             if (null == value)
                 continue;
             else {
-                if (PipeHelper.compareObjects(Query.Compare.GREATER_THAN_EQUAL, value, this.startValue) && PipeHelper.compareObjects(Query.Compare.LESS_THAN, value, this.endValue))
+                if (PipeHelper.compareObjects(Compare.GREATER_THAN_EQUAL, value, this.startValue) && PipeHelper.compareObjects(Compare.LESS_THAN, value, this.endValue))
                     return t;
             }
         }

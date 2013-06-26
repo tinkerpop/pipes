@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import junit.framework.TestCase;
@@ -30,7 +30,7 @@ public class GraphQueryPipeTest extends TestCase {
     public void testQueryHas() {
         GraphQueryPipe<Vertex> pipe = new GraphQueryPipe<Vertex>(Vertex.class);
         pipe.setStarts(Arrays.asList(graph));
-        pipe.addHasContainer(new QueryPipe.HasContainer("name", Query.Compare.EQUAL, "marko"));
+        pipe.addHasContainer(new QueryPipe.HasContainer("name", Compare.EQUAL, "marko"));
         int counter = 0;
         while (pipe.hasNext()) {
             assertEquals(pipe.next().getProperty("name"), "marko");
@@ -41,8 +41,8 @@ public class GraphQueryPipeTest extends TestCase {
         pipe.reset();
 
         pipe.setStarts(Arrays.asList(graph));
-        pipe.addHasContainer(new QueryPipe.HasContainer("name", Query.Compare.EQUAL, "marko"));
-        pipe.addHasContainer(new QueryPipe.HasContainer("name", Query.Compare.NOT_EQUAL, "bobby"));
+        pipe.addHasContainer(new QueryPipe.HasContainer("name", Compare.EQUAL, "marko"));
+        pipe.addHasContainer(new QueryPipe.HasContainer("name", Compare.NOT_EQUAL, "bobby"));
         counter = 0;
         while (pipe.hasNext()) {
             assertEquals(pipe.next().getProperty("name"), "marko");
@@ -53,14 +53,14 @@ public class GraphQueryPipeTest extends TestCase {
         pipe.reset();
 
         pipe.setStarts(Arrays.asList(graph));
-        pipe.addHasContainer(new QueryPipe.HasContainer("name", Query.Compare.EQUAL, "marko"));
-        pipe.addHasContainer(new QueryPipe.HasContainer("name", Query.Compare.EQUAL, "bobby"));
+        pipe.addHasContainer(new QueryPipe.HasContainer("name", Compare.EQUAL, "marko"));
+        pipe.addHasContainer(new QueryPipe.HasContainer("name", Compare.EQUAL, "bobby"));
         assertFalse(pipe.hasNext());
 
         pipe.reset();
 
         pipe.setStarts(Arrays.asList(graph));
-        pipe.addHasContainer(new QueryPipe.HasContainer("name", Query.Compare.EQUAL, "marko"));
+        pipe.addHasContainer(new QueryPipe.HasContainer("name", Compare.EQUAL, "marko"));
         pipe.setHighRange(0);
         assertFalse(pipe.hasNext());
     }

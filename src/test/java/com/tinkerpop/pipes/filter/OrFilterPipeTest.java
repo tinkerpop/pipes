@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.Query;
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.Pipeline;
@@ -16,8 +16,8 @@ public class OrFilterPipeTest extends TestCase {
 
     public void testOrPipeBasic() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "povel", "marko");
-        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", Query.Compare.EQUAL);
-        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("povel", Query.Compare.EQUAL);
+        ObjectFilterPipe<String> pipe1 = new ObjectFilterPipe<String>("marko", Compare.EQUAL);
+        ObjectFilterPipe<String> pipe2 = new ObjectFilterPipe<String>("povel", Compare.EQUAL);
         OrFilterPipe<String> orFilterPipe = new OrFilterPipe<String>(pipe1, pipe2);
         orFilterPipe.setStarts(names);
         int counter = 0;
@@ -32,7 +32,7 @@ public class OrFilterPipeTest extends TestCase {
     public void testFutureFilter() {
         List<String> names = Arrays.asList("marko", "peter", "josh", "marko", "jake", "marko", "marko");
         Pipe<String, Integer> pipeA = new CharacterCountPipe();
-        Pipe<Integer, Integer> pipeB = new ObjectFilterPipe<Integer>(4, Query.Compare.NOT_EQUAL);
+        Pipe<Integer, Integer> pipeB = new ObjectFilterPipe<Integer>(4, Compare.NOT_EQUAL);
         Pipe<String, String> pipe1 = new OrFilterPipe<String>(new Pipeline<String, Integer>(pipeA, pipeB));
         Pipeline<String, String> pipeline = new Pipeline<String, String>(pipe1);
         pipeline.setStarts(names);

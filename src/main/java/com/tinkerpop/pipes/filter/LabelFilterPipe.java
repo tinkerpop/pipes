@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.pipes.AbstractPipe;
@@ -15,9 +16,9 @@ import java.util.Arrays;
 public class LabelFilterPipe extends AbstractPipe<Edge, Edge> implements FilterPipe<Edge> {
 
     private final String[] labels;
-    private final Query.Compare compare;
+    private final Compare compare;
 
-    public LabelFilterPipe(final Query.Compare compare, final String... labels) {
+    public LabelFilterPipe(final Compare compare, final String... labels) {
         this.labels = labels;
         this.compare = compare;
     }
