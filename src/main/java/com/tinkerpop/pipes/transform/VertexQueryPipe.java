@@ -75,7 +75,7 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
                     query = query.labels(this.labels);
                 if (null != this.hasContainers) {
                     for (final HasContainer hasContainer : this.hasContainers) {
-                        query = query.has(hasContainer.key, hasContainer.compare, hasContainer.value);
+                        query = query.has(hasContainer.key, hasContainer.predicate, hasContainer.value);
                     }
                 }
                 if (null != this.intervalContainers) {

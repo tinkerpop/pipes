@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.CompareRelation;
+import com.tinkerpop.blueprints.Predicate;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
@@ -14,25 +14,25 @@ public class PropertyFilterPipe<S extends Element, T> extends AbstractPipe<S, S>
 
     private final String key;
     private final Object value;
-    private final CompareRelation compareRelation;
+    private final Predicate predicate;
 
-    public PropertyFilterPipe(final String key, final CompareRelation compare, final Object value) {
+    public PropertyFilterPipe(final String key, final Predicate predicate, final Object value) {
         this.key = key;
         this.value = value;
-        this.compareRelation = compare;
+        this.predicate = predicate;
     }
 
     protected S processNextStart() {
         while (true) {
             final S element = this.starts.next();
-            if (this.compareRelation.compare(element.getProperty(this.key), this.value)) {
+            if (this.predicate.compare(element.getProperty(this.key), this.value)) {
                 return element;
             }
         }
     }
 
     public String toString() {
-        return PipeHelper.makePipeString(this, this.key, this.compareRelation, this.value);
+        return PipeHelper.makePipeString(this, this.key, this.predicate, this.value);
     }
 
     public String getKey() {
@@ -43,8 +43,8 @@ public class PropertyFilterPipe<S extends Element, T> extends AbstractPipe<S, S>
         return this.value;
     }
 
-    public CompareRelation getCompareRelation() {
-        return this.compareRelation;
+    public Predicate getPredicate() {
+        return this.predicate;
     }
 
 }

@@ -35,7 +35,7 @@ public class GraphQueryPipe<E extends Element> extends QueryPipe<Graph, E> {
                 GraphQuery query = graph.query();
                 if (null != this.hasContainers) {
                     for (final HasContainer hasContainer : this.hasContainers) {
-                       query = query.has(hasContainer.key, hasContainer.compare, hasContainer.value);
+                       query = query.has(hasContainer.key, hasContainer.predicate, hasContainer.value);
                     }
                 }
                 if (null != this.intervalContainers) {

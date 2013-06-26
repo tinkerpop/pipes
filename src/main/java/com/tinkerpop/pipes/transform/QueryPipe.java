@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.blueprints.CompareRelation;
+import com.tinkerpop.blueprints.Predicate;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Vertex;
@@ -80,12 +80,12 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
     public static class HasContainer {
         public String key;
         public Object value;
-        public CompareRelation compare;
+        public Predicate predicate;
 
-        public HasContainer(final String key, final CompareRelation compare, final Object value) {
+        public HasContainer(final String key, final Predicate predicate, final Object value) {
             this.key = key;
             this.value = value;
-            this.compare = compare;
+            this.predicate = predicate;
         }
     }
 

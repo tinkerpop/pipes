@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.Compare;
+import com.tinkerpop.blueprints.Predicate;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
@@ -12,23 +12,23 @@ import com.tinkerpop.pipes.util.PipeHelper;
 public class ObjectFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private final S object;
-    private final Compare compare;
+    private final Predicate predicate;
 
-    public ObjectFilterPipe(final S object, final Compare compare) {
+    public ObjectFilterPipe(final S object, final Predicate predicate) {
         this.object = object;
-        this.compare = compare;
+        this.predicate = predicate;
     }
 
     protected S processNextStart() {
         while (true) {
             final S s = this.starts.next();
-            if (this.compare.compare(s, this.object)) {
+            if (this.predicate.compare(s, this.object)) {
                 return s;
             }
         }
     }
 
     public String toString() {
-        return PipeHelper.makePipeString(this, this.compare, this.object);
+        return PipeHelper.makePipeString(this, this.predicate, this.object);
     }
 }

@@ -1,13 +1,9 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.CompareRelation;
-import com.tinkerpop.blueprints.Contains;
+import com.tinkerpop.blueprints.Predicate;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -15,22 +11,22 @@ import java.util.Collection;
 public class IdFilterPipe extends AbstractPipe<Element, Element> implements FilterPipe<Element> {
 
     private final Object id;
-    private final CompareRelation compareRelation;
+    private final Predicate predicate;
 
-    public IdFilterPipe(final CompareRelation compareRelation, final Object id) {
+    public IdFilterPipe(final Predicate predicate, final Object id) {
         this.id = id;
-        this.compareRelation = compareRelation;
+        this.predicate = predicate;
     }
 
     protected Element processNextStart() {
         while (true) {
             final Element s = this.starts.next();
-            if (this.compareRelation.compare(s.getId(), this.id))
+            if (this.predicate.compare(s.getId(), this.id))
                 return s;
         }
     }
 
     public String toString() {
-        return PipeHelper.makePipeString(this, this.compareRelation, this.id);
+        return PipeHelper.makePipeString(this, this.predicate, this.id);
     }
 }
