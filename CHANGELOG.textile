@@ -1,7 +1,6 @@
 Pipes: A Lazy Data Flow Framework
 "http://pipes.tinkerpop.com":http://pipes.tinkerpop.com
 
-
 h2. Pipes 2.y.z
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-2.png!
