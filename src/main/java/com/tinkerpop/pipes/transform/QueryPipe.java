@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.CompareRelation;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
@@ -20,10 +19,10 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
     protected List<HasContainer> hasContainers = new ArrayList<HasContainer>();
     protected List<IntervalContainer> intervalContainers = new ArrayList<IntervalContainer>();
     protected Class<E> elementClass;
-    protected long lowRange = 0l;
-    protected long highRange = Long.MAX_VALUE;
+    protected int lowRange = 0;
+    protected int highRange = Integer.MAX_VALUE;
 
-    protected long count = 0l;
+    protected int count = 0;
 
     protected Iterator<E> currentIterator = PipeHelper.emptyIterator();
 
@@ -42,12 +41,12 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
         this.intervalContainers.add(container);
     }
 
-    public void setHighRange(final long highRange) {
-        this.highRange = (highRange == Long.MAX_VALUE) ? Long.MAX_VALUE : highRange + 1;
+    public void setHighRange(final int highRange) {
+        this.highRange = (highRange == Integer.MAX_VALUE) ? Integer.MAX_VALUE : highRange + 1;
     }
 
-    public void setLowRange(final long lowRange) {
-        this.lowRange = (lowRange < 0l) ? 0 : lowRange;
+    public void setLowRange(final int lowRange) {
+        this.lowRange = (lowRange < 0) ? 0 : lowRange;
     }
 
     public void reset() {
@@ -64,7 +63,7 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
             if (extra.length() != 0) extra.append(",");
             extra.append("interval");
         }
-        if (this.lowRange != 0 || highRange != Long.MAX_VALUE) {
+        if (this.lowRange != 0 || highRange != Integer.MAX_VALUE) {
             if (extra.length() != 0) extra.append(",");
             extra.append("range:[");
             extra.append(this.lowRange);
@@ -80,13 +79,13 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
 
     public static class HasContainer {
         public String key;
-        public Object[] values;
-        public Compare compare;
+        public Object value;
+        public CompareRelation compare;
 
-        public HasContainer(final String key, final CompareRelation compare, final Object... values) {
+        public HasContainer(final String key, final CompareRelation compare, final Object value) {
             this.key = key;
-            this.values = values;
-            this.compare = (Compare) compare;
+            this.value = value;
+            this.compare = compare;
         }
     }
 

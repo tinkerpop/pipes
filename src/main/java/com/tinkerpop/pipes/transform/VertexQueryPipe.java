@@ -36,7 +36,7 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
      * @param highRange             this must be a long value representing the high range of elements to emit
      * @param labels                this is a list of Strings representing the edge label filters to apply. Do not provide any Strings if no such filtering is desired.
      */
-    public VertexQueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final long lowRange, final long highRange, final String... labels) {
+    public VertexQueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final int lowRange, final int highRange, final String... labels) {
         this.setResultingElementClass(resultingElementClass);
         this.direction = direction;
         if (null != hasContainers) {
@@ -75,7 +75,7 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
                     query = query.labels(this.labels);
                 if (null != this.hasContainers) {
                     for (final HasContainer hasContainer : this.hasContainers) {
-                        query = query.has(hasContainer.key, hasContainer.compare, hasContainer.values);
+                        query = query.has(hasContainer.key, hasContainer.compare, hasContainer.value);
                     }
                 }
                 if (null != this.intervalContainers) {
@@ -83,7 +83,7 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
                         query = query.interval(intervalContainer.key, (Comparable) intervalContainer.startValue, (Comparable) intervalContainer.endValue);
                     }
                 }
-                if (this.highRange != Long.MAX_VALUE) {
+                if (this.highRange != Integer.MAX_VALUE) {
                     query = query.limit(this.highRange - this.count);
                 }
                 if (this.elementClass.equals(Vertex.class))

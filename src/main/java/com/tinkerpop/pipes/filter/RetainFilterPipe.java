@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.Query;
+import com.tinkerpop.blueprints.Contains;
 import com.tinkerpop.pipes.util.structures.AsMap;
 
 import java.util.Collection;
@@ -13,10 +13,10 @@ import java.util.Collection;
 public class RetainFilterPipe<S> extends CollectionFilterPipe<S> {
 
     public RetainFilterPipe(final Collection<S> storedCollection) {
-        super(storedCollection, Query.Compare.EQUAL);
+        super(storedCollection, Contains.IN);
     }
 
     public RetainFilterPipe(final AsMap asMap, final String... namedSteps) {
-        super(Query.Compare.EQUAL, asMap, namedSteps);
+        super(Contains.IN, asMap, namedSteps);
     }
 }

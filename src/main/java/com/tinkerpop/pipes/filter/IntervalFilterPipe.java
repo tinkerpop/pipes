@@ -3,7 +3,6 @@ package com.tinkerpop.pipes.filter;
 import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.util.PipeHelper;
 
 /**
  * IntervalFilterPipe will filter an element flowing through it according to whether a particular property value of the element is within provided range.
@@ -30,7 +29,7 @@ public class IntervalFilterPipe<T extends Element> extends AbstractPipe<T, T> im
             if (null == value)
                 continue;
             else {
-                if (PipeHelper.compareObjects(Compare.GREATER_THAN_EQUAL, value, this.startValue) && PipeHelper.compareObjects(Compare.LESS_THAN, value, this.endValue))
+                if (Compare.GREATER_THAN_EQUAL.compare(value, this.startValue) && Compare.LESS_THAN.compare(value, this.endValue))
                     return t;
             }
         }

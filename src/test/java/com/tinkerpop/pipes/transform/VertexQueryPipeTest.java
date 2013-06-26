@@ -37,7 +37,7 @@ public class VertexQueryPipeTest extends TestCase {
         assertEquals(counter, 3);
 
         counter = 0;
-        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, Long.MIN_VALUE, 4);
+        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, Integer.MIN_VALUE, 4);
         pipe.setStarts(graph.getVertices());
         while (pipe.hasNext()) {
             pipe.next();
@@ -65,7 +65,7 @@ public class VertexQueryPipeTest extends TestCase {
     }
 
     public void testDirection() {
-        VertexQueryPipe<Vertex> pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.IN, null, null, 0, Long.MAX_VALUE);
+        VertexQueryPipe<Vertex> pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.IN, null, null, 0, Integer.MAX_VALUE);
         pipe.setStarts(Arrays.asList(graph.getVertex(1)));
         assertFalse(pipe.hasNext());
 

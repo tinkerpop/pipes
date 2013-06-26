@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
 import com.tinkerpop.blueprints.Compare;
+import com.tinkerpop.blueprints.Contains;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
@@ -17,7 +18,7 @@ public class LabelFilterPipeTest extends TestCase {
     public void testFilterLabels() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        LabelFilterPipe lfp = new LabelFilterPipe(Compare.EQUAL, "knows");
+        LabelFilterPipe lfp = new LabelFilterPipe(Contains.IN, "knows");
         lfp.setStarts(marko.getEdges(Direction.OUT).iterator());
         assertTrue(lfp.hasNext());
         int counter = 0;
@@ -29,7 +30,7 @@ public class LabelFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-        lfp = new LabelFilterPipe(Compare.NOT_EQUAL, "knows");
+        lfp = new LabelFilterPipe(Contains.NOT_IN, "knows");
         lfp.setStarts(marko.getEdges(Direction.OUT).iterator());
         assertTrue(lfp.hasNext());
         counter = 0;

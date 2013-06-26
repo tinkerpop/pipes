@@ -1,12 +1,12 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.Compare;
+import com.tinkerpop.blueprints.CompareRelation;
 import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * The LabelFilterPipe either allows or disallows all Edges that have the provided label.
@@ -15,24 +15,23 @@ import java.util.Arrays;
  */
 public class LabelFilterPipe extends AbstractPipe<Edge, Edge> implements FilterPipe<Edge> {
 
-    private final String[] labels;
-    private final Compare compare;
+    private final Object label;
+    private final CompareRelation compareRelation;
 
-    public LabelFilterPipe(final Compare compare, final String... labels) {
-        this.labels = labels;
-        this.compare = compare;
+    public LabelFilterPipe(final CompareRelation compareRelation, final Object label) {
+        this.label = label;
+        this.compareRelation = compareRelation;
     }
 
     protected Edge processNextStart() {
         while (true) {
             final Edge edge = this.starts.next();
-            if (PipeHelper.compareObjectArray(this.compare, edge.getLabel(), this.labels)) {
+            if (this.compareRelation.compare(edge.getLabel(), this.label))
                 return edge;
-            }
         }
     }
 
     public String toString() {
-        return PipeHelper.makePipeString(this, this.compare, Arrays.asList(this.labels));
+        return PipeHelper.makePipeString(this, this.compareRelation, this.label);
     }
 }

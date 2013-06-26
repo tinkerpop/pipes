@@ -1,6 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.Query;
+import com.tinkerpop.blueprints.Contains;
 import com.tinkerpop.pipes.util.structures.AsMap;
 
 import java.util.Collection;
@@ -13,10 +13,10 @@ import java.util.Collection;
 public class ExceptFilterPipe<S> extends CollectionFilterPipe<S> {
 
     public ExceptFilterPipe(final Collection<S> storedCollection) {
-        super(storedCollection, Query.Compare.NOT_EQUAL);
+        super(storedCollection, Contains.NOT_IN);
     }
 
     public ExceptFilterPipe(final AsMap asMap, final String... namedSteps) {
-        super(Query.Compare.NOT_EQUAL, asMap, namedSteps);
+        super(Contains.NOT_IN, asMap, namedSteps);
     }
 }

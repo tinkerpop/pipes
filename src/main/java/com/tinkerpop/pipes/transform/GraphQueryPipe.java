@@ -35,7 +35,7 @@ public class GraphQueryPipe<E extends Element> extends QueryPipe<Graph, E> {
                 GraphQuery query = graph.query();
                 if (null != this.hasContainers) {
                     for (final HasContainer hasContainer : this.hasContainers) {
-                       query = query.has(hasContainer.key, hasContainer.compare, hasContainer.values);
+                       query = query.has(hasContainer.key, hasContainer.compare, hasContainer.value);
                     }
                 }
                 if (null != this.intervalContainers) {
@@ -43,7 +43,7 @@ public class GraphQueryPipe<E extends Element> extends QueryPipe<Graph, E> {
                         query = query.interval(intervalContainer.key, (Comparable) intervalContainer.startValue, (Comparable) intervalContainer.endValue);
                     }
                 }
-                if (this.highRange != Long.MAX_VALUE) {
+                if (this.highRange != Integer.MAX_VALUE) {
                     query = query.limit(this.highRange - this.count);
                 }
                 if (this.elementClass.equals(Vertex.class))
