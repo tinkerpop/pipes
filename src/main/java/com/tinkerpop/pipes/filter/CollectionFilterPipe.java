@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Contains;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
@@ -34,7 +33,7 @@ public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> impleme
     protected S processNextStart() {
         while (true) {
             final S s = this.starts.next();
-            if (this.contains.compare(s,storedCollection)) {
+            if (this.contains.evaluate(s, storedCollection)) {
                 return s;
             }
         }

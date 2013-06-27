@@ -23,7 +23,7 @@ public class IdFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         VerticesEdgesPipe pipe1 = new VerticesEdgesPipe(Direction.OUT);
         EdgesVerticesPipe pipe2 = new EdgesVerticesPipe(Direction.IN);
-        IdFilterPipe pipe3 = new IdFilterPipe(Contains.IN, "3");
+        IdFilterPipe pipe3 = new IdFilterPipe(Contains.IN, Arrays.asList("3"));
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;
@@ -40,7 +40,7 @@ public class IdFilterPipeTest extends TestCase {
         Vertex marko = graph.getVertex("1");
         VerticesEdgesPipe pipe1 = new VerticesEdgesPipe(Direction.OUT);
         EdgesVerticesPipe pipe2 = new EdgesVerticesPipe(Direction.IN);
-        IdFilterPipe pipe3 = new IdFilterPipe(Contains.NOT_IN, "3");
+        IdFilterPipe pipe3 = new IdFilterPipe(Compare.NOT_EQUAL, "3");
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;

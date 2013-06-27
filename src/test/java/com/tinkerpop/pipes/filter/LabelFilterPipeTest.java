@@ -10,6 +10,8 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import junit.framework.TestCase;
 
+import java.util.Arrays;
+
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -18,7 +20,7 @@ public class LabelFilterPipeTest extends TestCase {
     public void testFilterLabels() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        LabelFilterPipe lfp = new LabelFilterPipe(Contains.IN, "knows");
+        LabelFilterPipe lfp = new LabelFilterPipe(Compare.EQUAL, "knows");
         lfp.setStarts(marko.getEdges(Direction.OUT).iterator());
         assertTrue(lfp.hasNext());
         int counter = 0;
@@ -30,7 +32,7 @@ public class LabelFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-        lfp = new LabelFilterPipe(Contains.NOT_IN, "knows");
+        lfp = new LabelFilterPipe(Contains.NOT_IN, Arrays.asList("knows","blah"));
         lfp.setStarts(marko.getEdges(Direction.OUT).iterator());
         assertTrue(lfp.hasNext());
         counter = 0;

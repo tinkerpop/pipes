@@ -22,7 +22,7 @@ public class ObjectFilterPipe<S> extends AbstractPipe<S, S> implements FilterPip
     protected S processNextStart() {
         while (true) {
             final S s = this.starts.next();
-            if (this.predicate.compare(s, this.object)) {
+            if (this.predicate.evaluate(s, this.object)) {
                 return s;
             }
         }

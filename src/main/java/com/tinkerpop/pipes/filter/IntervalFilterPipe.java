@@ -10,7 +10,7 @@ import com.tinkerpop.pipes.AbstractPipe;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IntervalFilterPipe<T extends Element> extends AbstractPipe<T, T> implements FilterPipe<T> {
+public class IntervalFilterPipe<S extends Element> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private final String key;
     private final Object startValue;
@@ -22,15 +22,15 @@ public class IntervalFilterPipe<T extends Element> extends AbstractPipe<T, T> im
         this.endValue = endValue;
     }
 
-    public T processNextStart() {
+    public S processNextStart() {
         while (true) {
-            final T t = this.starts.next();
-            final Object value = t.getProperty(key);
+            final S s = this.starts.next();
+            final Object value = s.getProperty(key);
             if (null == value)
                 continue;
             else {
-                if (Compare.GREATER_THAN_EQUAL.compare(value, this.startValue) && Compare.LESS_THAN.compare(value, this.endValue))
-                    return t;
+                if (Compare.GREATER_THAN_EQUAL.evaluate(value, this.startValue) && Compare.LESS_THAN.evaluate(value, this.endValue))
+                    return s;
             }
         }
     }
