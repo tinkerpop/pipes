@@ -10,17 +10,19 @@ import java.util.NoSuchElementException;
 /**
  * ToStringPipe turns an stream of objects into their Object.toString() representation.
  *
- * @author pietermartin
+ * @author Pieter Martin
  */
 public class ToStringPipe<S> extends AbstractPipe<S, String> implements TransformPipe<S, String> {
 
     private Iterator<Object> tempIterator = PipeHelper.emptyIterator();
+    private static final String NULL = "null";
 
     @Override
     protected String processNextStart() throws NoSuchElementException {
         while (true) {
             if (this.tempIterator.hasNext()) {
-                return this.tempIterator.next().toString();
+                final Object object = this.tempIterator.next();
+                return (null == object) ? NULL : object.toString();
             } else {
                 final Object result = this.starts.next();
                 if (result instanceof Iterator) {
@@ -32,7 +34,7 @@ public class ToStringPipe<S> extends AbstractPipe<S, String> implements Transfor
                 } else if (result instanceof Map) {
                     this.tempIterator = ((Map) result).entrySet().iterator();
                 } else {
-                    return result.toString();
+                    return (null == result) ? NULL : result.toString();
                 }
             }
         }
