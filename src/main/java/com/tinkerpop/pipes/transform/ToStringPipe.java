@@ -7,6 +7,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+/**
+ * ToStringPipe turns an stream of objects into their Object.toString() representation.
+ *
+ * @author pietermartin
+ */
 public class ToStringPipe<S> extends AbstractPipe<S, String> implements TransformPipe<S, String> {
 
     private Iterator<Object> tempIterator = PipeHelper.emptyIterator();
@@ -19,13 +24,13 @@ public class ToStringPipe<S> extends AbstractPipe<S, String> implements Transfor
             } else {
                 final Object result = this.starts.next();
                 if (result instanceof Iterator) {
-                    tempIterator = (Iterator) result;
+                    this.tempIterator = (Iterator) result;
                 } else if (result instanceof Iterable) {
-                    tempIterator = ((Iterable) result).iterator();
+                    this.tempIterator = ((Iterable) result).iterator();
                 } else if (result instanceof Object[]) {
-                    tempIterator = new ArrayIterator((Object[]) result);
+                    this.tempIterator = new ArrayIterator((Object[]) result);
                 } else if (result instanceof Map) {
-                    tempIterator = ((Map) result).entrySet().iterator();
+                    this.tempIterator = ((Map) result).entrySet().iterator();
                 } else {
                     return result.toString();
                 }
