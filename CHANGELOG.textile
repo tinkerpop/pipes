@@ -20,6 +20,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 * Added all the graph-related pipes in Gremlin to Pipes
 * @FilterPipe.Filter@ no longer exists as now @Compare@ should be used
 * Full support for @Predicate@ from Blueprints
+* Added @ToStringPipe@ to support streaming results out as as @Object.toString()@
 
 h3. Version 2.3.0 (March 20, 2013)
 
