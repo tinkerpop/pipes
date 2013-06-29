@@ -54,6 +54,14 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
         this.labels = labels;
     }
 
+    public void setDirection(final Direction direction) {
+        this.direction = direction;
+    }
+
+    public void setLabels(final String... labels) {
+        this.labels = labels;
+    }
+
     public String toString() {
         return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), super.toString());
     }

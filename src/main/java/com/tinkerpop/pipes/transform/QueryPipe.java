@@ -1,8 +1,8 @@
 package com.tinkerpop.pipes.transform;
 
-import com.tinkerpop.blueprints.Predicate;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
+import com.tinkerpop.blueprints.Predicate;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
@@ -31,6 +31,10 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
             throw new IllegalArgumentException("The provided element class must be either Vertex or Edge");
 
         this.elementClass = (Class) elementClass;
+    }
+
+    public Class<? extends Element> getResultElementClass() {
+        return this.elementClass;
     }
 
     public void addHasContainer(final HasContainer container) {

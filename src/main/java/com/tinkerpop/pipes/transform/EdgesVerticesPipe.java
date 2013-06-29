@@ -40,6 +40,10 @@ public class EdgesVerticesPipe extends AbstractPipe<Edge, Vertex> implements Tra
 
     }
 
+    public Direction getDirection() {
+        return this.direction;
+    }
+
     public String toString() {
         return PipeHelper.makePipeString(this, direction.name().toLowerCase());
     }
