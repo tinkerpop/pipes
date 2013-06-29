@@ -1,8 +1,8 @@
 package com.tinkerpop.pipes.util;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
-import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 
 import java.lang.reflect.Method;
@@ -133,78 +133,6 @@ public class PipeHelper {
         }
         return true;
     }
-
-    /**
-     * Useful for FilterPipes that need to compare two objects given a filter predicate.
-     *
-     * @param filter      the filter predicate
-     * @param leftObject  the first object
-     * @param rightObject the second object
-     * @return whether the predicate holds over the two provided objects
-     */
-    public static boolean compareObjects(final FilterPipe.Filter filter, final Object leftObject, final Object rightObject) {
-        switch (filter) {
-            case EQUAL:
-                if (null == leftObject)
-                    return rightObject == null;
-                return leftObject.equals(rightObject);
-            case NOT_EQUAL:
-                if (null == leftObject)
-                    return rightObject != null;
-                return !leftObject.equals(rightObject);
-            case GREATER_THAN:
-                if (null == leftObject || rightObject == null)
-                    return false;
-                return ((Comparable) leftObject).compareTo(rightObject) >= 1;
-            case LESS_THAN:
-                if (null == leftObject || rightObject == null)
-                    return false;
-                return ((Comparable) leftObject).compareTo(rightObject) <= -1;
-            case GREATER_THAN_EQUAL:
-                if (null == leftObject || rightObject == null)
-                    return false;
-                return ((Comparable) leftObject).compareTo(rightObject) >= 0;
-            case LESS_THAN_EQUAL:
-                if (null == leftObject || rightObject == null)
-                    return false;
-                return ((Comparable) leftObject).compareTo(rightObject) <= 0;
-            default:
-                throw new IllegalArgumentException("Invalid state as no valid filter was provided");
-        }
-    }
-
-
-    /*public static boolean compareObjectCollections(final FilterPipe.Filter filter, final Object leftObject, final Collection rightObjects) {
-        switch (filter) {
-            case EQUAL:
-                return rightObjects.contains(leftObject);
-            case NOT_EQUAL:
-                return !rightObjects.contains(leftObject);
-            case GREATER_THAN:
-                for (final Object value : rightObjects) {
-                    if (((Comparable) leftObject).compareTo(value) >= 1)
-                        return true;
-                }
-            case LESS_THAN:
-                for (final Object value : rightObjects) {
-                    if (((Comparable) leftObject).compareTo(value) <= -1)
-                        return true;
-                }
-            case GREATER_THAN_EQUAL:
-                for (final Object value : rightObjects) {
-                    if (((Comparable) leftObject).compareTo(value) >= 0)
-                        return true;
-                }
-            case LESS_THAN_EQUAL:
-                for (final Object value : rightObjects) {
-                    if (((Comparable) leftObject).compareTo(value) <= 0)
-                        return true;
-                }
-            default:
-                throw new IllegalArgumentException("Invalid state as no valid filter was provided");
-        }
-    }*/
-
 
     /**
      * Generate a String representation of a pipe given the pipe and some arguments of the pipe.

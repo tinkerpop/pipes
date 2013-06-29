@@ -1,5 +1,6 @@
 package com.tinkerpop.pipes.filter;
 
+import com.tinkerpop.blueprints.Contains;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.structures.AsMap;
@@ -17,40 +18,22 @@ import java.util.Collection;
 public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private final Collection<S> storedCollection;
-    private final FilterPipe.Filter filter;
+    private final Contains contains;
 
-    public CollectionFilterPipe(final Collection<S> storedCollection, final FilterPipe.Filter filter) {
+    public CollectionFilterPipe(final Collection<S> storedCollection, final Contains contains) {
         this.storedCollection = storedCollection;
-        if (filter == Filter.NOT_EQUAL || filter == Filter.EQUAL) {
-            this.filter = filter;
-        } else {
-            throw new IllegalArgumentException("The only legal filters are equals and not equals");
-        }
+        this.contains = contains;
     }
 
-    public CollectionFilterPipe(final FilterPipe.Filter filter, final AsMap asMap, final String... namedSteps) {
+    public CollectionFilterPipe(final Contains contains, final AsMap asMap, final String... namedSteps) {
         this.storedCollection = new DynamicList<S>(asMap, namedSteps);
-        if (filter == Filter.NOT_EQUAL || filter == Filter.EQUAL) {
-            this.filter = filter;
-        } else {
-            throw new IllegalArgumentException("The only legal filters are equals and not equals");
-        }
+        this.contains = contains;
     }
-
-
-    private boolean checkCollection(final S rightObject) {
-        if (this.filter == Filter.NOT_EQUAL) {
-            return !this.storedCollection.contains(rightObject);
-        } else {
-            return this.storedCollection.contains(rightObject);
-        }
-    }
-
 
     protected S processNextStart() {
         while (true) {
             final S s = this.starts.next();
-            if (this.checkCollection(s)) {
+            if (this.contains.evaluate(s, storedCollection)) {
                 return s;
             }
         }
@@ -58,9 +41,9 @@ public abstract class CollectionFilterPipe<S> extends AbstractPipe<S, S> impleme
 
     public String toString() {
         if (this.storedCollection instanceof DynamicList)
-            return PipeHelper.makePipeString(this, this.filter, ((DynamicList) this.storedCollection).toString());
+            return PipeHelper.makePipeString(this, this.contains, ((DynamicList) this.storedCollection).toString());
         else
-            return PipeHelper.makePipeString(this, this.filter);
+            return PipeHelper.makePipeString(this, this.contains);
     }
 
     private class DynamicList<S> extends ArrayList<S> {

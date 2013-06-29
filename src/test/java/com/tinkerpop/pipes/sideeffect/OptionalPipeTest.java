@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.sideeffect;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.pipes.IdentityPipe;
-import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.ObjectFilterPipe;
 import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.TestCase;
@@ -47,7 +47,7 @@ public class OptionalPipeTest extends TestCase {
     public void testOptionalSideEffectWithFilter() {
         List<String> names = Arrays.asList("marko", "povel", "peter", "josh");
         List<String> results = new ArrayList<String>();
-        OptionalPipe<String> pipe1 = new OptionalPipe<String>(new Pipeline(new AggregatePipe<String>(results), new ObjectFilterPipe<String>("marko", FilterPipe.Filter.EQUAL)));
+        OptionalPipe<String> pipe1 = new OptionalPipe<String>(new Pipeline(new AggregatePipe<String>(results), new ObjectFilterPipe<String>("marko", Compare.EQUAL)));
         pipe1.setStarts(names);
         int counter = 0;
         while (pipe1.hasNext()) {

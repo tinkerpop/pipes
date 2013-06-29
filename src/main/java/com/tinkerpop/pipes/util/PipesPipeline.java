@@ -60,6 +60,7 @@ import java.util.Map;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
+@Deprecated
 public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPipeline<S, E> {
 
     private final AsMap asMap = new AsMap(this);
@@ -401,10 +402,10 @@ public class PipesPipeline<S, E> extends Pipeline<S, E> implements PipesFluentPi
         this.enablePath(true);
         return this;
     }
-    
+
     /**
      * Returns the current pipeline with a new end type.
-     * Useful if the end type of the pipeline cannot be implicitly derived. 
+     * Useful if the end type of the pipeline cannot be implicitly derived.
      *
      * @return returns the current pipeline with the new end type.
      */

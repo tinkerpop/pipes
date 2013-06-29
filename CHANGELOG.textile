@@ -1,7 +1,6 @@
 Pipes: A Lazy Data Flow Framework
 "http://pipes.tinkerpop.com":http://pipes.tinkerpop.com
 
-
 h2. Pipes 2.y.z
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-2.png!
@@ -16,7 +15,12 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
-* Added @Pipeline.cast@ to allow pipeline end type to be reset.
+* Added @Pipeline.cast@ to allow pipeline end type to be reset
+* Added a dependency to Blueprints and now Pipes can reference graph constructs
+* Added all the graph-related pipes in Gremlin to Pipes
+* @FilterPipe.Filter@ no longer exists as now @Compare@ should be used
+* Full support for @Predicate@ from Blueprints
+* Added @ToStringPipe@ to support streaming results out as as @Object.toString()@
 
 h3. Version 2.3.0 (March 20, 2013)
 

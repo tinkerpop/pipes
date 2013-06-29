@@ -13,11 +13,11 @@ import com.tinkerpop.pipes.util.PipeHelper;
  */
 public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final long low;
-    private final long high;
+    private final int low;
+    private final int high;
     private int counter = -1;
 
-    public RangeFilterPipe(final long low, final long high) {
+    public RangeFilterPipe(final int low, final int high) {
         this.low = low;
         this.high = high;
         if (this.low != -1 && this.high != -1 && this.low > this.high) {
@@ -47,11 +47,11 @@ public class RangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe
         super.reset();
     }
 
-    public long getHighRange() {
+    public int getHighRange() {
         return this.high;
     }
 
-    public long getLowRange() {
+    public int getLowRange() {
         return this.low;
     }
 }
