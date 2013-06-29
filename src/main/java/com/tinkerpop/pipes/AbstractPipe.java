@@ -109,6 +109,10 @@ public abstract class AbstractPipe<S, E> implements Pipe<S, E> {
             ((Pipe) this.starts).enablePath(enable);
     }
 
+    public boolean isPathEnabled() {
+      return this.pathEnabled;
+    }
+
     /**
      * The iterator method of Iterable is not faithful to the Java semantics of iterator().
      * This method simply returns the pipe itself (which is an iterator) and thus, is useful only for foreach iteration.
