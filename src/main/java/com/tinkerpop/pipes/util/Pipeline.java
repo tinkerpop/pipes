@@ -60,11 +60,18 @@ public class Pipeline<S, E> implements Pipe<S, E>, MetaPipe {
         final int pipelineLength = pipes.size();
         this.startPipe = (Pipe<S, ?>) pipes.get(0);
         this.endPipe = (Pipe<?, E>) pipes.get(pipelineLength - 1);
+
+        boolean pathEnabled = this.pathEnabled || startPipe.isPathEnabled();
+
         for (int i = 1; i < pipelineLength; i++) {
-            pipes.get(i).setStarts((Iterator) pipes.get(i - 1));
+            final Pipe<?, E> pipe = pipes.get(i - 1);
+            pathEnabled = pathEnabled || pipe.isPathEnabled();
+            pipes.get(i).setStarts((Iterator) pipe);
         }
 
-        enablePath(this.pathEnabled || this.endPipe.isPathEnabled());
+        if (pathEnabled != this.pathEnabled) {
+          enablePath(pathEnabled);
+        }
     }
 
     /**

@@ -51,6 +51,13 @@ public class PipelineTest extends TestCase {
       assertTrue(pipeline.isPathEnabled());
     }
 
+    public void testPathEnabledInOneStartPipeEnablesPath() {
+      final Pipe<String, String> pipe = new IdentityPipe<String>();
+      pipe.enablePath(true);
+      Pipeline<String, String> pipeline = new Pipeline<String, String>(new IdentityPipe(), pipe, new IdentityPipe());
+      assertTrue(pipeline.isPathEnabled());
+    }
+
     public void testPathDisabledInStartPipeDoesNotDisablePath() {
       Pipeline<String, String> pipeline = new Pipeline<String, String>();
       pipeline.enablePath(true);
