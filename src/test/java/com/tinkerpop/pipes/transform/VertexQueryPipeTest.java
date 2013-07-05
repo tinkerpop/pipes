@@ -15,9 +15,46 @@ public class VertexQueryPipeTest extends TestCase {
 
     private final Graph graph = TinkerGraphFactory.createTinkerGraph();
 
+    public void testBranchFactor() {
+        VertexQueryPipe<Vertex> pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.OUT, null, null, 1, 0, Integer.MAX_VALUE);
+        pipe.setStarts(Arrays.asList(graph.getVertex(1)));
+        int counter = 0;
+        while (pipe.hasNext()) {
+            String name = (String) pipe.next().getProperty("name");
+            assertTrue(name.equals("vadas") || name.equals("lop") || name.equals("josh"));
+            counter++;
+        }
+        assertEquals(counter, 1);
+
+        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, 1, 0, 2);
+        pipe.setStarts(Arrays.asList(graph.getVertex(1)));
+        counter = 0;
+        while (pipe.hasNext()) {
+            String name = (String) pipe.next().getProperty("name");
+            assertTrue(name.equals("vadas") || name.equals("lop") || name.equals("josh"));
+            counter++;
+        }
+        assertEquals(counter, 1);
+
+        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.OUT, null, null, 1, 0, 1);
+        pipe.setStarts(Arrays.asList(graph.getVertex(1), graph.getVertex(2), graph.getVertex(3)));
+        counter = 0;
+        while (pipe.hasNext()) {
+            String name = (String) pipe.next().getProperty("name");
+            assertTrue(name.equals("vadas") || name.equals("lop") || name.equals("josh"));
+            counter++;
+        }
+        assertEquals(counter, 1);
+
+        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.OUT, null, null, 0, 0, 0);
+        pipe.setStarts(Arrays.asList(graph.getVertex(1)));
+        assertFalse(pipe.hasNext());
+    }
+
+
     public void testQueryLimit() {
 
-        VertexQueryPipe<Vertex> pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, 0, 2);
+        VertexQueryPipe<Vertex> pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, Integer.MAX_VALUE, 0, 2);
         pipe.setStarts(Arrays.asList(graph.getVertex(1), graph.getVertex(3)));
         int counter = 0;
         while (pipe.hasNext()) {
@@ -37,7 +74,7 @@ public class VertexQueryPipeTest extends TestCase {
         assertEquals(counter, 3);
 
         counter = 0;
-        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, Integer.MIN_VALUE, 4);
+        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, Integer.MAX_VALUE, Integer.MIN_VALUE, 4);
         pipe.setStarts(graph.getVertices());
         while (pipe.hasNext()) {
             pipe.next();
@@ -46,7 +83,7 @@ public class VertexQueryPipeTest extends TestCase {
         assertEquals(counter, 5);
 
         counter = 0;
-        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, 2, 4);
+        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, Integer.MAX_VALUE, 2, 4);
         pipe.setStarts(graph.getVertices());
         while (pipe.hasNext()) {
             pipe.next();
@@ -55,7 +92,7 @@ public class VertexQueryPipeTest extends TestCase {
         assertEquals(counter, 3);
 
         counter = 0;
-        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.OUT, null, null, 2, 5);
+        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.OUT, null, null, Integer.MAX_VALUE, 2, 5);
         pipe.setStarts(graph.getVertices());
         while (pipe.hasNext()) {
             pipe.next();
@@ -65,7 +102,7 @@ public class VertexQueryPipeTest extends TestCase {
     }
 
     public void testDirection() {
-        VertexQueryPipe<Vertex> pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.IN, null, null, 0, Integer.MAX_VALUE);
+        VertexQueryPipe<Vertex> pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.IN, null, null, Integer.MAX_VALUE, 0, Integer.MAX_VALUE);
         pipe.setStarts(Arrays.asList(graph.getVertex(1)));
         assertFalse(pipe.hasNext());
 

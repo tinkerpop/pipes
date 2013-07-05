@@ -23,6 +23,7 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
 
     private Direction direction = Direction.BOTH;
     private String[] labels;
+    private int branchFactor;
 
     /**
      * Construct a new VertexQuery pipe that wraps an underlying Blueprints VertexQuery object.
@@ -32,11 +33,12 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
      * @param direction             this must be a legal direction representing the direction of the edge.
      * @param hasContainers         this must be a collection of 'has'-filters (i.e. property filters). Provide an empty list if no such filters are to be applied.
      * @param intervalContainers    this must be a collection of 'interval'-filters (i.e. property filters within a range). Provide an empty list if no such filters are to be applied.
+     * @param branchFactor          the branch factor for a particular vertex
      * @param lowRange              this must be a long value representing the low range of elements to emit
      * @param highRange             this must be a long value representing the high range of elements to emit
      * @param labels                this is a list of Strings representing the edge label filters to apply. Do not provide any Strings if no such filtering is desired.
      */
-    public VertexQueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final int lowRange, final int highRange, final String... labels) {
+    public VertexQueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final int branchFactor, final int lowRange, final int highRange, final String... labels) {
         this.setResultingElementClass(resultingElementClass);
         this.direction = direction;
         if (null != hasContainers) {
@@ -49,6 +51,7 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
                 super.addIntervalContainer(container);
             }
         }
+        this.branchFactor = branchFactor;
         super.setLowRange(lowRange);
         super.setHighRange(highRange);
         this.labels = labels;
@@ -62,8 +65,14 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
         this.labels = labels;
     }
 
+    public void setBranchFactor(final int branchFactor) {
+        this.branchFactor = branchFactor;
+    }
+
     public String toString() {
-        return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), super.toString());
+        return (this.branchFactor == Integer.MAX_VALUE) ?
+                PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), super.toString()) :
+                PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), "branch:" + branchFactor, Arrays.asList(this.labels), super.toString());
     }
 
     public E processNextStart() {
@@ -91,8 +100,18 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
                         query = query.interval(intervalContainer.key, (Comparable) intervalContainer.startValue, (Comparable) intervalContainer.endValue);
                     }
                 }
-                if (this.highRange != Integer.MAX_VALUE) {
-                    query = query.limit(this.highRange - this.count);
+                if (this.branchFactor == Integer.MAX_VALUE) {
+                    if (this.highRange != Integer.MAX_VALUE) {
+                        int temp = this.highRange - this.count;
+                        query = temp > 0 ? query.limit(temp) : query;
+                    }
+                } else {
+                    if (this.highRange == Integer.MAX_VALUE) {
+                        query = query.limit(this.branchFactor);
+                    } else {
+                        int temp = this.highRange - this.count;
+                        query = query.limit(temp < this.branchFactor ? temp : this.branchFactor);
+                    }
                 }
                 if (this.elementClass.equals(Vertex.class))
                     this.currentIterator = (Iterator<E>) query.vertices().iterator();

@@ -3,6 +3,8 @@ package com.tinkerpop.pipes.transform;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.pipes.util.PipeHelper;
 
+import java.util.Arrays;
+
 /**
  * OutPipe will emit vertices that are the tail/source of the outgoing edges to the current vertex.
  *
@@ -14,7 +16,13 @@ public class OutPipe extends VerticesVerticesPipe {
         super(Direction.OUT, labels);
     }
 
+    public OutPipe(final int branchFactor, final String... labels) {
+        super(Direction.OUT, branchFactor, labels);
+    }
+
     public String toString() {
-        return PipeHelper.makePipeString(this, this.labels);
+        return (this.branchFactor == Integer.MAX_VALUE) ?
+                PipeHelper.makePipeString(this, Arrays.asList(this.labels)) :
+                PipeHelper.makePipeString(this, this.branchFactor, Arrays.asList(this.labels));
     }
 }

@@ -21,6 +21,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 * @FilterPipe.Filter@ no longer exists as now @Compare@ should be used
 * Full support for @Predicate@ from Blueprints
 * Added @ToStringPipe@ to support streaming results out as as @Object.toString()@
+* Added branch factor support to all @VerticesVerticesPipe@ and @VerticesEdgesPipe@ classes
 
 h3. Version 2.3.0 (March 20, 2013)
 

@@ -13,12 +13,18 @@ import java.util.Iterator;
  */
 public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> implements TransformPipe<Vertex, Vertex> {
 
+    protected int branchFactor;
     protected Direction direction;
     protected String[] labels;
     protected Iterator<Vertex> nextEnds = PipeHelper.emptyIterator();
 
     public VerticesVerticesPipe(final Direction direction, final String... labels) {
+        this(direction, Integer.MAX_VALUE, labels);
+    }
+
+    public VerticesVerticesPipe(final Direction direction, final int branchFactor, final String... labels) {
         this.direction = direction;
+        this.branchFactor = branchFactor;
         this.labels = labels;
     }
 
@@ -33,7 +39,10 @@ public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> implement
             if (this.nextEnds.hasNext()) {
                 return this.nextEnds.next();
             } else {
-                this.nextEnds = this.starts.next().getVertices(this.direction, this.labels).iterator();
+                if (branchFactor != Integer.MAX_VALUE)
+                    this.nextEnds = this.starts.next().query().direction(this.direction).labels(this.labels).limit(this.branchFactor).vertices().iterator();
+                else
+                    this.nextEnds = this.starts.next().getVertices(this.direction, this.labels).iterator();
             }
         }
     }
@@ -44,6 +53,10 @@ public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> implement
 
     public String[] getLabels() {
         return this.labels;
+    }
+
+    public int getBranchFactor() {
+        return this.branchFactor;
     }
 
     public String toString() {

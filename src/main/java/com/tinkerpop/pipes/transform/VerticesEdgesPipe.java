@@ -16,10 +16,16 @@ public class VerticesEdgesPipe extends AbstractPipe<Vertex, Edge> implements Tra
 
     protected Direction direction;
     protected String[] labels;
+    protected int branchFactor;
     protected Iterator<Edge> nextEnds = PipeHelper.emptyIterator();
 
     public VerticesEdgesPipe(final Direction direction, final String... labels) {
+        this(direction, Integer.MAX_VALUE, labels);
+    }
+
+    public VerticesEdgesPipe(final Direction direction, final int branchFactor, final String... labels) {
         this.direction = direction;
+        this.branchFactor = branchFactor;
         this.labels = labels;
     }
 
@@ -29,6 +35,10 @@ public class VerticesEdgesPipe extends AbstractPipe<Vertex, Edge> implements Tra
 
     public Direction getDirection() {
         return this.direction;
+    }
+
+    public int getBranchFactor() {
+        return this.branchFactor;
     }
 
     public void reset() {
@@ -42,7 +52,10 @@ public class VerticesEdgesPipe extends AbstractPipe<Vertex, Edge> implements Tra
             if (this.nextEnds.hasNext()) {
                 return this.nextEnds.next();
             } else {
-                this.nextEnds = this.starts.next().getEdges(this.direction, this.labels).iterator();
+                if (this.branchFactor == Integer.MAX_VALUE)
+                    this.nextEnds = this.starts.next().getEdges(this.direction, this.labels).iterator();
+                else
+                    this.nextEnds = this.starts.next().query().direction(this.direction).labels(this.labels).limit(this.branchFactor).edges().iterator();
             }
         }
     }
