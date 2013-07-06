@@ -12,10 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * QueryPipe makes use of the Vertex.query() method in Blueprints which allows for intelligent edge look ups from the underlying graph.
- * Note that VertexQueryPipe is automatically constructed by a GremlinPipeline when a pattern of the following is seen:
- * <p>outE(x).has(x).interval(x).xV()</p>
- * The final xV() can be either inV(), outV(), or bothV().
+ * VertexQueryPipe makes use of the Vertex.query() method in Blueprints which allows for intelligent edge look ups from the underlying graph.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -33,7 +30,7 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
      * @param direction             this must be a legal direction representing the direction of the edge.
      * @param hasContainers         this must be a collection of 'has'-filters (i.e. property filters). Provide an empty list if no such filters are to be applied.
      * @param intervalContainers    this must be a collection of 'interval'-filters (i.e. property filters within a range). Provide an empty list if no such filters are to be applied.
-     * @param branchFactor          the branch factor for a particular vertex
+     * @param branchFactor          the branch factor for a particular vertex (determines the limit() of the VertexQuery)
      * @param lowRange              this must be a long value representing the low range of elements to emit
      * @param highRange             this must be a long value representing the high range of elements to emit
      * @param labels                this is a list of Strings representing the edge label filters to apply. Do not provide any Strings if no such filtering is desired.
@@ -97,7 +94,7 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
                 }
                 if (null != this.intervalContainers) {
                     for (final IntervalContainer intervalContainer : this.intervalContainers) {
-                        query = query.interval(intervalContainer.key, (Comparable) intervalContainer.startValue, (Comparable) intervalContainer.endValue);
+                        query = query.interval(intervalContainer.key, intervalContainer.startValue, intervalContainer.endValue);
                     }
                 }
                 if (this.branchFactor == Integer.MAX_VALUE) {
@@ -113,10 +110,9 @@ public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
                         query = query.limit(temp < this.branchFactor ? temp : this.branchFactor);
                     }
                 }
-                if (this.elementClass.equals(Vertex.class))
-                    this.currentIterator = (Iterator<E>) query.vertices().iterator();
-                else
-                    this.currentIterator = (Iterator<E>) query.edges().iterator();
+                this.currentIterator = this.elementClass.equals(Vertex.class) ?
+                        (Iterator<E>) query.vertices().iterator() :
+                        (Iterator<E>) query.edges().iterator();
             }
         }
     }

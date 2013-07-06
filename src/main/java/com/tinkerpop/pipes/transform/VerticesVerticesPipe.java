@@ -18,6 +18,8 @@ public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> implement
     protected String[] labels;
     protected Iterator<Vertex> nextEnds = PipeHelper.emptyIterator();
 
+    private final boolean doBranchFactor;
+
     public VerticesVerticesPipe(final Direction direction, final String... labels) {
         this(direction, Integer.MAX_VALUE, labels);
     }
@@ -26,6 +28,7 @@ public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> implement
         this.direction = direction;
         this.branchFactor = branchFactor;
         this.labels = labels;
+        this.doBranchFactor = branchFactor != Integer.MAX_VALUE;
     }
 
     public void reset() {
@@ -39,10 +42,9 @@ public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> implement
             if (this.nextEnds.hasNext()) {
                 return this.nextEnds.next();
             } else {
-                if (branchFactor != Integer.MAX_VALUE)
-                    this.nextEnds = this.starts.next().query().direction(this.direction).labels(this.labels).limit(this.branchFactor).vertices().iterator();
-                else
-                    this.nextEnds = this.starts.next().getVertices(this.direction, this.labels).iterator();
+                this.nextEnds = this.doBranchFactor ?
+                        this.starts.next().query().direction(this.direction).labels(this.labels).limit(this.branchFactor).vertices().iterator() :
+                        this.starts.next().getVertices(this.direction, this.labels).iterator();
             }
         }
     }

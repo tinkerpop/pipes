@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * QueryPipe consolidates the fields and methods required for both VertexQueryPipe and GraphQueryPipe.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E> implements TransformPipe<S, E> {
@@ -21,7 +23,6 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
     protected Class<E> elementClass;
     protected int lowRange = 0;
     protected int highRange = Integer.MAX_VALUE;
-
     protected int count = 0;
 
     protected Iterator<E> currentIterator = PipeHelper.emptyIterator();
@@ -95,10 +96,10 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
 
     public static class IntervalContainer {
         public String key;
-        public Object startValue;
-        public Object endValue;
+        public Comparable startValue;
+        public Comparable endValue;
 
-        public IntervalContainer(final String key, final Object startValue, final Object endValue) {
+        public IntervalContainer(final String key, final Comparable startValue, final Comparable endValue) {
             this.key = key;
             this.startValue = startValue;
             this.endValue = endValue;

@@ -1,6 +1,7 @@
 package com.tinkerpop.pipes.transform;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Iterator;
@@ -61,7 +62,7 @@ public class ToStringPipe<S> extends AbstractPipe<S, String> implements Transfor
 
         public Object next() {
             if (count > array.length)
-                throw new NoSuchElementException();
+                throw new FastNoSuchElementException();
 
             return array[count++];
         }

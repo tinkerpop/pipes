@@ -9,7 +9,6 @@ import java.util.Queue;
  * A Queue implementation that does not remove items when "drained," but instead, simply makes use of a counter.
  *
  * @author Matthias Broecheler
- * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class ArrayQueue<T> extends ArrayList<T> implements Queue<T> {
 

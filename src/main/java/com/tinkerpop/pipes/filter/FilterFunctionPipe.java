@@ -21,7 +21,7 @@ public class FilterFunctionPipe<S> extends AbstractPipe<S, S> implements FilterP
     public S processNextStart() {
         while (true) {
             final S s = this.starts.next();
-            if (filterFunction.compute(s))
+            if (this.filterFunction.compute(s))
                 return s;
         }
     }

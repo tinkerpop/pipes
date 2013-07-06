@@ -10,12 +10,13 @@ import com.tinkerpop.pipes.util.PipeHelper;
 import java.util.Iterator;
 
 /**
+ * GraphQueryPipe makes use of the Graph.query() method in Blueprints which allows for intelligent element look ups from the underlying graph.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class GraphQueryPipe<E extends Element> extends QueryPipe<Graph, E> {
 
     public GraphQueryPipe(final Class<E> elementClass) {
-        super();
         super.setResultingElementClass(elementClass);
     }
 
@@ -38,16 +39,16 @@ public class GraphQueryPipe<E extends Element> extends QueryPipe<Graph, E> {
                 }
                 if (null != this.intervalContainers) {
                     for (final IntervalContainer intervalContainer : this.intervalContainers) {
-                        query = query.interval(intervalContainer.key, (Comparable) intervalContainer.startValue, (Comparable) intervalContainer.endValue);
+                        query = query.interval(intervalContainer.key, intervalContainer.startValue, intervalContainer.endValue);
                     }
                 }
                 if (this.highRange != Integer.MAX_VALUE) {
                     query = query.limit(this.highRange - this.count);
                 }
-                if (this.elementClass.equals(Vertex.class))
-                    this.currentIterator = (Iterator<E>) query.vertices().iterator();
-                else
-                    this.currentIterator = (Iterator<E>) query.edges().iterator();
+
+                this.currentIterator = this.elementClass.equals(Vertex.class) ?
+                        (Iterator<E>) query.vertices().iterator() :
+                        (Iterator<E>) query.edges().iterator();
             }
         }
     }
