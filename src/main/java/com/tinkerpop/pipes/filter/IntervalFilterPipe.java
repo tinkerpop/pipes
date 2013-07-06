@@ -13,10 +13,10 @@ import com.tinkerpop.pipes.AbstractPipe;
 public class IntervalFilterPipe<S extends Element> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
     private final String key;
-    private final Object startValue;
-    private final Object endValue;
+    private final Comparable startValue;
+    private final Comparable endValue;
 
-    public IntervalFilterPipe(final String key, final Object startValue, final Object endValue) {
+    public IntervalFilterPipe(final String key, final Comparable startValue, final Comparable endValue) {
         this.key = key;
         this.startValue = startValue;
         this.endValue = endValue;
@@ -39,11 +39,11 @@ public class IntervalFilterPipe<S extends Element> extends AbstractPipe<S, S> im
         return this.key;
     }
 
-    public Object getStartValue() {
+    public Comparable getStartValue() {
         return this.startValue;
     }
 
-    public Object getEndValue() {
+    public Comparable getEndValue() {
         return this.endValue;
     }
 }
