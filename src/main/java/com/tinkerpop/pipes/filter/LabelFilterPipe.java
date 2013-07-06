@@ -1,7 +1,7 @@
 package com.tinkerpop.pipes.filter;
 
-import com.tinkerpop.blueprints.Predicate;
 import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Predicate;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 

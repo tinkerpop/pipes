@@ -46,7 +46,7 @@ public class VertexQueryPipeTest extends TestCase {
         }
         assertEquals(counter, 1);
 
-        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.OUT, null, null, 0, 0, 0);
+        pipe = new VertexQueryPipe<Vertex>(Vertex.class, Direction.OUT, null, null, -1, 0, Integer.MAX_VALUE);
         pipe.setStarts(Arrays.asList(graph.getVertex(1)));
         assertFalse(pipe.hasNext());
     }

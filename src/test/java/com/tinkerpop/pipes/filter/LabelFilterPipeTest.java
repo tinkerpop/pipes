@@ -5,7 +5,6 @@ import com.tinkerpop.blueprints.Contains;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import junit.framework.TestCase;
@@ -32,7 +31,7 @@ public class LabelFilterPipeTest extends TestCase {
         }
         assertEquals(counter, 2);
 
-        lfp = new LabelFilterPipe(Contains.NOT_IN, Arrays.asList("knows","blah"));
+        lfp = new LabelFilterPipe(Contains.NOT_IN, Arrays.asList("knows", "blah"));
         lfp.setStarts(marko.getEdges(Direction.OUT).iterator());
         assertTrue(lfp.hasNext());
         counter = 0;

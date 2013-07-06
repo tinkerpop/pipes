@@ -1,6 +1,5 @@
 package com.tinkerpop.pipes.util;
 
-import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.iterators.EmptyIterator;
