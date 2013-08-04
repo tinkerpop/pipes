@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Release Notes</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Pipes</a></h3>
+  <h1>Release Notes</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Release-Notes"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Release-Notes"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p>Pipes: A Lazy Data Flow Framework<br /><a href="../../pipes/2.4.0/Home.html">http://pipes.tinkerpop.com</a></p>
+<h2>Pipes 2.y.z</h2>
+<p><img src="images/pipes-2.png" alt="" /></p>
+<h3>Version 2.3.0 (March 20, 2013)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;2.3.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Breaking <span class="caps">API</span> change with <code>GroupByReducePipe</code> &#x2014; <code>Iterator&lt;V&gt;</code> is now <code>List&lt;V&gt;</code></li>
+	<li>Fixed a bug in <code>GroupByReducePipe</code> when <code>LoopPipe</code> is used in conjunction</li>
+	<li>Minor speed improvement to path calculations</li>
+	<li>Moved <code>IdentityPipe</code> to root package as it is not a <code>TransformPipe</code></li>
+	<li>Added <code>&lt;S,E&gt;</code> typing to <code>TransformPipe</code> interface and updated respective pipe implementations</li>
+	<li><code>ExceptFilterPipe</code> and <code>RetainFilterPipe</code> support <code>String[]</code> of named steps to reference as collection</li>
+	<li>Added sub-interfaces of <code>LazySideEffectPipe</code> and <code>GreedySideEffectPipe</code> to specify when sideeffect is ready</li>
+	<li>Made <code>Row.getColumnNames()</code> public</li>
+	<li>Better support for indexing <code>AsPipes</code> within a <code>MetaPipe</code> in <code>FluentUtility</code></li>
+	<li>Added <code>TransformPipe.Order</code> enums for ordering specifications in <code>OrderPipe</code> and <code>OrderMapPipe</code></li>
+	<li>Added <code>OrderMapPipe</code> to sort a map given a <code>PipeFunction</code> and then emit map keys</li>
+	<li>Added <code>ShufflePipe</code> to gather up all objects then randomize their output</li>
+</ul><hr /><h3>Version 2.2.0 (December 19, 2012)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;2.2.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Fixed a comparator bug in <code>OrderPipe</code></li>
+	<li>Garbage collector optimized <code>CycliePathFilterPipe</code> to avoid newing a set each iteration</li>
+	<li>Added <code>TransformPipe</code> interface to denote a transform operation so path joins are ignored</li>
+</ul><hr /><h3>Version 2.1.0 (August 4, 2012)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;2.1.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Added Travis continuous integration support</li>
+	<li>Added getters for getting the high and low end ranges of a <code>RangeFilterPipe</code></li>
+	<li>Made exception handling faster with <code>FastNoSuchElementException</code></li>
+</ul><hr /><h3>Version 2.0.0 (May 23, 2012)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;2.0.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li><code>GatherPipe</code> no longer locks on looping and is semantically sound for depth-first traversing</li>
+	<li>Added <code>GatherFunctionPipe</code> for user provided function to transform the gathered list</li>
+	<li>Added <code>Pipe.enablePath(boolean)</code> method to support the turning on/off of path calculations (efficiency reasons)</li>
+	<li>Renamed <code>Pipe.getPath()</code> to <code>Pipe.getCurrentPath()</code></li>
+	<li><code>SideEffectCapPipe</code> moved to the <code>transform</code> package as it was wrongly organized in the <code>sideeffect</code> package</li>
+	<li>Fixed an indexing issue in <code>ExhaustMergePipe</code> that made itself apparent when two split/merges happened in the same pipeline</li>
+	<li>Added <code>Tree</code> and <code>TreePipe</code> to return a tree representation of a traversal</li>
+	<li>Merged <code>PathPipe</code> and <code>PathFunctionPipe</code> into one class called <code>PathPipe</code></li>
+	<li>Added <code>AbstractMetaPipe</code> to encapsulate reused behavior in all <code>MetaPipe</code> implementations</li>
+	<li>The <code>CopySplitPipe</code>, <code>FairMergePipe</code>, and <code>ExhaustMergePipe</code> all have functioning path calculations</li>
+	<li>Removed unused extra methods for merging in <code>PipesFluentPipeline</code> interface (and updated respective implementations)</li>
+	<li>Added <code>OrderPipe</code> to do inline sorting of objects in a stream</li>
+	<li>Added numerous help methods to the <code>Table</code> data structure</li>
+</ul><hr /><h2>Pipes 0.x</h2>
+<p><img src="images/pipes-pipes.png" alt="" /></p>
+<h3>Version 1.0 (Pipes &#x2014; February 28, 2012)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;1.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Added <code>SelectPipe</code> to select the objects of named steps from a pipeline</li>
+	<li>Separated <code>Row</code> from <code>Table</code> so it can be reused by other pipes (e.g. <code>SelectPipe</code>)</li>
+	<li>Heavily reworked <code>PipesFluentPipeline</code> JavaDoc to make it a single point of reference</li>
+	<li>Updated <code>LoopPipe</code> semantics such that if there is an emit function, then the final object in a while isn&#x2019;t returned</li>
+	<li>Updated <code>GroupCountFunctionPipe</code> semantics such that the value-function gets a <code>Pair</code> containing incoming object and last value for that object</li>
+	<li>Reorganized the <code>com.tinkerpop.pipes.util</code> package</li>
+	<li>Removed the <code>objectFilter</code> step from <code>PipeFluentPipeline</code> as <code>retain</code> and <code>except</code> can be used instead</li>
+	<li><code>EmptyIterator</code> is now a singleton</li>
+	<li><code>ScatterPipe</code> now scatters <code>Map</code> objects into <code>Map.Entry</code> streams</li>
+	<li>Added <code>GroupByPipe</code> which groups values under a provided key</li>
+	<li>Added <code>GroupByReducePipe</code> which groups reduced values under a provided key</li>
+</ul><hr /><p><img src="images/pipes-sink-pipe.png" alt="" /></p>
+<h3>Version 0.9 (Sink &#x2014; December 7, 2011)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.9&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Removed all <a href="../../blueprints/2.4.0/Home.html">Blueprints</a> graph related dependencies</li>
+	<li>Renamed <code>UniquePathFilterPipe</code> to <code>CyclicPathFilterPipe</code></li>
+	<li>Renamed and removed numerous methods in <code>FluentPipeline</code> to make <span class="caps">DSL</span> construction more concise</li>
+	<li>Updated <code>LoopPipe</code> to support emit functionality via <code>PipeFunction</code></li>
+	<li>Added <code>StorePipe</code> to lazily save objects to provided collection</li>
+	<li>Added function support to <code>DeduplicateFilterPipe</code></li>
+</ul><hr /><p><img src="images/pipes-cleaner-pipe.png" alt="" /></p>
+<h3>Version 0.8 (Cleaner &#x2014; September 18, 2011)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.8&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li><code>SideEffectPipe</code> now has signature of <code>&lt;S,T&gt;</code> instead of <code>&lt;S,E,T&gt;</code></li>
+	<li><code>GroupCountFunctionPipe</code> has signature of <code>&lt;S,K&gt;</code> to denote the key of its <code>Map&lt;K,Number&gt;</code> side-effect</li>
+	<li>Removed <code>ComparisonFilterPipe</code> as it is confusing and now <code>PipeHelper</code> has comparison support</li>
+	<li>Added <code>PipeHelper.makePipeString()</code> to have a single point where all pipe <code>toString()</code>s are created</li>
+	<li>Optimized <code>PipeHelper.counter()</code> and <code>PipeHelper.fillCollection()</code> by respecting architecture of <code>AbstractPipe</code></li>
+	<li>Added <code>PipeHelper.iterate()</code> to complete drain an iterator</li>
+	<li>Added <code>FluentPipeline</code> as a utility class for fluently constructing a pipeline</li>
+	<li>Added <code>RetainFilterPipe</code>, added <code>ExceptFilterPipe</code>, and abstracted <code>CollectionFilterPipe</code></li>
+	<li>Added <code>EdgesPipe</code>, added <code>VerticesPipe</code>, and abstracted <code>GraphElementPipe</code></li>
+	<li>Renamed <code>AggregatorPipe</code> to <code>AggregatePipe</code></li>
+	<li><code>AndFilterPipe</code> and <code>OrFilterPipe</code> will automatically wrap provided pipes in a <code>HasNextPipe</code></li>
+	<li>Generalized <code>GroupCountPipe</code> to have a value of <code>Map&lt;Object,Number&gt;</code> instead of <code>Long</code></li>
+	<li>Migrated <code>TablePipe</code> and <code>Table</code> from Gremlin</li>
+	<li>Simplified the semantics of <code>HasNextPipe</code> (use <code>Pipe.hasNext()</code> to accomplish previous behavior)</li>
+	<li>Added <code>MemoizePipe</code> to memoize the mapping of a particular pipe</li>
+	<li>Simplified <code>PipeClosure</code> to be purely functional and now named <code>PipeFunction</code>
+	<ul><li>Renamed <code>XXXClosurePipe</code> to <code>XXXFunctionPipe</code></li>
+	</ul></li>
+	<li>Fixed performance issue in <code>RangeFilterPipe</code> and provided <code>long</code> ranges</li>
+</ul><hr /><p><img src="images/pipes-pvc-pipe.png" alt="" /></p>
+<h3>Version 0.7 (<span class="caps">PVC</span> &#x2014; August 1, 2011)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.7&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Added support for <code>Vertex.getOutEdges(String...)</code> and <code>Vertex.getInEdges(String...)</code></li>
+	<li>Updated <code>AggregatorPipe</code> to be fully <code>SideEffectPipe</code> compliant and to respect <code>getPath()</code></li>
+	<li>Added <code>PipeClosure</code> to support function-based pipes</li>
+	<li>Migrated all the <a href="../../gremlin/2.4.0/Home.html">Gremlin</a> specific pipes to Pipes</li>
+	<li>Refactored package names to align with pipe semantics</li>
+	<li>Flipped the meaning of <code>Filter</code>, where <code>true</code> means pass, and <code>false</code> means filter</li>
+	<li>Added <code>AggregatorPipe</code> <code>PipeClosure</code> to process object prior to insertion into the aggregate collection</li>
+	<li>Added temporary fix for <code>AggregatorPipe</code>/<code>LoopPipe</code> phenomena</li>
+	<li><code>IfThenElsePipe</code> now requires an <code>elseFunction</code></li>
+</ul><hr /><p><img src="images/pipes-toilet-pipe.png" alt="" /></p>
+<h3>Version 0.6 (Toilet &#x2014; June 15, 2011)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.6&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li><code>RangeFilterPipe</code> max value is now inclusive</li>
+	<li>Added <code>OptionalPipe</code> which is like <code>BackFilterPipe</code>, but non-filtering.</li>
+	<li>Updated <code>AggregatorPipe</code> to support multiple <code>setStarts()</code></li>
+</ul><hr /><p><img src="images/pipes-drain-pipe.png" alt="" /></p>
+<h3>Version 0.5 (Drain &#x2014; May 8, 2011)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.5&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Added <code>OutPipe</code>, <code>InPipe</code>, and <code>BothPipe</code> to allow for vertex-vertex hoping</li>
+	<li>Removed <code>VertexEdgeLabelFilterPipe</code> as it is now covered by more efficient pipes</li>
+	<li>Added the <code>MetaPipe</code> interface to allow pipes to acknowledge pipe wrapping</li>
+	<li>Added <code>CopySplitPipe</code>, <code>ExhaustMergePipe</code>, and <code>FairMergePipe</code></li>
+	<li>Optimized <code>PropertyPipe</code> and <code>UniquePathFilterPipe</code></li>
+	<li>Added support for Pipe.reset() and thus, pipe reuse</li>
+</ul><hr /><p><img src="images/pipes-spigot-pipe.png" alt="" /></p>
+<h3>Version 0.4 (Spigot &#x2014; April 4, 2011)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.4&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Added <code>StartPipe</code> to aid in creating an <code>Object</code>-to-<code>Pipe</code> converter</li>
+	<li>Removed <code>VertexEdge</code> and <code>EdgeVertex</code> pipes for more low-level/faster pipes.</li>
+	<li>Supports new Blueprints packaging scheme.</li>
+</ul><hr /><p><img src="images/pipes-mario-pipe.png" alt="" /></p>
+<h3>Version 0.3.1 (Mario &#x2014; March 2, 2011)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.3.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Added <code>VertexEdgeLabelFilterPipe</code> to reflect Blueprints <code>Vertex</code> <span class="caps">API</span> update</li>
+	<li>Added <code>UniquePathFilterPipe</code> to filter paths that have visited the same object twice</li>
+</ul><h3>Version 0.3 (Mario &#x2014; January 22, 2011)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.3&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Added a general <code>toString()</code> model to articulate pipe construction</li>
+	<li>Redesigned path-model to where <code>enablePaths()</code> no longer required
+	<ul><li>Added <code>HistoryIterator</code> to replace the <code>enablePath()</code> model</li>
+	</ul></li>
+	<li>Renamed <code>CountCombine</code> to <code>GroupCount</code></li>
+	<li>Added <code>ExpandableIterator</code> to support pipe looping</li>
+	<li>Removed many unused pipes for the sake of clarity and simplicity</li>
+	<li>Added <code>GatherPipe</code> as a composite of <code>SideEffectCapPipe</code> and <code>AggregatorPipe</code></li>
+	<li>Removed <code>EndSupportPipe</code> as that is what <code>ScatterPipe</code> now accomplishes</li>
+</ul><hr /><p><img src="images/pipes-clogged-pipe.png" alt="" /></p>
+<h3>Version 0.2 (Clogged &#x2014; December 14, 2010)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.2&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Added path functionality to get the path pipe traversed
+	<ul><li>Added <code>PathSequence</code> path utility</li>
+		<li>Added <code>PathPipe</code> to support using paths in a computation</li>
+	</ul></li>
+	<li>Numerous test cases added</li>
+</ul><hr /><p><img src="images/pipes-leaky-pipe.png" alt="" /></p>
+<h3>Version 0.1.1 (Leaky &#x2014; October 28, 2010)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.1.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Fixed &#x2018;reset pipe&#x2019; issue in <code>FutureFilterPipe</code></li>
+</ul><h3>Version 0.1 (Leaky &#x2014; September 22, 2010)</h3>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop&lt;/groupId&gt;
+  &lt;artifactId&gt;pipes&lt;/artifactId&gt;
+  &lt;version&gt;0.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<ul><li>Initial release as the core engine for Gremlin 0.5</li>
+</ul>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:21:32</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+com.tinkerpop.pipes
+com.tinkerpop.pipes.branch
+com.tinkerpop.pipes.filter
+com.tinkerpop.pipes.sideeffect
+com.tinkerpop.pipes.transform
+com.tinkerpop.pipes.util
+com.tinkerpop.pipes.util.iterators
+com.tinkerpop.pipes.util.structures

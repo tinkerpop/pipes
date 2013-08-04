@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Filter Pipes</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Pipes</a></h3>
+  <h1>Filter Pipes</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Filter-Pipes"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Filter-Pipes"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="images/duck-plumber.jpg" alt="" /></p>
+<p>A common Pipes pattern is the filtering of objects. A filter-based pipe will consume objects and either emit them or not. If they are not emitted, then they are considered filtered by the pipe. A useful interface to implement that describes this behavior is <code>FilterPipe&lt;S&gt; extends Pipe&lt;S,S&gt;</code>.</p>
+<h2>Generic Filter Pipe</h2>
+<p>The generic filter pipe is <code>FilterFunctionPipe</code>. A <code>FilterFunctionPipe</code> takes a <code>PipeFunction</code> (see <a class="internal present" href="Pipe-Types.html">Pipe Types</a>) that computes on <code>S</code> and either emits it or not. An example <code>PipeFunction</code> is provided below:</p>
+<pre><code>public class CharCountPipeFunction implements PipeFunction&lt;String,Boolean&gt; {
+  
+  private final int number;
+  
+  public CharCountPipeFunction(int number) {
+    this.number = number;
+  }
+
+  public Boolean compute(String argument) {
+     return argument.length() == this.number;
+  }
+}</code></pre>
+<p>When put in the context of a <code>FilterFunctionPipe</code>, the code looks as follows:</p>
+<pre><code>Pipe&lt;String, String&gt; pipe = new FilterFunctionPipe&lt;String&gt;(new CharCountPipeFunction(4));
+pipe.setStarts(Arrays.asList("tell", "me", "your", "name"));
+// the results of the iteration are: "tell", "your", "name"</code></pre>
+<h2>Basic Filtering</h2>
+<p>The <code>RandomFilterPipe</code> comes with the Pipes distribution. <code>RandomFilterPipe</code> will only allow a consumed object to be emitted if a biased coin toss lands on &#x201C;heads.&#x201D; At the extremes, if <code>bias</code> is 0.0 then no incoming objects are emitted and if <code>bias</code> is 1.0, then every incoming object is emitted.</p>
+<pre><code>public class RandomFilterPipe&lt;S&gt; extends AbstractPipe&lt;S, S&gt; implements FilterPipe&lt;S&gt; {
+    private static final Random RANDOM = new Random();
+    private final double bias;
+    public SampleFilterPipe(final double bias) {
+        this.bias = bias;
+    }
+    protected S processNextStart() {
+        while (this.starts.hasNext()) {
+            S s = this.starts.next();
+            if (bias &gt;= RANDOM.nextDouble()) {
+                return s;
+            }
+        }
+        throw new NoSuchElementException();
+    }
+}</code></pre>
+<p>The <code>processNextStart()</code> method structure above is a common pattern in filter-based pipes. In short, a <code>while(this.starts.hasNext())</code> is evaluated until an incoming start object meets the criteria and is returned (i.e. emitted). If there are no more starts and the criteria is not met, then a <code>NoSuchElementException</code> is thrown. Beware of using recursion to accomplish a similar behavior. As the amount of data grows that is streaming through, recursion-based methods can easily yield a <code>StackOverflowError</code>.</p>
+<h2>Comparison-Based Filtering</h2>
+<p>More complicated filters can be created than what was presented above. These filters usually check objects to determine whether to emit them or not. There is an interface called <code>ComparisonFilterPipe&lt;S,T&gt;</code>. Implementations of this interface consume objects of type <code>S</code>. If a check of that object passes (i.e. return <code>true</code>), then the <code>S</code> object is emitted, else it is filtered. <code>ComparisonFilterPipe</code> has the following signature:</p>
+<pre><code>public interface ComparisonFilterPipe&lt;S, T&gt; extends FilterPipe&lt;S&gt; {
+    public enum Filter {
+        EQUAL, NOT_EQUAL, GREATER_THAN, LESS_THAN, GREATER_THAN_EQUAL, LESS_THAN_EQUAL
+    }
+    public boolean compareObjects(T leftObject, T rightObject);
+}</code></pre>
+<p>The important method is <code>compareObjects()</code>. This method returns <code>true</code> if the left hand object is <code>EQUAL</code>, <code>NOT_EQUAL</code>, etc. to the right hand object.</p>
+<p>Next, there is an abstract class called <code>AbstractComparisonFilterPipe&lt;S,T&gt;</code> that implements <code>ComparisonFilterPipe</code>. More specifically, it provides a standard implementation of <code>ComparisonFilterPipe.compareObjects()</code>. For most situations, this method is sufficient. However, if not, simply override the method with an implementation that meets the requirements of the designed pipe.</p>
+<pre><code>public boolean compareObjects(final T leftObject, final T rightObject) {
+        switch (this.filter) {
+            case EQUAL:
+                if (null == leftObject)
+                    return rightObject == null;
+                return leftObject.equals(rightObject);
+            case NOT_EQUAL:
+                if (null == leftObject)
+                    return rightObject != null;
+                return !leftObject.equals(rightObject);
+            case GREATER_THAN:
+                if (null == leftObject || rightObject == null)
+                    return false;
+                return ((Comparable) leftObject).compareTo(rightObject) == 1;
+            case LESS_THAN:
+                if (null == leftObject || rightObject == null)
+                    return false;
+                return ((Comparable) leftObject).compareTo(rightObject) == -1;
+            case GREATER_THAN_EQUAL:
+                if (null == leftObject || rightObject == null)
+                    return false;
+                return ((Comparable) leftObject).compareTo(rightObject) &gt;= 0;
+            case LESS_THAN_EQUAL:
+                if (null == leftObject || rightObject == null)
+                    return false;
+                return ((Comparable) leftObject).compareTo(rightObject) &lt;= 0;
+            default:
+                throw new RuntimeException("Invalid state as no valid filter was provided");
+        }
+    }</code></pre>
+<p>Note: it many situations, such as <code>ObjectFilterPipe</code>, the right hand object to allow or disallow is stored in the pipe and compared with each object passed through it.</p>
+<p><img src="http://github.com/tinkerpop/pipes/raw/master/doc/images/filter-example.png" alt="" /></p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:21:32</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

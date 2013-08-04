@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Basic Pipes</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Pipes</a></h3>
+  <h1>Basic Pipes</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Basic-Pipes"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Basic-Pipes"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="images/pipes-plumber.png" alt="" /></p>
+<p>A <code>Pipe&lt;S,E&gt;</code> is a Java interface that extends both the <code>Iterable&lt;E&gt;</code> and <code>Iterator&lt;E&gt;</code> interface. A <code>Pipe&lt;S,E&gt;</code> takes, as input, an iterator or iterable yielding objects of type <code>S</code> and produces/emits objects of type <code>E</code>. The character &#x201C;S&#x201D; stands for &#x201C;starts&#x201D; and the character &#x201C;E&#x201D; stands for &#x201C;ends&#x201D;.</p>
+<p>Here is a simple example demonstrating a single pipe that capitalizes the characters of the strings that come into it.</p>
+<pre><code>Pipe&lt;String,String&gt; capsPipe = new CapitalizePipe();
+capsPipe.setStarts(Arrays.asList("this", "is", "the", "end."));
+while(capsPipe.hasNext()) {
+  System.out.print(capPipe.next() + " ");
+}</code></pre>
+<p>This pipe will produce the following output.</p>
+<pre><code>THIS IS THE END.</code></pre>
+<p>Given that <code>Pipe&lt;S,E&gt;</code> extends <code>Iterator&lt;E&gt;</code> and <code>Iterable&lt;E&gt;</code>, its possible to string together pipes to create a processing line.</p>
+<pre><code>Pipe&lt;String,String&gt; capsPipe = new CapitalizePipe();
+Pipe&lt;String,Integer&gt; countPipe = new CountPipe();
+capsPipe.setStarts(Arrays.asList("this", "is", "the", "end."));
+countPipe.setStarts(capsPipe);
+while(countPipe.hasNext()) {
+  System.out.print(countPipe.next() + " ");
+}</code></pre>
+<p>If <code>CountPipe</code> takes a <code>String</code> and emits the number of characters in that <code>String</code>, then the previous code will yield the following output.</p>
+<pre><code>4 2 3 4</code></pre>
+<p>Realize that the output of one pipe must be of the same type as the input of the next pipe. Given that <code>Pipe&lt;S,E&gt;</code> extends <code>Iterator&lt;E&gt;</code>, The <code>E</code> of the first pipe becomes the <code>S</code> of the second pipe. In order to make it easier to create chains of pipes, there is a handy <code>Pipeline&lt;S,E&gt;</code> class. This class implements <code>Pipe&lt;S,E&gt;</code> and thus, <code>Pipeline&lt;S,E&gt;</code> objects can be combined like any other pipe (i.e. you can create pipelines of pipelines). Here is an example using a <code>Pipeline&lt;S,E&gt;</code> object.</p>
+<pre><code>Pipe&lt;String,String&gt; capsPipe = new CapitalizePipe();
+Pipe&lt;String,Integer&gt; countPipe = new CountPipe();
+Pipe&lt;Integer,String&gt; wordPipe = new WordPipe();
+Pipeline&lt;String,String&gt; pipeline = new Pipeline&lt;String,String&gt;(capsPipe, countPipe, wordPipe);
+pipeline.setStarts(Arrays.asList("this", "is", "the", "end."));
+while(pipeline.hasNext()) {
+  System.out.print(pipeline.next() + " ");
+}</code></pre>
+<p>Assuming that <code>WordPipe</code> emits the word version of an incoming integer, the pipeline will produce the following output.</p>
+<pre><code>four two three four</code></pre>
+<p>That&#x2019;s Pipes in a nutshell.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:21:32</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>
