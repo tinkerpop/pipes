@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,18 +16,18 @@ import java.util.Map;
  */
 public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffectPipe.GreedySideEffectPipe<S, Map<K, List<V>>> {
 
-    protected Map<K, List<V>> byMap;
+    protected Map<K, Collection<V>> byMap;
     protected final PipeFunction<S, K> keyFunction;
     protected final PipeFunction<S, V> valueFunction;
 
-    public GroupByPipe(final Map<K, List<V>> byMap, final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction) {
+    public GroupByPipe(final Map<K, Collection<V>> byMap, final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction) {
         this.byMap = byMap;
         this.keyFunction = keyFunction;
         this.valueFunction = valueFunction;
     }
 
     public GroupByPipe(final PipeFunction<S, K> keyFunction, final PipeFunction<S, V> valueFunction) {
-        this(new HashMap<K, List<V>>(), keyFunction, valueFunction);
+        this(new HashMap<K, Collection<V>>(), keyFunction, valueFunction);
     }
 
     protected S processNextStart() {
@@ -34,7 +35,7 @@ public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffe
         final K key = this.getKey(s);
         final V value = this.getValue(s);
 
-        List<V> list = this.byMap.get(key);
+        Collection<V> list = this.byMap.get(key);
         if (null == list) {
             list = new ArrayList<V>();
             this.byMap.put(key, list);
@@ -47,7 +48,7 @@ public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffe
         return this.byMap;
     }
 
-    public void addValue(final V value, final List values) {
+    public void addValue(final V value, final Collection values) {
         if (value instanceof Pipe) {
             PipeHelper.fillCollection((Pipe) value, values);
         } else {
@@ -64,7 +65,7 @@ public class GroupByPipe<S, K, V> extends AbstractPipe<S, S> implements SideEffe
     }
 
     public void reset() {
-        this.byMap = new HashMap<K, List<V>>();
+        this.byMap = new HashMap<K, Collection<V>>();
         super.reset();
     }
 }

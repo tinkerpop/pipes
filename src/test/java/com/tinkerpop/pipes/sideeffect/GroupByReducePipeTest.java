@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.branch.LoopPipe;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,8 @@ public class GroupByReducePipeTest extends TestCase {
             public Integer compute(String argument) {
                 return argument.length();
             }
-        }, new PipeFunction<List<Integer>, Integer>() {
-            public Integer compute(List<Integer> args) {
+        }, new PipeFunction<Collection<Integer>, Integer>() {
+            public Integer compute(Collection<Integer> args) {
                 int sum = 0;
                 for (int i : args) {
                     sum = sum + i;
@@ -60,8 +61,8 @@ public class GroupByReducePipeTest extends TestCase {
             public Integer compute(String argument) {
                 return argument.length();
             }
-        }, new PipeFunction<List<Integer>, Integer>() {
-            public Integer compute(List<Integer> args) {
+        }, new PipeFunction<Collection<Integer>, Integer>() {
+            public Integer compute(Collection<Integer> args) {
                 int sum = 0;
                 for (int i : args) {
                     sum = sum + i;
@@ -98,8 +99,8 @@ public class GroupByReducePipeTest extends TestCase {
             public String compute(String argument) {
                 return argument;
             }
-        }, new PipeFunction<List<String>, Integer>() {
-            public Integer compute(List<String> args) {
+        }, new PipeFunction<Collection<String>, Integer>() {
+            public Integer compute(Collection<String> args) {
                 int sum = 0;
                 for (String s : args) {
                     sum = sum + s.length();
