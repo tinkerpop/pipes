@@ -3,9 +3,10 @@ package com.tinkerpop.pipes.filter;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
 
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * CyclicPathFilterPipe will only emit an object if its transformation path has no repeats (loops) in it.
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class CyclicPathFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private HashSet set = new HashSet();
+    private Set set = new LinkedHashSet();
 
     public void setStarts(Iterator<S> starts) {
         super.setStarts(starts);

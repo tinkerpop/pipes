@@ -16,6 +16,8 @@ h3. Version 2.5.0 (NOT OFFICIALLY RELEASED YET)
 ```
 
 * @GroupByPipe@ and @GroupByReducePipe@ now take a @Collection@ instead of a @List@ for the @Map@ value that stores results.
+* Updated to support @LinkedHashSet@ in @DuplicateFilterPipe@
+* Updated to support @LinkedHashSet@ in @CyclicPathFilterPipe@
 
 ==<hr/>==
 

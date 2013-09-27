@@ -4,7 +4,8 @@ package com.tinkerpop.pipes.filter;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeFunction;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * The DuplicateFilterPipe will not allow a duplicate object to pass through it.
@@ -16,7 +17,7 @@ import java.util.HashSet;
  */
 public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final HashSet historySet = new HashSet();
+    private final Set historySet = new LinkedHashSet();
     private final PipeFunction<S, ?> function;
 
     public DuplicateFilterPipe() {
