@@ -40,8 +40,7 @@ public class DuplicateFilterPipe<S> extends AbstractPipe<S, S> implements Filter
                 t = s;
             }
 
-            if (!this.historySet.contains(t)) {
-                this.historySet.add(t);
+            if (this.historySet.add(t)) {
                 return s;
             }
         }
