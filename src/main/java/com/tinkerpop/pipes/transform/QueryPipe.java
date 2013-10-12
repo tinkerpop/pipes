@@ -28,7 +28,7 @@ public abstract class QueryPipe<S, E extends Element> extends AbstractPipe<S, E>
     protected Iterator<E> currentIterator = PipeHelper.emptyIterator();
 
     public void setResultingElementClass(final Class<? extends Element> elementClass) {
-        if (!elementClass.equals(Vertex.class) && !elementClass.equals(Edge.class))
+        if (!Vertex.class.isAssignableFrom(elementClass) && !Edge.class.isAssignableFrom(elementClass))
             throw new IllegalArgumentException("The provided element class must be either Vertex or Edge");
 
         this.elementClass = (Class) elementClass;
