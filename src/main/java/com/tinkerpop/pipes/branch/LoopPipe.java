@@ -65,6 +65,11 @@ public class LoopPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
     public void setStarts(final Iterator<S> iterator) {
         this.expando = new ExpandableLoopBundleIterator<S>(iterator);
         this.pipe.setStarts(this.expando);
+        /* Set this.starts even though we don't explicitly use it. This ensures
+         * that enablePath() from AbstractPipe will enable the path for starts
+         * also if the input iterator is a pipe.
+         */
+        this.starts = iterator;
     }
 
     public String toString() {
@@ -164,10 +169,22 @@ public class LoopPipe<S> extends AbstractMetaPipe<S, S> implements MetaPipe {
         }
 
         public List getCurrentPath() {
-            if (null == this.current)
-                return null;
-            else
+            if (null == this.current) {
+                if (this.iterator instanceof Pipe) {
+                    List path = ((Pipe) this.iterator).getCurrentPath();
+                    if (null != path) {
+                        /* remove the last vertex, since it's the same as the
+                         * first vertex of the loop.
+                         */
+                        path.remove(path.size() - 1);
+                    }
+            		return (path);
+            	} else {
+            		return null;
+            	}
+            } else {
                 return this.current.getPath();
+            }
         }
 
         /*public int getCurrentLoops() {
