@@ -1,0 +1,10 @@
+<img width="100" src="https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-character-2.png"/>
+
+This section provides a list of the people that have contributed in some way to the creation of Pipes.
+
+# "Marko A. Rodriguez":http://markorodriguez.com -- designed, developed, tested, and documented Pipes.
+# "Darrick Weibe":http://github.com/pangloss -- implemented Pipe paths.
+# "Zach Cox":http://theza.ch - helped develop the fluent model.
+# "Ketrina Yim":http://www.ketrinayim.com/ -- designed the Pipes logo.
+
+Please review Pipes' "pom.xml":http://github.com/tinkerpop/pipes/blob/master/pom.xml. Pipes would not be possible without the work done by others to create these useful packages.

@@ -1,0 +1,24 @@
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/duck-plumber.jpg!
+
+Transform pipes are used to take an object of type @S@ and emit an object of type @E@. While the @S@ is generally not altered, the term "transform" refers to the fact that from @S@, @E@ is yielded.
+
+h2. Generic Transform Pipe
+
+The generic transform pipe is @TransformFunctionPipe@. A @TransformFunctionPipe@ takes a @PipeFunction@ (see [[Pipe Types]]) that computes on @S@ and emits the @E@ that the computation returned. An example @PipeFunction@ is provided below:
+
+```java
+public class NumCharsPipeFunction implements PipeFunction<String,Integer> {
+  public Integer compute(String argument) {
+     return argument.length();
+  }
+}
+```
+
+When put in the context of a @TransformFunctionPipe@, the code looks as follows:
+
+```java
+Pipe<String,Integer> pipe = new TransformFunctionPipe<String,Integer>(new NumCharsPipeFunction());
+pipe.setStarts(Arrays.asList("tell", "me", "your", "name"));
+// the results of the iteration are: 4, 2, 4, 4
+```
+

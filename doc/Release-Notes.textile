@@ -5,22 +5,6 @@ h2. Pipes 2.y.z
 
 !https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-2.png!
 
-h3. Version 2.5.0 (April 14, 2014)
-
-```xml
-<dependency>
-  <groupId>com.tinkerpop</groupId>
-  <artifactId>pipes</artifactId>
-  <version>2.5.0</version>
-</dependency>
-```
-
-* @GroupByPipe@ and @GroupByReducePipe@ now take a @Collection@ instead of a @List@ for the @Map@ value that stores results.
-* Updated to support @LinkedHashSet@ in @DuplicateFilterPipe@
-* Updated to support @LinkedHashSet@ in @CyclicPathFilterPipe@
-
-==<hr/>==
-
 h3. Version 2.4.0 (August 4, 2013)
 
 ```xml
