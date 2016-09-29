@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author: Marko A. Rodriguez (http://markorodriguez.com)
@@ -41,5 +42,28 @@ public class PipelineTest extends TestCase {
 
         }
 
+    }
+
+    public void testPathEnabledInStartPipeEnablesPath() {
+      final Pipe<String, String> pipe = new IdentityPipe<String>();
+      pipe.enablePath(true);
+      Pipeline<String, String> pipeline = new Pipeline<String, String>(pipe);
+      assertTrue(pipeline.isPathEnabled());
+    }
+
+    public void testPathEnabledInOneStartPipeEnablesPath() {
+      final Pipe<String, String> pipe = new IdentityPipe<String>();
+      pipe.enablePath(true);
+      Pipeline<String, String> pipeline = new Pipeline<String, String>(new IdentityPipe(), pipe, new IdentityPipe());
+      assertTrue(pipeline.isPathEnabled());
+    }
+
+    public void testPathDisabledInStartPipeDoesNotDisablePath() {
+      Pipeline<String, String> pipeline = new Pipeline<String, String>();
+      pipeline.enablePath(true);
+
+      final Pipe pipe = new IdentityPipe<String>();
+      pipeline.setPipes(Collections.singletonList(pipe));
+      assertTrue(pipeline.isPathEnabled());
     }
 }

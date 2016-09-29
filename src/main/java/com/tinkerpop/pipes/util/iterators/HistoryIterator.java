@@ -1,6 +1,9 @@
 package com.tinkerpop.pipes.util.iterators;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * HistoryIterator wraps an iterator. It will behave like the wrapped iterator.
@@ -26,8 +29,23 @@ public class HistoryIterator<T> implements Iterator<T> {
         return last;
     }
 
-    public T getLast() {
-        return this.last;
+    public List getCurrentPath() {
+        if (iterator instanceof PathIterator) {
+            final PathIterator pathIterator = (PathIterator) iterator;
+            final ArrayList current = new ArrayList(pathIterator.getCurrentPath());
+            if (last != null) {
+              current.add(this.last);
+            }
+            return current;
+        }
+        else {
+            if (last == null) {
+              return Collections.emptyList();
+            }
+            else {
+              return Collections.singletonList(this.last);
+            }
+        }
     }
 
     public void remove() {

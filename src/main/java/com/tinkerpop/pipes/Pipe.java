@@ -47,6 +47,13 @@ public interface Pipe<S, E> extends Iterator<E>, Iterable<E> {
     public void enablePath(boolean enable);
 
     /**
+     * Returns whether paths have been enabled for this pipe.
+     *
+     * @return true if paths have been enabled, false otherwise.
+     */
+    public boolean isPathEnabled();
+
+    /**
      * A pipe may maintain state. Reset is used to remove state.
      * The general use case for reset() is to reuse a pipe in another computation without having to create a new Pipe object.
      * An implementation of this method should be recursive whereby the starts (if a Pipe) should have this method called on it.
