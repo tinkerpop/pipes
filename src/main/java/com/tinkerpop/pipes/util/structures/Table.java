@@ -143,26 +143,21 @@ public class Table extends ArrayList<Row> {
      * @return a newly created sorted table
      */
     public Table sort() {
-        final Table temp = Table.cloneTableStructure(this);
-        final List<Row> rows = new ArrayList<Row>();
-        for (final Row row : this) {
-            rows.add(row);
-        }
-        Collections.sort(rows, Table.getDefaultRowComparator());
-        temp.addAll(rows);
-        return temp;
+      return Table.sort(this, Table.getDefaultRowComparator());
     }
 
     /**
-     * Sort the rows of the table according to provided comparator
+     * Sort the rows of the table according to provided comparator. The original table
+     * is not modified.
      *
+     * @param table the table to sort
      * @param comparator a row comparator
      * @return a newly created sorted table
      */
-    public Table sort(Comparator<Row> comparator) {
-        final Table temp = Table.cloneTableStructure(this);
+    public static Table sort(Table table, Comparator<Row> comparator) {
+        final Table temp = Table.cloneTableStructure(table);
         final List<Row> rows = new ArrayList<Row>();
-        for (final Row row : this) {
+        for (final Row row : table) {
             rows.add(row);
         }
         Collections.sort(rows, comparator);

@@ -163,7 +163,7 @@ public class TableTest extends TestCase {
         assertEquals(temp.get(1, 0), "bobby");
         assertEquals(temp.get(2, 0), "cabby");
 
-        temp = table.sort(new Comparator<Row>() {
+        temp = Table.sort(table, new Comparator<Row>() {
             public int compare(Row a, Row b) {
                 return ((Comparable) a.get(1)).compareTo(b.get(1));
             }
