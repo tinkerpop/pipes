@@ -2,7 +2,7 @@
 
 <img alt="" height="170" src="https://raw.githubusercontent.com/apache/incubator-tinkerpop/master/docs/static/images/not-tinkerpop3-gremlin.png" />
 
-*IMPORTANT* - TinkerPop is now a part of the Apache Software Foundation and "TinkerPop 3.x":http://tinkerpop.incubator.apache.org/ is the latest incarnation of The TinkerPop.  This project is TinkerPop 2.x and is no longer active.  
+*IMPORTANT* - TinkerPop is now a part of the Apache Software Foundation and "TinkerPop 3.x":http://tinkerpop.apache.org/ is the latest incarnation of The TinkerPop.  This project is TinkerPop 2.x and is no longer active.  
 
 Pipes is a "dataflow":http://en.wikipedia.org/wiki/Dataflow framework that enables the splitting, merging, filtering, and transformation of data from input to output. Computations are expressed using a "combinator":http://en.wikipedia.org/wiki/Function_composition model and are evaluated in a memory-efficient, "lazy":http://en.wikipedia.org/wiki/Lazy_evaluation fashion.
 
